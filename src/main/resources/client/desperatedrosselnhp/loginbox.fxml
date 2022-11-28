@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<StackPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="client.desperatedrosselnhp.LoginController" >
+
+    <padding>
+        <Insets bottom="15" left="15" right="15" top="15"/>
+    </padding>
+
+    <StackPane>
+
+        <VBox spacing="20">
+            <GridPane alignment="CENTER" >
+
+                <rowConstraints>
+                    <RowConstraints minHeight="15" prefHeight="30" />
+                    <RowConstraints minHeight="15" prefHeight="70" />
+                </rowConstraints>
+
+                <Label text="Username:"  GridPane.rowIndex="0" GridPane.columnIndex="0" minWidth="80"/>
+                <TextField fx:id="loginTextField" promptText="What's your name?"  GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Birthdate:"  GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <DatePicker fx:id="birthdate" promptText="When were you born?" onAction="#onBirthdate"  GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+
+
+            </GridPane>
+
+            <StackPane>
+
+                <Button fx:id="loginButton" alignment="CENTER" mnemonicParsing="false"
+                        onAction="#onLogin" prefHeight="25.0" prefWidth="60.0" text="Login"
+                        HBox.hgrow="ALWAYS"/>
+
+            </StackPane>
+        </VBox>
+    </StackPane>
+
+</StackPane>
+
