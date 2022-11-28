@@ -138,6 +138,9 @@ public class Client implements Runnable {
             closeAll(clientSocket, in, out);
         }
     }
+    public String getClientName(){
+        return this.clientName;
+    }
 
 
     public static void main(String[] args) throws IOException {
