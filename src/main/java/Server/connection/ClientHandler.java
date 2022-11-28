@@ -1,4 +1,4 @@
-package Model;
+package server.connection;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,7 +11,7 @@ public class ClientHandler implements Runnable {
     private BufferedWriter out;
     private String clientName;
 
-    static ArrayList<ClientHandler> clients = new ArrayList<>();
+    public static ArrayList<ClientHandler> clients = new ArrayList<>();
 
     public static class MessageMap {
         static String[] messageMap = {

@@ -1,13 +1,15 @@
-package Model;
+package server.connection;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Server {
     private ServerSocket serverSocket;
+    private List<String> gameLog;
 
     public Server(ServerSocket serversocket) {
         this.serverSocket = serversocket;

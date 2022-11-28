@@ -1,4 +1,5 @@
-package Model;
+package client.desperatedrosselnhp;
+import server.connection.ClientHandler;
 
 import java.io.*;
 import java.net.Socket;
