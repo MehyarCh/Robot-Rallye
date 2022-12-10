@@ -1,0 +1,7 @@
+Issues:
+
+- Cannot set controller for fxml file with fx:controller command on root element of file
+    Results in error but app still executable
+    Alternatively set it in the conroller class with setController() - not certain that it works as intended
+
+- When trying to run with maven error is thrown

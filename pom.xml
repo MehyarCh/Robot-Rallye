@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>client</groupId>
-    <artifactId>desperate-drosseln-hp</artifactId>
+    <groupId>desperatedrosseln</groupId>
+    <artifactId>desperatedrosseln-hp</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>desperate-drosseln-hp</name>
 
     <properties>
+        <maven.compiler.source>19</maven.compiler.source>
+        <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.8.2</junit.version>
+        <javafx.version>19</javafx.version>
+        <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.squareup.moshi</groupId>
+            <artifactId>moshi-kotlin</artifactId>
+            <version>1.12.0</version>
+        </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -75,8 +83,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>client.desperatedrosselnhp/client.desperatedrosselnhp.HelloApplication
-                            </mainClass>
+                            <mainClass>deperatedrosseln/Desperatedrosseln.Main</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
