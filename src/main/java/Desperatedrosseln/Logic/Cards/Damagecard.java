@@ -1,6 +1,6 @@
 package Desperatedrosseln.Logic.Cards;
 
-public class Damagecard extends Card{
+public class Damagecard{
 
     /*public Damagecards(String info) {
         super(info);
@@ -14,6 +14,9 @@ public class Damagecard extends Card{
     public String toString(){
 
         return "DamageCard";
+    }
+    public boolean isDamageCard(){
+        return true;
     }
 }
 

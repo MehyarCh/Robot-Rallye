@@ -1,9 +1,9 @@
 package Desperatedrosseln.Logic.Elements;
 
-public class Checkpoint extends BoardElements{
+public class Checkpoint extends BoardElement {
 
     public Checkpoint(Position position){
-        super(position);
+
     }
 
     @Override

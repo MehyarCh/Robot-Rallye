@@ -4,9 +4,11 @@ module desperatedrosseln {
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
+    requires moshi;
 
     opens Desperatedrosseln to javafx.fxml;
     opens Desperatedrosseln.Local.Controllers to javafx.fxml;
+    opens Desperatedrosseln.Local.Protocols to moshi;
     exports Desperatedrosseln;
 
 }

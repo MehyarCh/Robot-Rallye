@@ -6,4 +6,11 @@ public class UTurn extends Programmingcard{
     public void playCard() {
 
     }
+    @Override
+    public String toString() {
+        return "UTurn";
+    }
+    public boolean isDamageCard(){
+        return false;
+    }
 }

@@ -1,6 +1,6 @@
 package Desperatedrosseln.Logic.Cards;
 
-public class UpgradeCard extends Card{
+public class UpgradeCard {
 
     /*public UpgradeCards(String info) {
         super(info);

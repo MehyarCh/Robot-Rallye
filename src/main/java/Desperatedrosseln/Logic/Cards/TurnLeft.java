@@ -6,5 +6,12 @@ public class TurnLeft extends Programmingcard{
     public void playCard() {
 
     }
+    @Override
+    public String toString() {
+        return "turnLeft";
+    }
+    public boolean isDamageCard(){
+        return false;
+    }
 }
 

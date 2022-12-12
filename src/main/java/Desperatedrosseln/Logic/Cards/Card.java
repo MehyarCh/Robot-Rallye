@@ -1,6 +1,9 @@
 package Desperatedrosseln.Logic.Cards;
 
-public abstract class Card {
+import Desperatedrosseln.Logic.*;
+
+public class Card {
+
 
     private String info;
 
@@ -9,8 +12,21 @@ public abstract class Card {
         this.info = info;
     }*/
 
-    public abstract void playCard();
+    public void playCard(Player player){
 
-    public abstract String toString();
+    }
+
+    public String toString(){
+        return "ll";
+    }
+
+    public boolean isAllowedMove(){
+        //conditions in which a move is allowed/not allowed (moving from a pit == false)
+        return true;
+    }
+    public String getInfo() {
+        return info;
+    }
+
 }
 

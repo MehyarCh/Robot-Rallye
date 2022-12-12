@@ -1,9 +1,8 @@
 package Desperatedrosseln.Logic.Elements;
 
-public class Obstacle extends BoardElements{
+public class Obstacle extends BoardElement {
 
     public Obstacle (Position position) {
-        super(position);
     }
 
     public void execute(){

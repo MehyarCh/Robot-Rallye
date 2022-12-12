@@ -1,13 +1,11 @@
 package Desperatedrosseln.Logic.Elements;
 
-abstract class BoardElements {
+public class BoardElement {
 
     private int priority;
     private Position position;
 
-    public BoardElements(Position position) { //ToDo: priority (?)
-        this.position = position;
-    }
+
 
     public void execute(){
 

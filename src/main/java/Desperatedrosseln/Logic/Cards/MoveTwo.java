@@ -6,4 +6,11 @@ public class MoveTwo extends Programmingcard{
     public void playCard() {
 
     }
+    @Override
+    public String toString() {
+        return "moveTwo";
+    }
+    public boolean isDamageCard(){
+        return false;
+    }
 }

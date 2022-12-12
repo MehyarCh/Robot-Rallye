@@ -71,7 +71,7 @@ public class LoginController {
         switchToLobbyScene();
         connectClient();
         client.sendMessage(loginTextField.getText());
-        client.setName(loginTextField.getText());
+        client.setClientName(loginTextField.getText());
     }
     public void switchToLobbyScene() throws IOException {
         lobbyController = new LobbyController();

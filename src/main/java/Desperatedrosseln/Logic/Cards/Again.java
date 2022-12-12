@@ -11,7 +11,14 @@ public class Again extends Programmingcard{
     public void playCard() {
 
     }
+    public boolean isDamageCard(){
+        return false;
+    }
 
+    @Override
+    public String toString() {
+        return "Again";
+    }
     public static class ConnectionHandler {
 
         public void connectClient(){

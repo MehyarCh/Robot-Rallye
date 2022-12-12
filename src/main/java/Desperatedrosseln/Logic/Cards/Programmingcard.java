@@ -1,5 +1,7 @@
 package Desperatedrosseln.Logic.Cards;
 
+import Desperatedrosseln.Logic.*;
+
 public class Programmingcard extends Card{
 
     /*public Programmingcards(String info) {
@@ -7,6 +9,11 @@ public class Programmingcard extends Card{
     }*/
 
     public void playCard(){
+
+    }
+
+    @Override
+    public void playCard(Player player) {
 
     }
 

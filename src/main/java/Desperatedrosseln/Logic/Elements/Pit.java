@@ -1,9 +1,9 @@
 package Desperatedrosseln.Logic.Elements;
 
-public class Pit extends BoardElements{
+public class Pit extends BoardElement {
 
     public Pit(Position position) {
-        super(position);
+
     }
 
     @Override

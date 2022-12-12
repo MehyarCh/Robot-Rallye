@@ -1,19 +1,30 @@
 package Desperatedrosseln.Connection;
 
+import Desperatedrosseln.Local.Protocols.Alive;
+import Desperatedrosseln.Local.Protocols.Message;
+import Desperatedrosseln.Logic.Game;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.Objects;
 
 public class Server {
     private ServerSocket serverSocket;
     private List<String> gameLog;
+    private Game game;
 
     public Server(ServerSocket serversocket) {
         this.serverSocket = serversocket;
     }
 
     public void startServer() {
+
+        game = new Game();
+
         while (!serverSocket.isClosed()) {
             try {
                 Socket clientSocket = serverSocket.accept();
@@ -34,6 +45,8 @@ public class Server {
             e.printStackTrace();
         }
     }
+
+
 
 
     public static void main(String[] args) throws IOException {

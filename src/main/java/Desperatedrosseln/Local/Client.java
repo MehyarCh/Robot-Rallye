@@ -1,19 +1,26 @@
 package Desperatedrosseln.Local;
 
 import Desperatedrosseln.Connection.ClientHandler;
+import Desperatedrosseln.Local.Protocols.*;
+import Desperatedrosseln.Logic.Game;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.*;
 
 public class Client implements Runnable {
-    private String name;
     private Socket clientSocket;
     private DataInputStream in;
     private DataOutputStream out;
-    private String clientName;
+    private int clientID;
     public String[] defaultCommands = ClientHandler.CommandMap.commandMap;
     public String[] defaultMessages = ClientHandler.MessageMap.messageMap;
+    private String protocol = "Version 0.1";
+    Moshi moshi = new Moshi.Builder().build();
+    JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
+    private String clientName;
 
 
     public Client(Socket clientSocket) {
@@ -26,20 +33,17 @@ public class Client implements Runnable {
         }
     }
 
-    public String getClientName(){
-        return this.clientName;
-    }
+
 
     public static void startClient() throws IOException {
         Socket clientSocket = new Socket("localhost", 3000);
         Client client = new Client(clientSocket);
-
-        System.out.println("Welcome, please enter an username.");
+        System.out.println("");
 
         Thread thread = new Thread(client, "ListenerThread");
         thread.start();
 
-        client.typeMessages();
+
     }
 
     public void sendMessage(String message) {
@@ -59,12 +63,64 @@ public class Client implements Runnable {
         }
     }
 
-    public void checkIncoming(String message) {
-        if (message.startsWith(defaultMessages[0] + defaultMessages[7])) {
-            this.clientName = message.split("!! ")[1];
-        } else if (!message.startsWith(defaultMessages[0] + "#")){
-            System.out.println(message);
+    public void checkIncoming(String message) throws IOException {
+
+
+        Message msg = messageJsonAdapter.fromJson(message);
+        checkProtocolMessage(msg);
+
+    }
+
+    private void checkProtocolMessage(Message msg) throws IOException {
+        //TODO: Logs
+        switch (msg.getMessageType()){
+            case "HelloClient":
+                //TODO: disconnect if protocol isnt the same as client.
+                JsonAdapter<HelloServer> helloServerJsonAdapter = moshi.adapter(HelloServer.class);
+                String helloServer = helloServerJsonAdapter.toJson(new HelloServer("DesperateDrosseln", false,protocol));
+                Message message = new Message("HelloServer",helloServer);
+                sendMessage(messageJsonAdapter.toJson(message));
+                System.out.println("helloClient");
+
+                break;
+            case "Alive":
+                sendMessage(messageJsonAdapter.toJson(msg));
+                System.out.println("Alive check from server");
+                break;
+            case "Welcome":
+                JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
+                this.clientID =welcomeJsonAdapter.fromJson(msg.getMessageBody()).getClientID();
+
+                break;
+
+            case "PlayerAdded":
+                JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
+                PlayerAdded playerAdded = playerAddedJsonAdapter.fromJson(msg.getMessageBody());
+                if(playerAdded.getClientID() == clientID){                                      //TODO: Ready button?
+                    JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
+                    sendMessage(messageJsonAdapter.toJson(new Message("SetStatus",setStatusJsonAdapter.toJson(new SetStatus(true)))));
+                }
+                break;
+            case "PlayerStatus":
+                break;
+            case "SelectMap":
+                JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
+                SelectMap sm = selectMapJsonAdapter.fromJson(msg.getMessageBody());
+                //TODO: GUI map selection
+                break;
+            case "ReceivedChat":
+                JsonAdapter<ReceivedChat> receivedChatJsonAdapter = moshi.adapter(ReceivedChat.class);
+                ReceivedChat receivedChat = receivedChatJsonAdapter.fromJson(msg.getMessageBody());
+                if(receivedChat.getFrom() == -1){
+                    //TODO:
+                }else{
+
+                }
+                break;
+
+
         }
+
     }
 
     public void checkCommands(String message) {
@@ -143,14 +199,6 @@ public class Client implements Runnable {
         }
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public DataInputStream getInputStr() {
         return in;
     }
@@ -159,8 +207,22 @@ public class Client implements Runnable {
         return out;
     }
 
+    public String getName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
     public static void main(String[] args) throws IOException {
         startClient();
     }
+
+  public void sendChatMessage(String message,int to){               //TODO: add to gui
+        JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
+        sendMessage(messageJsonAdapter.toJson(new Message("SendChat",sendChatJsonAdapter.toJson(new SendChat(message,to)))));
+    }
+
 }
 
