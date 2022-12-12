@@ -8,6 +8,5 @@ module desperatedrosseln {
     opens Desperatedrosseln to javafx.fxml;
     opens Desperatedrosseln.Local.Controllers to javafx.fxml;
     exports Desperatedrosseln;
-    exports Desperatedrosseln.Local.Controllers to javafx.fxml;
 
 }
