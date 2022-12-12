@@ -49,13 +49,19 @@ public class LobbyController {
         stage.show();
     }
 
+    @FXML
     public void switchToMainScene(ActionEvent event) throws IOException {
         mainController = new MainController();
+        System.out.println("mainctrl null= " + mainController==null);
         mainController.startMainScene(stage);
     }
     @FXML
     public void onPlayerSix(){
+
         LoginController.client.sendMessage("Chose Red");
+        System.out.println("mainctrl null= " + mainController==null);
+        mainController.startMainScene(stage);
     }
+
 }
 

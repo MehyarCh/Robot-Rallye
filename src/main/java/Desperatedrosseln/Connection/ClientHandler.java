@@ -194,6 +194,8 @@ public class ClientHandler implements Runnable {
                         }
                     }
                     break;
+                default:
+                    broadcastMessage(messageJsonAdapter.toJson(new Message(" ", "SERVER BRO")), 1);
 
                 /*
                 case SENDCHAT -> {

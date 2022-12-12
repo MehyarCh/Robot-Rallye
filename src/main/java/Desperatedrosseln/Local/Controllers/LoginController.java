@@ -9,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.io.DataInputStream;
@@ -26,7 +28,6 @@ public class LoginController {
     private Stage stage;
     private Scene scene;
     private Parent root;
-
     public LobbyController lobbyController;
 
     @FXML
@@ -34,6 +35,8 @@ public class LoginController {
 
     @FXML
     public TextField loginTextField;
+
+
 
 
     public LoginController() throws IOException {
@@ -51,7 +54,7 @@ public class LoginController {
             scene.getStylesheets().add(modulesCss);
 
             String stateCss = this.getClass().getResource("/Css/state.css").toExternalForm();
-            scene.getStylesheets().add(stateCss);
+            scene.getStylesheets().add(stateCss);;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -88,11 +91,10 @@ public class LoginController {
         thread = new Thread(() -> {
             try {
                 while(true) {
-                    String newMsg = dis.readUTF();
+                    String msg = dis.readUTF();
 
-                    System.out.println("RE : " + newMsg);
+                    System.out.println("RE : " + msg);
 
-                    //chatLog.appendText(newMsg.getName() + " : " + newMsg.getContent() + "\n");
                 }
             } catch(Exception E) {
                 E.printStackTrace();
@@ -101,4 +103,5 @@ public class LoginController {
         thread.start();
 
     }
+
 }

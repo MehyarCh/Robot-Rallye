@@ -117,8 +117,6 @@ public class Client implements Runnable {
 
                 }
                 break;
-
-
         }
 
     }
@@ -214,15 +212,16 @@ public class Client implements Runnable {
     public void setClientName(String clientName) {
         this.clientName = clientName;
     }
+    public void sendChatMessage(String message,int to){               //TODO: add to gui
+        JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
+        sendMessage(messageJsonAdapter.toJson(new Message("SendChat",sendChatJsonAdapter.toJson(new SendChat(message,to)))));
+    }
 
     public static void main(String[] args) throws IOException {
         startClient();
     }
 
-  public void sendChatMessage(String message,int to){               //TODO: add to gui
-        JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
-        sendMessage(messageJsonAdapter.toJson(new Message("SendChat",sendChatJsonAdapter.toJson(new SendChat(message,to)))));
-    }
+
 
 }
 
