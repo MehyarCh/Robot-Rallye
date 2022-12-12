@@ -33,49 +33,11 @@ public class ClientHandler implements Runnable {
         return player;
     }
 
-    public static class MessageMap {
-        public static String[] messageMap = {
-                "[SERVER]: ",
 
-                "Welcome, please enter your username!", // 1
-                "Message can not be empty",
-                "Here are all commands:",
-                "PLACEHOLDER",
-                "This username is already taken by another player. Please choose another one.",
 
-                "#101 - nameAttempt", //6
-                "#102 - following name accepted !! ",
-                "#103 - name already taken",
-                "#104 - name cannot contain space characters",
-                "#105 - Connection Error",
 
-                "The username cannot contain any space characters.", //11
-                "Goodbye ",
-        };
-    }
 
-    public static class CommandMap {
-        public static String[] commandMap = {
-                "bye",
-                "/help",
-                "/dm"
-        };
 
-        public static String help() {
-
-            StringBuilder commandList = new StringBuilder();
-
-            System.out.println("\n" + MessageMap.messageMap[3]);
-
-            for (String command : commandMap) {
-                commandList.append(command).append(",\n");
-            }
-
-            System.out.println(commandList.toString());
-
-            return commandList.toString();
-        }
-    }
 
     public ClientHandler(Socket socket) {
         try {
@@ -95,31 +57,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    /*
-    public void assignName() {
-        try {
-            String nameAttempt;
-            while (true) {
-                nameAttempt = in.readUTF();
-                if (nameAttempt.contains(" ")) {
-                    sendMessage(createLog(MessageMap.messageMap[9], "server"));
-                    sendMessage(createLog(MessageMap.messageMap[11], "server"));
-                } else {
-                    if (checkName(nameAttempt)) {
-                        this.clientName = nameAttempt;
-                        sendMessage(createLog(MessageMap.messageMap[7] + this.clientName, "server"));
-                        greetUser();
-                        break;
-                    } else {
-                        sendMessage(createLog(MessageMap.messageMap[5], "server"));
-                    }
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    */
+
     public void sendErrorMessage() {
         JsonAdapter<Desperatedrosseln.Local.Protocols.Error> errorJsonAdapter = moshi.adapter(Desperatedrosseln.Local.Protocols.Error.class);
         sendMessage(messageJsonAdapter.toJson(new Message("Error", errorJsonAdapter.toJson(new Error()))));
@@ -174,7 +112,7 @@ public class ClientHandler implements Runnable {
                             this.clientName = playerValues.getName();
                             Game.getPlayers().add(player);
                             JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
-                            broadcastMessage(messageJsonAdapter.toJson(new Message("PlayerAdded", playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())))), 1);
+                            broadcastMessage(messageJsonAdapter.toJson(new Message("PlayerAdded", playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())))));
                         }
                     } else {
                         player = new Player();
@@ -183,7 +121,7 @@ public class ClientHandler implements Runnable {
                         this.clientName = playerValues.getName();
                         Game.getPlayers().add(player);
                         JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
-                        broadcastMessage(messageJsonAdapter.toJson(new Message("PlayerAdded", playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())))), 1);
+                        broadcastMessage(messageJsonAdapter.toJson(new Message("PlayerAdded", playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())))));
                     }
 
 
@@ -191,7 +129,7 @@ public class ClientHandler implements Runnable {
                 case "SetStatus":
                     JsonAdapter<PlayerStatus> playerStatusJsonAdapter = moshi.adapter(PlayerStatus.class);
                     PlayerStatus playerStatus = new PlayerStatus(player.getID(), true);
-                    broadcastMessage(messageJsonAdapter.toJson(new Message("PlayerStatus", playerStatusJsonAdapter.toJson(playerStatus))), 1);
+                    broadcastMessage(messageJsonAdapter.toJson(new Message("PlayerStatus", playerStatusJsonAdapter.toJson(playerStatus))));
                     if (playerStatus.isReady()) {
                         Game.readyPlayer(this);
 
@@ -210,7 +148,7 @@ public class ClientHandler implements Runnable {
                     SendChat sendChat = sendChatJsonAdapter.fromJson(message.getMessageBody());
                     JsonAdapter<ReceivedChat> receivedChatJsonAdapter = moshi.adapter(ReceivedChat.class);
                     if (sendChat.getTo() == -1) {
-                        broadcastMessage(messageJsonAdapter.toJson(new Message("ReceivedChat", receivedChatJsonAdapter.toJson(new ReceivedChat(sendChat.getMessage(), clientID, false)))), 1);
+                        broadcastMessage(messageJsonAdapter.toJson(new Message("ReceivedChat", receivedChatJsonAdapter.toJson(new ReceivedChat(sendChat.getMessage(), clientID, false)))));
                     } else {
                         for (ClientHandler client :
                                 clients) {
@@ -222,37 +160,8 @@ public class ClientHandler implements Runnable {
                     }
                     break;
                 default:
-                    broadcastMessage(messageJsonAdapter.toJson(new Message(" ", "SERVER BRO")), 1);
+                    broadcastMessage(messageJsonAdapter.toJson(new Message(" ", "SERVER BRO")));
 
-                /*
-                case SENDCHAT -> {
-                    if (message.getContent().equals(CommandMap.commandMap[0])) {                //bye
-                        broadcastMessage(new Message(message.getContent(), MessageType.CHATMESSAGE,clientName));
-                        sendMessage(new Message(MessageMap.messageMap[12] + clientName, MessageType.SERVERMESSAGE,clientName));
-                        closeAll(socket, in, out);
-                    }
-                }
-                case DIRECTCHATMESSAGE -> {
-                    sendDirectMessage(message);
-                }
-
-                case CHATMESSAGE -> {
-                    if (clients.size() > 1) {
-                        broadcastMessage(message);
-                    }
-                }
-                case GAMECONTROL -> {
-                    if(message.getContent().equals("/join")){
-                        if(!game.checkPlayer(message.getSender())){
-                            broadcastMessage(new Message(clientName+" joined the game.",MessageType.SERVERMESSAGE,clientName));
-                            game.addPlayer(message.getSender());
-                        } else {
-                            sendMessage(new Message("you are already in the Game",MessageType.SERVERMESSAGE,clientName));
-                        }
-
-                    }
-
-                }*/
             }
 
 
@@ -263,36 +172,7 @@ public class ClientHandler implements Runnable {
         return clientID;
     }
 
-    public boolean checkName(String name) {
 
-        ArrayList<String> names = new ArrayList<>();
-
-        for (ClientHandler handler : clients) {
-            names.add(handler.clientName);
-        }
-
-        System.out.println(names);
-
-        return names.size() == 0 || !names.contains(name);
-    }
-
-    // logType: Add the [Server] or <Client> signature at the start of the line
-
-
-    public void sendDirectMessage(String message) {
-        String[] splitCommand = message.split(" ", 3);
-        String command = splitCommand[0];
-        String recipient = splitCommand[1];
-        String content = splitCommand[2];
-
-        for (ClientHandler client : clients) {
-            if (Objects.equals(client.clientName, recipient)) {
-                client.sendMessage(content);
-
-                break;
-            }
-        }
-    }
 
     public void sendMessage(String message) {
         try {
@@ -304,27 +184,14 @@ public class ClientHandler implements Runnable {
     }
 
     // messageType: 0 = broadcast to all others, 1 = to everyone
-    public void broadcastMessage(String message, int messageType) {
+    public void broadcastMessage(String message) {
         System.out.println(clients);
-        if (messageType == 0) {
-            for (ClientHandler client : clients) {
-                if (!Objects.equals(this.clientName, client.clientName)) {
-                    client.sendMessage(message);
-                }
-            }
-        } else if (messageType == 1) {
-            for (ClientHandler client : clients) {
-                client.sendMessage(message);
-            }
+        for (ClientHandler client : clients) {
+            client.sendMessage(message);
         }
         System.out.println(message);
     }
 
-    public void greetUser() {
-        String greeting = "User " + clientName + " joined the chat!";
-        sendMessage("Welcome " + clientName);
-        broadcastMessage(greeting, 0);
-    }
 
     public void closeAll(Socket socket, DataInputStream in, DataOutputStream out) {
         removeClientHandler();
@@ -339,8 +206,8 @@ public class ClientHandler implements Runnable {
 
     public void removeClientHandler() {
         clients.remove(this);
-        String logout = "User " + clientName + " has left the Chat";
-        broadcastMessage(logout, 0);
+        //String logout = "User " + clientName + " has left the Chat";
+        //broadcastMessage(logout);
     }
 
     @Override

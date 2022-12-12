@@ -19,8 +19,6 @@ public class Client implements Runnable {
     private DataInputStream in;
     private DataOutputStream out;
     private int clientID;
-    public String[] defaultCommands = ClientHandler.CommandMap.commandMap;
-    public String[] defaultMessages = ClientHandler.MessageMap.messageMap;
 
     private MainController mainController;
     private String protocol = "Version 0.1";
@@ -61,13 +59,7 @@ public class Client implements Runnable {
         }
     }
 
-    public void typeMessages() {
-        Scanner scanner = new Scanner(System.in);
-        while (!clientSocket.isClosed()) {
-            String message = scanner.nextLine();
-            checkCommands(message);
-        }
-    }
+
 public void sendHelloServer(){
     JsonAdapter<HelloServer> helloServerJsonAdapter = moshi.adapter(HelloServer.class);
     String helloServer = helloServerJsonAdapter.toJson(new HelloServer("DesperateDrosseln", false,protocol));
@@ -138,49 +130,9 @@ public void sendHelloServer(){
 
     }
 
-    public void checkCommands(String message) {
-        if (message != null) {
-            // logout
-            if (message.equals(defaultCommands[0])) {
-                sendMessage(message);
-                logout();
-            }
-            // help
-            else if (message.equals(defaultCommands[1])){
-                ClientHandler.CommandMap.help();
-            }
-            // direct message
-            else if (message.startsWith(defaultCommands[2])) {
-                sendDirectMessage(message);
-            }
-            // empty
-            else if (message.equals(" ")) {
-                System.out.println(defaultMessages[2]);
-            }
-            // normal message
-            else {
-                sendMessage(message);
-            }
-        }
-    }
 
-    public void sendDirectMessage(String message) {
-        String pattern = "(/dm)(\\s)(\\S+)(\\s)(\\S+)((\\s)*(\\S*))*";
-        String recipient = message.split(" ")[1];
-        if (message.matches(pattern)) {
-            if (!Objects.equals(this.clientName, recipient)) {
-                sendMessage(message);
-            } else {
-                System.out.println("You cannot send direct messages to yourself!");
-            }
-        } else {
-            System.out.println("The command might be misspelled. To send a DirectMessage try the following Command: /dm recipient message");
-        }
-    }
 
-    public void windowDisposition() {
-        logout();
-    }
+
 
     public void logout() {
         closeAll(clientSocket, in, out);
@@ -210,7 +162,7 @@ public void sendHelloServer(){
                 }
             }
         } catch (IOException e) {
-            closeAll(clientSocket, in, out);
+            logout();
         }
     }
 
