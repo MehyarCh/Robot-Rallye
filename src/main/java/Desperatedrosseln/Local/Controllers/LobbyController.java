@@ -1,11 +1,13 @@
 package Desperatedrosseln.Local.Controllers;
 
+import Desperatedrosseln.Local.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -16,6 +18,10 @@ public class LobbyController {
     private Parent root;
 
     public MainController mainController;
+
+    private Client client;
+
+    private TextFlow textFlow;
 
     @FXML
     private Button playerIconPink;
@@ -56,12 +62,26 @@ public class LobbyController {
         mainController.startMainScene(stage);
     }
     @FXML
-    public void onPlayerSix(){
+    public void onPlayerSix() throws IOException {
 
-        LoginController.client.sendMessage("Chose Red");
         System.out.println("mainctrl null= " + mainController==null);
+        if(mainController == null){
+            mainController = new MainController();
+            client.setMainController(mainController);
+        }
         mainController.startMainScene(stage);
     }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public TextFlow getTextFlow() {
+        return textFlow;
+    }
 }
 

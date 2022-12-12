@@ -1,6 +1,7 @@
 package Desperatedrosseln.Local.Controllers;
 
 import Desperatedrosseln.Local.Client;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,10 +31,11 @@ public class MainController {
     @FXML
     private TextField chat_input;
     @FXML
-    //private TextArea chatlog;
     private TextFlow chatlog;
 
     public MainController() throws IOException {
+        setStreams();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/mainScene.fxml"));
         loader.setController(this);
 
@@ -50,7 +52,6 @@ public class MainController {
             String stateCss = this.getClass().getResource("/Css/state.css").toExternalForm();
             scene.getStylesheets().add(stateCss);
 
-            listen();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,46 +76,35 @@ public class MainController {
     }
     @FXML
     void onClickSend() {
-        try {
+
             String msg = chat_input.getText();
 
             System.out.println(LoginController.client.getName()+ ": "+ msg);
-            chatlog.getChildren().add(new Text(LoginController.client.getName()+ ": " + msg + "\n"));
 
             LoginController.client.sendChatMessage(msg, -1);
-            dos.writeUTF(msg);
+
             chat_input.setText("");
             chat_input.requestFocus();
 
-        } catch(IOException E) {
-            E.printStackTrace();
-        }
+
     }
 
-    private void setStreams(){
-        dos = LoginController.client.getOutputStr();
-        dis = LoginController.client.getInputStr();
-    }
-
-    private void listen(){
-        setStreams();
-
-        thread = new Thread(() -> {
-            try {
-                while(true) {
-                    String msg = dis.readUTF();
-
-                    System.out.println("RE : " + msg);
-
-                }
-            } catch(Exception E) {
-                E.printStackTrace();
+    @FXML
+    public void addChatMessage(String message){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                chatlog.getChildren().add(new Text( message + "\n"));
             }
         });
-        thread.start();
+
+    }
+    private void setStreams(){
+        this.dos = LoginController.client.getOutputStr();
+        this.dis = LoginController.client.getInputStr();
     }
 
-    public TextFlow getChatlog() {
-        return chatlog;
-    }
+
+
+
 }

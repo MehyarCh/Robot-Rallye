@@ -57,7 +57,7 @@
                            styleClass="headline-4, color--light"/>
                 </VBox>
                 <VBox styleClass="player-wrapper">
-                    <Button onAction="#switchToMainScene"
+                    <Button onAction="#onPlayerSix"
                             id="player-icon--6"
                             styleClass="player-icon"/>
                     <Label text="Red"

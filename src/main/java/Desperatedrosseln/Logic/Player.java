@@ -17,6 +17,11 @@ public class Player {
     private Card[] register = new Card[5];
     //private Date birthdate;
     private List <Card> discarded;
+
+    public Player() {
+
+    }
+
     public Robot getRobot() {
         return robot;
     }

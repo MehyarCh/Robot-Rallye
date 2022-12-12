@@ -29,6 +29,7 @@ public class LoginController {
     private Scene scene;
     private Parent root;
     public LobbyController lobbyController;
+    private TextFlow chatLog;
 
     @FXML
     public Button joinButton;
@@ -73,8 +74,12 @@ public class LoginController {
     public void onLogin(ActionEvent event) throws IOException {
         switchToLobbyScene();
         connectClient();
-        client.sendMessage(loginTextField.getText());
+        lobbyController.setClient(client);
+       // client.sendMessage(loginTextField.getText());
         client.setClientName(loginTextField.getText());
+
+        client.sendHelloServer();
+
     }
     public void switchToLobbyScene() throws IOException {
         lobbyController = new LobbyController();
@@ -88,9 +93,11 @@ public class LoginController {
         dis = new DataInputStream(clientSocket.getInputStream());
 
         client = new Client(clientSocket);
+        /*
         thread = new Thread(() -> {
             try {
                 while(true) {
+
                     String msg = dis.readUTF();
 
                     System.out.println("RE : " + msg);
@@ -102,6 +109,9 @@ public class LoginController {
         });
         thread.start();
 
+        */
+        thread = new Thread(client);
+        thread.start();
     }
 
 }

@@ -2,9 +2,11 @@ package Desperatedrosseln.Connection;
 
 import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Local.Protocols.Error;
+import Desperatedrosseln.Logic.Elements.Robot;
 import Desperatedrosseln.Logic.Game;
 import Desperatedrosseln.Logic.Player;
 import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.JsonEncodingException;
 import com.squareup.moshi.Moshi;
 
 import java.io.*;
@@ -125,6 +127,11 @@ public class ClientHandler implements Runnable {
 
     public void checkCommands(String msg) throws IOException {
 
+        try {
+            Message message = messageJsonAdapter.fromJson(msg);
+        } catch (JsonEncodingException e) {
+            System.out.println("this msg caused error: " + msg);
+        }
         Message message = messageJsonAdapter.fromJson(msg);
 
         if (msg != null) {
@@ -133,6 +140,7 @@ public class ClientHandler implements Runnable {
 
                 case "HelloServer":
                     //TODO: disconnection
+                    System.out.println("HelloServer");
                     JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
                     clientID = clients.indexOf(this) + 1;
                     sendMessage(messageJsonAdapter.toJson(new Message("Welcome", welcomeJsonAdapter.toJson(new Welcome(clientID)))));
@@ -142,7 +150,7 @@ public class ClientHandler implements Runnable {
 
                 case "Alive":
                     //
-                    System.out.println("client is alive");
+                    //System.out.println("client is alive");
                     break;
 
                 case "PlayerValues":
@@ -151,17 +159,33 @@ public class ClientHandler implements Runnable {
                     PlayerValues playerValues = playerValuesJsonAdapter.fromJson(message.getMessageBody());
 
                     boolean robotTaken = false;
-                    for (Player player :
-                            Game.getPlayers()) {
-                        if (player.getRobot().getID() == playerValues.getFigure()) {
-                            sendErrorMessage();
-                            robotTaken = true;
+                    if (!Game.getPlayers().isEmpty()) {
+                        for (Player player :
+                                Game.getPlayers()) {
+                            if (player.getRobot().getID() == playerValues.getFigure()) {
+                                sendErrorMessage();
+                                robotTaken = true;
+                            }
                         }
-                    }
-                    if (!robotTaken) {
+                        if (!robotTaken) {
+                            player = new Player();
+                            player.setName(playerValues.getName());
+                            player.setRobot(new Robot(playerValues.getFigure()));
+                            this.clientName = playerValues.getName();
+                            Game.getPlayers().add(player);
+                            JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
+                            broadcastMessage(messageJsonAdapter.toJson(new Message("PlayerAdded", playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())))), 1);
+                        }
+                    } else {
+                        player = new Player();
+                        player.setName(playerValues.getName());
+                        player.setRobot(new Robot(playerValues.getFigure()));
+                        this.clientName = playerValues.getName();
+                        Game.getPlayers().add(player);
                         JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
                         broadcastMessage(messageJsonAdapter.toJson(new Message("PlayerAdded", playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())))), 1);
                     }
+
 
                     break;
                 case "SetStatus":
@@ -179,15 +203,18 @@ public class ClientHandler implements Runnable {
                     break;
 
                 case "SendChat":
+
+                    System.out.println("message received");
+
                     JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
                     SendChat sendChat = sendChatJsonAdapter.fromJson(message.getMessageBody());
                     JsonAdapter<ReceivedChat> receivedChatJsonAdapter = moshi.adapter(ReceivedChat.class);
                     if (sendChat.getTo() == -1) {
                         broadcastMessage(messageJsonAdapter.toJson(new Message("ReceivedChat", receivedChatJsonAdapter.toJson(new ReceivedChat(sendChat.getMessage(), clientID, false)))), 1);
-                    }else {
-                        for (ClientHandler client:
-                             clients) {
-                            if(client.getClientID() == sendChat.getTo()){
+                    } else {
+                        for (ClientHandler client :
+                                clients) {
+                            if (client.getClientID() == sendChat.getTo()) {
                                 client.sendMessage(messageJsonAdapter.toJson(new Message("ReceivedChat", receivedChatJsonAdapter.toJson(new ReceivedChat(sendChat.getMessage(), clientID, true)))));
                                 //TODO: Display in current clients gui.
                             }
@@ -278,6 +305,7 @@ public class ClientHandler implements Runnable {
 
     // messageType: 0 = broadcast to all others, 1 = to everyone
     public void broadcastMessage(String message, int messageType) {
+        System.out.println(clients);
         if (messageType == 0) {
             for (ClientHandler client : clients) {
                 if (!Objects.equals(this.clientName, client.clientName)) {
@@ -337,6 +365,11 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return clientName + "| ID " + clientID;
     }
 
     public String getClientName() {

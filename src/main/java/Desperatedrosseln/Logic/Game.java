@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Game {
     private static String currentMap;
-    private static ArrayList<Player> players;
+    private static ArrayList<Player> players = new ArrayList<>();
     private int phase;
     private Player playing;
     private static int mapSelecttioinPlayerID = -1;
