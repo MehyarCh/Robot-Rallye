@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.*;
 
 public class Client implements Runnable {
+    private String name;
     private Socket clientSocket;
     private DataInputStream in;
     private DataOutputStream out;
@@ -142,6 +143,21 @@ public class Client implements Runnable {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public DataInputStream getInputStr() {
+        return in;
+    }
+
+    public DataOutputStream getOutputStr() {
+        return out;
+    }
 
     public static void main(String[] args) throws IOException {
         startClient();

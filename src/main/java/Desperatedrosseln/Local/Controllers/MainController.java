@@ -1,16 +1,35 @@
 package Desperatedrosseln.Local.Controllers;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class MainController {
+    DataOutputStream dos;
+    DataInputStream dis;
+
     private Stage stage;
     private Scene scene;
     private Parent root;
+    @FXML
+    private Button send_button;
+    @FXML
+    private TextField chat_input;
+    @FXML
+    //private TextArea chatlog;
+    private TextFlow chatlog;
 
     public MainController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/mainScene.fxml"));
@@ -41,5 +60,38 @@ public class MainController {
         stage.setMaximized(true);
         stage.setResizable(true);
         stage.show();
+
+        setStreams();
     }
+
+    @FXML
+    public void onMessageSend(KeyEvent event){
+        if(event.getCode().toString().equals("ENTER"))
+        {
+            onClickSend();
+        }
+    }
+    @FXML
+    void onClickSend() {
+        try {
+            String msg = chat_input.getText();
+
+            System.out.println(msg);
+            //chatlog.appendText(msg + "\n");
+            chatlog.getChildren().add(new Text(msg + "\n"));
+            dos.writeUTF(msg);
+            chat_input.setText("");
+            chat_input.requestFocus();
+
+        } catch(IOException E) {
+            E.printStackTrace();
+        }
+    }
+
+    private void setStreams(){
+        dos = LoginController.client.getOutputStr();
+        dis = LoginController.client.getInputStr();
+    }
+
+
 }

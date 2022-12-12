@@ -9,6 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.text.TextFlow?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             styleClass="main-scene">
@@ -235,87 +236,12 @@
                         GridPane.hgrow="ALWAYS"
                         GridPane.vgrow="ALWAYS"
                         fitToWidth="true"
+                        fitToHeight="true"
                         styleClass="scroll-board">
                 <content>
-                    <VBox styleClass="message-board">
-                        <VBox styleClass="message-wrapper">
-                            <Label styleClass="message-label"
-                                   text="Name1"/>
-                            <Label styleClass="message, message--primary"
-                                   text="Lorem Ipsum dolor sit amet. amet sit dolor Ipsum dolor sit amet."/>
-                        </VBox>
-                        <VBox styleClass="message-wrapper">
-                            <Label styleClass="message-label"
-                                   text="Server"/>
-                            <Label styleClass="message, message--server"
-                                   text="User abc left the chat"/>
-                        </VBox>
-                        <VBox styleClass="message-wrapper">
-                            <Label styleClass="message-label"
-                                   text="Name2"/>
-                            <Label styleClass="message, message--default"
-                                   text="Hello World!"/>
-                        </VBox>
-                        <VBox styleClass="message-wrapper">
-                            <Label styleClass="message-label"
-                                   text="Name2"/>
-                            <Label styleClass="message, message--default"
-                                   text="Hello World!"/>
-                        </VBox>
-                        <VBox styleClass="message-wrapper">
-                            <Label styleClass="message-label"
-                                   text="Name2"/>
-                            <Label styleClass="message, message--default"
-                                   text="Hello World!"/>
-                        </VBox>
-                        <VBox styleClass="message-wrapper">
-                            <Label styleClass="message-label"
-                                   text="Name2"/>
-                            <Label styleClass="message, message--default"
-                                   text="Hello World!"/>
-                        </VBox>
-                        <VBox styleClass="message-wrapper">
-                            <Label styleClass="message-label"
-                                   text="Name2"/>
-                            <Label styleClass="message, message--default"
-                                   text="Hello World!"/>
-                        </VBox>
-                        <VBox styleClass="message-wrapper">
-                            <Label styleClass="message-label"
-                                   text="Name2"/>
-                            <Label styleClass="message, message--default"
-                                   text="Hello World!"/>
-                        </VBox>
-                        <VBox styleClass="message-wrapper">
-                            <Label styleClass="message-label"
-                                   text="Name2"/>
-                            <Label styleClass="message, message--default"
-                                   text="Hello World!"/>
-                        </VBox>
-                        <VBox styleClass="message-wrapper">
-                            <Label styleClass="message-label"
-                                   text="Name2"/>
-                            <Label styleClass="message, message--default"
-                                   text="Hello World!"/>
-                        </VBox>
-                        <VBox styleClass="message-wrapper">
-                            <Label styleClass="message-label"
-                                   text="Name2"/>
-                            <Label styleClass="message, message--default"
-                                   text="Hello World!"/>
-                        </VBox>
-                        <VBox styleClass="message-wrapper">
-                            <Label styleClass="message-label"
-                                   text="Name2"/>
-                            <Label styleClass="message, message--default"
-                                   text="Hello World!"/>
-                        </VBox>
-                        <VBox styleClass="message-wrapper">
-                            <Label styleClass="message-label"
-                                   text="Name2"/>
-                            <Label styleClass="message, message--default"
-                                   text="Hello World!"/>
-                        </VBox>
+                    <VBox fx:id="" styleClass="message-board">
+                        <!--<TextArea fx:id="chatlog" editable="false"  prefHeight="600.0" style="-fx-background-color: red" />-->
+                        <TextFlow styleClass="textflow" fx:id="chatlog"/>
                     </VBox>
                 </content>
             </ScrollPane>
@@ -323,8 +249,11 @@
                   GridPane.rowIndex="1"
                   GridPane.hgrow="ALWAYS"
                   styleClass="chat-input-wrapper">
-                <TextField styleClass="text-input, text-input--primary"/>
-                <Button styleClass="button, send-button"/>
+                <TextField fx:id="chat_input" styleClass="text-input, text-input--primary"/>
+                <Button fx:id="send_button"
+                        onAction="#onClickSend"
+                        onKeyPressed="#onMessageSend"
+                        styleClass="button, send-button"/>
             </HBox>
         </GridPane>
     </right>

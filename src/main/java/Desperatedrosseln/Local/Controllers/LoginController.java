@@ -1,23 +1,28 @@
 package Desperatedrosseln.Local.Controllers;
 
+import Desperatedrosseln.Local.Client;
 import Desperatedrosseln.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
+import java.net.Socket;
+
 
 public class LoginController {
+    DataOutputStream dos;
+    DataInputStream dis;
 
+    private Thread thread;
+    public static Client client;
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -64,9 +69,36 @@ public class LoginController {
     @FXML
     public void onLogin(ActionEvent event) throws IOException {
         switchToLobbyScene();
+        connectClient();
+        client.sendMessage(loginTextField.getText());
+        client.setName(loginTextField.getText());
     }
     public void switchToLobbyScene() throws IOException {
         lobbyController = new LobbyController();
         lobbyController.startLobbyScene(stage);
+    }
+
+    private void connectClient() throws IOException {
+
+        Socket clientSocket = new Socket("localhost", 3000);
+        dos = new DataOutputStream(clientSocket.getOutputStream());
+        dis = new DataInputStream(clientSocket.getInputStream());
+
+        client = new Client(clientSocket);
+        thread = new Thread(() -> {
+            try {
+                while(true) {
+                    String newMsg = dis.readUTF();
+
+                    System.out.println("RE : " + newMsg);
+
+                    //chatLog.appendText(newMsg.getName() + " : " + newMsg.getContent() + "\n");
+                }
+            } catch(Exception E) {
+                E.printStackTrace();
+            }
+        });
+        thread.start();
+
     }
 }

@@ -53,5 +53,9 @@ public class LobbyController {
         mainController = new MainController();
         mainController.startMainScene(stage);
     }
+    @FXML
+    public void onPlayerSix(){
+        LoginController.client.sendMessage("Chose Red");
+    }
 }
 
