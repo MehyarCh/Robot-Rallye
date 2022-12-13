@@ -74,11 +74,11 @@ public class LoginController {
     public void onLogin(ActionEvent event) throws IOException {
         switchToLobbyScene();
         connectClient();
-        lobbyController.setClient(client);
-       // client.sendMessage(loginTextField.getText());
+
+
         client.setClientName(loginTextField.getText());
 
-        client.sendHelloServer();
+        client.sendHelloServer();               //to start server communication
 
     }
     public void switchToLobbyScene() throws IOException {
@@ -93,25 +93,9 @@ public class LoginController {
         dis = new DataInputStream(clientSocket.getInputStream());
 
         client = new Client(clientSocket);
-        /*
-        thread = new Thread(() -> {
-            try {
-                while(true) {
-
-                    String msg = dis.readUTF();
-
-                    System.out.println("RE : " + msg);
-
-                }
-            } catch(Exception E) {
-                E.printStackTrace();
-            }
-        });
-        thread.start();
-
-        */
         thread = new Thread(client);
         thread.start();
+
     }
 
 }

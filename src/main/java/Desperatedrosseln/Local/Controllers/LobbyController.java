@@ -19,7 +19,7 @@ public class LobbyController {
 
     public MainController mainController;
 
-    private Client client;
+
 
     private TextFlow textFlow;
 
@@ -57,9 +57,7 @@ public class LobbyController {
 
     @FXML
     public void switchToMainScene(ActionEvent event) throws IOException {
-        mainController = new MainController();
-        System.out.println("mainctrl null= " + mainController==null);
-        mainController.startMainScene(stage);
+       onPlayerSix();
     }
     @FXML
     public void onPlayerSix() throws IOException {
@@ -67,18 +65,13 @@ public class LobbyController {
         System.out.println("mainctrl null= " + mainController==null);
         if(mainController == null){
             mainController = new MainController();
-            client.setMainController(mainController);
+            LoginController.client.setMainController(mainController);
+
         }
         mainController.startMainScene(stage);
     }
 
-    public Client getClient() {
-        return client;
-    }
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
 
     public TextFlow getTextFlow() {
         return textFlow;
