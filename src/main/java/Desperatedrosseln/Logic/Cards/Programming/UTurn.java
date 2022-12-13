@@ -1,6 +1,8 @@
-package Desperatedrosseln.Logic.Cards;
+package Desperatedrosseln.Logic.Cards.Programming;
 
-public class UTurn extends Programmingcard{
+import Desperatedrosseln.Logic.Cards.Programmingcard;
+
+public class UTurn extends Programmingcard {
 
     @Override
     public void playCard() {

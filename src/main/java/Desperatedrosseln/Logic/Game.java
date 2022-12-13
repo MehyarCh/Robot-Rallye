@@ -9,19 +9,18 @@ import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Game {
     private static String currentMap;
     private static ArrayList<Player> players = new ArrayList<>();
     private int phase;
     private Player playing;
-    private static int mapSelecttioinPlayerID = -1;
+    private static int mapSelectionPlayer = -1;
     private int distance;
 
     public static void readyPlayer(ClientHandler client) {             //TODO: case player disconnects
-        if(mapSelecttioinPlayerID == -1){
-            mapSelecttioinPlayerID = client.getPlayer().getID();
+        if(mapSelectionPlayer == -1){
+            mapSelectionPlayer = client.getPlayer().getID();
             Moshi moshi = new Moshi.Builder().build();
             JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
             JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
@@ -66,12 +65,12 @@ public class Game {
         Game.currentMap = currentMap;
     }
 
-    public static int getMapSelecttioinPlayerID() {
-        return mapSelecttioinPlayerID;
+    public static int getMapSelectionPlayer() {
+        return mapSelectionPlayer;
     }
 
-    public static void setMapSelecttioinPlayerID(int mapSelecttioinPlayerID) {
-        Game.mapSelecttioinPlayerID = mapSelecttioinPlayerID;
+    public static void setMapSelectionPlayer(int mapSelectionPlayer) {
+        Game.mapSelectionPlayer = mapSelectionPlayer;
     }
 
     public static ArrayList<Player> getPlayers() {

@@ -1,6 +1,6 @@
 package Desperatedrosseln.Logic.Cards;
 
-public class SpecialProgrammingCard {
+public class SpecialProgrammingCard extends Card{
 
     /*public SpecialProgrammingCards(String info) {
         super(info);

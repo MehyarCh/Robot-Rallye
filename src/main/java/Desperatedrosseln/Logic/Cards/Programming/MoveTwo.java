@@ -1,6 +1,8 @@
-package Desperatedrosseln.Logic.Cards;
+package Desperatedrosseln.Logic.Cards.Programming;
 
-public class MoveTwo extends Programmingcard{
+import Desperatedrosseln.Logic.Cards.Programmingcard;
+
+public class MoveTwo extends Programmingcard {
 
     @Override
     public void playCard() {

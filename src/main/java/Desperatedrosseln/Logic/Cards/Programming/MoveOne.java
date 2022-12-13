@@ -1,8 +1,9 @@
-package Desperatedrosseln.Logic.Cards;
+package Desperatedrosseln.Logic.Cards.Programming;
 
 import Desperatedrosseln.Logic.*;
+import Desperatedrosseln.Logic.Cards.Programmingcard;
 
-public class MoveOne extends Programmingcard{
+public class MoveOne extends Programmingcard {
 
     @Override
     public void playCard(Player player) {
