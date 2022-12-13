@@ -20,8 +20,9 @@ public class Client implements Runnable {
     private DataOutputStream out;
     private int clientID;
 
+    HashMap<String, Integer> localPlayerList = new HashMap<>();
     private MainController mainController;
-    private String protocol = "Version 0.1";
+    private String protocol = "Version 1.0";
     Moshi moshi = new Moshi.Builder().build();
     JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
     private String clientName;
@@ -37,7 +38,6 @@ public class Client implements Runnable {
             throw new RuntimeException(e);
         }
     }
-
 
 
     public void startClient() {
@@ -58,16 +58,15 @@ public class Client implements Runnable {
     }
 
 
-public void sendHelloServer(){
-    JsonAdapter<HelloServer> helloServerJsonAdapter = moshi.adapter(HelloServer.class);
-    String helloServer = helloServerJsonAdapter.toJson(new HelloServer("DesperateDrosseln", false,protocol));
-    Message message = new Message("HelloServer",helloServer);
-    sendMessage(messageJsonAdapter.toJson(message));
-}
+    public void sendHelloServer() {
+        JsonAdapter<HelloServer> helloServerJsonAdapter = moshi.adapter(HelloServer.class);
+        String helloServer = helloServerJsonAdapter.toJson(new HelloServer("DesperateDrosseln", false, protocol));
+        Message message = new Message("HelloServer", helloServer);
+        sendMessage(messageJsonAdapter.toJson(message));
+    }
 
     public void checkIncoming(String message) throws IOException {
 
-        System.out.println("msg received by client: "+message);
         Message msg = messageJsonAdapter.fromJson(message);
         checkProtocolMessage(msg);
 
@@ -76,7 +75,7 @@ public void sendHelloServer(){
     private void checkProtocolMessage(Message msg) throws IOException {
         //TODO: Logs
 
-        switch (msg.getMessageType()){
+        switch (msg.getMessageType()) {
             case "HelloClient":
                 //TODO: disconnect if protocol isnt the same as client.
                 //sendHelloServer();
@@ -91,19 +90,20 @@ public void sendHelloServer(){
             case "Welcome":
                 JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
                 this.clientID = welcomeJsonAdapter.fromJson(msg.getMessageBody()).getClientID();
-                System.out.println("Welcome ID:"+clientID);
 
-                JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);          //TODO: player figure change!!!!!!
-                sendMessage(messageJsonAdapter.toJson(new Message("PlayerValues",playerValuesJsonAdapter.toJson(new PlayerValues(clientName,clientName.length())))));
+                JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);          //TODO:replace ClientID with player figure!!!!!
+                sendMessage(messageJsonAdapter.toJson(new Message("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(clientName, clientID)))));
                 break;
 
             case "PlayerAdded":
-                System.out.println("player added:");
                 JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
                 PlayerAdded playerAdded = playerAddedJsonAdapter.fromJson(msg.getMessageBody());
-                if(playerAdded.getClientID() == clientID){                                      //TODO: Ready button?
+
+                localPlayerList.put(playerAdded.getName(), playerAdded.getClientID());
+
+                if (playerAdded.getClientID() == clientID) {                                      //TODO: Ready button?
                     JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
-                    sendMessage(messageJsonAdapter.toJson(new Message("SetStatus",setStatusJsonAdapter.toJson(new SetStatus(true)))));
+                    sendMessage(messageJsonAdapter.toJson(new Message("SetStatus", setStatusJsonAdapter.toJson(new SetStatus(true)))));
                 }
                 break;
             case "PlayerStatus":
@@ -116,21 +116,31 @@ public void sendHelloServer(){
             case "ReceivedChat":
                 JsonAdapter<ReceivedChat> receivedChatJsonAdapter = moshi.adapter(ReceivedChat.class);
                 ReceivedChat receivedChat = receivedChatJsonAdapter.fromJson(msg.getMessageBody());
-                if(receivedChat.getFrom() != -1){
-                    //TODO:
-                    System.out.println("chatlogset");
-                    mainController.addChatMessage(receivedChat.getMessage());
-                }else{
-
+                if (receivedChat.isPrivate()) {
+                    mainController.addChatMessage(getPlayerName(receivedChat.getFrom()) + ": (Whispered)" + receivedChat.getMessage());
+                } else {
+                    mainController.addChatMessage(getPlayerName(receivedChat.getFrom()) + ": " + receivedChat.getMessage());
                 }
+
+
+                break;
+            case "Error":
+                mainController.addChatMessage("Error Occurred");
                 break;
         }
 
     }
 
+    private String getPlayerName(int from) {
+        for (String key :
+                localPlayerList.keySet()) {
+            if (localPlayerList.get(key) == from) {
+                return key;
+            }
+        }
 
-
-
+        return null;
+    }
 
     public void logout() {
         closeAll(clientSocket, in, out);
@@ -187,12 +197,34 @@ public void sendHelloServer(){
     public void setClientName(String clientName) {
         this.clientName = clientName;
     }
-    public void sendChatMessage(String message,int to){               //TODO: add to gui
+
+    public void sendChatMessage(String message, int to) {
         JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
-        sendMessage(messageJsonAdapter.toJson(new Message("SendChat",sendChatJsonAdapter.toJson(new SendChat(clientName+": "+message,to)))));
+        if (message.startsWith("/dm")) {          //TODO
+
+            String[] messageParts = message.split(" ", 3);
+
+            if(messageParts.length <3){
+                mainController.addChatMessage("Please complete the /dm command.");
+                return;
+            }
+
+
+            if (messageParts[1].equals(this.clientName)) {
+                mainController.addChatMessage("You cannot send yourself private Messages, it is wierd. just think and talk to yourself.");
+                return;
+            }
+
+            if (localPlayerList.containsKey(messageParts[1])) {
+                sendMessage(messageJsonAdapter.toJson(new Message("SendChat", sendChatJsonAdapter.toJson(new SendChat(messageParts[2], localPlayerList.get(messageParts[1]))))));
+            } else {
+                mainController.addChatMessage("/dm did not work. Reason: invalid player name.");
+            }
+
+        } else {
+            sendMessage(messageJsonAdapter.toJson(new Message("SendChat", sendChatJsonAdapter.toJson(new SendChat(message, -1)))));
+        }
     }
-
-
 
 
 }

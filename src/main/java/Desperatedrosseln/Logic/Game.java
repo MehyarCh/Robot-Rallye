@@ -74,7 +74,7 @@ public class Game {
         Game.mapSelecttioinPlayerID = mapSelecttioinPlayerID;
     }
 
-    public static ArrayList<Player> getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 

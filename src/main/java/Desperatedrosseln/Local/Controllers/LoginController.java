@@ -65,6 +65,7 @@ public class LoginController {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+
     }
 
     @FXML

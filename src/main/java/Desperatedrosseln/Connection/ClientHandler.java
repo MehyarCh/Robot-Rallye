@@ -17,7 +17,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ClientHandler implements Runnable {
-    private String protocol = "Version 0.1";
+    private String protocol = "Version 1.0";
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
@@ -28,32 +28,41 @@ public class ClientHandler implements Runnable {
     Moshi moshi = new Moshi.Builder().build();
     JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
     private int clientID;
-
+    private static Game game = new Game();
     public Player getPlayer() {
         return player;
     }
 
 
-
-
-
-
-
     public ClientHandler(Socket socket) {
         try {
+            if(game == null){
+                game = new Game();
+            }
             this.socket = socket;
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
+            clients.add(this);
+
+
+            sendCurrentPlayers();
 
             JsonAdapter<HelloClient> helloClientJsonAdapter = moshi.adapter(HelloClient.class);         //TODO: redo this
             sendMessage(messageJsonAdapter.toJson(new Message("HelloClient", helloClientJsonAdapter.toJson(new HelloClient(protocol))))); //send HelloClient
 
-
-            player = new Player(clientName);
-
-            clients.add(this);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void sendCurrentPlayers() {
+        JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
+        for (Player player:
+             game.getPlayers()) {
+            if(!player.equals(this.player)){
+                sendMessage(messageJsonAdapter.toJson(new Message("PlayerAdded",
+                        playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())))));
+            }
         }
     }
 
@@ -77,13 +86,17 @@ public class ClientHandler implements Runnable {
             switch (message.getMessageType()) {
 
                 case "HelloServer":
-                    //TODO: disconnection
-                    System.out.println("HelloServer");
-                    JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
+                    JsonAdapter<HelloServer> helloServerJsonAdapter = moshi.adapter(HelloServer.class);
                     clientID = clients.indexOf(this) + 1;
-                    sendMessage(messageJsonAdapter.toJson(new Message("Welcome", welcomeJsonAdapter.toJson(new Welcome(clientID)))));
-                    player.setID(clientID);
-                    System.out.println("client Connected");
+                    HelloServer helloServer = helloServerJsonAdapter.fromJson(message.getMessageBody());
+
+                    if(helloServer.getProtocol().equals(this.protocol)){
+                        JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
+                        sendMessage(messageJsonAdapter.toJson(new Message("Welcome", welcomeJsonAdapter.toJson(new Welcome(clientID)))));
+                        System.out.println("client Connected");
+                    } else{
+                        sendErrorMessage();
+                    }
                     break;
 
                 case "Alive":
@@ -97,31 +110,20 @@ public class ClientHandler implements Runnable {
                     PlayerValues playerValues = playerValuesJsonAdapter.fromJson(message.getMessageBody());
 
                     boolean robotTaken = false;
-                    if (!Game.getPlayers().isEmpty()) {
+                    if (!game.getPlayers().isEmpty()) {
                         for (Player player :
-                                Game.getPlayers()) {
+                                game.getPlayers()) {
                             if (player.getRobot().getID() == playerValues.getFigure()) {
                                 sendErrorMessage();
                                 robotTaken = true;
                             }
                         }
                         if (!robotTaken) {
-                            player = new Player();
-                            player.setName(playerValues.getName());
-                            player.setRobot(new Robot(playerValues.getFigure()));
-                            this.clientName = playerValues.getName();
-                            Game.getPlayers().add(player);
-                            JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
-                            broadcastMessage(messageJsonAdapter.toJson(new Message("PlayerAdded", playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())))));
+                            setPlayerValues(playerValues);
                         }
+
                     } else {
-                        player = new Player();
-                        player.setName(playerValues.getName());
-                        player.setRobot(new Robot(playerValues.getFigure()));
-                        this.clientName = playerValues.getName();
-                        Game.getPlayers().add(player);
-                        JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
-                        broadcastMessage(messageJsonAdapter.toJson(new Message("PlayerAdded", playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())))));
+                        setPlayerValues(playerValues);
                     }
 
 
@@ -168,10 +170,21 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    private void setPlayerValues(PlayerValues playerValues) {
+        player = new Player();
+        player.setID(clientID);
+        player.setName(playerValues.getName());
+        player.setRobot(new Robot(playerValues.getFigure()));
+        this.clientName = playerValues.getName();
+        game.getPlayers().add(player);
+        sendCurrentPlayers();
+        JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
+        broadcastMessage(messageJsonAdapter.toJson(new Message("PlayerAdded", playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())))));
+    }
+
     public int getClientID() {
         return clientID;
     }
-
 
 
     public void sendMessage(String message) {
