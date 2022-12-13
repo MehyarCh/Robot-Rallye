@@ -126,6 +126,8 @@ public void sendHelloServer(){
 
                 }
                 break;
+            case "CardPlayed":
+                break;
         }
 
     }

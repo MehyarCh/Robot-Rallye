@@ -2,6 +2,7 @@ package Desperatedrosseln.Connection;
 
 import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Local.Protocols.Error;
+import Desperatedrosseln.Logic.Cards.Card;
 import Desperatedrosseln.Logic.Elements.Robot;
 import Desperatedrosseln.Logic.Game;
 import Desperatedrosseln.Logic.Player;
@@ -159,6 +160,12 @@ public class ClientHandler implements Runnable {
                         }
                     }
                     break;
+
+                case "PlayCard":
+                    JsonAdapter<CardPlayed> cardPlayedJsonAdapter = moshi.adapter(CardPlayed.class);
+                    CardPlayed cardPlayed = new CardPlayed(player.getID(), cardPlayedJsonAdapter.fromJson(message.getMessageBody()).getCard()); //add clientID and the card that was played
+                    broadcastMessage(messageJsonAdapter.toJson(new Message("CardPlayed", cardPlayedJsonAdapter.toJson(cardPlayed)))); //send CardPlayed message to every client
+                    
                 default:
                     broadcastMessage(messageJsonAdapter.toJson(new Message(" ", "SERVER BRO")));
 
