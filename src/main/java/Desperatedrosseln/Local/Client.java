@@ -27,9 +27,10 @@ public class Client implements Runnable {
     private String clientName;
 
 
-    public Client(Socket clientSocket) {
+    public Client() {
+
         try {
-            this.clientSocket = clientSocket;
+            clientSocket = new Socket("localhost", 3000);
             this.in = new DataInputStream(clientSocket.getInputStream());
             this.out = new DataOutputStream(clientSocket.getOutputStream());
         } catch (IOException e) {
@@ -39,12 +40,9 @@ public class Client implements Runnable {
 
 
 
-    public static void startClient() throws IOException {
-        Socket clientSocket = new Socket("localhost", 3000);
-        Client client = new Client(clientSocket);
-        System.out.println("");
-        System.out.println("Listening");
-        Thread thread = new Thread(client, "ListenerThread");
+    public void startClient() {
+
+        Thread thread = new Thread(this, "ListenerThread");
         thread.start();
 
 
@@ -194,10 +192,6 @@ public void sendHelloServer(){
         sendMessage(messageJsonAdapter.toJson(new Message("SendChat",sendChatJsonAdapter.toJson(new SendChat(clientName+": "+message,to)))));
     }
 
-
-    public static void main(String[] args) throws IOException {
-        startClient();
-    }
 
 
 

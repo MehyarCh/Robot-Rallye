@@ -20,8 +20,6 @@ import java.net.Socket;
 
 
 public class LoginController {
-    DataOutputStream dos;
-    DataInputStream dis;
 
     private Thread thread;
     public static Client client;
@@ -29,7 +27,6 @@ public class LoginController {
     private Scene scene;
     private Parent root;
     public LobbyController lobbyController;
-    private TextFlow chatLog;
 
     @FXML
     public Button joinButton;
@@ -88,13 +85,8 @@ public class LoginController {
 
     private void connectClient() throws IOException {
 
-        Socket clientSocket = new Socket("localhost", 3000);
-        dos = new DataOutputStream(clientSocket.getOutputStream());
-        dis = new DataInputStream(clientSocket.getInputStream());
-
-        client = new Client(clientSocket);
-        thread = new Thread(client);
-        thread.start();
+        client = new Client();
+        client.startClient();
 
     }
 
