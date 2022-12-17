@@ -2,7 +2,7 @@ package Desperatedrosseln.Logic.Cards;
 
 import Desperatedrosseln.Logic.*;
 
-public class Card {
+public abstract class Card {
 
 
     private String info;

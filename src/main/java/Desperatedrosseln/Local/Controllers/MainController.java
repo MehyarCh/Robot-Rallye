@@ -1,6 +1,7 @@
 package Desperatedrosseln.Local.Controllers;
 
 import Desperatedrosseln.Local.Client;
+import Desperatedrosseln.Logic.Cards.Programming.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.image.*;
+import javafx.scene.input.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -32,6 +34,23 @@ public class MainController {
     private TextField chat_input;
     @FXML
     private TextFlow chatlog;
+    @FXML
+    private ImageView cardOne;
+    @FXML
+    private ImageView Hundfunktionier;
+
+
+
+    public void handCardClicked(MouseEvent event){
+
+        if (event.getSource().equals(cardOne)) {
+            cardOne.setImage(new Image("file:cardtest2.png"));
+            System.out.println("test");
+        }
+    }
+
+
+
 
     public MainController() throws IOException {
         setStreams();
@@ -103,6 +122,11 @@ public class MainController {
         this.dos = LoginController.client.getOutputStr();
         this.dis = LoginController.client.getInputStr();
     }
+    @FXML
+    private void moveCard(MouseEvent event){
+
+    }
+
 
 
 

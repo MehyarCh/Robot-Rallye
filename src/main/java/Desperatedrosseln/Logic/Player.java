@@ -13,6 +13,15 @@ public class Player {
     private int ID;
     private Robot robot;
     private List<Card> deck = new ArrayList<>(20);
+
+    public List<Card> getHand() {
+        return hand;
+    }
+
+    public Card[] getRegister() {
+        return register;
+    }
+
     private List<Card> hand = new ArrayList<>(9);
     private Card[] register = new Card[5];
     //private Date birthdate;

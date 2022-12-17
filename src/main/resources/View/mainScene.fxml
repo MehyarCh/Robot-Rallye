@@ -10,6 +10,7 @@
 <?import javafx.scene.text.Text?>
 
 <?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.image.Image?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             styleClass="main-scene">
@@ -146,31 +147,16 @@
                           GridPane.rowIndex="0"
                           GridPane.hgrow="ALWAYS"
                           GridPane.vgrow="ALWAYS">
-                    <Label styleClass="card"
-                           text=""
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="0"
-                           GridPane.vgrow="ALWAYS"/>
-                    <Label styleClass="card"
-                           text=""
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="1"
-                           GridPane.vgrow="ALWAYS"/>
-                    <Label styleClass="card"
-                           text=""
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="2"
-                           GridPane.vgrow="ALWAYS"/>
-                    <Label styleClass="card"
-                           text=""
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="3"
-                           GridPane.vgrow="ALWAYS"/>
-                    <Label styleClass="card"
-                           text=""
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="4"
-                           GridPane.vgrow="ALWAYS"/>
+                    <StackPane GridPane.rowIndex="0"
+                               GridPane.columnIndex="0"
+                               GridPane.vgrow="ALWAYS">
+                        <ImageView fx:id="cardOne" styleClass="card" onMouseClicked="#handCardClicked">
+                                <image >
+                                    <Image url="@../images/card.png" />
+                                </image>
+                        </ImageView>
+                        <!--<Label fx:id="cardOne" onMouseClicked="#moveCard" styleClass="card, card-MoveOne"/> -->
+                    </StackPane>
 
                 </GridPane>
                 <GridPane styleClass="card-row, lower-card-row"
