@@ -1,8 +1,12 @@
 package Desperatedrosseln.Logic.Cards.Programming;
 
-import Desperatedrosseln.Logic.Cards.Programmingcard;
+import Desperatedrosseln.Logic.Cards.*;
 
-public class Again extends Programmingcard {
+public class Again extends Card {
+
+    public Again() {
+        super("Again", "card--Again");
+    }
 
     @Override
     public void playCard() {

@@ -147,16 +147,37 @@
                           GridPane.rowIndex="0"
                           GridPane.hgrow="ALWAYS"
                           GridPane.vgrow="ALWAYS">
-                    <StackPane GridPane.rowIndex="0"
+                    <StackPane fx:id="registerCardOne"
+                               GridPane.rowIndex="0"
                                GridPane.columnIndex="0"
                                GridPane.vgrow="ALWAYS">
-                        <ImageView fx:id="cardOne" styleClass="card" onMouseClicked="#handCardClicked">
-                                <image >
-                                    <Image url="@../images/card.png" />
-                                </image>
-                        </ImageView>
-                        <!--<Label fx:id="cardOne" onMouseClicked="#moveCard" styleClass="card, card-MoveOne"/> -->
+                        <Label id="card" styleClass="card-area"/>
                     </StackPane>
+                    <StackPane fx:id="registerCardTwo"
+                               GridPane.rowIndex="0"
+                               GridPane.columnIndex="1"
+                               GridPane.vgrow="ALWAYS">
+                        <Label id="card" styleClass="card-area"/>
+                    </StackPane>
+                    <StackPane fx:id="registerCardThree"
+                               GridPane.rowIndex="0"
+                               GridPane.columnIndex="2"
+                               GridPane.vgrow="ALWAYS">
+                        <Label id="card" styleClass="card-area"/>
+                    </StackPane>
+                    <StackPane fx:id="registerCardFour"
+                               GridPane.rowIndex="0"
+                               GridPane.columnIndex="3"
+                               GridPane.vgrow="ALWAYS">
+                        <Label id="card" styleClass="card-area"/>
+                    </StackPane>
+                    <StackPane fx:id="registerCardFive"
+                               GridPane.rowIndex="0"
+                               GridPane.columnIndex="4"
+                               GridPane.vgrow="ALWAYS">
+                        <Label id="card" styleClass="card-area"/>
+                    </StackPane>
+
 
                 </GridPane>
                 <GridPane styleClass="card-row, lower-card-row"
@@ -164,47 +185,62 @@
                           GridPane.rowIndex="1"
                           GridPane.hgrow="ALWAYS"
                           GridPane.vgrow="ALWAYS">
-                    <Label styleClass="card"
-                           text=""
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="0"
-                           GridPane.vgrow="ALWAYS"/>
-                    <Label styleClass="card"
-                           text=""
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="1"
-                           GridPane.vgrow="ALWAYS"/>
-                    <Label styleClass="card"
-                           text=""
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="2"
-                           GridPane.vgrow="ALWAYS"/>
-                    <Label styleClass="card"
+                    <StackPane fx:id="handCardOne"
+                               GridPane.rowIndex="0"
+                               GridPane.columnIndex="0"
+                               GridPane.vgrow="ALWAYS">
+                        <Label id="card" styleClass="card-area"/>
+                    </StackPane>
+                    <StackPane fx:id="handCardTwo"
+                               GridPane.rowIndex="0"
+                               GridPane.columnIndex="1"
+                               GridPane.vgrow="ALWAYS">
+                        <Label id="card" styleClass="card-area"/>
+                    </StackPane>
+                    <StackPane fx:id="handCardThree"
+                               GridPane.rowIndex="0"
+                               GridPane.columnIndex="2"
+                               GridPane.vgrow="ALWAYS">
+                        <Label id="card" styleClass="card-area"/>
+                    </StackPane>
+                    <Label fx:id="handCardFour"
+                           id="card"
+                           styleClass="card-area"
                            text=""
                            GridPane.rowIndex="0"
                            GridPane.columnIndex="3"
                            GridPane.vgrow="ALWAYS"/>
-                    <Label styleClass="card"
+                    <Label fx:id="handCardFive"
+                           id="card"
+                           styleClass="card-area"
                            text=""
                            GridPane.rowIndex="0"
                            GridPane.columnIndex="4"
                            GridPane.vgrow="ALWAYS"/>
-                    <Label styleClass="card"
+                    <Label fx:id="handCardSix"
+                           id="card"
+                           styleClass="card-area"
                            text=""
                            GridPane.rowIndex="0"
                            GridPane.columnIndex="5"
                            GridPane.vgrow="ALWAYS"/>
-                    <Label styleClass="card"
+                    <Label fx:id="handCardSeven"
+                           id="card"
+                           styleClass="card-area"
                            text=""
                            GridPane.rowIndex="0"
                            GridPane.columnIndex="6"
                            GridPane.vgrow="ALWAYS"/>
-                    <Label styleClass="card"
+                    <Label fx:id="handCardEight"
+                           id="card"
+                           styleClass="card-area"
                            text=""
                            GridPane.rowIndex="0"
                            GridPane.columnIndex="7"
                            GridPane.vgrow="ALWAYS"/>
-                    <Label styleClass="card"
+                    <Label fx:id="handCardNine"
+                           id="card"
+                           styleClass="card-area"
                            text=""
                            GridPane.rowIndex="0"
                            GridPane.columnIndex="8"

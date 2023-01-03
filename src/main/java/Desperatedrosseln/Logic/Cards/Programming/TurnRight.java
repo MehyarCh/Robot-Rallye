@@ -1,8 +1,14 @@
 package Desperatedrosseln.Logic.Cards.Programming;
 
-import Desperatedrosseln.Logic.Cards.Programmingcard;
+import Desperatedrosseln.Logic.Cards.*;
+import javafx.event.*;
+import javafx.scene.input.*;
 
-public class TurnRight extends Programmingcard {
+public class TurnRight extends Card {
+
+    public TurnRight(EventHandler<MouseEvent> event) {
+        super("TurnRight", "card--TurnRight", event);
+    }
 
     @Override
     public void playCard() {
@@ -10,7 +16,7 @@ public class TurnRight extends Programmingcard {
     }
     @Override
     public String toString() {
-        return "turnRight";
+        return "TurnRight";
     }
     public boolean isDamageCard(){
         return false;

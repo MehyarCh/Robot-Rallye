@@ -206,17 +206,103 @@
 
 }
 
-.card {
+.card-area {
+    -fx-background-image: url("../images/card.png");
+}
+
+#card {
     -fx-pref-width: 76px;
     -fx-pref-height: 110px;
     -fx-border-radius: 10px;
     -fx-alignment: center;
-    -fx-background-image: url("../images/card.png");
     -fx-background-size: contain;
-    -fx-text-fill: #fff;
+
+    /*-fx-text-fill: #fff;
     -fx-font-weight: 300;
-    -fx-font-size: 12px
+    -fx-font-size: 12px*/
 }
+
+.card--MoveOne {
+    -fx-background-color: blue;
+    -fx-opacity: 0.5;
+}
+
+.card--MoveTwo {
+    -fx-background-color: red;
+    -fx-opacity: 0.5;
+}
+
+.card--MoveThree{
+    -fx-background-color: green;
+    -fx-opacity: 0.5;
+}
+
+.card--MoveBack{
+
+}
+
+.card--Again{
+
+}
+
+.card--TurnLeft{
+
+}
+
+.card--TurnRight{
+
+}
+
+.card--UTurn{
+
+}
+
+.card--PowerUp{
+
+}
+
+.card--Spam{
+
+}
+
+.card--Trojan{
+
+}
+
+.card--Virus{
+
+}
+
+.card--Worm{
+
+}
+
+.card--EnergyRoutine{
+
+}
+
+.card--RepeatRoutine{
+
+}
+
+.card--SandboxRoutine{
+
+}
+
+.card--SpamFolder{
+
+}
+
+.card--SpeedRoutine{
+
+}
+
+.card--WeaselRoutine{
+
+}
+
+
+
 
 .sidebar {
     -fx-pref-height: 100%;

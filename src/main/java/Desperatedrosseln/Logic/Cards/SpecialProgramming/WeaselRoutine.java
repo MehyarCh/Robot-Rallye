@@ -4,10 +4,9 @@ import Desperatedrosseln.Logic.Cards.*;
 import javafx.event.*;
 import javafx.scene.input.*;
 
-public class EnergyRoutine extends Card {
-
-    public EnergyRoutine(EventHandler<MouseEvent> event) {
-        super("EnergyRoutine", "card--EnergyRoutine", event);
+public class WeaselRoutine extends Card {
+    public WeaselRoutine(EventHandler<MouseEvent> event) {
+        super("WeaselRoutine", "card--WeaselRoutine", event);
     }
 
     @Override
