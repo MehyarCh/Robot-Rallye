@@ -249,10 +249,10 @@
                   GridPane.rowIndex="1"
                   GridPane.hgrow="ALWAYS"
                   styleClass="chat-input-wrapper">
-                <TextField fx:id="chat_input" styleClass="text-input, text-input--primary"/>
+                <TextField fx:id="chat_input" onKeyPressed="#onMessageSend" styleClass="text-input, text-input--primary"/>
                 <Button fx:id="send_button"
                         onAction="#onClickSend"
-                        onKeyPressed="#onMessageSend"
+
                         styleClass="button, send-button"/>
             </HBox>
         </GridPane>

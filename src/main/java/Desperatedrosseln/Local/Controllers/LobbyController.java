@@ -12,10 +12,24 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static Desperatedrosseln.Local.Controllers.LoginController.client;
+
 public class LobbyController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    @FXML
+    private Button playerIcon1;
+    @FXML
+    private Button playerIcon2;
+    @FXML
+    private Button playerIcon3;
+    @FXML
+    private Button playerIcon4;
+    @FXML
+    private Button playerIcon5;
+    @FXML
+    private Button playerIcon6;
 
     public MainController mainController;
 
@@ -56,24 +70,44 @@ public class LobbyController {
     }
 
     @FXML
-    public void switchToMainScene(ActionEvent event) throws IOException {
-       onPlayerSix();
-    }
-    @FXML
-    public void onPlayerSix() throws IOException {
-
-        if(mainController == null){
-            mainController = new MainController();
-            LoginController.client.setMainController(mainController);
-
-        }
+    public void onButtonClicked(ActionEvent event) throws IOException {
+        Button clickedButton = (Button) event.getSource();
+        mainController = new MainController();
+        System.out.println("mainctrl null= " + mainController==null);
         mainController.startMainScene(stage);
+        System.out.println("mainctrl null= " + mainController==null);
+        client.setMainController(mainController);
+        mainController.startMainScene(stage);
+
+        switch (clickedButton.getId()) {
+            case "player-icon--1":
+                System.out.println("PINK WAS PRESSED");
+                break;
+            case "player-icon--2":
+                System.out.println("Yellow WAS PRESSED");
+                break;
+            case "player-icon--3":
+                System.out.println("Blue was Pressed");
+                break;
+            case "player-icon--4":
+                System.out.println("Green was Pressed");
+                break;
+            case "player-icon--5":
+                System.out.println("Orange was pressed");
+                break;
+            case "player-icon--6":
+                System.out.println("Red was pressed");
+                break;
+        }
     }
 
 
 
     public TextFlow getTextFlow() {
         return textFlow;
+    }
+
+    public void setClient(Client client) {
     }
 }
 

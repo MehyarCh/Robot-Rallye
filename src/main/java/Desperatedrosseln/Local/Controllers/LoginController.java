@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -33,12 +34,13 @@ public class LoginController {
 
     @FXML
     public TextField loginTextField;
+    @FXML
+    private Label loginwarning;
 
 
 
 
     public LoginController() throws IOException {
-        client = new Client();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/loginScene.fxml"));
         loader.setController(this);
 
@@ -71,16 +73,30 @@ public class LoginController {
 
     @FXML
     public void onLogin(ActionEvent event) throws IOException {
+        if (loginTextField.getText().isBlank()){
+            loginTextField.setStyle(String.valueOf(loginwarning));
+            loginwarning.setText("Please write your name to continue");
+        }else {
+            switchToLobbyScene();
+            connectClient();
+            lobbyController.setClient(client);
+            // client.sendMessage(loginTextField.getText());
+            client.setClientName(loginTextField.getText());
+            client.sendHelloServer();
+            System.out.println("Hello welcome " + loginTextField.getText());
+        }
 
-        client.setClientName(loginTextField.getText());
-        client.sendHelloServer();               //to start server communication
-
-        switchToLobbyScene();
     }
     public void switchToLobbyScene() throws IOException {
         lobbyController = new LobbyController();
         lobbyController.startLobbyScene(stage);
     }
 
+    private void connectClient() throws IOException {
+
+        client = new Client();
+        client.startClient();
+
+    }
 
 }
