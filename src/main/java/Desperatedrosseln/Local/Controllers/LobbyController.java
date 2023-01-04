@@ -73,9 +73,7 @@ public class LobbyController {
     public void onButtonClicked(ActionEvent event) throws IOException {
         Button clickedButton = (Button) event.getSource();
         mainController = new MainController();
-        System.out.println("mainctrl null= " + mainController==null);
         mainController.startMainScene(stage);
-        System.out.println("mainctrl null= " + mainController==null);
         client.setMainController(mainController);
         mainController.startMainScene(stage);
 

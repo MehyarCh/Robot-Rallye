@@ -78,9 +78,8 @@ public class LoginController {
             loginwarning.setText("Please write your name to continue");
         }else {
             switchToLobbyScene();
-            connectClient();
+            client = new Client();
             lobbyController.setClient(client);
-            // client.sendMessage(loginTextField.getText());
             client.setClientName(loginTextField.getText());
             client.sendHelloServer();
             System.out.println("Hello welcome " + loginTextField.getText());
@@ -92,11 +91,6 @@ public class LoginController {
         lobbyController.startLobbyScene(stage);
     }
 
-    private void connectClient() throws IOException {
 
-        client = new Client();
-        client.startClient();
-
-    }
 
 }
