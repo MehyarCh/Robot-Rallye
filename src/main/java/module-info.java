@@ -9,6 +9,7 @@ module desperatedrosseln {
     opens Desperatedrosseln to javafx.fxml;
     opens Desperatedrosseln.Local.Controllers to javafx.fxml;
     opens Desperatedrosseln.Local.Protocols to moshi;
+    opens Desperatedrosseln.Logic.Elements to moshi;
     exports Desperatedrosseln;
 
 }
