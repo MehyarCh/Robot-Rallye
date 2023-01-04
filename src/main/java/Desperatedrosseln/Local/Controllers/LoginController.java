@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -33,6 +34,8 @@ public class LoginController {
 
     @FXML
     public TextField loginTextField;
+    @FXML
+    private Label loginwarning;
 
 
 
@@ -70,13 +73,18 @@ public class LoginController {
 
     @FXML
     public void onLogin(ActionEvent event) throws IOException {
-        switchToLobbyScene();
-        connectClient();
-
-
-        client.setClientName(loginTextField.getText());
-
-        client.sendHelloServer();               //to start server communication
+        if (loginTextField.getText().isBlank()){
+            loginTextField.setStyle(String.valueOf(loginwarning));
+            loginwarning.setText("Please write your name to continue");
+        }else {
+            switchToLobbyScene();
+            connectClient();
+            lobbyController.setClient(client);
+            // client.sendMessage(loginTextField.getText());
+            client.setClientName(loginTextField.getText());
+            client.sendHelloServer();
+            System.out.println("Hello welcome " + loginTextField.getText());
+        }
 
     }
     public void switchToLobbyScene() throws IOException {

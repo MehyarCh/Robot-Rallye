@@ -20,7 +20,7 @@
                 <Label text="Name" styleClass="login-form-label"/>
                 <TextField fx:id="loginTextField" styleClass="text-input, text-input--primary, login-form-text-input"/>
             </VBox>
-            <Label styleClass="login-warning" text="Please choose a different Username!"/>
+            <Label fx:id="loginwarning" layoutX="88.0" layoutY="446.0" prefWidth="245.0" textFill="RED"/>
         </VBox>
         <VBox styleClass="login-button-wrapper">
             <Button text="JOIN LOBBY"

@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -69,7 +70,7 @@ public class MainController {
 
     @FXML
     public void onMessageSend(KeyEvent event){
-        if(event.getCode().toString().equals("ENTER"))
+        if(event.getCode()== KeyCode.ENTER)
         {
             onClickSend();
         }
