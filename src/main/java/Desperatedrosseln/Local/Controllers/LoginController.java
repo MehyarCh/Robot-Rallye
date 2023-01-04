@@ -38,6 +38,7 @@ public class LoginController {
 
 
     public LoginController() throws IOException {
+        client = new Client();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/loginScene.fxml"));
         loader.setController(this);
 
@@ -70,25 +71,16 @@ public class LoginController {
 
     @FXML
     public void onLogin(ActionEvent event) throws IOException {
-        switchToLobbyScene();
-        connectClient();
-
 
         client.setClientName(loginTextField.getText());
-
         client.sendHelloServer();               //to start server communication
 
+        switchToLobbyScene();
     }
     public void switchToLobbyScene() throws IOException {
         lobbyController = new LobbyController();
         lobbyController.startLobbyScene(stage);
     }
 
-    private void connectClient() throws IOException {
-
-        client = new Client();
-        client.startClient();
-
-    }
 
 }

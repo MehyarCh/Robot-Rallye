@@ -2,7 +2,7 @@ package Desperatedrosseln.Logic.Elements;
 
 import Desperatedrosseln.Logic.Direction;
 
-public class Antenna extends BoardElement {
+public class Antenna {
 
     private Direction direction;
     private Position position;

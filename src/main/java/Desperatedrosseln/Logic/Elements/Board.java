@@ -2,8 +2,8 @@ package Desperatedrosseln.Logic.Elements;
 
 public class Board {
 
-    public BoardElement[][] gameBoard;
-    public BoardElement[][] startBoard;
+    public Tile[][] gameBoard;
+    public Tile[][] startBoard;
 
     public String getType(int x, int y){
         return null;

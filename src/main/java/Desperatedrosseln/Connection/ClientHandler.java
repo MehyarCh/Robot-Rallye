@@ -17,7 +17,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ClientHandler implements Runnable {
-    private String protocol = "Version 1.0";
+    private String protocol;
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
@@ -28,22 +28,24 @@ public class ClientHandler implements Runnable {
     Moshi moshi = new Moshi.Builder().build();
     JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
     private int clientID;
-    private static Game game = new Game();
+    private Game game;
+    private boolean isAI = false;
+
     public Player getPlayer() {
         return player;
     }
 
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, Game game, String protocol) {
         try {
-            if(game == null){
-                game = new Game();
-            }
             this.socket = socket;
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
-            clients.add(this);
 
+            this.game = game;
+            this.protocol = protocol;
+
+            clients.add(this);
 
             sendCurrentPlayers();
 
@@ -57,9 +59,9 @@ public class ClientHandler implements Runnable {
 
     private void sendCurrentPlayers() {
         JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
-        for (Player player:
-             game.getPlayers()) {
-            if(!player.equals(this.player)){
+        for (Player player :
+                game.getPlayers()) {
+            if (!player.equals(this.player)) {
                 sendMessage(messageJsonAdapter.toJson(new Message("PlayerAdded",
                         playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())))));
             }
@@ -81,7 +83,12 @@ public class ClientHandler implements Runnable {
         }
         Message message = messageJsonAdapter.fromJson(msg);
 
+
         if (msg != null) {
+
+            if (!message.getMessageType().equals("Alive")) {
+                System.out.println(message.getMessageType() + ": " + message.getMessageBody());
+            }
 
             switch (message.getMessageType()) {
 
@@ -90,11 +97,15 @@ public class ClientHandler implements Runnable {
                     clientID = clients.indexOf(this) + 1;
                     HelloServer helloServer = helloServerJsonAdapter.fromJson(message.getMessageBody());
 
-                    if(helloServer.getProtocol().equals(this.protocol)){
+                    if (helloServer.getProtocol().equals(this.protocol)) {
+                        if (helloServer.isAI) {
+                            isAI = true;
+                        }
                         JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
                         sendMessage(messageJsonAdapter.toJson(new Message("Welcome", welcomeJsonAdapter.toJson(new Welcome(clientID)))));
                         System.out.println("client Connected");
-                    } else{
+                    } else {
+                        System.out.println("invalid protocol");
                         sendErrorMessage();
                     }
                     break;
@@ -144,8 +155,6 @@ public class ClientHandler implements Runnable {
 
                 case "SendChat":
 
-                    System.out.println("message received");
-
                     JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
                     SendChat sendChat = sendChatJsonAdapter.fromJson(message.getMessageBody());
                     JsonAdapter<ReceivedChat> receivedChatJsonAdapter = moshi.adapter(ReceivedChat.class);
@@ -164,6 +173,10 @@ public class ClientHandler implements Runnable {
                 default:
                     broadcastMessage(messageJsonAdapter.toJson(new Message(" ", "SERVER BRO")));
 
+                case "addAI":
+                    game.addAI();
+                    break;
+
             }
 
 
@@ -171,6 +184,7 @@ public class ClientHandler implements Runnable {
     }
 
     private void setPlayerValues(PlayerValues playerValues) {
+        System.out.println("Setting player: " + playerValues.getName());
         player = new Player();
         player.setID(clientID);
         player.setName(playerValues.getName());

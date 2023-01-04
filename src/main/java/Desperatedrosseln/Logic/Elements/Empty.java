@@ -1,5 +1,6 @@
 package Desperatedrosseln.Logic.Elements;
 
-public class Empty extends BoardElement {
+public class Empty  {
+    public void Empty(){}
 
 }

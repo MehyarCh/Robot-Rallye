@@ -4,7 +4,7 @@ import Desperatedrosseln.Logic.Direction;
 
 import java.util.*;
 
-public class Robot extends BoardElement {
+public class Robot{
 
     public static ArrayList<Position> robotPositions;
     private Direction direction;
@@ -22,10 +22,7 @@ public class Robot extends BoardElement {
         this.ID = iD;
 
     }
-    @Override
-    public void execute(){
 
-    }
 
     public void move(int steps){
         if (steps > 3 || steps < 1){

@@ -2,7 +2,7 @@ package Desperatedrosseln.Local.Protocols;
 
 public class Message {
     private String messageType;
-    private String messageBody;
+    private String messageBody;             //as JSON
 
     public Message(String type, String messageBody) {
         this.messageType = type;

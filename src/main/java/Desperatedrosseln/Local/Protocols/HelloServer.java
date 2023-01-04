@@ -10,16 +10,13 @@ public class HelloServer {
 
     */
     private String group;
-    private boolean isAI;
+    public final boolean isAI;
     private String protocol;
 
     public String getGroup() {
         return group;
     }
 
-    public Boolean getAI() {
-        return isAI;
-    }
 
     public String getProtocol() {
         return protocol;

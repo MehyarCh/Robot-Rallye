@@ -15,20 +15,23 @@ import java.util.Objects;
 public class Server {
     private ServerSocket serverSocket;
     private List<String> gameLog;
+    private int port = 3000;
+    private String protocol = "Version 0.1";
     private Game game;
 
-    public Server(ServerSocket serversocket) {
-        this.serverSocket = serversocket;
+    public Server() throws IOException {
+        serverSocket = new ServerSocket(port);
     }
+
 
     public void startServer() {
 
-        game = new Game();
+        game = new Game(port,protocol);
 
         while (!serverSocket.isClosed()) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                ClientHandler clientHandler = new ClientHandler(clientSocket);
+                ClientHandler clientHandler = new ClientHandler(clientSocket,game, protocol);
                 Thread thread = new Thread(clientHandler);
                 thread.start();
 
@@ -51,8 +54,7 @@ public class Server {
 
     public static void main(String[] args) throws IOException {
         System.out.println("[SERVER]: Waiting for client connection");
-        ServerSocket serverSocket = new ServerSocket(3000);
-        Server server = new Server(serverSocket);
+        Server server = new Server();
         server.startServer();
     }
 }

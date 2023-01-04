@@ -1,13 +1,10 @@
 package Desperatedrosseln.Logic.Elements;
 
-public class Pit extends BoardElement {
+public class Pit  {
 
     public Pit(Position position) {
 
     }
 
-    @Override
-    public void execute(){
 
-    }
 }

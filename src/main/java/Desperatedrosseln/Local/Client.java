@@ -4,6 +4,7 @@ import Desperatedrosseln.Connection.ClientHandler;
 import Desperatedrosseln.Local.Controllers.LoginController;
 import Desperatedrosseln.Local.Controllers.MainController;
 import Desperatedrosseln.Local.Protocols.*;
+import Desperatedrosseln.Logic.Elements.GameMap;
 import Desperatedrosseln.Logic.Game;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -22,7 +23,7 @@ public class Client implements Runnable {
 
     HashMap<String, Integer> localPlayerList = new HashMap<>();
     private MainController mainController;
-    private String protocol = "Version 1.0";
+    private String protocol = "Version 0.1";
     Moshi moshi = new Moshi.Builder().build();
     JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
     private String clientName;
@@ -37,15 +38,8 @@ public class Client implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
 
-
-    public void startClient() {
-
-        Thread thread = new Thread(this, "ListenerThread");
-        thread.start();
-
-
+        new Thread(this).start();
     }
 
     public void sendMessage(String message) {
@@ -65,22 +59,20 @@ public class Client implements Runnable {
         sendMessage(messageJsonAdapter.toJson(message));
     }
 
-    public void checkIncoming(String message) throws IOException {
-
-        Message msg = messageJsonAdapter.fromJson(message);
-        checkProtocolMessage(msg);
-
-    }
-
-    private void checkProtocolMessage(Message msg) throws IOException {
+    private void checkProtocolMessage(String message) throws IOException {
         //TODO: Logs
+        Message msg = messageJsonAdapter.fromJson(message);
+
+        if(!msg.getMessageType().equals("Alive")){
+            System.out.println(msg.getMessageType()+": "+msg.getMessageBody());
+        }
 
         switch (msg.getMessageType()) {
             case "HelloClient":
                 //TODO: disconnect if protocol isnt the same as client.
                 //sendHelloServer();
 
-                System.out.println("helloClient");
+                //System.out.println("helloClient");
 
                 break;
             case "Alive":
@@ -90,7 +82,7 @@ public class Client implements Runnable {
             case "Welcome":
                 JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
                 this.clientID = welcomeJsonAdapter.fromJson(msg.getMessageBody()).getClientID();
-
+                System.out.println("welcome Client "+clientID);
                 JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);          //TODO:replace ClientID with player figure!!!!!
                 sendMessage(messageJsonAdapter.toJson(new Message("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(clientName, clientID)))));
                 break;
@@ -121,11 +113,17 @@ public class Client implements Runnable {
                 } else {
                     mainController.addChatMessage(getPlayerName(receivedChat.getFrom()) + ": " + receivedChat.getMessage());
                 }
+            case "GameStarted":
+                JsonAdapter<GameStarted> gameStartedJsonAdapter = moshi.adapter(GameStarted.class);
+                GameStarted gameStarted = gameStartedJsonAdapter.fromJson(msg.getMessageBody());
 
+               // GameMap gameMap = gameStarted.getMap();
 
                 break;
             case "Error":
-                mainController.addChatMessage("Error Occurred");
+                if(mainController != null){
+                    mainController.addChatMessage("Error Occurred");
+                }
                 break;
         }
 
@@ -142,11 +140,7 @@ public class Client implements Runnable {
         return null;
     }
 
-    public void logout() {
-        closeAll(clientSocket, in, out);
-    }
-
-    public void closeAll(Socket clientSocket, DataInputStream in, DataOutputStream out) {
+    public void logOut() {
         try {
             if (in != null) in.close();
             if (out != null) out.close();
@@ -164,13 +158,13 @@ public class Client implements Runnable {
             while (!clientSocket.isClosed()) {
                 message = in.readUTF();
                 if (message != null) {
-                    checkIncoming(message);
+                    checkProtocolMessage(message);
                 } else {
                     break;
                 }
             }
         } catch (IOException e) {
-            logout();
+            logOut();
         }
     }
 
@@ -195,6 +189,7 @@ public class Client implements Runnable {
     }
 
     public void setClientName(String clientName) {
+        System.out.println("Setting local client name to "+clientName);
         this.clientName = clientName;
     }
 
@@ -221,6 +216,8 @@ public class Client implements Runnable {
                 mainController.addChatMessage("/dm did not work. Reason: invalid player name.");
             }
 
+        } else if (message.startsWith("/addAI")) {
+            sendMessage(messageJsonAdapter.toJson(new Message("addAI","")));
         } else {
             sendMessage(messageJsonAdapter.toJson(new Message("SendChat", sendChatJsonAdapter.toJson(new SendChat(message, -1)))));
         }

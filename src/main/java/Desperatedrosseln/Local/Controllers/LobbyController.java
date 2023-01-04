@@ -62,7 +62,6 @@ public class LobbyController {
     @FXML
     public void onPlayerSix() throws IOException {
 
-        System.out.println("mainctrl null= " + mainController==null);
         if(mainController == null){
             mainController = new MainController();
             LoginController.client.setMainController(mainController);

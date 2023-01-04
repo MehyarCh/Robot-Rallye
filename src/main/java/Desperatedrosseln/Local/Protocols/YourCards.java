@@ -13,13 +13,13 @@ public class YourCards {
         "..."
      */
 
-    private ArrayList<Card> cardsInHand;
+    private ArrayList<String> cardsInHand;
 
-    public ArrayList<Card> getCardsInHand() {
+    public ArrayList<String> getCardsInHand() {
         return cardsInHand;
     }
 
-    public YourCards(ArrayList<Card> cardsInHand) {
+    public YourCards(ArrayList<String> cardsInHand) {
         this.cardsInHand = cardsInHand;
     }
 }
