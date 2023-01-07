@@ -108,10 +108,6 @@ public class MainController {
     private UTurn uTurnLabel;
 
 
-
-    @FXML
-    private Label newMessage;
-
     EventHandler clickCard = (evt) -> {
 
         Label selectedCard = (Label) evt.getSource();
@@ -247,7 +243,7 @@ public class MainController {
 
             chat_input.setText("");
             chat_input.requestFocus();
-
+        }
 
     }
 

@@ -19,10 +19,6 @@ public class Player {
         return hand;
     }
 
-    public Card[] getRegister() {
-        return register;
-    }
-
     private List<Card> hand = new ArrayList<>(9);
     private Card[] registers = new Card[5];
     private List <Card> discarded;
@@ -37,10 +33,6 @@ public class Player {
 
     public List<Card> getDeck() {
         return deck;
-    }
-
-    public List<Card> getHand() {
-        return hand;
     }
 
     public Card getRegisterIndex(int index) {

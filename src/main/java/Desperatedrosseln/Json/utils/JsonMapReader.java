@@ -19,7 +19,7 @@ public class JsonMapReader {
         jsonFileReader = new JsonFileReader();
         try {
             deserializer = new JsonDeserializer();
-            dizzyHighway = jsonFileReader.readFile("C:/Uni/desperatedrosseln-hp/src/main/resources/maps/dizzyHighway.json");
+            dizzyHighway = jsonFileReader.readFile("src/main/resources/maps/dizzyHighway.json");
         } catch (IOException e) {
             System.out.println("123");
             throw new RuntimeException(e);
