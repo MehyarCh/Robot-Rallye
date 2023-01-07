@@ -120,6 +120,8 @@ public class Client implements Runnable {
                     mainController.addChatMessage("Error Occurred");
                 }
                 break;
+            case "CardPlayed":
+                break;
         }
 
     }

@@ -33,7 +33,7 @@ public class LobbyController {
 
     public MainController mainController;
 
-
+    private Client client;
 
     private TextFlow textFlow;
 
