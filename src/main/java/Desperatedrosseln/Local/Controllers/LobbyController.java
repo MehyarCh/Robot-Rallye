@@ -34,7 +34,6 @@ public class LobbyController {
     public MainController mainController;
 
 
-
     private TextFlow textFlow;
 
     @FXML
@@ -100,12 +99,5 @@ public class LobbyController {
     }
 
 
-
-    public TextFlow getTextFlow() {
-        return textFlow;
-    }
-
-    public void setClient(Client client) {
-    }
 }
 

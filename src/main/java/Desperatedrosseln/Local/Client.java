@@ -24,8 +24,7 @@ public class Client implements Runnable {
     HashMap<String, Integer> localPlayerList = new HashMap<>();
     private MainController mainController;
     private String protocol = "Version 0.1";
-    Moshi moshi = new Moshi.Builder().build();
-    JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
+
     private String clientName;
 
 
@@ -42,9 +41,12 @@ public class Client implements Runnable {
         new Thread(this).start();
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(String type, String body) {
+        Moshi moshi = new Moshi.Builder().build();
+        JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
+
         try {
-            out.writeUTF(message);
+            out.writeUTF(messageJsonAdapter.toJson(new Message(type, body)));
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -53,18 +55,23 @@ public class Client implements Runnable {
 
 
     public void sendHelloServer() {
+        Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<HelloServer> helloServerJsonAdapter = moshi.adapter(HelloServer.class);
         String helloServer = helloServerJsonAdapter.toJson(new HelloServer("DesperateDrosseln", false, protocol));
-        Message message = new Message("HelloServer", helloServer);
-        sendMessage(messageJsonAdapter.toJson(message));
+        sendMessage("HelloServer", helloServer);
     }
 
     private void checkProtocolMessage(String message) throws IOException {
         //TODO: Logs
-        Message msg = messageJsonAdapter.fromJson(message);
+        Moshi moshi = new Moshi.Builder().build();
+        Message msg;
+        {
+            JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
+            msg = messageJsonAdapter.fromJson(message);
+        }
 
-        if(!msg.getMessageType().equals("Alive")){
-            System.out.println(msg.getMessageType()+": "+msg.getMessageBody());
+        if (!msg.getMessageType().equals("Alive")) {
+            System.out.println(msg.getMessageType() + ": " + msg.getMessageBody());
         }
 
         switch (msg.getMessageType()) {
@@ -76,15 +83,15 @@ public class Client implements Runnable {
 
                 break;
             case "Alive":
-                sendMessage(messageJsonAdapter.toJson(msg));
+                sendMessage(msg.getMessageType(), msg.getMessageBody());
                 //System.out.println("Alive check from server");
                 break;
             case "Welcome":
                 JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
                 this.clientID = welcomeJsonAdapter.fromJson(msg.getMessageBody()).getClientID();
-                System.out.println("welcome Client "+clientID);
+                System.out.println("welcome Client " + clientID);
                 JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);          //TODO:replace ClientID with player figure!!!!!
-                sendMessage(messageJsonAdapter.toJson(new Message("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(clientName, clientID)))));
+                sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(clientName, clientID)));
                 break;
 
             case "PlayerAdded":
@@ -95,7 +102,7 @@ public class Client implements Runnable {
 
                 if (playerAdded.getClientID() == clientID) {                                      //TODO: Ready button?
                     JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
-                    sendMessage(messageJsonAdapter.toJson(new Message("SetStatus", setStatusJsonAdapter.toJson(new SetStatus(true)))));
+                    sendMessage("SetStatus", setStatusJsonAdapter.toJson(new SetStatus(true)));
                 }
                 break;
             case "PlayerStatus":
@@ -117,11 +124,11 @@ public class Client implements Runnable {
                 JsonAdapter<GameStarted> gameStartedJsonAdapter = moshi.adapter(GameStarted.class);
                 GameStarted gameStarted = gameStartedJsonAdapter.fromJson(msg.getMessageBody());
 
-               // GameMap gameMap = gameStarted.getMap();
+                // GameMap gameMap = gameStarted.getMap();
 
                 break;
             case "Error":
-                if(mainController != null){
+                if (mainController != null) {
                     mainController.addChatMessage("Error Occurred");
                 }
                 break;
@@ -152,8 +159,11 @@ public class Client implements Runnable {
 
     @Override
     public void run() {
-        String message;
+        listener();
+    }
 
+    private void listener() {
+        String message;
         try {
             while (!clientSocket.isClosed()) {
                 message = in.readUTF();
@@ -189,37 +199,39 @@ public class Client implements Runnable {
     }
 
     public void setClientName(String clientName) {
-        System.out.println("Setting local client name to "+clientName);
+        System.out.println("Setting local client name to " + clientName);
         this.clientName = clientName;
     }
 
     public void sendChatMessage(String message, int to) {
+        Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
-        if (message.startsWith("/dm")) {          //TODO
+        if (message.startsWith("/")) {          //TODO
 
             String[] messageParts = message.split(" ", 3);
 
-            if(messageParts.length <3){
-                mainController.addChatMessage("Please complete the /dm command.");
-                return;
+
+            if (message.startsWith("/dm")) {
+                if (messageParts.length < 3) {
+                    mainController.addChatMessage("Please complete the  command.");
+                    return;
+                }
+                if (messageParts[1].equals(this.clientName)) {
+                    mainController.addChatMessage("You cannot send yourself private Messages, it is wierd. just think and talk to yourself.");
+                    return;
+                }
+                if (localPlayerList.containsKey(messageParts[1])) {
+                    sendMessage("SendChat", sendChatJsonAdapter.toJson(new SendChat(messageParts[2], localPlayerList.get(messageParts[1]))));
+                } else {
+                    mainController.addChatMessage("/dm did not work. Reason: invalid player name.");
+                }
+            } else if (message.startsWith("/addAI")) {
+                sendMessage("addAI", "");
             }
 
 
-            if (messageParts[1].equals(this.clientName)) {
-                mainController.addChatMessage("You cannot send yourself private Messages, it is wierd. just think and talk to yourself.");
-                return;
-            }
-
-            if (localPlayerList.containsKey(messageParts[1])) {
-                sendMessage(messageJsonAdapter.toJson(new Message("SendChat", sendChatJsonAdapter.toJson(new SendChat(messageParts[2], localPlayerList.get(messageParts[1]))))));
-            } else {
-                mainController.addChatMessage("/dm did not work. Reason: invalid player name.");
-            }
-
-        } else if (message.startsWith("/addAI")) {
-            sendMessage(messageJsonAdapter.toJson(new Message("addAI","")));
         } else {
-            sendMessage(messageJsonAdapter.toJson(new Message("SendChat", sendChatJsonAdapter.toJson(new SendChat(message, -1)))));
+            sendMessage("SendChat", sendChatJsonAdapter.toJson(new SendChat(message, -1)));
         }
     }
 

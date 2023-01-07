@@ -33,4 +33,18 @@ public class AI {
     public ArrayList<String> getCardsInHand() {
         return cardsInHand;
     }
+
+    public String getRandomCard() {
+        if(cardsInHand.size()==0||cardsInHand == null){
+            return "error";
+        }
+        int index = (int)Math.floor(Math.random()*(cardsInHand.size()));
+        if(index != cardsInHand.size()){
+            String card = cardsInHand.get(index);
+            cardsInHand.remove(index);
+            return card;
+        }else{
+            return getRandomCard();
+        }
+    }
 }
