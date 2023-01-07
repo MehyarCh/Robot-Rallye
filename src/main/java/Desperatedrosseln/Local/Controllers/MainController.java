@@ -4,6 +4,7 @@ import Desperatedrosseln.Local.CardLabels.*;
 import Desperatedrosseln.Local.Client;
 import Desperatedrosseln.Logic.Cards.*;
 import Desperatedrosseln.Logic.Cards.Programming.*;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.*;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import javafx.util.*;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -52,12 +54,22 @@ public class MainController {
     private StackPane handCardTwo;
     @FXML
     private StackPane handCardThree;
+    @FXML
+    private StackPane handCardFour;
+    @FXML
+    private StackPane handCardFive;
+    @FXML
+    private StackPane handCardSix;
+    @FXML
+    private StackPane handCardSeven;
+    @FXML
+    private StackPane handCardEight;
+    @FXML
+    private StackPane handCardNine;
     private ArrayList<StackPane> registerCards;
-    private ArrayList<Label> cardLabels;
-
     private ArrayList<StackPane> handCards;
     private MoveOneLabel moveOneLabel;
-
+    private MoveOneLabel anotherMoveOneLabel;
     private MoveTwoLabel moveTwoLabel;
 
     private MoveThreeLabel moveThreeLabel;
@@ -74,7 +86,12 @@ public class MainController {
 
     private UTurn uTurnLabel;
 
-    EventHandler handler = (evt) -> {
+
+
+    @FXML
+    private Label newMessage;
+
+    EventHandler clickCard = (evt) -> {
 
         Label selectedCard = (Label) evt.getSource();
         //check if card is in hand, then add it to the next free register slot
@@ -135,28 +152,39 @@ public class MainController {
             String stateCss = this.getClass().getResource("/Css/state.css").toExternalForm();
             scene.getStylesheets().add(stateCss);
 
+           //TESTING THE MOVE CARDS FUNCTION
+
+            //List of the StackPanes which represent the register
             registerCards = new ArrayList<>();
             registerCards.add(registerCardOne);
             registerCards.add(registerCardTwo);
             registerCards.add(registerCardThree);
+            registerCards.add(registerCardFour);
+            registerCards.add(registerCardFive);
 
+            //List of the StackPanes which represent the handcards
             handCards = new ArrayList<>();
             handCards.add(handCardOne);
             handCards.add(handCardTwo);
             handCards.add(handCardThree);
+            handCards.add(handCardFour);
+            handCards.add(handCardFive);
+            handCards.add(handCardSix);
+            handCards.add(handCardSeven);
+            handCards.add(handCardEight);
+            handCards.add(handCardNine);
 
-            moveOneLabel = new MoveOneLabel(handler);
-            moveTwoLabel = new MoveTwoLabel(handler);
-            moveThreeLabel = new MoveThreeLabel(handler);
-
-            cardLabels = new ArrayList<>();
-            cardLabels.add(moveOneLabel.getCardLabel());
-            cardLabels.add(moveTwoLabel.getCardLabel());
-            cardLabels.add(moveThreeLabel.getCardLabel());
+            //creating the cardLabels (images) and adding a clickCard which is the MouseEvent
+            moveOneLabel = new MoveOneLabel(clickCard);
+            moveTwoLabel = new MoveTwoLabel(clickCard);
+            anotherMoveOneLabel = new MoveOneLabel(clickCard);
+            //moveThreeLabel = new MoveThreeLabel(clickCard);
+            //adding the labels
 
             handCardOne.getChildren().add(moveOneLabel.getCardLabel());
             handCardTwo.getChildren().add(moveTwoLabel.getCardLabel());
-            handCardThree.getChildren().add(moveThreeLabel.getCardLabel());
+            handCardThree.getChildren().add(anotherMoveOneLabel.getCardLabel());
+            //handCardThree.getChildren().add(moveThreeLabel.getCardLabel());
 
 
 
@@ -185,14 +213,27 @@ public class MainController {
     @FXML
     void onClickSend() {
 
+        if (!chat_input.getText().isEmpty()) {
             String msg = chat_input.getText();
 
-            System.out.println(LoginController.client.getName()+ ": "+ msg);
+            System.out.println(LoginController.client.getName() + ": " + msg);
 
             LoginController.client.sendChatMessage(msg, -1);
 
             chat_input.setText("");
             chat_input.requestFocus();
+
+            /*
+            FadeTransition fade = new FadeTransition();
+            fade.setDuration(Duration.seconds(1));
+            fade.setNode(newMessage);
+            fade.setFromValue(0);
+            fade.setToValue(1);
+            fade.play();
+        */
+        }
+
+
 
 
     }

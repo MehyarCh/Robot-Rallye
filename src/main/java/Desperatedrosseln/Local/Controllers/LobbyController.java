@@ -62,7 +62,7 @@ public class LobbyController {
         mainController.startMainScene(stage);
     }
     @FXML
-    public void onPlayerSix() throws IOException {
+    public void onPlayer() throws IOException {
 
         System.out.println("mainctrl null= " + mainController==null);
         if(mainController == null){

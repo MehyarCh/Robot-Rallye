@@ -1,7 +1,6 @@
 package Desperatedrosseln.Local.Controllers;
 
 import Desperatedrosseln.Local.Client;
-import Desperatedrosseln.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
