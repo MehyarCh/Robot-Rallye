@@ -83,7 +83,7 @@
 
 .navbar {
     -fx-background-color: #0D0221;
-    -fx-pref-height: 68px;
+    -fx-pref-height: 55px;
     -fx-alignment: center-right;
     -fx-padding: 0 0 0 32px;
 }
@@ -175,11 +175,9 @@
 }
 
 .tile {
-    -fx-border-color: rgb(246, 1, 157);
-    -fx-border-size:2px;
-    -fx-border-style: solid;
-    -fx-pref-height: 40px;
-    -fx-pref-width: 40px;
+    -fx-border-color: #a9a9a9;
+    -fx-border-size: 2px;
+    -fx-border-style: none;
 }
 
 .card-wrapper {
@@ -188,7 +186,7 @@
     -fx-padding: 8 4px 16px 4px;
     -fx-vgap: 4px;
     -fx-background-image: url("../images/login-bg2-dark.jpg");
-    -fx-background-repeat: repeat;
+    -fx-background-repeat: no-repeat;
     -fx-background-position: center center;
 }
 

@@ -1,0 +1,514 @@
+package Desperatedrosseln.Local.Controllers;
+
+import Desperatedrosseln.Json.utils.JsonMapReader;
+import Desperatedrosseln.Logic.Elements.tiles.*;
+import Desperatedrosseln.Logic.Elements.Map;
+import Desperatedrosseln.Logic.Elements.MapField;
+
+import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
+public class MapController {
+
+    private final JsonMapReader jsonMapReader;
+    private Map map;
+
+    @FXML
+    private GridPane mapGrid;
+
+    public MapController(GridPane mapGrid) {
+        this.mapGrid = mapGrid;
+        this.jsonMapReader = new JsonMapReader();
+    }
+
+    @FXML
+    public void showMap(String mapName) throws IOException {
+        List<List<List<Tile>>> gameMapList = jsonMapReader.readMapFromJson(mapName);
+        map = new Map(convertMap(gameMapList));
+        System.out.println(map.getMapFields());
+        addLaserBeam(map.getMapFields());
+        System.out.println(map.getMapFields());
+        buildMapGrid(map.getMapFields());
+    }
+
+    private void addLaserBeam(List<List<MapField>> fieldList) {
+
+        String laserOrientation;
+
+        for (int i = 0; i < fieldList.size(); i++) {
+            for (int j = 0; j < fieldList.get(i).size(); j++) {
+                ArrayList<String> fieldTypes = new ArrayList<>();
+                MapField adjacentField;
+
+                // Here it gets glitchy but it works... Needs refactoring asap!
+
+                for (int k = 0; k < fieldList.get(i).get(j).getTypes().size(); k++) {
+                    boolean hasLaser = Objects.equals(fieldList.get(i).get(j).getTypes().get(k).getType(), "Laser");
+
+                    if (hasLaser) {
+                        Laser laser = (Laser) fieldList.get(i).get(j).getTypes().get(k);
+                        laserOrientation = laser.getOrientations().get(0);
+
+                        if (Objects.equals(laserOrientation, "top") && j < fieldList.get(i).size() - 1) {
+
+                            for (int l = j; l < fieldList.get(i).size() - 1; l++) {
+                                adjacentField = map.getMapFields().get(i).get(l+1);
+                                for (int m = 0; m < adjacentField.getTypes().size(); m++) {
+                                    fieldTypes.add(adjacentField.getTypes().get(m).getType());
+                                }
+
+                                createLaserBeam(laser.getOrientations(), laser.getCount(), fieldTypes, adjacentField);
+
+                                if (fieldTypes.contains("Wall")) break;
+                            }
+                        } else if (Objects.equals(laserOrientation, "right") && i > 0) {
+                            for (int l = i; l > 0; l--) {
+                                adjacentField = map.getMapFields().get(l-1).get(j);
+
+                                for (int m = 0; m < adjacentField.getTypes().size(); m++) {
+                                    fieldTypes.add(adjacentField.getTypes().get(m).getType());
+                                }
+                                createLaserBeam(laser.getOrientations(), laser.getCount(), fieldTypes, adjacentField);
+                                if (fieldTypes.contains("Wall")) break;
+                            }
+
+                        } else if (Objects.equals(laserOrientation, "bottom") && j > 0) {
+                            for (int l = j; l > 0; l--) {
+                                adjacentField = map.getMapFields().get(i).get(l-1);
+
+                                for (int m = 0; m < adjacentField.getTypes().size(); m++) {
+                                    fieldTypes.add(adjacentField.getTypes().get(m).getType());
+                                }
+                                createLaserBeam(laser.getOrientations(), laser.getCount(), fieldTypes, adjacentField);
+                                if (fieldTypes.contains("Wall")) break;
+                            }
+
+                        } else if (Objects.equals(laserOrientation, "left") && i < fieldList.size() - 1) {
+                            for (int l = i; l < map.getMapFields().size() - 1; l++) {
+                                adjacentField = map.getMapFields().get(l+1).get(j);
+
+                                for (int m = 0; m < adjacentField.getTypes().size(); m++) {
+                                    fieldTypes.add(adjacentField.getTypes().get(m).getType());
+                                }
+                                createLaserBeam(laser.getOrientations(), laser.getCount(), fieldTypes, adjacentField);
+                                if (fieldTypes.contains("Wall")) break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void createLaserBeam(ArrayList<String> orientations, int count, ArrayList<String> fieldTypes, MapField adjacentField) {
+        boolean hasBlocker = fieldTypes.contains("Robot") || fieldTypes.contains("Antenna");
+
+        if (!hasBlocker) {
+            if (fieldTypes.contains("Wall")) {
+                adjacentField.getTypes().add(new LaserBeam("LaserBeam", "Placeholder at MapController.addLaserBeam()", orientations, count, false));
+            } else {
+                adjacentField.getTypes().add(new LaserBeam("LaserBeam", "Placeholder at MapController.addLaserBeam()", orientations, count, true));
+            }
+        }
+    }
+
+    private List<List<MapField>> convertMap(List<List<List<Tile>>> gameMapList) {
+        List<List<MapField>> mapFields = new ArrayList<>();
+
+        for (List<List<Tile>> rows : gameMapList) {
+            List<MapField> column = new ArrayList<>();
+            for (List<Tile> list : rows) {
+                List<Tile> typeList = new ArrayList<>(list);
+                MapField mapField = new MapField(typeList);
+                column.add(mapField);
+            }
+            mapFields.add(column);
+        }
+        return mapFields;
+    }
+
+    private void buildMapGrid(List<List<MapField>> fieldList) throws IOException {
+        for (int i = 0; i < fieldList.size(); i++) {
+            for (int j = 0; j < fieldList.get(i).size(); j++) {
+                mapGrid.getChildren().add(createGridCell(i, j, fieldList.get(i).get(j)));
+            }
+        }
+    }
+
+    @FXML
+    private StackPane createGridCell(int x, int y, MapField mapField) throws IOException {
+        List<String> addEmpty = Arrays.asList("Antenna", "CheckPoint", "ConveyorBelt", "RestartPoint", "StartPoint", "Energy-Space", "Wall", "Empty");
+
+        List<Tile> typeList = mapField.getTypes();
+        int tileSize = 50;
+
+        StackPane cell = new StackPane();
+        cell.getStyleClass().add("tile");
+
+        GridPane.setColumnIndex(cell, x);
+        GridPane.setRowIndex(cell, y);
+
+        Image emptyImage =
+                new Image(getClass().getResource("/images/elements/empty/empty.png").toString());
+        Image startpointImage =
+                new Image(getClass().getResource("/images/elements/startpoint/startpoint.png").toString());
+        Image respawnPointImage =
+                new Image(getClass().getResource("/images/elements/respawnPoint/respawnPoint.png").toString());
+        Image energySpace1Image =
+                new Image(getClass().getResource("/images/elements/energySpace/energySpace1.png").toString());
+        Image checkpointImage =
+                new Image(getClass().getResource("/images/elements/checkpoint/checkpoint.png").toString());
+
+
+        for (Tile tile : typeList) {
+            ImageView stackElement = null;
+
+            if (addEmpty.contains(tile.getType())) {
+                ImageView empty = new ImageView(emptyImage);
+                empty.setFitWidth(tileSize);
+                empty.setPreserveRatio(true);
+                cell.getChildren().add(empty);
+            }
+
+            switch (tile.getType()) {
+                case "CheckPoint" -> stackElement = new ImageView(checkpointImage);
+                case "RestartPoint" -> stackElement = new ImageView(respawnPointImage);
+                case "StartPoint" -> stackElement = new ImageView(startpointImage);
+                case "Antenna" -> stackElement = buildAntenna(tile);
+                case "ConveyorBelt" -> stackElement = buildConveyorBelt(tile);
+                case "Energy-Space" -> stackElement = buildEnergySpace(tile);
+                case "Laser" -> stackElement = buildLaser(tile);
+                case "LaserBeam" -> stackElement = buildLaserBeam(tile);
+                case "Wall" -> stackElement = buildWall(tile);
+            }
+
+            if (stackElement != null) {
+                stackElement.setFitWidth(tileSize);
+                stackElement.setPreserveRatio(true);
+                cell.getChildren().add(stackElement);
+            }
+        }
+        return cell;
+    }
+
+    @FXML
+    private ImageView buildAntenna(Tile tile) {
+        Image antennaImage =
+                new Image(getClass().getResource("/images/elements/antenna/antenna.png").toString());
+
+        Antenna antenna = (Antenna) tile;
+        ArrayList<String> orientations = antenna.getOrientations();
+
+        ImageView stackElement = new ImageView(antennaImage);
+
+        return rotateElement(stackElement, orientations);
+    }
+
+    @FXML
+    private ImageView buildEnergySpace(Tile tile) {
+        Image energySpace1Image =
+                new Image(getClass().getResource("/images/elements/energySpace/energySpace1.png").toString());
+
+        ImageView stackElement = null;
+
+        EnergySpace energySpace = (EnergySpace) tile;
+        if (energySpace.getCount() == 1) {
+            stackElement = new ImageView(energySpace1Image);
+        } else if (energySpace.getCount() == 2) {
+            //stackElement = new ImageView(energySpace2Image);
+        }
+
+        return stackElement;
+    }
+
+    @FXML
+    private ImageView buildWall(Tile tile) throws IOException {
+        Image wall1Image =
+                new Image(getClass().getResource("/images/elements/wall/wall1.png").toString());
+        Image wall2Image =
+                new Image(getClass().getResource("/images/elements/wall/wall2.png").toString());
+
+        ImageView stackElement = null;
+        Wall wall = (Wall) tile;
+
+        if (wall.getOrientations().size() == 1) {
+            stackElement = new ImageView(wall1Image);
+            switch (wall.getOrientations().get(0)) {
+                case "right" -> stackElement.setStyle("-fx-rotate: 90");
+                case "bottom" -> stackElement.setStyle("-fx-rotate: 180");
+                case "left" -> stackElement.setStyle("-fx-rotate: -90");
+            }
+        } else if (wall.getOrientations().size() == 2) {
+            stackElement = new ImageView(wall2Image);
+
+            if (wall.getOrientations().contains("top") && wall.getOrientations().contains("right")) {
+                stackElement.setStyle("-fx-rotate: 0");
+            } else if (wall.getOrientations().contains("right") && wall.getOrientations().contains("bottom")) {
+                stackElement.setStyle("-fx-rotate: 90");
+            } else if (wall.getOrientations().contains("bottom") && wall.getOrientations().contains("left")) {
+                stackElement.setStyle("-fx-rotate: 180");
+            } else if (wall.getOrientations().contains("left") && wall.getOrientations().contains("top")) {
+                stackElement.setStyle("-fx-rotate: -90");
+            } else {
+                throw new IOException("Unknown wall orientation combination");
+            }
+        }
+        return stackElement;
+    }
+
+    @FXML
+    private ImageView buildConveyorBelt(Tile tile) throws IOException {
+        Image conveyorBeltTB1Image =
+                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTB1.png").toString());
+        Image conveyorBeltRB1Image =
+                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRB1.png").toString());
+        Image conveyorBeltRT1Image =
+                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRT1.png").toString());
+
+        Image conveyorBeltRTB1Image =
+                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRTB1.png").toString());
+        Image conveyorBeltTBL1Image =
+                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTBL1.png").toString());
+        Image conveyorBeltTRB1Image =
+                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTRB1.png").toString());
+
+
+        Image conveyorBeltTB2Image =
+                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTB2.png").toString());
+        Image conveyorBeltRB2Image =
+                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRB2.png").toString());
+        Image conveyorBeltRT2Image =
+                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRT2.png").toString());
+
+        Image conveyorBeltRTB2Image =
+                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRTB2.png").toString());
+        Image conveyorBeltTBL2Image =
+                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTBL2.png").toString());
+        Image conveyorBeltTRB2Image =
+                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTRB2.png").toString());
+
+        ConveyorBelt conveyorBelt = (ConveyorBelt) tile;
+        ArrayList<String> orientations = conveyorBelt.getOrientations();
+
+        ImageView stackElement = null;
+
+        // Green
+        if (conveyorBelt.getSpeed() == 1) {
+            // two orientations
+            stackElement = diffBelt(conveyorBeltTB1Image, conveyorBeltRB1Image, conveyorBeltRT1Image, conveyorBeltRTB1Image, conveyorBeltTBL1Image, conveyorBeltTRB1Image, orientations, stackElement);
+        // Blue
+        } else if (conveyorBelt.getSpeed() == 2) {
+            stackElement = diffBelt(conveyorBeltTB2Image, conveyorBeltRB2Image, conveyorBeltRT2Image, conveyorBeltRTB2Image, conveyorBeltTBL2Image, conveyorBeltTRB2Image, orientations, stackElement);
+        } else {
+            throw new IOException("Unknown conveyorSpeed");
+        }
+        return stackElement;
+    }
+
+    @FXML
+    private ImageView diffBelt(Image conveyorBeltTBImage, Image conveyorBeltRBImage, Image conveyorBeltRTImage, Image conveyorBeltRTBImage, Image conveyorBeltTBLImage, Image conveyorBeltTRBImage, ArrayList<String> orientations, ImageView stackElement) {
+        if (orientations.size() == 2) {
+            switch (orientations.get(0)) {
+                case "top":
+                    switch (orientations.get(1)) {
+                        case "right" -> {
+                            stackElement = new ImageView(conveyorBeltRBImage);
+                            stackElement.setStyle("-fx-rotate: -90");
+                        }
+                        case "bottom" -> stackElement = new ImageView(conveyorBeltTBImage);
+                        case "left" -> {
+                            stackElement = new ImageView(conveyorBeltRTImage);
+                            stackElement.setStyle("-fx-rotate: -90");
+                        }
+                    }
+                    break;
+                case "right":
+                    switch (orientations.get(1)) {
+                        case "top" -> stackElement = new ImageView(conveyorBeltRTImage);
+                        case "bottom" -> stackElement = new ImageView(conveyorBeltRBImage);
+                        case "left" -> {
+                            stackElement = new ImageView(conveyorBeltTBImage);
+                            stackElement.setStyle("-fx-rotate: 90");
+                        }
+                    }
+                    break;
+                case "bottom":
+                    switch (orientations.get(1)) {
+                        case "top" -> {
+                            stackElement = new ImageView(conveyorBeltTBImage);
+                            stackElement.setStyle("-fx-rotate: 180");
+                        }
+                        case "right" -> {
+                            stackElement = new ImageView(conveyorBeltRTImage);
+                            stackElement.setStyle("-fx-rotate: 90");
+                        }
+                        case "left" -> {
+                            stackElement = new ImageView(conveyorBeltRBImage);
+                            stackElement.setStyle("-fx-rotate: 90");
+                        }
+                    }
+                    break;
+                case "left":
+                    switch (orientations.get(1)) {
+                        case "top" -> {
+                            stackElement = new ImageView(conveyorBeltRBImage);
+                            stackElement.setStyle("-fx-rotate: 180");
+                        }
+                        case "right" -> {
+                            stackElement = new ImageView(conveyorBeltTBImage);
+                            stackElement.setStyle("-fx-rotate: -90");
+                        }
+                        case "bottom" -> {
+                            stackElement = new ImageView(conveyorBeltRTImage);
+                            stackElement.setStyle("-fx-rotate: 180");
+                        }
+                    }
+                    break;
+            }
+        } else if (orientations.size() == 3) {
+            List<String> orientationTail = orientations.subList(0, 3);
+
+            switch (orientations.get(0)) {
+                case "top":
+                    if (orientationTail.contains("right") && orientationTail.contains("bottom")) {
+                        stackElement = new ImageView(conveyorBeltTRBImage);
+                    } else if (orientationTail.contains("left") && orientationTail.contains("bottom")) {
+                        stackElement = new ImageView(conveyorBeltTBLImage);
+                    } else if (orientationTail.contains("right") && orientationTail.contains("left")) {
+                        stackElement = new ImageView(conveyorBeltRTBImage);
+                        stackElement.setStyle("-fx-rotate: -90");
+                    }
+                    break;
+                case "right":
+                    if (orientationTail.contains("top") && orientationTail.contains("bottom")) {
+                        stackElement = new ImageView(conveyorBeltRTBImage);
+                    } else if (orientationTail.contains("bottom") && orientationTail.contains("left")) {
+                        stackElement = new ImageView(conveyorBeltTRBImage);
+                        stackElement.setStyle("-fx-rotate: 90");
+                    } else if (orientationTail.contains("top") && orientationTail.contains("left")) {
+                        stackElement = new ImageView(conveyorBeltTBLImage);
+                        stackElement.setStyle("-fx-rotate: 90");
+                    }
+                    break;
+                case "bottom":
+                    if (orientationTail.contains("top") && orientationTail.contains("right")) {
+                        stackElement = new ImageView(conveyorBeltTBLImage);
+                        stackElement.setStyle("-fx-rotate: 180");
+                    } else if (orientationTail.contains("right") && orientationTail.contains("left")) {
+                        stackElement = new ImageView(conveyorBeltRTBImage);
+                        stackElement.setStyle("-fx-rotate: 90");
+                    } else if (orientationTail.contains("top") && orientationTail.contains("left")) {
+                        stackElement = new ImageView(conveyorBeltTRBImage);
+                        stackElement.setStyle("-fx-rotate: 180");
+                    }
+                    break;
+                case "left":
+                    if (orientationTail.contains("top") && orientationTail.contains("right")) {
+                        stackElement = new ImageView(conveyorBeltTRBImage);
+                        stackElement.setStyle("-fx-rotate: -90");
+                    } else if (orientationTail.contains("right") && orientationTail.contains("bottom")) {
+                        stackElement = new ImageView(conveyorBeltTBLImage);
+                        stackElement.setStyle("-fx-rotate: -90");
+                    } else if (orientationTail.contains("top") && orientationTail.contains("bottom")) {
+                        stackElement = new ImageView(conveyorBeltRTBImage);
+                        stackElement.setStyle("-fx-rotate: 180");
+                    }
+                    break;
+            }
+        }
+        return stackElement;
+    }
+
+    @FXML
+    private ImageView buildLaser(Tile tile) throws IOException {
+        Image laser1Image =
+                new Image(getClass().getResource("/images/elements/laser/laser1.png").toString());
+        Image laser2Image =
+                new Image(getClass().getResource("/images/elements/laser/laser2.png").toString());
+        Image laser3Image =
+                new Image(getClass().getResource("/images/elements/laser/laser3.png").toString());
+
+
+        ImageView stackElement = null;
+        Laser laser = (Laser) tile;
+
+        if (laser.getCount() == 1) {
+            stackElement = new ImageView(laser1Image);
+        } else if (laser.getCount() == 2) {
+            stackElement = new ImageView(laser2Image);
+        } else if (laser.getCount() == 3) {
+            stackElement = new ImageView(laser3Image);
+        } else {
+            throw new IOException("Unknown laser count");
+        }
+
+        return rotateElement(stackElement, laser.getOrientations());
+    }
+
+    @FXML
+    private ImageView buildLaserBeam(Tile tile) throws IOException {
+
+        Image laserBeamCenter1Image =
+                new Image(getClass().getResource("/images/elements/laser/laserBeamCenter1.png").toString());
+        Image laserBeamCenter2Image =
+                new Image(getClass().getResource("/images/elements/laser/laserBeamCenter2.png").toString());
+        Image laserBeamCenter3Image =
+                new Image(getClass().getResource("/images/elements/laser/laserBeamCenter3.png").toString());
+
+        Image laserBeamEnd1Image =
+                new Image(getClass().getResource("/images/elements/laser/laserBeamEnd1.png").toString());
+        Image laserBeamEnd2Image =
+                new Image(getClass().getResource("/images/elements/laser/laserBeamEnd2.png").toString());
+        Image laserBeamEnd3Image =
+                new Image(getClass().getResource("/images/elements/laser/laserBeamEnd3.png").toString());
+
+        ImageView stackElement = null;
+
+        LaserBeam laserBeam = (LaserBeam) tile;
+
+        if (laserBeam.getCount() == 1) {
+            if (laserBeam.isFullWidth()) {
+                stackElement = new ImageView(laserBeamCenter1Image);
+            } else {
+                stackElement = new ImageView(laserBeamEnd1Image);
+            }
+        } else if (laserBeam.getCount() == 2) {
+            if (laserBeam.isFullWidth()) {
+                stackElement = new ImageView(laserBeamCenter2Image);
+            } else {
+                stackElement = new ImageView(laserBeamEnd2Image);
+            }
+        } else if (laserBeam.getCount() == 3) {
+            if (laserBeam.isFullWidth()) {
+                stackElement = new ImageView(laserBeamCenter3Image);
+            } else {
+                stackElement = new ImageView(laserBeamEnd3Image);
+            }
+        } else {
+            throw new IOException("Unknown laserBeam count");
+        }
+
+        return rotateElement(stackElement, laserBeam.getOrientations());
+    }
+
+    @FXML
+    private ImageView rotateElement(ImageView stackElement, ArrayList<String> orientations) {
+        if (Objects.equals(orientations.get(0), "right")) {
+            stackElement.setStyle("-fx-rotate: 90");
+        } else if (Objects.equals(orientations.get(0), "bottom")) {
+            stackElement.setStyle("-fx-rotate: 180");
+        } else if (Objects.equals(orientations.get(0), "left")) {
+            stackElement.setStyle("-fx-rotate: -90");
+        }
+        return stackElement;
+    }
+}

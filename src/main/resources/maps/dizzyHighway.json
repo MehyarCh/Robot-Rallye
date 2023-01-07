@@ -167,14 +167,14 @@
           {
             "type": "Wall",
             "isOnBoard": "Start A",
-            "orientations": "right"
+            "orientations": ["right"]
           }
         ],
         [
           {
             "type": "Wall",
             "isOnBoard": "Start A",
-            "orientations": "right"
+            "orientations": ["right"]
           }
         ],
         [
@@ -498,6 +498,12 @@
             "type": "Wall",
             "isOnBoard": "5B",
             "orientations": ["top"]
+          },
+          {
+            "type": "Laser",
+            "isOnBoard": "5B",
+            "orientations": ["top"],
+            "count": 1
           }
         ],
         [
@@ -505,12 +511,6 @@
             "type": "Wall",
             "isOnBoard": "5B",
             "orientations": ["bottom"]
-          },
-          {
-            "type": "Laser",
-            "isOnBoard": "5B",
-            "orientations": ["top"],
-            "count": 1
           }
         ],
         [

@@ -14,7 +14,6 @@ public class Message {
     public String getMessageBody() {
         return messageBody;
     }
-
 }
 
 
