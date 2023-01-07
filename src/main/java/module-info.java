@@ -13,5 +13,6 @@ module desperatedrosseln {
     opens Desperatedrosseln.Logic.Elements.tiles to moshi, com.google.gson;
     opens Desperatedrosseln.Json.utils to com.google.gson;
     exports Desperatedrosseln;
+    opens Desperatedrosseln.Logic.Elements to com.google.gson, moshi;
 
 }

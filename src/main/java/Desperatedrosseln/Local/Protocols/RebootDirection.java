@@ -1,17 +1,17 @@
 package Desperatedrosseln.Local.Protocols;
 
-import Desperatedrosseln.Logic.Direction;
+import Desperatedrosseln.Logic.DIRECTION;
 
 public class RebootDirection {
 
     //Body: "direction": "right"
-    private Direction direction;
+    private DIRECTION direction;
 
-    public Direction getDirection() {
+    public DIRECTION getDirection() {
         return direction;
     }
 
-    public RebootDirection(Direction direction) {
+    public RebootDirection(DIRECTION direction) {
         this.direction = direction;
     }
 }

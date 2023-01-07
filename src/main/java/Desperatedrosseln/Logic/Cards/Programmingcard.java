@@ -1,6 +1,6 @@
 package Desperatedrosseln.Logic.Cards;
 
-import Desperatedrosseln.Logic.*;
+import Desperatedrosseln.Logic.Elements.Robot;
 
 public class Programmingcard extends Card{
 
@@ -11,9 +11,8 @@ public class Programmingcard extends Card{
     public void playCard(){
 
     }
-
-    @Override
-    public void playCard(Player player) {
+    public void playCard(Robot robot) {
+        //move robot
 
     }
 
@@ -22,6 +21,5 @@ public class Programmingcard extends Card{
 
         return "ProgrammingCard";
     }
-
 }
 

@@ -1,10 +1,8 @@
 package Desperatedrosseln.Logic.Cards;
 
-import Desperatedrosseln.Logic.*;
+import Desperatedrosseln.Logic.Elements.Robot;
 
 public class Card {
-
-
     private String info;
 
     /*Konstruktor?
@@ -12,12 +10,11 @@ public class Card {
         this.info = info;
     }*/
 
-    public void playCard(Player player){
-
+    public void playCard(Robot robot){
     }
 
     public String toString(){
-        return "ll";
+        return "Card";
     }
 
     public boolean isAllowedMove(){
@@ -26,6 +23,9 @@ public class Card {
     }
     public String getInfo() {
         return info;
+    }
+    public boolean isDamageCard(){
+        return false;
     }
 
 }

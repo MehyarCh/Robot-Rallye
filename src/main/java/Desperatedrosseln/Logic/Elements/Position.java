@@ -1,4 +1,4 @@
-package Desperatedrosseln.Logic.Elements.tiles;
+package Desperatedrosseln.Logic.Elements;
 
 public class Position {
 

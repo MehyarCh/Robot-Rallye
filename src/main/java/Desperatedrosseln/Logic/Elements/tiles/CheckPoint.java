@@ -5,3 +5,4 @@ public class CheckPoint extends Tile {
         super(type, isInBoard);
     }
 }
+

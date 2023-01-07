@@ -1,13 +1,14 @@
 package Desperatedrosseln.Logic.Elements.tiles;
 
-import Desperatedrosseln.Logic.Elements.Direction;
+import Desperatedrosseln.Logic.DIRECTION;
+import Desperatedrosseln.Logic.Elements.Position;
 
 import java.util.ArrayList;
 
 public class Robot {
 
     public static ArrayList<Position> robotPositions;
-    private Direction direction;
+    private DIRECTION direction;
     private final int ID;
     private Position position;
 

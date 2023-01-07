@@ -2,6 +2,7 @@ package Desperatedrosseln.Connection;
 
 import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Local.Protocols.Error;
+import Desperatedrosseln.Logic.Cards.Card;
 import Desperatedrosseln.Logic.Elements.Robot;
 import Desperatedrosseln.Logic.Game;
 import Desperatedrosseln.Logic.Player;
@@ -25,10 +26,11 @@ public class ClientHandler implements Runnable {
     private Player player;
     Timer timer = new Timer();
     public static ArrayList<ClientHandler> clients = new ArrayList<>();
+
+    private Game game;
     Moshi moshi = new Moshi.Builder().build();
     JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
     private int clientID;
-    private Game game;
     private boolean isAI = false;
 
     public Player getPlayer() {
@@ -170,6 +172,12 @@ public class ClientHandler implements Runnable {
                         }
                     }
                     break;
+
+                case "PlayCard":
+                    JsonAdapter<CardPlayed> cardPlayedJsonAdapter = moshi.adapter(CardPlayed.class);
+                    CardPlayed cardPlayed = new CardPlayed(player.getID(), cardPlayedJsonAdapter.fromJson(message.getMessageBody()).getCard()); //add clientID and the card that was played
+                    broadcastMessage(messageJsonAdapter.toJson(new Message("CardPlayed", cardPlayedJsonAdapter.toJson(cardPlayed)))); //send CardPlayed message to every client
+                    
                 default:
                     broadcastMessage(messageJsonAdapter.toJson(new Message(" ", "SERVER BRO")));
 
