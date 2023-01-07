@@ -8,6 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AIClient extends Thread{
@@ -18,10 +19,9 @@ public class AIClient extends Thread{
     HashMap<String, Integer> localPlayerList = new HashMap<>();
 
     AI ai;
+    public static ArrayList<String> aiNames;
     private int AI_ID;
-    private String AIName = "GigaChad";
-    Moshi moshi = new Moshi.Builder().build();
-    JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
+    private String AIName = "-not specified-";
     private String protocol;
 
     public AIClient( int port, String protocol) {
@@ -48,9 +48,12 @@ public class AIClient extends Thread{
         }
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(String type, String body) {
+        Moshi moshi = new Moshi.Builder().build();
+        JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
+
         try {
-            out.writeUTF(message);
+            out.writeUTF(messageJsonAdapter.toJson(new Message(type, body)));
             out.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -59,16 +62,22 @@ public class AIClient extends Thread{
 
     private void checkProtocolMessage(String message) throws IOException {
         //TODO: Logs
-        Message msg = messageJsonAdapter.fromJson(message);
+        Moshi moshi = new Moshi.Builder().build();
+        Message msg;
+        {
+            JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
+            msg = messageJsonAdapter.fromJson(message);
+        }
+
         switch (msg.getMessageType()) {
             case "HelloClient":
                 //TODO: disconnect if protocol isnt the same as client.
                 JsonAdapter<HelloServer> helloServerJsonAdapter = moshi.adapter(HelloServer.class);
-                sendMessage(messageJsonAdapter.toJson(new Message("HelloServer",helloServerJsonAdapter.toJson(new HelloServer("DesperateDrosseln", true, protocol)))));
+                sendMessage("HelloServer",helloServerJsonAdapter.toJson(new HelloServer("DesperateDrosseln", true, protocol)));
 
                 break;
             case "Alive":
-                sendMessage(messageJsonAdapter.toJson(msg));
+                sendMessage(msg.getMessageType(), msg.getMessageBody());
                 //System.out.println("Alive check from server");
                 break;
             case "Welcome":
@@ -76,10 +85,19 @@ public class AIClient extends Thread{
                 this.AI_ID = welcomeJsonAdapter.fromJson(msg.getMessageBody()).getClientID();
                 ai = new AI(AI_ID);
 
-
-
+                if(aiNames == null){
+                    aiNames = new ArrayList<>();
+                    AIName = "GigaChad";
+                } else {
+                    switch (aiNames.size()){
+                        case 1:AIName = "The Rizzler";
+                        break;
+                        default:AIName = "noob "+(aiNames.size()-1);
+                    }
+                }
+                aiNames.add(AIName);
                 JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);          //TODO:replace ClientID with player figure!!!!!
-                sendMessage(messageJsonAdapter.toJson(new Message("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(AIName, AI_ID)))));
+                sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(AIName, AI_ID)));
                 break;
 
             case "PlayerAdded":
@@ -91,7 +109,7 @@ public class AIClient extends Thread{
                 if (playerAdded.getClientID() == AI_ID) {                                      //TODO: Ready button?
                     sendChatMessage("Hello Everyone", -1);
                     JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
-                    sendMessage(messageJsonAdapter.toJson(new Message("SetStatus", setStatusJsonAdapter.toJson(new SetStatus(true)))));
+                    sendMessage("SetStatus", setStatusJsonAdapter.toJson(new SetStatus(true)));
                 }
                 break;
 
@@ -101,7 +119,7 @@ public class AIClient extends Thread{
                 String map = selectMap.getMaps().get(0);
 
                 JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
-                sendMessage(messageJsonAdapter.toJson(new Message("MapSelected", mapSelectedJsonAdapter.toJson(new MapSelected(map)))));
+                sendMessage("MapSelected", mapSelectedJsonAdapter.toJson(new MapSelected(map)));
                 //TODO: GUI map selection
                 break;
 
@@ -117,7 +135,7 @@ public class AIClient extends Thread{
                 //ToDo: get starting points from the map
                 int x = 0, y = 0;
                 JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
-                sendMessage(messageJsonAdapter.toJson(new Message("SetStartingPoint", setStartingPointJsonAdapter.toJson(new SetStartingPoint(x,y)))));
+                sendMessage("SetStartingPoint", setStartingPointJsonAdapter.toJson(new SetStartingPoint(x,y)));
 
                 break;
 
@@ -129,8 +147,9 @@ public class AIClient extends Thread{
                 JsonAdapter<YourCards> yourCardsJsonAdapter = moshi.adapter(YourCards.class);
                 ai.setCardsInHand(yourCardsJsonAdapter.fromJson(msg.getMessageBody()).getCardsInHand());
                 JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
+
                 for(int i=0;i<5;++i){
-                    sendMessage(messageJsonAdapter.toJson(new Message("SelectedCard",selectedCardJsonAdapter.toJson(new SelectedCard(ai.getCardsInHand().get(i),i)))));
+                    sendMessage("SelectedCard",selectedCardJsonAdapter.toJson(new SelectedCard(ai.getRandomCard(),i)));
                 }
 
                 break;
@@ -164,17 +183,18 @@ public class AIClient extends Thread{
         }
     }
     public void sendChatMessage(String message, int to) {
+        Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
         if (message.startsWith("/dm")) {          //TODO
 
             String[] messageParts = message.split(" ", 3);
 
             if (localPlayerList.containsKey(messageParts[1])) {
-                sendMessage(messageJsonAdapter.toJson(new Message("SendChat", sendChatJsonAdapter.toJson(new SendChat(messageParts[2], localPlayerList.get(messageParts[1]))))));
+                sendMessage("SendChat", sendChatJsonAdapter.toJson(new SendChat(messageParts[2], localPlayerList.get(messageParts[1]))));
             }
 
         } else {
-            sendMessage(messageJsonAdapter.toJson(new Message("SendChat", sendChatJsonAdapter.toJson(new SendChat(message, -1)))));
+            sendMessage("SendChat", sendChatJsonAdapter.toJson(new SendChat(message, -1)));
         }
     }
 }

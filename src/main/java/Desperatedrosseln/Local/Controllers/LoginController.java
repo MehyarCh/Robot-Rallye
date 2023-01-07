@@ -78,7 +78,6 @@ public class LoginController {
         }else {
             switchToLobbyScene();
             client = new Client();
-            lobbyController.setClient(client);
             client.setClientName(loginTextField.getText());
             client.sendHelloServer();
             System.out.println("Hello welcome " + loginTextField.getText());

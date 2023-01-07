@@ -33,7 +33,6 @@ public class LobbyController {
 
     public MainController mainController;
 
-    private Client client;
 
     private TextFlow textFlow;
 
@@ -100,12 +99,5 @@ public class LobbyController {
     }
 
 
-
-    public TextFlow getTextFlow() {
-        return textFlow;
-    }
-
-    public void setClient(Client client) {
-    }
 }
 
