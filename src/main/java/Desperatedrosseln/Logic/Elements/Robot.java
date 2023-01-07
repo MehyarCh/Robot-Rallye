@@ -1,6 +1,7 @@
 package Desperatedrosseln.Logic.Elements;
 
 import Desperatedrosseln.Logic.Direction;
+import Desperatedrosseln.Logic.Elements.tiles.Position;
 
 import java.util.*;
 

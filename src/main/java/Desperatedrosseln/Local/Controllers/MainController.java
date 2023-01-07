@@ -1,16 +1,16 @@
 package Desperatedrosseln.Local.Controllers;
 
-import Desperatedrosseln.Local.Client;
+//import Desperatedrosseln.Local.Client;
+import Desperatedrosseln.Logic.Elements.MapField;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -18,15 +18,28 @@ import javafx.stage.Stage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 public class MainController {
+
     DataOutputStream dos;
     DataInputStream dis;
+
 
     private Thread thread;
     private Stage stage;
     private Scene scene;
     private Parent root;
+
+    private MapController mapController;
+
+    List<List<MapField>> mapFields;
+
+    //public Client client;
+
+    @FXML
+    private GridPane mapGrid;
+
     @FXML
     private Button send_button;
     @FXML
@@ -34,8 +47,8 @@ public class MainController {
     @FXML
     private TextFlow chatlog;
 
-    public MainController() throws IOException {
-        setStreams();
+    public MainController() {
+    setStreams();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/mainScene.fxml"));
         loader.setController(this);
@@ -58,8 +71,12 @@ public class MainController {
         }
     }
 
-    public void startMainScene(Stage stage) {
+    public void startMainScene(Stage stage) throws IOException {
         this.stage = stage;
+
+        mapController = new MapController(mapGrid);
+        mapController.showMap("dizzyHighway");
+
         stage.setScene(scene);
         stage.setMinHeight(720);
         stage.setMinWidth(1280);
@@ -70,7 +87,7 @@ public class MainController {
 
     @FXML
     public void onMessageSend(KeyEvent event){
-        if(event.getCode()== KeyCode.ENTER)
+        if(event.getCode().toString().equals("ENTER"))
         {
             onClickSend();
         }
@@ -80,9 +97,9 @@ public class MainController {
 
             String msg = chat_input.getText();
 
-            System.out.println(LoginController.client.getName()+ ": "+ msg);
+            //System.out.println(client.getName()+ ": "+ msg);
 
-            LoginController.client.sendChatMessage(msg, -1);
+            //client.sendChatMessage(msg, -1);
 
             chat_input.setText("");
             chat_input.requestFocus();
@@ -98,14 +115,10 @@ public class MainController {
                 chatlog.getChildren().add(new Text( message + "\n"));
             }
         });
-
     }
+
     private void setStreams(){
         this.dos = LoginController.client.getOutputStr();
         this.dis = LoginController.client.getInputStr();
     }
-
-
-
-
 }

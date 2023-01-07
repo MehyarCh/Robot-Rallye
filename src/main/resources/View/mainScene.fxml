@@ -80,9 +80,9 @@
                        styleClass="player-icon"/>
                 <VBox styleClass="profile-status">
                     <Label text="PlayerName"
-                          styleClass="profile-name, color--light"/>
+                           styleClass="profile-name, color--light"/>
                     <Label text="Energy: 50"
-                          styleClass="profile-energy, color--primary"/>
+                           styleClass="profile-energy, color--primary"/>
                 </VBox>
             </HBox>
         </GridPane>
@@ -90,52 +90,12 @@
 
     <center>
         <GridPane styleClass="center">
-            <GridPane styleClass="map"
+            <GridPane fx:id="mapGrid"
+                      styleClass="map"
                       GridPane.columnIndex="0"
                       GridPane.rowIndex="0"
                       GridPane.hgrow="ALWAYS"
                       GridPane.vgrow="ALWAYS">
-                <StackPane styleClass="tile"
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="0">
-                </StackPane>
-                <StackPane styleClass="tile"
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="1">
-                </StackPane>
-                <StackPane styleClass="tile"
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="2">
-                </StackPane>
-                <StackPane styleClass="tile"
-                           GridPane.rowIndex="1"
-                           GridPane.columnIndex="0">
-                </StackPane>
-                <StackPane styleClass="tile"
-                           GridPane.rowIndex="1"
-                           GridPane.columnIndex="1">
-
-                </StackPane>
-                <StackPane styleClass="tile"
-                           GridPane.rowIndex="1"
-                           GridPane.columnIndex="2">
-
-                </StackPane>
-                <StackPane styleClass="tile"
-                           GridPane.rowIndex="2"
-                           GridPane.columnIndex="0">
-
-                </StackPane>
-                <StackPane styleClass="tile"
-                           GridPane.rowIndex="2"
-                           GridPane.columnIndex="1">
-
-                </StackPane>
-                <StackPane styleClass="tile"
-                           GridPane.rowIndex="2"
-                           GridPane.columnIndex="2">
-
-                </StackPane>
             </GridPane>
             <GridPane styleClass="card-wrapper"
                       GridPane.columnIndex="0"
@@ -249,10 +209,10 @@
                   GridPane.rowIndex="1"
                   GridPane.hgrow="ALWAYS"
                   styleClass="chat-input-wrapper">
-                <TextField fx:id="chat_input" onKeyPressed="#onMessageSend" styleClass="text-input, text-input--primary"/>
+                <TextField fx:id="chat_input" styleClass="text-input, text-input--primary"/>
                 <Button fx:id="send_button"
                         onAction="#onClickSend"
-
+                        onKeyPressed="#onMessageSend"
                         styleClass="button, send-button"/>
             </HBox>
         </GridPane>

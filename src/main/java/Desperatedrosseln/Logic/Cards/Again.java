@@ -1,7 +1,7 @@
 package Desperatedrosseln.Logic.Cards;
 
+import Desperatedrosseln.Logic.Elements.tiles.Position;
 import Desperatedrosseln.Logic.Player;
-import Desperatedrosseln.Logic.Elements.Position;
 
 import java.util.List;
 

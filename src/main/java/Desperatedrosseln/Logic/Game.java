@@ -4,8 +4,8 @@ import Desperatedrosseln.Connection.ClientHandler;
 import Desperatedrosseln.Local.Protocols.Message;
 import Desperatedrosseln.Local.Protocols.SelectMap;
 import Desperatedrosseln.Logic.AI.AIClient;
-import Desperatedrosseln.Logic.Elements.Position;
 import Desperatedrosseln.Logic.Elements.Robot;
+import Desperatedrosseln.Logic.Elements.tiles.Position;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
