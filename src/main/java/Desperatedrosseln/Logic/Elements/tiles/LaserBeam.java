@@ -1,8 +1,10 @@
 package Desperatedrosseln.Logic.Elements.tiles;
 
+import Desperatedrosseln.Logic.Elements.BoardElement;
+
 import java.util.ArrayList;
 
-public class LaserBeam extends Tile {
+public class LaserBeam extends BoardElement {
     ArrayList<String> orientations;
     private int count;
     boolean isFullWidth;

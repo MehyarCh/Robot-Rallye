@@ -1,6 +1,8 @@
 package Desperatedrosseln.Logic.Elements.tiles;
 
-public class EnergySpace extends Tile {
+import Desperatedrosseln.Logic.Elements.BoardElement;
+
+public class EnergySpace extends BoardElement {
 
     private int count;
 

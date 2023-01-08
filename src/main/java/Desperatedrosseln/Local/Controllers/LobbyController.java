@@ -61,6 +61,8 @@ public class LobbyController {
     }
 
     public void startLobbyScene(Stage stage) {
+        mainController = new MainController();
+        client.setMainController(mainController);
         this.stage = stage;
         stage.setScene(scene);
         stage.setResizable(false);
@@ -71,9 +73,7 @@ public class LobbyController {
     @FXML
     public void onButtonClicked(ActionEvent event) throws IOException {
         Button clickedButton = (Button) event.getSource();
-        mainController = new MainController();
-        mainController.startMainScene(stage);
-        client.setMainController(mainController);
+
         mainController.startMainScene(stage);
 
         switch (clickedButton.getId()) {

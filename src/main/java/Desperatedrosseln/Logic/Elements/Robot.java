@@ -9,10 +9,11 @@ public class Robot extends BoardElement {
     public static ArrayList<Position> robotPositions;
     private DIRECTION direction;
     private final int ID;
-    private Position position;
+    private Position position = super.getPosition();
 
 
     public Robot(int iD) { //ToDo: verify
+        super("Robot","placeholder");
         if(robotPositions == null){
             robotPositions = new ArrayList<>();
         }
@@ -22,14 +23,7 @@ public class Robot extends BoardElement {
         this.ID = iD;
 
     }
-    @Override
-    public void execute(){
 
-    }
-    @Override
-    public void execute(List<Robot> active_robots){
-
-    }
 
     /**
      * moves the position of the robot depending on the Programming Card played in the register
@@ -43,10 +37,10 @@ public class Robot extends BoardElement {
         }
         for(int i = 0; i < steps; i++){
             switch (direction){
-                case UP -> {
+                case TOP -> {
                     position.setY(position.getY() - steps);
                 }
-                case DOWN -> {
+                case BOTTOM -> {
                     position.setY(position.getY() + steps);
                 }
                 case LEFT -> {
@@ -64,10 +58,10 @@ public class Robot extends BoardElement {
     public void moveByConveyor(int speed, DIRECTION direction){
         for(int i = 0; i < speed; i++){
             switch (direction){
-                case UP -> {
+                case TOP -> {
                     position.setY(position.getY() - 1);
                 }
-                case DOWN -> {
+                case BOTTOM -> {
                     position.setY(position.getY() + 1);
                 }
                 case LEFT -> {
@@ -128,11 +122,11 @@ public class Robot extends BoardElement {
 
     public void moveBack() {
         switch (direction) {
-            case UP -> {
+            case TOP -> {
                 //move 1 down
                 position.setY(position.getY() + 1);
             }
-            case DOWN -> {
+            case BOTTOM -> {
                 //move 1 up
                 position.setY(position.getY() - 1);
             }
@@ -158,14 +152,7 @@ public class Robot extends BoardElement {
 
     }
 
-    public Position getPosition() {
-        return position;
-    }
 
-    public void setPosition(int x, int y) {
-        this.position.setX(x);
-        this.position.setY(y);
-    }
     public DIRECTION getDirection() {
         return direction;
     }

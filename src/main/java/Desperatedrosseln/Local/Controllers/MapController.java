@@ -1,10 +1,13 @@
 package Desperatedrosseln.Local.Controllers;
 
+import Desperatedrosseln.Json.utils.JsonDeserializer;
 import Desperatedrosseln.Json.utils.JsonMapReader;
+import Desperatedrosseln.Logic.Elements.BoardElement;
 import Desperatedrosseln.Logic.Elements.tiles.*;
 import Desperatedrosseln.Logic.Elements.Map;
 import Desperatedrosseln.Logic.Elements.MapField;
 
+import com.squareup.moshi.Json;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,6 +25,8 @@ public class MapController {
     private final JsonMapReader jsonMapReader;
     private Map map;
 
+
+
     @FXML
     private GridPane mapGrid;
 
@@ -30,10 +35,16 @@ public class MapController {
         this.jsonMapReader = new JsonMapReader();
     }
 
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
     @FXML
-    public void showMap(String mapName) throws IOException {
-        List<List<List<Tile>>> gameMapList = jsonMapReader.readMapFromJson(mapName);
-        map = new Map(convertMap(gameMapList));
+    public void showMap() throws IOException {
         System.out.println(map.getMapFields());
         addLaserBeam(map.getMapFields());
         System.out.println(map.getMapFields());
@@ -121,13 +132,13 @@ public class MapController {
         }
     }
 
-    private List<List<MapField>> convertMap(List<List<List<Tile>>> gameMapList) {
+    public List<List<MapField>> convertMap(List<List<List<BoardElement>>> gameMapList) {
         List<List<MapField>> mapFields = new ArrayList<>();
 
-        for (List<List<Tile>> rows : gameMapList) {
+        for (List<List<BoardElement>> rows : gameMapList) {
             List<MapField> column = new ArrayList<>();
-            for (List<Tile> list : rows) {
-                List<Tile> typeList = new ArrayList<>(list);
+            for (List<BoardElement> list : rows) {
+                List<BoardElement> typeList = new ArrayList<>(list);
                 MapField mapField = new MapField(typeList);
                 column.add(mapField);
             }
@@ -148,7 +159,7 @@ public class MapController {
     private StackPane createGridCell(int x, int y, MapField mapField) throws IOException {
         List<String> addEmpty = Arrays.asList("Antenna", "CheckPoint", "ConveyorBelt", "RestartPoint", "StartPoint", "Energy-Space", "Wall", "Empty");
 
-        List<Tile> typeList = mapField.getTypes();
+        List<BoardElement> typeList = mapField.getTypes();
         int tileSize = 50;
 
         StackPane cell = new StackPane();
@@ -169,26 +180,26 @@ public class MapController {
                 new Image(getClass().getResource("/images/elements/checkpoint/checkpoint.png").toString());
 
 
-        for (Tile tile : typeList) {
+        for (BoardElement boardElement : typeList) {
             ImageView stackElement = null;
 
-            if (addEmpty.contains(tile.getType())) {
+            if (addEmpty.contains(boardElement.getType())) {
                 ImageView empty = new ImageView(emptyImage);
                 empty.setFitWidth(tileSize);
                 empty.setPreserveRatio(true);
                 cell.getChildren().add(empty);
             }
 
-            switch (tile.getType()) {
+            switch (boardElement.getType()) {
                 case "CheckPoint" -> stackElement = new ImageView(checkpointImage);
                 case "RestartPoint" -> stackElement = new ImageView(respawnPointImage);
                 case "StartPoint" -> stackElement = new ImageView(startpointImage);
-                case "Antenna" -> stackElement = buildAntenna(tile);
-                case "ConveyorBelt" -> stackElement = buildConveyorBelt(tile);
-                case "Energy-Space" -> stackElement = buildEnergySpace(tile);
-                case "Laser" -> stackElement = buildLaser(tile);
-                case "LaserBeam" -> stackElement = buildLaserBeam(tile);
-                case "Wall" -> stackElement = buildWall(tile);
+                case "Antenna" -> stackElement = buildAntenna(boardElement);
+                case "ConveyorBelt" -> stackElement = buildConveyorBelt(boardElement);
+                case "Energy-Space" -> stackElement = buildEnergySpace(boardElement);
+                case "Laser" -> stackElement = buildLaser(boardElement);
+                case "LaserBeam" -> stackElement = buildLaserBeam(boardElement);
+                case "Wall" -> stackElement = buildWall(boardElement);
             }
 
             if (stackElement != null) {
@@ -201,11 +212,11 @@ public class MapController {
     }
 
     @FXML
-    private ImageView buildAntenna(Tile tile) {
+    private ImageView buildAntenna(BoardElement boardElement) {
         Image antennaImage =
                 new Image(getClass().getResource("/images/elements/antenna/antenna.png").toString());
 
-        Antenna antenna = (Antenna) tile;
+        Antenna antenna = (Antenna) boardElement;
         ArrayList<String> orientations = antenna.getOrientations();
 
         ImageView stackElement = new ImageView(antennaImage);
@@ -214,13 +225,13 @@ public class MapController {
     }
 
     @FXML
-    private ImageView buildEnergySpace(Tile tile) {
+    private ImageView buildEnergySpace(BoardElement boardElement) {
         Image energySpace1Image =
                 new Image(getClass().getResource("/images/elements/energySpace/energySpace1.png").toString());
 
         ImageView stackElement = null;
 
-        EnergySpace energySpace = (EnergySpace) tile;
+        EnergySpace energySpace = (EnergySpace) boardElement;
         if (energySpace.getCount() == 1) {
             stackElement = new ImageView(energySpace1Image);
         } else if (energySpace.getCount() == 2) {
@@ -231,14 +242,14 @@ public class MapController {
     }
 
     @FXML
-    private ImageView buildWall(Tile tile) throws IOException {
+    private ImageView buildWall(BoardElement boardElement) throws IOException {
         Image wall1Image =
                 new Image(getClass().getResource("/images/elements/wall/wall1.png").toString());
         Image wall2Image =
                 new Image(getClass().getResource("/images/elements/wall/wall2.png").toString());
 
         ImageView stackElement = null;
-        Wall wall = (Wall) tile;
+        Wall wall = (Wall) boardElement;
 
         if (wall.getOrientations().size() == 1) {
             stackElement = new ImageView(wall1Image);
@@ -266,7 +277,7 @@ public class MapController {
     }
 
     @FXML
-    private ImageView buildConveyorBelt(Tile tile) throws IOException {
+    private ImageView buildConveyorBelt(BoardElement boardElement) throws IOException {
         Image conveyorBeltTB1Image =
                 new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTB1.png").toString());
         Image conveyorBeltRB1Image =
@@ -296,7 +307,7 @@ public class MapController {
         Image conveyorBeltTRB2Image =
                 new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTRB2.png").toString());
 
-        ConveyorBelt conveyorBelt = (ConveyorBelt) tile;
+        ConveyorBelt conveyorBelt = (ConveyorBelt) boardElement;
         ArrayList<String> orientations = conveyorBelt.getOrientations();
 
         ImageView stackElement = null;
@@ -429,7 +440,7 @@ public class MapController {
     }
 
     @FXML
-    private ImageView buildLaser(Tile tile) throws IOException {
+    private ImageView buildLaser(BoardElement boardElement) throws IOException {
         Image laser1Image =
                 new Image(getClass().getResource("/images/elements/laser/laser1.png").toString());
         Image laser2Image =
@@ -439,7 +450,7 @@ public class MapController {
 
 
         ImageView stackElement = null;
-        Laser laser = (Laser) tile;
+        Laser laser = (Laser) boardElement;
 
         if (laser.getCount() == 1) {
             stackElement = new ImageView(laser1Image);
@@ -455,7 +466,7 @@ public class MapController {
     }
 
     @FXML
-    private ImageView buildLaserBeam(Tile tile) throws IOException {
+    private ImageView buildLaserBeam(BoardElement boardElement) throws IOException {
 
         Image laserBeamCenter1Image =
                 new Image(getClass().getResource("/images/elements/laser/laserBeamCenter1.png").toString());
@@ -473,7 +484,7 @@ public class MapController {
 
         ImageView stackElement = null;
 
-        LaserBeam laserBeam = (LaserBeam) tile;
+        LaserBeam laserBeam = (LaserBeam) boardElement;
 
         if (laserBeam.getCount() == 1) {
             if (laserBeam.isFullWidth()) {
@@ -511,4 +522,9 @@ public class MapController {
         }
         return stackElement;
     }
+
+    public void setMap(List<List<List<BoardElement>>> gameMap) {
+        map.setMapFields(convertMap(gameMap));
+    }
+
 }

@@ -1,8 +1,8 @@
 package Desperatedrosseln.Logic;
 
 public enum DIRECTION {
-    UP(90),
-    DOWN(270),
+    TOP(90),
+    BOTTOM(270),
     LEFT(180),
     RIGHT(0);
 
@@ -22,6 +22,29 @@ public enum DIRECTION {
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        switch (this){
+            case TOP -> {
+                return "top";
+            }
+            case BOTTOM -> {
+                return"bottom";
+            }
+            case LEFT -> {
+                return "left";
+
+            }
+            case RIGHT -> {
+                return "right";
+            }
+            default -> {
+                return"unknown Direction";
+            }
+        }
+
     }
 }
 

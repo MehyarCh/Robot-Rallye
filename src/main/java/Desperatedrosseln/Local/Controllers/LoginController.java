@@ -76,9 +76,10 @@ public class LoginController {
             loginTextField.setStyle(String.valueOf(loginwarning));
             loginwarning.setText("Please write your name to continue");
         }else {
-            switchToLobbyScene();
+
             client = new Client();
             client.setClientName(loginTextField.getText());
+            switchToLobbyScene();
             client.sendHelloServer();
             System.out.println("Hello welcome " + loginTextField.getText());
         }

@@ -1,6 +1,7 @@
 package Desperatedrosseln.Local;
 
 
+import Desperatedrosseln.Json.utils.JsonDeserializer;
 import Desperatedrosseln.Local.Controllers.MainController;
 import Desperatedrosseln.Local.Protocols.*;
 import com.squareup.moshi.JsonAdapter;
@@ -58,6 +59,18 @@ public class Client implements Runnable {
 
     private void checkProtocolMessage(String message) throws IOException {
         //TODO: Logs
+        if(message.startsWith("{\"messageType\":\"GameStarted\"")){
+            JsonDeserializer jsonDeserializer = new JsonDeserializer();
+            ProtocolMessage<GameStarted> gameStartedProtocolMessage = jsonDeserializer.deserialize(message);
+            GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();
+            Desperatedrosseln.Logic.Elements.Map map =new Desperatedrosseln.Logic.Elements.Map(mainController.getMapController().convertMap(gameStarted.getGameMap()));
+            mainController.getMapController().setMap(map);
+            mainController.getMapController().showMap();
+            mainController.getMapController().setMap(gameStartedProtocolMessage.getMessageBody().getGameMap());
+
+            return;
+        }
+        System.out.println(message);
         Moshi moshi = new Moshi.Builder().build();
         Message msg;
         {
@@ -105,7 +118,12 @@ public class Client implements Runnable {
             case "SelectMap":
                 JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
                 SelectMap sm = selectMapJsonAdapter.fromJson(msg.getMessageBody());
+
                 //TODO: GUI map selection
+
+                JsonAdapter<MapSelected> mapSelectedJsonAdapter= moshi.adapter(MapSelected.class);
+                sendMessage("MapSelected",mapSelectedJsonAdapter.toJson(new MapSelected(sm.getMaps().get(0))));
+
                 break;
             case "ReceivedChat":
                 JsonAdapter<ReceivedChat> receivedChatJsonAdapter = moshi.adapter(ReceivedChat.class);
@@ -116,10 +134,12 @@ public class Client implements Runnable {
                     mainController.addChatMessage(getPlayerName(receivedChat.getFrom()) + ": " + receivedChat.getMessage());
                 }
             case "GameStarted":
+
+                //skipped
                 JsonAdapter<GameStarted> gameStartedJsonAdapter = moshi.adapter(GameStarted.class);
                 GameStarted gameStarted = gameStartedJsonAdapter.fromJson(msg.getMessageBody());
 
-                // GameMap gameMap = gameStarted.getMap();
+
 
                 break;
             case "Error":
@@ -128,6 +148,11 @@ public class Client implements Runnable {
                 }
                 break;
             case "CardPlayed":
+                break;
+            case "StartingPointTaken":
+
+                //ToDo
+
                 break;
         }
 

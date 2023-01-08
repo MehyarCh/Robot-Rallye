@@ -1,12 +1,11 @@
 package Desperatedrosseln.Json.utils;
 
 import Desperatedrosseln.Local.Protocols.*;
-import Desperatedrosseln.Logic.Elements.tiles.Tile;
+import Desperatedrosseln.Logic.Elements.BoardElement;
 
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 public class JsonMapReader {
 
@@ -26,10 +25,10 @@ public class JsonMapReader {
         }
     }
 
-    /*public List<List<List<Tile>>> readMapFromJson(String mapName) throws IOException {
+    /*public List<List<List<BoardElement>>> readMapFromJson(String mapName) throws IOException {
         JsonDeserializer deserializer = new JsonDeserializer();
         GameStarted gameStarted;
-        List<List<List<Tile>>> gameMap;
+        List<List<List<BoardElement>>> gameMap;
         if(Objects.equals(mapName, "testMap")) {
             gameStarted = deserializer.deserializeMessageBody(testMap);
             gameMap = gameStarted.getGameMap();
@@ -38,7 +37,7 @@ public class JsonMapReader {
             gameStarted = deserializer.deserializeMessageBody(dizzyHighway);
             gameMap = gameStarted.getGameMap();
             System.out.println(gameMap);
-            Tile tile = gameMap.get(0).get(0).get(0);
+            BoardElement tile = gameMap.get(0).get(0).get(0);
             System.out.println(tile instanceof Empty);
             return gameMap;
         } else {
@@ -46,13 +45,13 @@ public class JsonMapReader {
         }
     }*/
 
-    public List<List<List<Tile>>> readMapFromJson(String mapName) {
+    public List<List<List<BoardElement>>> readMapFromJson(String mapName) {
         ProtocolMessage<GameStarted> message;
         switch (mapName) {
             case "testMap":
                 message = deserializer.deserialize(testMap);
                 return message.getMessageBody().getGameMap();
-            case "dizzyHighway":
+            case "DizzyHighway":
                 message = deserializer.deserialize(dizzyHighway);
                 //System.out.println(message.getMessageBody().getGameMap());
                 return message.getMessageBody().getGameMap();

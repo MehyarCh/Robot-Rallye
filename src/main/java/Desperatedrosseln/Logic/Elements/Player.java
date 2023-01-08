@@ -1,7 +1,6 @@
 package Desperatedrosseln.Logic.Elements;
 
 import Desperatedrosseln.Logic.Cards.Card;
-import Desperatedrosseln.Logic.Elements.tiles.Robot;
 
 import java.util.ArrayList;
 import java.util.List;

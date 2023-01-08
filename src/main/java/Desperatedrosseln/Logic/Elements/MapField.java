@@ -1,20 +1,19 @@
 package Desperatedrosseln.Logic.Elements;
 
-import Desperatedrosseln.Logic.Elements.tiles.Tile;
 import java.util.List;
 
 public class MapField {
-    private List<Tile> types;
+    private List<BoardElement> types;
 
-    public MapField(List<Tile> typeList) {
+    public MapField(List<BoardElement> typeList) {
         this.types = typeList;
     }
 
-    public List<Tile> getTypes() {
+    public List<BoardElement> getTypes() {
         return types;
     }
 
-    public void setTypes(List<Tile> typeList) {
+    public void setTypes(List<BoardElement> typeList) {
         this.types = typeList;
     }
 }

@@ -1,35 +1,31 @@
 package Desperatedrosseln.Logic.Elements;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class BoardElement {
 
-    private int priority;
-    private Position position;
+    public List<String> types;
 
-    private ArrayList<String> orientations;
+    private String type;
+    private String isOnBoard;
+    private transient Position position;
 
-    public void execute(){
-
+    public BoardElement(String type, String isOnBoard) {
+        this.type = type;
+        this.isOnBoard = isOnBoard;
     }
-    public void execute(List<Robot> active_robots){
-
-    }
-
-    @Override
-    public String toString(){
-        return null;
+    public void setPosition(int x, int y) {
+        position = new Position(x, y);
     }
 
-    public Position getPosition(){
-        return this.position;
+    public Position getPosition() {
+        return position;
+    }
+    public String getType() {
+        return type;
     }
 
-    public ArrayList<String> getOrientations() {
-        return orientations;
+    public String getIsOnBoard() {
+        return isOnBoard;
     }
-
 }
-

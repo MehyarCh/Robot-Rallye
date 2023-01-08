@@ -1,6 +1,6 @@
 package Desperatedrosseln.Json.utils;
 
-import Desperatedrosseln.Logic.Elements.Checkpoint;
+import Desperatedrosseln.Logic.Elements.BoardElement;
 import Desperatedrosseln.Logic.Elements.tiles.*;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
@@ -10,20 +10,96 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class TileAdapter extends TypeAdapter<Tile> {
+public class TileAdapter extends TypeAdapter<BoardElement> {
     @Override
-    public void write(JsonWriter out, Tile value) throws IOException {
-        // Not used in this example
+    public void write(JsonWriter out, BoardElement value) throws IOException {
+        out.beginObject();
+
+        // Write the "type" field
+        out.name("type");
+        out.value(value.getType());
+        // Write the "isOnBoard" field
+        out.name("isOnBoard");
+        out.value(value.getIsOnBoard());
+
+        // Write the "orientations" field
+
+
+
+        if(value instanceof Wall || value instanceof Laser || value instanceof LaserBeam Laser || value instanceof Antenna || value instanceof PushPanel || value instanceof ConveyorBelt){
+
+            out.name("orientations");
+            out.beginArray();
+            switch (value.getType()){
+                case "Wall": Wall wall = (Wall) value;
+                    for (String orientation : wall.getOrientations()) {
+                    out.value(orientation);
+                }
+                    break;
+                case "Laser":Laser laser = (Laser) value;
+                    for (String orientation : laser.getOrientations()) {
+                        out.value(orientation);
+                    }
+                    break;
+                case "LaserBeam":LaserBeam laserBeam = (LaserBeam) value;
+                    for (String orientation : laserBeam.getOrientations()) {
+                        out.value(orientation);
+                    }
+                    break;
+                case "Antenna":Antenna antenna = (Antenna) value;
+                    for (String orientation : antenna.getOrientations()) {
+                        out.value(orientation);
+                    }
+                    break;
+                case "PushPanel":PushPanel pushPanel = (PushPanel) value;
+                    for (String orientation : pushPanel.getOrientations()) {
+                        out.value(orientation);
+                    }
+                    break;
+                case "ConveyorBelt":ConveyorBelt conveyorBelt = (ConveyorBelt) value;
+                    for (String orientation : conveyorBelt.getOrientations()) {
+                        out.value(orientation);
+                    }
+                    break;
+            }
+            out.endArray();
+        }
+
+
+
+        // Write the "speed" field for ConveyorBelt tiles
+        if (value instanceof ConveyorBelt) {
+            ConveyorBelt conveyorBelt = (ConveyorBelt) value;
+            out.name("speed");
+            out.value(conveyorBelt.getSpeed());
+        }
+
+        // Write the "count" field for Laser and Energy-Space tiles
+        if (value instanceof Laser || value instanceof EnergySpace) {
+            int count = 0;
+            if (value instanceof Laser) {
+                Laser laser = (Laser) value;
+                count = laser.getCount();
+            } else if (value instanceof EnergySpace) {
+                EnergySpace energySpace = (EnergySpace) value;
+                count = energySpace.getCount();
+            }
+            out.name("count");
+            out.value(count);
+        }
+
+        out.endObject();
     }
 
     @Override
-    public Tile read(JsonReader reader) throws IOException {
+    public BoardElement read(JsonReader reader) throws IOException {
 
         String type = null;
         String isOnBoard = null;
         ArrayList<String> orientations = new ArrayList<>();
         int speed = 0;
         int count = 0;
+        int number = 1;
 
         // Read the JSON object and determine the type of tile to create
         if (reader.peek() == JsonToken.NULL) {
@@ -53,6 +129,7 @@ public class TileAdapter extends TypeAdapter<Tile> {
                 case "count" -> {
                     count = reader.nextInt();
                 }
+
                 default -> reader.skipValue();
             }
         }
@@ -62,13 +139,14 @@ public class TileAdapter extends TypeAdapter<Tile> {
         return switch (type) {
             case "Empty" -> new Empty(type, isOnBoard);
             case "StartPoint" -> new StartPoint(type, isOnBoard);
-            case "CheckPoint" -> new CheckPoint(type, isOnBoard);
+            case "CheckPoint" -> new CheckPoint(type, isOnBoard, count);
             case "RestartPoint" -> new RestartPoint(type, isOnBoard, orientations);
             case "Antenna" -> new Antenna(type, isOnBoard, orientations);
             case "Wall" -> new Wall(type, isOnBoard, orientations);
             case "Laser" -> new Laser(type, isOnBoard, orientations, count);
             case "Energy-Space" -> new EnergySpace(type, isOnBoard, count);
             case "ConveyorBelt" -> new ConveyorBelt(type, isOnBoard, speed, orientations);
+            case "PushPanel" -> new PushPanel(type, isOnBoard, orientations);
             default -> null;
         };
     }

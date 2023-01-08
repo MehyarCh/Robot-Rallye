@@ -1,4 +1,8 @@
-package Desperatedrosseln.Logic.Elements;
+package Desperatedrosseln.Logic.Elements.tiles;
+
+import Desperatedrosseln.Logic.Elements.BoardElement;
+import Desperatedrosseln.Logic.Elements.Position;
+import Desperatedrosseln.Logic.Elements.Robot;
 
 import java.util.*;
 
@@ -31,11 +35,11 @@ public class GameMap {
     public List<BoardElement> getElementsOnPos(Position pos){
         return gameMap.get(pos.getX()).get(pos.getY());
     }
-    public List<Robot> getRobotsOnPos(Position pos){
-        List<Robot> robots = new ArrayList<>();
+    public List<Desperatedrosseln.Logic.Elements.Robot> getRobotsOnPos(Position pos){
+        List<Desperatedrosseln.Logic.Elements.Robot> robots = new ArrayList<>();
         List<BoardElement> elements = getElementsOnPos(pos);
         for(BoardElement element : elements){
-            if(element instanceof Robot){
+            if(element instanceof Desperatedrosseln.Logic.Elements.Robot){
                 robots.add((Robot) element);
             }
         }

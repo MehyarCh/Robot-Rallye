@@ -1,6 +1,7 @@
 package Desperatedrosseln.Logic;
 
 import Desperatedrosseln.Connection.ClientHandler;
+import Desperatedrosseln.Json.utils.JsonMapReader;
 import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Logic.AI.AIClient;
 import Desperatedrosseln.Logic.Cards.Card;
@@ -8,19 +9,21 @@ import Desperatedrosseln.Logic.Cards.Damagecard;
 import Desperatedrosseln.Logic.Elements.Position;
 import Desperatedrosseln.Logic.Elements.Robot;
 import Desperatedrosseln.Logic.Elements.*;
+import Desperatedrosseln.Logic.Elements.BoardElement;
+import Desperatedrosseln.Logic.Elements.tiles.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static Desperatedrosseln.Logic.DIRECTION.UP;
+import static Desperatedrosseln.Logic.DIRECTION.TOP;
 
 /**
  * @author Mehyar, Luca
  */
 public class Game {
-    private GameMap gameMap;
+    private Map gameMap;
     private static String currentMap;
     private static ArrayList<Player> players = new ArrayList<>();
     private ArrayList<BoardElement> boardElements;
@@ -59,19 +62,34 @@ public class Game {
             JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
             JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
             ArrayList<String> maps = new ArrayList<>();
-            maps.add("Dizzy highway");
-            client.sendMessage(messageJsonAdapter.toJson(new Message("SelectMap",selectMapJsonAdapter.toJson(new SelectMap(maps)))));
+            maps.add("DizzyHighway");
+            client.sendMessage("SelectMap",selectMapJsonAdapter.toJson(new SelectMap(maps)));
         }
     }
 
+    public void placeRobot(Player player, int x, int y){
+        gameMap.addElement(player.getRobot(),x,y);
+    }
+
     public void runStep() throws ClassNotFoundException {
-        if(phase== 2){
-            System.out.println("Programming phase");
-            //TODO: check players in reboot array and reposition their robots then take them out of reboot list
-            runProgrammingPhase();
-        }else if (phase==3){
-            System.out.println("Activation phase");
-            runActivationPhase();
+
+
+        switch (phase){
+            case 0:
+                System.out.println("AufbauPhase");
+                setUpBoard();
+                break;
+            case 1:
+                System.out.println("Upgrade Phase");
+                break;
+            case 2:System.out.println("Programming phase");
+                //TODO: check players in reboot array and reposition their robots then take them out of reboot list
+                runProgrammingPhase();
+                break;
+            case 3:System.out.println("Activation phase");
+                runActivationPhase();
+                break;
+
         }
 
     }
@@ -84,6 +102,34 @@ public class Game {
             //TODO: set number of checkpoints dynamically from the gamemap info
         }
     }
+
+    /*
+    Aufbauphase
+     */
+    public void setUpBoard(){
+        JsonMapReader jsonMapReader = new JsonMapReader();
+        List<List<List<BoardElement>>> gameMapList = jsonMapReader.readMapFromJson(currentMap);
+        gameMap = new Map(convertMap(gameMapList));
+
+
+
+    }
+
+    private List<List<MapField>> convertMap(List<List<List<BoardElement>>> gameMapList) {
+        List<List<MapField>> mapFields = new ArrayList<>();
+
+        for (List<List<BoardElement>> rows : gameMapList) {
+            List<MapField> column = new ArrayList<>();
+            for (List<BoardElement> list : rows) {
+                List<BoardElement> typeList = new ArrayList<>(list);
+                MapField mapField = new MapField(typeList);
+                column.add(mapField);
+            }
+            mapFields.add(column);
+        }
+        return mapFields;
+    }
+
 
     /**
      * this method initiates the programmingphase
@@ -135,7 +181,7 @@ public class Game {
 
 
     private void broadcastMessage(String activePhase) {
-        //TODO: DELETE THIS! -> Method in ClientHandler
+        //TODO:
     }
 
     /**
@@ -191,7 +237,7 @@ public class Game {
                 }
                 case "Worm"->{
                     drawSpamCard(curr,2);
-                    curr.getRobot().reboot(DIRECTION.UP);
+                    curr.getRobot().reboot(DIRECTION.TOP);
                     rebootPlayer(curr);
                 }
                 case "Trojan"->{
@@ -338,7 +384,8 @@ public class Game {
         List<Robot> active_robots = getActiveRobots();
         for(BoardElement boardelement : boardElements){
             if(!(boardelement instanceof Robot)) {
-                boardelement.execute(active_robots);
+                //ToDo Redo
+           //     boardelement.execute(active_robots);
             }
         }
         activatePits();
@@ -435,11 +482,11 @@ public class Game {
         int x = pos.getX();
         int y = pos.getY();
         switch (direction){
-            case UP -> {
+            case TOP -> {
                 x = pos.getX()-1;
                 y = pos.getY();
             }
-            case DOWN -> {
+            case BOTTOM -> {
                 x = pos.getX()+1;
                 y = pos.getY();
             }
@@ -546,12 +593,13 @@ public class Game {
         List<BoardElement> checkpoints = getListOf("Checkpoint");
         for(BoardElement checkpoint : checkpoints){
             //on each checkpoint, check robots on it
-            List<Robot> elements = gameMap.getRobotsOnPos(checkpoint.getPosition());
+            CheckPoint cp = (CheckPoint) checkpoint;
+            List<Robot> elements = gameMap.getRobotsOnPos(cp.getPosition());
 
             for(Robot robot : elements){
                 //foreach robot on checkpoint if the number of the checkpoint corresponds to the number of the next checkpoint then set to
                 Player player = getPlayerByRobot(robot);
-                Checkpoint checkpoint1 = (Checkpoint) checkpoint;
+                CheckPoint checkpoint1 = (CheckPoint) checkpoint;
                 checkpoint1.execute(player);
                 //TODO: protokoll checkpoint reached
                 if(player.getNextCheckPoint()> checkpoints.size()){
@@ -687,8 +735,8 @@ public class Game {
             PushPanel p1 = (PushPanel) pp;
             if (p1.getRegisters().contains(current_register)) {
                 //get a list of all robots targeted by this pushpanel
-                List<Robot> robotList = gameMap.getRobotsOnPos(pp.getPosition());
-                pp.execute(robotList);
+                List<Robot> robotList = gameMap.getRobotsOnPos(p1.getPosition());
+                p1.execute(robotList);
             }
         }
     }
@@ -697,10 +745,11 @@ public class Game {
         List<BoardElement> pits = getListOf("Pit");
         for(BoardElement pit : pits) {
             if (robotOnElement(pit)) {
-                List<Robot> robotList = gameMap.getRobotsOnPos(pit.getPosition());
+                Pit pit1 = (Pit)pit;
+                List<Robot> robotList = gameMap.getRobotsOnPos(pit1.getPosition());
                 for(Robot curr : robotList) {
-                    if (curr.getPosition().equals(pit.getPosition())) {
-                        curr.reboot(UP);
+                    if (curr.getPosition().equals(pit1.getPosition())) {
+                        curr.reboot(TOP);
                         rebootPlayer(getPlayerByRobot(curr));
                     }
                 }
@@ -759,7 +808,7 @@ public class Game {
         }
     }
 
-    public static String getCurrentMap() {
+    public String getCurrentMap() {
         return currentMap;
     }
 

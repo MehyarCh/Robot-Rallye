@@ -1,9 +1,17 @@
 package Desperatedrosseln.Logic.Elements.tiles;
 
-import java.util.ArrayList;
+import Desperatedrosseln.Logic.DIRECTION;
+import Desperatedrosseln.Logic.Elements.BoardElement;
+import Desperatedrosseln.Logic.Elements.Position;
+import Desperatedrosseln.Logic.Elements.Robot;
 
-public class Laser extends Tile {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Laser extends BoardElement {
     ArrayList<String> orientations;
+
+
     private int count;
     public Laser(String type, String isOnBoard, ArrayList<String> orientations, int count) {
         super(type, isOnBoard);
@@ -26,4 +34,41 @@ public class Laser extends Tile {
     public void setCount(int count) {
         this.count = count;
     }
+
+    public void execute(List<Desperatedrosseln.Logic.Elements.Robot> active_robots){
+
+
+    }
+
+
+    /**
+     *
+     * @param active_robots
+     * @return a list of robots
+     */
+    private List<Desperatedrosseln.Logic.Elements.Robot> robotsHit(List<Robot> active_robots){
+        return  active_robots;
+    }
+
+    @Override
+    public String toString(){
+        return "Laser";
+    }
+
+    public DIRECTION getDirection(){
+        switch (orientations.get(0)){
+            case "top":
+                return DIRECTION.TOP;
+            case "bottom":
+                return DIRECTION.BOTTOM;
+            case "left":
+               return DIRECTION.LEFT;
+            case "right":
+                return DIRECTION.RIGHT;
+            default:
+                return null;
+        }
+
+    }
+
 }

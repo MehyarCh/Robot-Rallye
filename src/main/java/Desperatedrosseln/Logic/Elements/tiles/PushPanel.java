@@ -1,26 +1,24 @@
-package Desperatedrosseln.Logic.Elements;
+package Desperatedrosseln.Logic.Elements.tiles;
 
-import javafx.geometry.Pos;
+import Desperatedrosseln.Logic.Elements.BoardElement;
+import Desperatedrosseln.Logic.Elements.Position;
+import Desperatedrosseln.Logic.Elements.Robot;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PushPanel extends BoardElement{
+public class PushPanel extends BoardElement {
 
  ArrayList<String> orientations;
  private ArrayList<Integer> registers;
 
- private Position position;
 
 
-    public PushPanel(Position position, String orientation, ArrayList<Integer> registers) {
 
-        this.position = position;
-        this.orientations = new ArrayList<>();
-        orientations.add(orientation);
+    public PushPanel(String type, String isOnBoard, ArrayList<String> orientations) {
+        super(type,isOnBoard);
+        this.orientations = orientations;
 
-        this.registers = registers;
     }
 
     public ArrayList<String> getOrientations() {
@@ -30,11 +28,13 @@ public class PushPanel extends BoardElement{
     public ArrayList<Integer> getRegisters() {
         return registers;
     }
-    @Override
-    public void execute(List<Robot> robotList) {
+
+    public void execute(List<Desperatedrosseln.Logic.Elements.Robot> robotList) {
         //TODO
         for(Robot curr : robotList) {
             curr.push(orientations.get(0)); //first element of the orientations list in panel contains the direction in which the push panel pushes the robot
         }
     }
+
+
 }

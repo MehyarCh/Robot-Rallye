@@ -1,8 +1,10 @@
 package Desperatedrosseln.Logic.Elements.tiles;
 
+import Desperatedrosseln.Logic.Elements.BoardElement;
+
 import java.util.ArrayList;
 
-public class Antenna extends Tile {
+public class Antenna extends BoardElement {
 
     private ArrayList<String> orientations;
 

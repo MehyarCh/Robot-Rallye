@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.*;
 
+import static Desperatedrosseln.Local.Controllers.LoginController.client;
+
 public class MainController {
 
     DataOutputStream dos;
@@ -48,7 +50,7 @@ public class MainController {
 
     List<List<MapField>> mapFields;
 
-    //public Client client;
+
 
     @FXML
     private GridPane mapGrid;
@@ -155,7 +157,7 @@ public class MainController {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/mainScene.fxml"));
         loader.setController(this);
-
+        mapController = new MapController(mapGrid);
         try {
             root = loader.load();
             scene = new Scene(root);
@@ -213,8 +215,8 @@ public class MainController {
     public void startMainScene(Stage stage) throws IOException {
         this.stage = stage;
 
-        mapController = new MapController(mapGrid);
-        mapController.showMap("dizzyHighway");
+
+       // mapController.showMap("dizzyHighway");
 
         stage.setScene(scene);
         stage.setMinHeight(720);
@@ -239,7 +241,7 @@ public class MainController {
 
             //System.out.println(client.getName()+ ": "+ msg);
 
-            //client.sendChatMessage(msg, -1);
+            client.sendChatMessage(msg, -1);
 
             chat_input.setText("");
             chat_input.requestFocus();
@@ -259,7 +261,11 @@ public class MainController {
     }
 
     private void setStreams(){
-        this.dos = LoginController.client.getOutputStr();
-        this.dis = LoginController.client.getInputStr();
+        this.dos = client.getOutputStr();
+        this.dis = client.getInputStr();
+    }
+
+    public MapController getMapController() {
+        return mapController;
     }
 }
