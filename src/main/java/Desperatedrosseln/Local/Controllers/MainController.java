@@ -334,7 +334,7 @@ public class MainController {
 
     }
 
-    void selectHand(StackPane card){
+    public void selectHand(StackPane card){
         registerCards.get(registerTrack++).getChildren().add(card.getChildren().get(0));
         card.getChildren().removeAll();
         registerTrack%=5;

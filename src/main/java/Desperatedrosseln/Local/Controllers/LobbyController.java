@@ -75,28 +75,39 @@ public class LobbyController {
     public void onButtonClicked(ActionEvent event) throws IOException {
         Button clickedButton = (Button) event.getSource();
 
-        mainController.startMainScene(stage);
 
+        int selectedRobot = 0;
         switch (clickedButton.getId()) {
             case "player-icon--1":
                 System.out.println("PINK WAS PRESSED");
+                selectedRobot = 1;
                 break;
             case "player-icon--2":
                 System.out.println("Yellow WAS PRESSED");
+                selectedRobot = 2;
                 break;
             case "player-icon--3":
                 System.out.println("Blue was Pressed");
+                selectedRobot = 3;
                 break;
             case "player-icon--4":
                 System.out.println("Green was Pressed");
+                selectedRobot = 4;
                 break;
             case "player-icon--5":
                 System.out.println("Orange was pressed");
+                selectedRobot = 5;
                 break;
             case "player-icon--6":
                 System.out.println("Red was pressed");
+                selectedRobot = 6;
                 break;
         }
+
+        if(!client.getRobotIDs().contains(selectedRobot)){
+            mainController.startMainScene(stage);
+        }
+
     }
 
 

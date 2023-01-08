@@ -22,7 +22,7 @@ public class Client implements Runnable {
     HashMap<String, Integer> localPlayerList = new HashMap<>();
     private MainController mainController;
     private String protocol = "Version 0.1";
-
+    ArrayList<Integer> robotIDs = new ArrayList<>();
     private String clientName;
 
 
@@ -115,7 +115,9 @@ public class Client implements Runnable {
                 PlayerAdded playerAdded = playerAddedJsonAdapter.fromJson(msg.getMessageBody());
 
                 localPlayerList.put(playerAdded.getName(), playerAdded.getClientID());
-
+                if(!robotIDs.contains(playerAdded.getFigure())){
+                    robotIDs.add(playerAdded.getFigure());
+                }
                 if (playerAdded.getClientID() == clientID) {                                      //TODO: Ready button?
                     JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
                     sendMessage("SetStatus", setStatusJsonAdapter.toJson(new SetStatus(true)));
@@ -275,6 +277,10 @@ public class Client implements Runnable {
 
     public ArrayList<String> getCardsInHand() {
         return cardsInHand;
+    }
+
+    public ArrayList<Integer> getRobotIDs() {
+        return robotIDs;
     }
 }
 
