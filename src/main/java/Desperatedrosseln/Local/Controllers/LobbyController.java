@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
@@ -38,6 +39,8 @@ public class LobbyController {
 
     @FXML
     private Button playerIconPink;
+    @FXML
+    private Label playersonline;
 
     public LobbyController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/lobbyScene.fxml"));
@@ -64,6 +67,7 @@ public class LobbyController {
         mainController = new MainController();
         client.setMainController(mainController);
         client.sendHelloServer();
+        playersonline.setText("Players currently in lobby: " );
         this.stage = stage;
         stage.setScene(scene);
         stage.setResizable(false);
@@ -79,7 +83,7 @@ public class LobbyController {
         int selectedRobot = 0;
         switch (clickedButton.getId()) {
             case "player-icon--1":
-                System.out.println("PINK WAS PRESSED");
+                System.out.println("Brown WAS PRESSED");
                 selectedRobot = 1;
                 break;
             case "player-icon--2":

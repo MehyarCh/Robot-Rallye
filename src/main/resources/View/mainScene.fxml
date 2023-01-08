@@ -137,7 +137,10 @@
                                GridPane.vgrow="ALWAYS">
                         <Label id="card" styleClass="card-area"/>
                     </StackPane>
-
+                    <Button fx:id="programdone"
+                            onAction="#onProgrammingDone"
+                            GridPane.columnIndex="8"
+                            styleClass="button, programdone-button, button--primary"/>
 
                 </GridPane>
                 <GridPane styleClass="card-row, lower-card-row"

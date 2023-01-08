@@ -238,6 +238,11 @@ public class MainController {
             onClickSend();
         }
     }
+    @FXML
+    public void onProgrammingDone() {
+        //TODO: send register list to server
+        //TODO: send cards left in hand to server
+    }
 
     @FXML
     void onClickSend() {

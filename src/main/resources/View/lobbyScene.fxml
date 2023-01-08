@@ -17,7 +17,7 @@
             <ImageView styleClass="logo, logo--login"/>
         </VBox>
         <VBox styleClass="login-form-wrapper">
-            <Label text="Choose a color"
+            <Label text="Choose a robot"
                    styleClass="headline-3, color--light"/>
             <HBox id="player-bar"
                   styleClass="player-bar, player-bar--lobby">
@@ -25,7 +25,7 @@
                     <Button onAction="#onButtonClicked"
                             id="player-icon--1"
                             styleClass="player-icon"/>
-                    <Label text="Pink"
+                    <Label text="Brown"
                            styleClass="headline-4, color--light"/>
                 </VBox>
                 <VBox styleClass="player-wrapper">
@@ -66,6 +66,7 @@
             </HBox>
         </VBox>
         <Label text="5 of 6 players ready"
+               fx:id="playersonline"
                styleClass="headline-3, color--light"/>
     </VBox>
 </VBox>
