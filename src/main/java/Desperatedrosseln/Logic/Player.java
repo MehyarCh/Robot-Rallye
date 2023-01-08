@@ -181,7 +181,7 @@ public class Player {
             }
         }
     }
-//also increments registerTrack
+    //also increments registerTrack
     public void addToRegister(String cardString){
         if(registerTrack == 5){
             System.out.println("register full for " + name);
@@ -212,12 +212,4 @@ public class Player {
         return card;
     }
 
-    public ArrayList<String> getHandasStrings() {
-        ArrayList<String> cards =new ArrayList<>();
-        for (Card card:
-             hand) {
-            cards.add(card.toString());
-        }
-        return cards;
-    }
 }
