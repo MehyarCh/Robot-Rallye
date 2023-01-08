@@ -9,6 +9,7 @@ import com.squareup.moshi.Moshi;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,7 +27,7 @@ public class Server {
 
     public void startServer() {
 
-        game = new Game(port,protocol);
+        game = new Game(port,protocol, ClientHandler.clients);
 
         while (!serverSocket.isClosed()) {
             try {

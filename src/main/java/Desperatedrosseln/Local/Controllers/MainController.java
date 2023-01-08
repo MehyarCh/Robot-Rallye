@@ -2,11 +2,14 @@ package Desperatedrosseln.Local.Controllers;
 
 //import Desperatedrosseln.Local.Client;
 
+import Desperatedrosseln.Local.Protocols.SelectedCard;
 import Desperatedrosseln.Logic.Elements.MapField;
 import Desperatedrosseln.Local.CardLabels.*;
 import Desperatedrosseln.Local.Client;
 import Desperatedrosseln.Logic.Cards.*;
 import Desperatedrosseln.Logic.Cards.Programming.*;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.*;
@@ -242,6 +245,17 @@ public class MainController {
     public void onProgrammingDone() {
         //TODO: send register list to server
         //TODO: send cards left in hand to server
+
+        if(registerCards1.size()==5){
+            Moshi moshi = new Moshi.Builder().build();
+
+            JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
+            for(int i=1 ; i<=5 ; ++i){
+               client.sendMessage("SelectedCard",selectedCardJsonAdapter.toJson(new SelectedCard(registerCards1.get(i),i)));
+            }
+        }
+
+
     }
 
     @FXML
@@ -312,7 +326,7 @@ public class MainController {
                 case "RightTurn":
                     img = new Image(getClass().getResource("/images/Card/rightTurn.jpg").toString());
                     break;
-                case "U-Turn":
+                case "UTurn":
                     img = new Image(getClass().getResource("/images/Card/u-turn.jpg").toString());
                     break;
                 case "Again":

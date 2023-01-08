@@ -1,22 +1,18 @@
 package Desperatedrosseln.Connection;
 
-import Desperatedrosseln.Json.utils.JsonFileReader;
 import Desperatedrosseln.Json.utils.JsonMapReader;
 import Desperatedrosseln.Json.utils.JsonSerializer;
 import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Local.Protocols.Error;
-import Desperatedrosseln.Logic.Cards.Card;
 import Desperatedrosseln.Logic.Elements.Robot;
 import Desperatedrosseln.Logic.Game;
 import Desperatedrosseln.Logic.Player;
 import com.squareup.moshi.JsonAdapter;
-import com.squareup.moshi.JsonEncodingException;
 import com.squareup.moshi.Moshi;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -208,6 +204,19 @@ public class ClientHandler implements Runnable {
 
                     JsonAdapter<StartingPointTaken> startingPointTakenJsonAdapter = moshi.adapter(StartingPointTaken.class);
                     broadcastMessage("StartingPointTaken", startingPointTakenJsonAdapter.toJson(new StartingPointTaken(setStartingPoint.getX(),setStartingPoint.getY(),clientID)));
+                    break;
+                case "SelectedCard":
+                    JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
+                    SelectedCard selectedCard = selectedCardJsonAdapter.fromJson(message.getMessageBody());
+                    player.addToRegister(selectedCard.getCard());
+                    if(player.getRegisterSize()<5){
+                       JsonAdapter<CardSelected> cardSelectedJsonAdapter = moshi.adapter(CardSelected.class);
+                       broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID,selectedCard.getRegister())));
+                    }else{
+                        JsonAdapter<SelectionFinished> selectionFinishedJsonAdapter = moshi.adapter(SelectionFinished.class);
+                        broadcastMessage("SelectionFinished", selectionFinishedJsonAdapter.toJson(new SelectionFinished(clientID)));
+                    }
+
                     break;
 
             }

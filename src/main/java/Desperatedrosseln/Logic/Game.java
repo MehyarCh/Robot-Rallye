@@ -42,6 +42,7 @@ public class Game {
     private ArrayList<Card> viruspile = new ArrayList<>(18);
     private ArrayList<Card> trojanpile = new ArrayList<>(12);
     private ArrayList<Card> wormpile = new ArrayList<>(6);
+    private ArrayList<ClientHandler> clients;
 
     //TODO: availablePiles (protocoll 1.0 bulletpoint 8)
 
@@ -49,9 +50,10 @@ public class Game {
     private final int port;
     private String protocol = "Version 1.0";
 
-    public Game(int port, String protocol) {
+    public Game(int port, String protocol, ArrayList<ClientHandler> clients) {
         this.protocol = protocol;
         this.port = port;
+        this.clients=clients;
     }
 
 
@@ -138,13 +140,17 @@ public class Game {
         //send the current ActivePhase to all Clients
         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
         ActivePhase activePhase2 = new ActivePhase(phase);
-        broadcastMessage(messageJsonAdapter.toJson(new Message("ActivePhase", activePhaseJsonAdapter.toJson(activePhase2))));
+        broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase2));
         for(Player player : players){
             int shuffled = player.programmingPhase();
             if(shuffled==1){
                 //TODO: protokoll shufflecoding
+
             }
             //TODO: protokoll yourcards
+
+
+
             //TODO: notyourcards
         }
         while(!players.isEmpty()){
@@ -179,8 +185,13 @@ public class Game {
     }
 
 
-    private void broadcastMessage(String activePhase) {
+    private void broadcastMessage(String type,String json) {
         //TODO:
+        for (ClientHandler client:
+             clients) {
+            client.sendMessage(type,json);
+        }
+
     }
 
     /**
@@ -191,7 +202,7 @@ public class Game {
         //send the current ActivePhase to all Clients
         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
         ActivePhase activePhase3 = new ActivePhase(phase);
-        broadcastMessage(messageJsonAdapter.toJson(new Message("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3))));
+        broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
 
         //for each register
         for(int current_register=0; current_register<5; current_register++){
@@ -204,7 +215,7 @@ public class Game {
                         //Server sends currentPlayer message to every Client
                         JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
                         CurrentPlayer currentPlayer = new CurrentPlayer(playing.getID());
-                        broadcastMessage(messageJsonAdapter.toJson(new Message("CurrentPlayer", currentPlayerJsonAdapter.toJson(currentPlayer))));
+                        broadcastMessage("CurrentPlayer", currentPlayerJsonAdapter.toJson(currentPlayer));
 
                         //the active player plays their card in the current register
                         playCardByType(curr.getRegisterIndex(current_register),curr, current_register);
@@ -766,7 +777,7 @@ public class Game {
     public void robotMovedProtokoll(Robot robot){
         JsonAdapter<Movement> movementJsonAdapter = moshi.adapter(Movement.class);
         Movement movement = new Movement(robot.getID(), robot.getPosition().getX(), robot.getPosition().getY()); //TODO: is the difference between old and new coordinates needed, or just the new position? atm: only the new position is shown
-        broadcastMessage(messageJsonAdapter.toJson(new Message("Movement", movementJsonAdapter.toJson(movement))));
+        broadcastMessage("Movement", movementJsonAdapter.toJson(movement));
     }
 
     /**
@@ -778,7 +789,7 @@ public class Game {
     public void robotTurnedProtokoll(Robot robot, String rotation){
         JsonAdapter<PlayerTurning> playerTurningJsonAdapter = moshi.adapter(PlayerTurning.class);
         PlayerTurning playerTurning = new PlayerTurning(robot.getID(), rotation);
-        broadcastMessage(messageJsonAdapter.toJson(new Message("PlayerTurning", playerTurningJsonAdapter.toJson(playerTurning))));
+        broadcastMessage("PlayerTurning", playerTurningJsonAdapter.toJson(playerTurning));
     }
 
     /**
@@ -790,7 +801,7 @@ public class Game {
     public void drawDamageProtokoll(Robot robot, ArrayList<Card> cards){
         JsonAdapter<DrawDamage> drawDamageJsonAdapter = moshi.adapter(DrawDamage.class);
         DrawDamage drawDamage = new DrawDamage(robot.getID(), cards);
-        broadcastMessage(messageJsonAdapter.toJson(new Message("DrawDamage", drawDamageJsonAdapter.toJson(drawDamage))));
+        broadcastMessage("DrawDamage", drawDamageJsonAdapter.toJson(drawDamage));
     }
 
     public void setPlayerValues(){                              //TODO: redo

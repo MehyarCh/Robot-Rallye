@@ -1,7 +1,7 @@
 package Desperatedrosseln.Logic;
 
-import Desperatedrosseln.Logic.Cards.Card;
-import Desperatedrosseln.Logic.Cards.Programmingcard;
+import Desperatedrosseln.Logic.Cards.*;
+import Desperatedrosseln.Logic.Cards.Programming.*;
 import Desperatedrosseln.Logic.Elements.Robot;
 
 import java.util.ArrayList;
@@ -21,7 +21,10 @@ public class Player {
 
     private List<Card> hand = new ArrayList<>(9);
     private Card[] registers = new Card[5];
+    private int registerTrack =0;
     private List <Card> discarded;
+
+
 
     public Player() {
 
@@ -178,4 +181,42 @@ public class Player {
             }
         }
     }
+//also increments registerTrack
+    public void addToRegister(String cardString){
+        if(registerTrack == 5){
+            System.out.println("register full for " + name);
+            return;
+        }
+        Card card = null;
+        switch (cardString){
+            case "Again": card = new Again();
+                break;
+            case "MoveBack": card = new MoveBack();
+                break;
+            case "MoveOne": card = new MoveOne();
+                break;
+            case "MoveTwo": card = new MoveTwo();
+                break;
+            case "MoveThree": card = new MoveThree();
+                break;
+            case "PowerUp": card = new PowerUp();
+                break;
+            case "TurnLeft": card = new TurnLeft();
+                break;
+            case "TurnRight": card = new TurnRight();
+                break;
+            case "UTurn": card = new UTurn();
+                break;
+        }
+
+
+
+        registers[registerTrack++] = card;
+    }
+    public int getRegisterSize(){
+        return registerTrack;
+    }
+
+
+
 }
