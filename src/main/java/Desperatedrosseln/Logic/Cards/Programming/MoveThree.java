@@ -11,7 +11,7 @@ public class MoveThree extends Programmingcard {
     }
     @Override
     public String toString() {
-        return "moveThree";
+        return "MoveThree";
     }
 
 }

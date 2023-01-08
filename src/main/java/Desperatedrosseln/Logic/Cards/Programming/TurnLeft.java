@@ -11,7 +11,7 @@ public class TurnLeft extends Programmingcard {
     }
     @Override
     public String toString() {
-        return "turnLeft";
+        return "TurnLeft";
     }
 
 }

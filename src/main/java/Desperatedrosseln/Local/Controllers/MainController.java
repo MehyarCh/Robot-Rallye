@@ -246,12 +246,20 @@ public class MainController {
         //TODO: send register list to server
         //TODO: send cards left in hand to server
 
-        if(registerCards1.size()==5){
+        ArrayList<String> cards = new ArrayList<>();
+        cards.add("RightTurn");
+        cards.add("Move1");
+        cards.add("LeftTurn");
+        cards.add("UTurn");
+        cards.add("Move3");
+        //ToDo change back to register
+
+        if(cards.size()==5){
             Moshi moshi = new Moshi.Builder().build();
 
             JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
-            for(int i=1 ; i<=5 ; ++i){
-               client.sendMessage("SelectedCard",selectedCardJsonAdapter.toJson(new SelectedCard(registerCards1.get(i),i)));
+            for(int i=0 ; i<5 ; ++i){
+               client.sendMessage("SelectedCard",selectedCardJsonAdapter.toJson(new SelectedCard(cards.get(i),i)));
             }
         }
 
@@ -303,7 +311,7 @@ public class MainController {
         cards.add("");
         cards.add("Move1");
         cards.add("LeftTurn");
-        cards.add("U-Turn");
+        cards.add("UTurn");
         cards.add("");
         cards.add("");
         cards.add("Move3");

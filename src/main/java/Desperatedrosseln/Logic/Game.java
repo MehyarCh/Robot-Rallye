@@ -112,8 +112,6 @@ public class Game {
         List<List<List<BoardElement>>> gameMapList = jsonMapReader.readMapFromJson(currentMap);
         gameMap = new Map(convertMap(gameMapList));
 
-
-
     }
 
     private List<List<MapField>> convertMap(List<List<List<BoardElement>>> gameMapList) {
@@ -144,14 +142,23 @@ public class Game {
         for(Player player : players){
             int shuffled = player.programmingPhase();
             if(shuffled==1){
-                //TODO: protokoll shufflecoding
-
+                JsonAdapter<ShuffleCoding> shuffleCodingJsonAdapter = moshi.adapter(ShuffleCoding.class);
+                broadcastMessage("ShuffleCoding",shuffleCodingJsonAdapter.toJson(new ShuffleCoding(player.getID())));
             }
-            //TODO: protokoll yourcards
+
+            for (ClientHandler client:
+                 clients) {
+                JsonAdapter<YourCards> yourCardsJsonAdapter = moshi.adapter(YourCards.class);
+                JsonAdapter<NotYourCards> notYourCardsJsonAdapter = moshi.adapter(NotYourCards.class);
+                if(client.getClientID() == player.getID()){
+                    client.sendMessage("YourCards",yourCardsJsonAdapter.toJson(new YourCards(player.getHandasStrings())));
+                }else {
+                    client.sendMessage("NotYourCards",notYourCardsJsonAdapter.toJson(new NotYourCards(player.getID(),player.getHand().size())));
+                }
+            }
 
 
 
-            //TODO: notyourcards
         }
         while(!players.isEmpty()){
             //sleep and wait for changes

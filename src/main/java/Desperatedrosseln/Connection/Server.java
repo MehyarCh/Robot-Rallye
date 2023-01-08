@@ -57,5 +57,8 @@ public class Server {
         System.out.println("[SERVER]: Waiting for client connection");
         Server server = new Server();
         server.startServer();
+
+
+
     }
 }
