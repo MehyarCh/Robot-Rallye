@@ -187,36 +187,30 @@ public class Player {
             System.out.println("register full for " + name);
             return;
         }
-        Card card = null;
-        switch (cardString){
-            case "Again": card = new Again();
-                break;
-            case "MoveBack": card = new MoveBack();
-                break;
-            case "MoveOne": card = new MoveOne();
-                break;
-            case "MoveTwo": card = new MoveTwo();
-                break;
-            case "MoveThree": card = new MoveThree();
-                break;
-            case "PowerUp": card = new PowerUp();
-                break;
-            case "TurnLeft": card = new TurnLeft();
-                break;
-            case "TurnRight": card = new TurnRight();
-                break;
-            case "UTurn": card = new UTurn();
-                break;
-        }
-
-
-
+        Card card = getCardFromHand(cardString);
         registers[registerTrack++] = card;
     }
     public int getRegisterSize(){
         return registerTrack;
     }
 
+    /**
+     *
+     * @param type the type of the card to look for within the hand
+     * @return the first occurence of the card from that type to put into the register
+     */
+    private Card getCardFromHand(String type){
+        Card card = null;
+        int i=0;
+        while(i<hand.size()){
+            if(hand.get(i).toString().equals(type)){
+                card = hand.get(i);
+                hand.remove(i);
+            }
+            i++;
+        }
+        return card;
+    }
 
 
 }
