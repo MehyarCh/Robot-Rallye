@@ -203,6 +203,10 @@ public class MainController {
         }
     }
 
+    public MapController getMapController(){
+        return mapController;
+    }
+
     public void startMainScene(Stage stage) throws IOException {
         this.stage = stage;
 
@@ -296,36 +300,40 @@ public class MainController {
                         mouseEvent.getSource() == handCardNine
                 ) {
                     int index = handCards.indexOf(mouseEvent.getSource());
-                    if (firstFreeRegister != -1) {
-                        // adding to register
-                        registerValues.set(firstFreeRegister, handValues.get(index));
-                        // adding register image
-                        Image image = showCardImage(handValues.get(index));
-                        ImageView imageView = new ImageView(image);
-                        imageView.setFitHeight(110);
-                        imageView.setPreserveRatio(true);
-                        registerCards.get(firstFreeRegister).getChildren().add(imageView);
-                        // Removing from Hand
-                        handValues.set(index, null);
-                        // Removing handImage
-                        handCards.get(index).getChildren().remove(0);
-                    } else {
-                        System.out.println("Already 5 cards in the registers!");
+                    if (handValues.get(index) != null) {
+                        if (firstFreeRegister != -1) {
+                            // adding to register
+                            registerValues.set(firstFreeRegister, handValues.get(index));
+                            // adding register image
+                            Image image = showCardImage(handValues.get(index));
+                            ImageView imageView = new ImageView(image);
+                            imageView.setFitHeight(110);
+                            imageView.setPreserveRatio(true);
+                            registerCards.get(firstFreeRegister).getChildren().add(imageView);
+                            // Removing from Hand
+                            handValues.set(index, null);
+                            // Removing handImage
+                            handCards.get(index).getChildren().remove(0);
+                        } else {
+                            System.out.println("Already 5 cards in the registers!");
+                        }
                     }
                 } else {
                     // adding to hand
                     int index = registerCards.indexOf(mouseEvent.getSource());
-                    handValues.set(firstFreeHand, registerValues.get(index));
-                    // adding hand image
-                    Image image = showCardImage(registerValues.get(index));
-                    ImageView imageView = new ImageView(image);
-                    imageView.setFitHeight(110);
-                    imageView.setPreserveRatio(true);
-                    handCards.get(firstFreeHand).getChildren().add(imageView);
-                    // Removing from register
-                    registerValues.set(index, null);
-                    // Removing registerImage
-                    registerCards.get(index).getChildren().remove(0);
+                    if (registerValues.get(index) != null) {
+                        handValues.set(firstFreeHand, registerValues.get(index));
+                        // adding hand image
+                        Image image = showCardImage(registerValues.get(index));
+                        ImageView imageView = new ImageView(image);
+                        imageView.setFitHeight(110);
+                        imageView.setPreserveRatio(true);
+                        handCards.get(firstFreeHand).getChildren().add(imageView);
+                        // Removing from register
+                        registerValues.set(index, null);
+                        // Removing registerImage
+                        registerCards.get(index).getChildren().remove(0);
+                    }
                 }
             });
         }
@@ -363,7 +371,6 @@ public class MainController {
 
     public Image showCardImage(String cardValue) {
         return switch (cardValue) {
-            case "" -> new Image(getClass().getResource("/images/Card/move1.jpg").toString());
             case "Move1" -> new Image(getClass().getResource("/images/Card/move1.jpg").toString());
             case "Move2" -> new Image(getClass().getResource("/images/Card/move2.jpg").toString());
             case "LeftTurn" -> new Image(getClass().getResource("/images/Card/leftTurn.jpg").toString());
@@ -440,7 +447,4 @@ public class MainController {
         this.dos = client.getOutputStr();
         this.dis = client.getInputStr();
     }
-
-
-
 }
