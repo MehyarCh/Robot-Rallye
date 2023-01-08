@@ -153,11 +153,12 @@ public class MainController {
     }
 
     public MainController() {
+
     setStreams();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/mainScene.fxml"));
         loader.setController(this);
-        mapController = new MapController(mapGrid);
+
         try {
             root = loader.load();
             scene = new Scene(root);
@@ -224,6 +225,8 @@ public class MainController {
         stage.setMaximized(true);
         stage.setResizable(true);
         stage.show();
+        mapController = new MapController(mapGrid);
+        client.sendPlayerValues(0);
     }
 
     @FXML

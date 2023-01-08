@@ -10,7 +10,7 @@ import Desperatedrosseln.Logic.Elements.Position;
 import Desperatedrosseln.Logic.Elements.Robot;
 import Desperatedrosseln.Logic.Elements.*;
 import Desperatedrosseln.Logic.Elements.BoardElement;
-import Desperatedrosseln.Logic.Elements.tiles.*;
+import Desperatedrosseln.Logic.Elements.Tiles.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
@@ -381,13 +381,6 @@ public class Game {
     }
 
     private void activateElements() throws ClassNotFoundException {
-        List<Robot> active_robots = getActiveRobots();
-        for(BoardElement boardelement : boardElements){
-            if(!(boardelement instanceof Robot)) {
-                //ToDo Redo
-           //     boardelement.execute(active_robots);
-            }
-        }
         activatePits();
         activateConveyorBelts();
         activatePushPanels();

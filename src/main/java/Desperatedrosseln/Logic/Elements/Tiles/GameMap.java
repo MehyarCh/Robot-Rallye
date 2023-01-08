@@ -1,4 +1,4 @@
-package Desperatedrosseln.Logic.Elements.tiles;
+package Desperatedrosseln.Logic.Elements.Tiles;
 
 import Desperatedrosseln.Logic.Elements.BoardElement;
 import Desperatedrosseln.Logic.Elements.Position;

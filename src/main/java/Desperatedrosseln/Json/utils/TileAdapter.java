@@ -1,7 +1,7 @@
 package Desperatedrosseln.Json.utils;
 
 import Desperatedrosseln.Logic.Elements.BoardElement;
-import Desperatedrosseln.Logic.Elements.tiles.*;
+import Desperatedrosseln.Logic.Elements.Tiles.*;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;

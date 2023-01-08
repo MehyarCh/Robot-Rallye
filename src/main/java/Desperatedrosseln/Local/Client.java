@@ -57,6 +57,13 @@ public class Client implements Runnable {
         sendMessage("HelloServer", helloServer);
     }
 
+    public void sendPlayerValues(int RobotID){
+        Moshi moshi = new Moshi.Builder().build();
+        JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);          //TODO:replace ClientID with player figure!!!!!
+        sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(clientName, clientID)));
+    }
+
+
     private void checkProtocolMessage(String message) throws IOException {
         //TODO: Logs
         if(message.startsWith("{\"messageType\":\"GameStarted\"")){
@@ -98,8 +105,7 @@ public class Client implements Runnable {
                 JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
                 this.clientID = welcomeJsonAdapter.fromJson(msg.getMessageBody()).getClientID();
                 System.out.println("welcome Client " + clientID);
-                JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);          //TODO:replace ClientID with player figure!!!!!
-                sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(clientName, clientID)));
+                //sendPlayerValues(clientID);
                 break;
 
             case "PlayerAdded":

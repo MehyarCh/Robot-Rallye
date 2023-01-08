@@ -80,7 +80,7 @@ public class LoginController {
             client = new Client();
             client.setClientName(loginTextField.getText());
             switchToLobbyScene();
-            client.sendHelloServer();
+
             System.out.println("Hello welcome " + loginTextField.getText());
         }
 

@@ -1,18 +1,18 @@
 package Desperatedrosseln.Local.Controllers;
 
-import Desperatedrosseln.Json.utils.JsonDeserializer;
 import Desperatedrosseln.Json.utils.JsonMapReader;
 import Desperatedrosseln.Logic.Elements.BoardElement;
-import Desperatedrosseln.Logic.Elements.tiles.*;
+import Desperatedrosseln.Logic.Elements.Tiles.*;
 import Desperatedrosseln.Logic.Elements.Map;
 import Desperatedrosseln.Logic.Elements.MapField;
 
-import com.squareup.moshi.Json;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -148,11 +148,23 @@ public class MapController {
     }
 
     private void buildMapGrid(List<List<MapField>> fieldList) throws IOException {
-        for (int i = 0; i < fieldList.size(); i++) {
-            for (int j = 0; j < fieldList.get(i).size(); j++) {
-                mapGrid.getChildren().add(createGridCell(i, j, fieldList.get(i).get(j)));
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < fieldList.size(); i++) {
+                    for (int j = 0; j < fieldList.get(i).size(); j++) {
+                        try {
+                            mapGrid.getChildren().add(createGridCell(i, j, fieldList.get(i).get(j)));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+
             }
-        }
+        });
+
+
     }
 
     @FXML

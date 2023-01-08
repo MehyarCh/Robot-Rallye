@@ -63,6 +63,7 @@ public class LobbyController {
     public void startLobbyScene(Stage stage) {
         mainController = new MainController();
         client.setMainController(mainController);
+        client.sendHelloServer();
         this.stage = stage;
         stage.setScene(scene);
         stage.setResizable(false);
