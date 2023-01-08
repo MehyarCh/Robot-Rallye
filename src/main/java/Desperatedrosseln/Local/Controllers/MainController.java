@@ -51,7 +51,8 @@ public class MainController {
     List<List<MapField>> mapFields;
 
 
-
+    ArrayList<String> handCards1 = new ArrayList<>();
+    ArrayList<String> registerCards1 = new ArrayList<>();
     @FXML
     private GridPane mapGrid;
 
@@ -193,17 +194,16 @@ public class MainController {
             handCards.add(handCardSeven);
             handCards.add(handCardEight);
             handCards.add(handCardNine);
-
+            new Image(getClass().getResource("/images/card/move.jpg").toString());
             //creating the cardLabels (images) and adding a clickCard which is the MouseEvent
-            moveOneLabel = new MoveOneLabel(clickCard);
-            moveTwoLabel = new MoveTwoLabel(clickCard);
-            anotherMoveOneLabel = new MoveOneLabel(clickCard);
+         //   moveOneLabel = new MoveOneLabel(clickCard);
+          //  moveTwoLabel = new MoveTwoLabel(clickCard);
+       //     anotherMoveOneLabel = new MoveOneLabel(clickCard);
             //moveThreeLabel = new MoveThreeLabel(clickCard);
             //adding the labels
 
-            handCardOne.getChildren().add(moveOneLabel.getCardLabel());
-            handCardTwo.getChildren().add(moveTwoLabel.getCardLabel());
-            handCardThree.getChildren().add(anotherMoveOneLabel.getCardLabel());
+         //   handCardOne.getChildren().add(moveOneLabel.getCardLabel());
+//            handCardThree.getChildren().add(anotherMoveOneLabel.getCardLabel());
             //handCardThree.getChildren().add(moveThreeLabel.getCardLabel());
 
 
@@ -271,4 +271,62 @@ public class MainController {
     public MapController getMapController() {
         return mapController;
     }
+
+    public void showCardImage(){
+        Image img;
+        int i = 0;
+        //for(String card: client.getCardsInHand()){
+        ArrayList<String> cards = new ArrayList<>();
+        cards.add("RightTurn");
+        cards.add("");
+        cards.add("Move1");
+        cards.add("LeftTurn");
+        cards.add("U-Turn");
+        cards.add("");
+        cards.add("");
+        cards.add("Move3");
+        cards.add("Move3");
+        for(String card: client.getCardsInHand()){
+            ImageView stackElement = null;
+            switch (card){
+                case "Move1":
+                    img = new Image(getClass().getResource("/images/card/move1.jpg").toString());
+                    break;
+                case "Move2":
+                    img = new Image(getClass().getResource("/images/card/move2.jpg").toString());
+                    break;
+                case "LeftTurn":
+                    img = new Image(getClass().getResource("/images/card/leftTurn.jpg").toString());
+                    break;
+                case "Move3":
+                    img = new Image(getClass().getResource("/images/card/move3.jpg").toString());
+                    break;
+                case "RightTurn":
+                    img = new Image(getClass().getResource("/images/card/rightTurn.jpg").toString());
+                    break;
+                case "U-Turn":
+                    img = new Image(getClass().getResource("/images/card/u-turn.jpg").toString());
+                    break;
+                case "Again":
+                    img = new Image(getClass().getResource("/images/card/again.jpg").toString());
+                    break;
+                case "PowerUp":
+                    img = new Image(getClass().getResource("/images/card/powerup.jpg").toString());
+                    break;
+                case "MoveBack":
+                    img = new Image(getClass().getResource("/images/card/moveback.jpg").toString());
+                    break;
+                case "Move":
+                    img = new Image(getClass().getResource("/images/card/move.jpg").toString());
+                    break;
+                default:
+                    img =new Image(getClass().getResource("/images/card/no_such_card.jpg").toString());
+            }
+            stackElement = new ImageView(img);
+            handCards.get(i++).getChildren().add(stackElement);
+
+        }
+
+    }
+
 }

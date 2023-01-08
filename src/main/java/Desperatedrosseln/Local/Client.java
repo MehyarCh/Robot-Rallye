@@ -17,6 +17,8 @@ public class Client implements Runnable {
     private DataOutputStream out;
     private int clientID;
 
+    ArrayList<String> cardsInHand;
+
     HashMap<String, Integer> localPlayerList = new HashMap<>();
     private MainController mainController;
     private String protocol = "Version 0.1";
@@ -57,7 +59,7 @@ public class Client implements Runnable {
         sendMessage("HelloServer", helloServer);
     }
 
-    public void sendPlayerValues(int RobotID){
+    public void sendPlayerValues(int RobotID) {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);          //TODO:replace ClientID with player figure!!!!!
         sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(clientName, clientID)));
@@ -66,11 +68,11 @@ public class Client implements Runnable {
 
     private void checkProtocolMessage(String message) throws IOException {
         //TODO: Logs
-        if(message.startsWith("{\"messageType\":\"GameStarted\"")){
+        if (message.startsWith("{\"messageType\":\"GameStarted\"")) {
             JsonDeserializer jsonDeserializer = new JsonDeserializer();
             ProtocolMessage<GameStarted> gameStartedProtocolMessage = jsonDeserializer.deserialize(message);
             GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();
-            Desperatedrosseln.Logic.Elements.Map map =new Desperatedrosseln.Logic.Elements.Map(mainController.getMapController().convertMap(gameStarted.getGameMap()));
+            Desperatedrosseln.Logic.Elements.Map map = new Desperatedrosseln.Logic.Elements.Map(mainController.getMapController().convertMap(gameStarted.getGameMap()));
             mainController.getMapController().setMap(map);
             mainController.getMapController().showMap();
             mainController.getMapController().setMap(gameStartedProtocolMessage.getMessageBody().getGameMap());
@@ -127,8 +129,8 @@ public class Client implements Runnable {
 
                 //TODO: GUI map selection
 
-                JsonAdapter<MapSelected> mapSelectedJsonAdapter= moshi.adapter(MapSelected.class);
-                sendMessage("MapSelected",mapSelectedJsonAdapter.toJson(new MapSelected(sm.getMaps().get(0))));
+                JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
+                sendMessage("MapSelected", mapSelectedJsonAdapter.toJson(new MapSelected(sm.getMaps().get(0))));
 
                 break;
             case "ReceivedChat":
@@ -146,7 +148,6 @@ public class Client implements Runnable {
                 GameStarted gameStarted = gameStartedJsonAdapter.fromJson(msg.getMessageBody());
 
 
-
                 break;
             case "Error":
                 if (mainController != null) {
@@ -160,6 +161,15 @@ public class Client implements Runnable {
                 //ToDo
 
                 break;
+            case "YourCards":
+                JsonAdapter<YourCards> yourCardsJsonAdapter = moshi.adapter(YourCards.class);
+                YourCards yourCards = yourCardsJsonAdapter.fromJson(msg.getMessageBody());
+
+                cardsInHand = yourCards.getCardsInHand();
+
+                JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
+
+
         }
 
     }
@@ -263,6 +273,8 @@ public class Client implements Runnable {
         }
     }
 
-
+    public ArrayList<String> getCardsInHand() {
+        return cardsInHand;
+    }
 }
 

@@ -73,10 +73,9 @@ public class Game {
 
     public void runStep() throws ClassNotFoundException {
 
-
         switch (phase){
             case 0:
-                System.out.println("AufbauPhase");
+                System.out.println("Starting Phase");
                 setUpBoard();
                 break;
             case 1:
