@@ -17,7 +17,7 @@ public class Client implements Runnable {
     private DataOutputStream out;
     private int clientID;
 
-    ArrayList<String> cardsInHand;
+    private List<String> cardsInHand;
 
     HashMap<String, Integer> localPlayerList = new HashMap<>();
     private MainController mainController;
@@ -176,12 +176,13 @@ public class Client implements Runnable {
                 YourCards yourCards = yourCardsJsonAdapter.fromJson(msg.getMessageBody());
 
                 cardsInHand = yourCards.getCardsInHand();
+                mainController.fillHand();
+                mainController.updateCardImages();
+                mainController.cardClick();
 
                 JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
 
-
         }
-
     }
 
     private String getPlayerName(int from) {
@@ -283,7 +284,7 @@ public class Client implements Runnable {
         }
     }
 
-    public ArrayList<String> getCardsInHand() {
+    public List<String> getCardsInHand() {
         return cardsInHand;
     }
 

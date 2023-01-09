@@ -25,6 +25,7 @@ public class ClientHandler implements Runnable {
     private DataOutputStream out;
     private String clientName;
     private Player player;
+    private int startingPositionsChosen=0;
     Timer timer = new Timer();
     public static ArrayList<ClientHandler> clients = new ArrayList<>();
     Moshi moshi = new Moshi.Builder().build();
@@ -76,7 +77,7 @@ public class ClientHandler implements Runnable {
         sendMessage("Error", errorJsonAdapter.toJson(new Error()));
     }
 
-    public void checkCommands(String msg) throws IOException {
+    public void checkCommands(String msg) throws IOException, ClassNotFoundException {
 
 
             if(msg == null){
@@ -209,6 +210,13 @@ public class ClientHandler implements Runnable {
                     SetStartingPoint setStartingPoint = setStartingPointJsonAdapter.fromJson(message.getMessageBody());
                     game.initGameMap();
                     game.placeRobot(player,setStartingPoint.getX(),setStartingPoint.getY());
+                    startingPositionsChosen++;
+                    if(startingPositionsChosen == clients.size()){
+                        JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
+                        ActivePhase activePhase2 = new ActivePhase(2);
+                        broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase2));
+                        game.runStep();
+                    }
 
                     //ToDo one Robot one tile
 
@@ -228,11 +236,7 @@ public class ClientHandler implements Runnable {
                     }
 
                     break;
-
             }
-
-
-
     }
 
 
@@ -325,6 +329,8 @@ public class ClientHandler implements Runnable {
                 checkCommands(message);
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
     }

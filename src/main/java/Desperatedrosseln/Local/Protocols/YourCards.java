@@ -3,6 +3,7 @@ package Desperatedrosseln.Local.Protocols;
 import Desperatedrosseln.Logic.Cards.Card;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class YourCards {
 
@@ -13,13 +14,13 @@ public class YourCards {
         "..."
      */
 
-    private ArrayList<String> cardsInHand;
+    private List<String> cardsInHand;
 
-    public ArrayList<String> getCardsInHand() {
+    public List<String> getCardsInHand() {
         return cardsInHand;
     }
 
-    public YourCards(ArrayList<String> cardsInHand) {
+    public YourCards(List<String> cardsInHand) {
         this.cardsInHand = cardsInHand;
     }
 }

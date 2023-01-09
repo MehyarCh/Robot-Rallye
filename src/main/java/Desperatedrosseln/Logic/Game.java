@@ -119,7 +119,7 @@ public class Game {
         }else {
             System.out.println("Gamemap is not null");
         }
-
+        phase = 2;
 
     }
 
@@ -143,11 +143,11 @@ public class Game {
      * this method initiates the programmingphase
      */
     private void runProgrammingPhase() {
-        phase = 2;
         //send the current ActivePhase to all Clients
         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
         ActivePhase activePhase2 = new ActivePhase(phase);
         broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase2));
+
         for (Player player : players) {
             int shuffled = player.programmingPhase();
 
@@ -178,7 +178,7 @@ public class Game {
 
 
         }
-
+        phase = 3;
 
     }
 

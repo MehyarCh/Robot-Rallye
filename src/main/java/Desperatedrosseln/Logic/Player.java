@@ -14,7 +14,6 @@ public class Player {
     private int next_checkpoint=1;
     private Robot robot;
     private List<Card> deck = new ArrayList<>(20);
-
     public List<Card> getHand() {
         return hand;
     }
@@ -22,7 +21,7 @@ public class Player {
     private List<Card> hand = new ArrayList<>(9);
     private Card[] registers = new Card[5];
     private int registerTrack =0;
-    private List <Card> discarded;
+    private List <Card> discarded = new ArrayList<>();
     private ArrayList<String> cardsYouGotNow = new ArrayList<>();
 
 
@@ -51,8 +50,6 @@ public class Player {
     }
     public Player(Robot robot) {
         this.robot = robot;
-        deck = new ArrayList<>();
-        deck = DeckHelper.buildDeck(deck);
     }
 
     public Player(String name){
@@ -93,6 +90,7 @@ public class Player {
      * @return 1 if discarded pile wasn't needed, or 2 otherwise
      */
     public int programmingPhase(){
+        DeckHelper.buildDeck(deck);
         if(deck.size()>=9){
             for(int i=0; i<9; i++){
                 hand.add(drawCardFromDeck());
@@ -193,8 +191,14 @@ public class Player {
             System.out.println("register full for " + name);
             return;
         }
+
         Card card = getCardFromHand(cardString);
         registers[registerTrack++] = card;
+        if(registerTrack==4){
+            for(Card cardsae : registers){
+                System.out.println(cardsae);
+            }
+        }
     }
     public int getRegisterSize(){
         return registerTrack;
