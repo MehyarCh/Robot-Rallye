@@ -207,10 +207,10 @@ public class MainController {
         return mapController;
     }
 
-    public void startMainScene(Stage stage) throws IOException {
+    public void startMainScene(Stage stage, int selectedRobot) throws IOException {
         this.stage = stage;
 
-        mapController = new MapController(mapGrid);
+        mapController = new MapController(mapGrid, selectedRobot);
         client.sendPlayerValues(0);
         // mapController.showMap("dizzyHighway");
         fillDummyHand();

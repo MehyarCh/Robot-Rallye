@@ -7,9 +7,11 @@ import Desperatedrosseln.Logic.Elements.Map;
 import Desperatedrosseln.Logic.Elements.MapField;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
@@ -24,14 +26,17 @@ public class MapController {
     private final JsonMapReader jsonMapReader;
     private Map map;
 
+    private int selectedRobot;
 
+    private boolean hasStartpoint = false;
 
     @FXML
     private GridPane mapGrid;
 
-    public MapController(GridPane mapGrid) {
+    public MapController(GridPane mapGrid, int selectedRobot) {
         this.mapGrid = mapGrid;
         this.jsonMapReader = new JsonMapReader();
+        this.selectedRobot = selectedRobot;
     }
 
     public Map getMap() {
@@ -159,7 +164,6 @@ public class MapController {
                         }
                     }
                 }
-
             }
         });
 
@@ -204,7 +208,50 @@ public class MapController {
             switch (boardElement.getType()) {
                 case "CheckPoint" -> stackElement = new ImageView(checkpointImage);
                 case "RestartPoint" -> stackElement = new ImageView(respawnPointImage);
-                case "StartPoint" -> stackElement = new ImageView(startpointImage);
+                case "StartPoint" -> {
+                    final boolean[] isTaken = {false};
+                    stackElement = new ImageView(startpointImage);
+                    stackElement.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+                        isTaken[0] = true;
+
+                        ImageView robot;
+                        Image robotImage;
+
+                        if (!hasStartpoint) {
+                            switch (selectedRobot) {
+                                case 1 -> {
+                                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/brown.png").toString());
+                                    robot = new ImageView(robotImage);
+                                }
+                                case 2 -> {
+                                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/yellow.png").toString());
+                                    robot = new ImageView(robotImage);
+                                }
+                                case 3 -> {
+                                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/blue.png").toString());
+                                    robot = new ImageView(robotImage);
+                                }
+                                case 4 -> {
+                                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/green.png").toString());
+                                    robot = new ImageView(robotImage);
+                                }
+                                case 5 -> {
+                                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/orange.png").toString());
+                                    robot = new ImageView(robotImage);
+                                }
+                                case 6 -> {
+                                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/red.png").toString());
+                                    robot = new ImageView(robotImage);
+                                }
+                                default -> {
+                                    robot = new ImageView();
+                                }
+                            }
+                            hasStartpoint = true;
+                            cell.getChildren().add(robot);
+                        }
+                    });
+                }
                 case "Antenna" -> stackElement = buildAntenna(boardElement);
                 case "ConveyorBelt" -> stackElement = buildConveyorBelt(boardElement);
                 case "Energy-Space" -> stackElement = buildEnergySpace(boardElement);
@@ -537,5 +584,7 @@ public class MapController {
     public void setMap(List<List<List<BoardElement>>> gameMap) {
         map.setMapFields(convertMap(gameMap));
     }
+
+
 
 }

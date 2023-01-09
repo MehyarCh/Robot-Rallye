@@ -26,7 +26,7 @@ public class Main extends Application {
     public void launchScene(Stage stage, int sceneNumber) throws IOException {
         if (sceneNumber == 0) {
             MainController mainController = new MainController();
-            mainController.startMainScene(stage);
+            //mainController.startMainScene(stage);
         } else if (sceneNumber == 1) {
             LoginController loginController = new LoginController();
             loginController.startLoginScene(stage);

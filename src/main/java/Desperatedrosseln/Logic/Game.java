@@ -156,9 +156,6 @@ public class Game {
                     client.sendMessage("NotYourCards",notYourCardsJsonAdapter.toJson(new NotYourCards(player.getID(),player.getHand().size())));
                 }
             }
-
-
-
         }
         while(!players.isEmpty()){
             //sleep and wait for changes

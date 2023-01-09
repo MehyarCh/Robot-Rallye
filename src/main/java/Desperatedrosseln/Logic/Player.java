@@ -212,4 +212,7 @@ public class Player {
         return card;
     }
 
+    public ArrayList<String> getHandasStrings() {
+        return null;
+    }
 }
