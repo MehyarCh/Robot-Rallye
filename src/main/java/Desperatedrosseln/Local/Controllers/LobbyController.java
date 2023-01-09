@@ -109,6 +109,7 @@ public class LobbyController {
         }
 
         if(!client.getRobotIDs().contains(selectedRobot)){
+            mainController.setSelectedRobot(selectedRobot);
             mainController.startMainScene(stage, selectedRobot);
         }
 

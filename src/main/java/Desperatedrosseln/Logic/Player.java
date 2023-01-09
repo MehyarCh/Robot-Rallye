@@ -49,9 +49,10 @@ public class Player {
     public Robot getRobot() {
         return robot;
     }
-    public Player(Robot robot /*ToDO: add Date*/) {
-
+    public Player(Robot robot) {
         this.robot = robot;
+        deck = new ArrayList<>();
+        deck = DeckHelper.buildDeck(deck);
     }
 
     public Player(String name){
@@ -128,15 +129,7 @@ public class Player {
     }
 
     void shuffleDeck(){
-        //ToDO shuffle
-    }
-
-    public void playPhaseOne(){
-
-    }
-
-    public void playPhaseTwo(){
-
+        DeckHelper.shuffleCards(deck);
     }
 
     public void buyCard (Card card){

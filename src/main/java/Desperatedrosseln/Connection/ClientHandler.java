@@ -149,19 +149,21 @@ public class ClientHandler implements Runnable {
                     JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
                     Game.setCurrentMap(mapSelectedJsonAdapter.fromJson(message.getMessageBody()).getMap());
 
-                    JsonAdapter<GameStarted> gameStartedJsonAdapter = moshi.adapter(GameStarted.class);
 
                     //ToDO send GameStarted with Map
                     System.out.println(game.getCurrentMap());
                     ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted",new GameStarted(new JsonMapReader().readMapFromJson(game.getCurrentMap())));
                     String jsonGameStarted = new JsonSerializer().serialize(gameStartedProtocolMessage);
                     System.out.println(jsonGameStarted);
-                    try {
-                        out.writeUTF(jsonGameStarted);
-                        out.flush();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+
+                        try {
+                            out.writeUTF(jsonGameStarted);
+                            out.flush();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+
 
 
                     break;
@@ -241,6 +243,18 @@ public class ClientHandler implements Runnable {
 
         JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
         broadcastMessage("PlayerAdded", playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())));
+        if(clientID>1){
+            ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted",new GameStarted(new JsonMapReader().readMapFromJson(game.getCurrentMap())));
+            String jsonGameStarted = new JsonSerializer().serialize(gameStartedProtocolMessage);
+            System.out.println(jsonGameStarted);
+
+            try {
+                out.writeUTF(jsonGameStarted);
+                out.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public int getClientID() {
@@ -316,5 +330,9 @@ public class ClientHandler implements Runnable {
 
     public String getClientName() {
         return clientName;
+    }
+
+    public DataOutputStream getOut() {
+        return out;
     }
 }

@@ -26,6 +26,7 @@ public class Client implements Runnable {
     private String clientName;
 
 
+
     public Client() {
 
         try {
@@ -59,20 +60,25 @@ public class Client implements Runnable {
         sendMessage("HelloServer", helloServer);
     }
 
-    public void sendPlayerValues(int RobotID) {
+    public void sendPlayerValues(int robotID) {
         Moshi moshi = new Moshi.Builder().build();
-        JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);          //TODO:replace ClientID with player figure!!!!!
-        sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(clientName, clientID)));
+        JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);
+        sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(clientName, robotID)));
     }
 
 
     private void checkProtocolMessage(String message) throws IOException {
+        if (message.equals("{\"messageBody\":\"{}\",\"messageType\":\"Alive\"}")) {
+            return;
+        }
+
         //TODO: Logs
         if (message.startsWith("{\"messageType\":\"GameStarted\"")) {
             JsonDeserializer jsonDeserializer = new JsonDeserializer();
             ProtocolMessage<GameStarted> gameStartedProtocolMessage = jsonDeserializer.deserialize(message);
             GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();
             Desperatedrosseln.Logic.Elements.Map map = new Desperatedrosseln.Logic.Elements.Map(mainController.getMapController().convertMap(gameStarted.getGameMap()));
+            System.out.println(map);
             mainController.getMapController().setMap(map);
             mainController.getMapController().showMap();
             mainController.getMapController().setMap(gameStartedProtocolMessage.getMessageBody().getGameMap());
@@ -159,7 +165,10 @@ public class Client implements Runnable {
                 break;
             case "StartingPointTaken":
 
-                //ToDo
+                JsonAdapter<StartingPointTaken> startingPointTakenJsonAdapter = moshi.adapter(StartingPointTaken.class);
+                StartingPointTaken startingPointTaken = startingPointTakenJsonAdapter.fromJson(msg.getMessageBody());
+
+                mainController.getMapController().addUnavailablePosition(startingPointTaken.getX(), startingPointTaken.getY());
 
                 break;
             case "YourCards":

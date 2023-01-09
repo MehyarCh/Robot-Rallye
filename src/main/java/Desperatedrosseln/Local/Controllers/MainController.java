@@ -95,7 +95,8 @@ public class MainController {
     private StackPane handCardNine;
     private ArrayList<StackPane> registerCards = new ArrayList<>();
     private ArrayList<StackPane> handCards = new ArrayList<>();
-    private int registerTrack=0;
+    private int selectedRobot=0;
+
     private MoveOneLabel moveOneLabel;
     private MoveOneLabel anotherMoveOneLabel;
     private MoveTwoLabel moveTwoLabel;
@@ -114,48 +115,6 @@ public class MainController {
 
     private UTurn uTurnLabel;
 
-
-    /*EventHandler clickCard = (evt) -> {
-
-        Label selectedCard = (Label) evt.getSource();
-        //check if card is in hand, then add it to the next free register slot
-        if (checkCard(selectedCard)) {
-            for (int j = 0; j < registerCards.size(); j++) {
-                //check if the registerCard StackPane only has one label (cardarea) in it
-                if (registerCards.get(j).getChildren().size() == 1) {
-                    registerCards.get(j).getChildren().add(selectedCard);
-                    System.out.println("Card added to register j: " + j);
-                    System.out.println(handCards.get(j).getChildren());
-                    System.out.println(registerCards.get(j).getChildren());
-                    return;
-                }
-
-
-            }
-            //when card is in the register, add it back to the hand
-        } else {
-            for (int k = 0; k < handCards.size(); k++) {
-                if (handCards.get(k).getChildren().size() == 1) {
-                    handCards.get(k).getChildren().add(selectedCard);
-                    System.out.println("Card added to hand k: " + k);
-                    return;
-                }
-            }
-        }
-
-    };
-
-    //Check if a card is in the hand of a player -> true
-    private boolean checkCard(Label card) {
-        for (int i = 0; i < handCards.size(); i++) {
-            if (handCards.get(i).getChildren().contains(card)) {
-                System.out.println("Card is in hand");
-                return true;
-            }
-        }
-        System.out.println("Card is not in hand");
-        return false;
-    }*/
 
     public MainController() {
 
@@ -211,8 +170,8 @@ public class MainController {
         this.stage = stage;
 
         mapController = new MapController(mapGrid, selectedRobot);
-        client.sendPlayerValues(0);
-        // mapController.showMap("dizzyHighway");
+        client.sendPlayerValues(selectedRobot);
+        mapController.setClient(client);
         fillDummyHand();
         initRegisterValues();
         updateCardImages();
@@ -446,5 +405,13 @@ public class MainController {
     private void setStreams() {
         this.dos = client.getOutputStr();
         this.dis = client.getInputStr();
+    }
+
+    public int getSelectedRobot() {
+        return selectedRobot;
+    }
+
+    public void setSelectedRobot(int selectedRobot) {
+        this.selectedRobot = selectedRobot;
     }
 }
