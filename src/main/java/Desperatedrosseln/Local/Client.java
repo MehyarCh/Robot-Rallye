@@ -178,6 +178,7 @@ public class Client implements Runnable {
                 cardsInHand = yourCards.getCardsInHand();
                 mainController.fillHand();
                 mainController.updateCardImages();
+                mainController.initRegisterValues();
                 mainController.cardClick();
 
                 JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
