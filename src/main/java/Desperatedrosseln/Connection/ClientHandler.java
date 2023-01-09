@@ -233,6 +233,12 @@ public class ClientHandler implements Runnable {
                     }else{
                         JsonAdapter<SelectionFinished> selectionFinishedJsonAdapter = moshi.adapter(SelectionFinished.class);
                         broadcastMessage("SelectionFinished", selectionFinishedJsonAdapter.toJson(new SelectionFinished(clientID)));
+                        if(game.selectionFinished()){
+                            JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
+                            ActivePhase activePhase3 = new ActivePhase(3);
+                            broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
+                            game.runStep();
+                        }
                     }
 
                     break;

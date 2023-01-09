@@ -201,7 +201,7 @@ public class Player {
         }
     }
     public int getRegisterSize(){
-        return registerTrack;
+        return registers.length;
     }
 
     /**

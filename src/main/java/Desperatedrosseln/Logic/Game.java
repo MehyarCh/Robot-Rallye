@@ -106,6 +106,16 @@ public class Game {
             //TODO: set number of checkpoints dynamically from the gamemap info
         }
     }
+    public boolean selectionFinished(){
+        int i=0;
+        while(i<players.size()){
+            if(players.get(i).getRegisters()[5] == null ){
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
 
     /*
     Aufbauphase
