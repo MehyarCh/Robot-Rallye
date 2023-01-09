@@ -266,13 +266,14 @@ public class MapController {
                         Position currPos =new Position(x,y);
                         System.out.println("pos "+currPos+" is Clicked");
 
-
+                        boolean isStartingPointTaken = false;
 
                         for(Position pos: unavailableStartingPoints){
                             if(pos.isEqual(currPos)){
-                                return ;
+                                isStartingPointTaken = true;
                             }
                         }
+
                         isTaken[0] = true;
 
                         ImageView robot;
@@ -280,7 +281,7 @@ public class MapController {
 
 
 
-                        if (!hasStartpoint) {
+                        if (!hasStartpoint && !isStartingPointTaken) {
                             switch (selectedRobot) {
                                 case 1 -> {
                                     robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/brown.png").toString());

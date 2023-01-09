@@ -4,6 +4,7 @@ import Desperatedrosseln.Json.utils.JsonMapReader;
 import Desperatedrosseln.Json.utils.JsonSerializer;
 import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Local.Protocols.Error;
+import Desperatedrosseln.Logic.Elements.BoardElement;
 import Desperatedrosseln.Logic.Elements.Robot;
 import Desperatedrosseln.Logic.Game;
 import Desperatedrosseln.Logic.Player;
@@ -13,6 +14,7 @@ import com.squareup.moshi.Moshi;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -152,7 +154,10 @@ public class ClientHandler implements Runnable {
 
                     //ToDO send GameStarted with Map
                     System.out.println(game.getCurrentMap());
-                    ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted",new GameStarted(new JsonMapReader().readMapFromJson(game.getCurrentMap())));
+
+                    List<List<List<BoardElement>>> gameMap =new JsonMapReader().readMapFromJson(game.getCurrentMap());
+
+                    ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted",new GameStarted(gameMap));
                     String jsonGameStarted = new JsonSerializer().serialize(gameStartedProtocolMessage);
                     System.out.println(jsonGameStarted);
 
@@ -202,6 +207,7 @@ public class ClientHandler implements Runnable {
                 case "SetStartingPoint":
                     JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
                     SetStartingPoint setStartingPoint = setStartingPointJsonAdapter.fromJson(message.getMessageBody());
+                    game.initGameMap();
                     game.placeRobot(player,setStartingPoint.getX(),setStartingPoint.getY());
 
                     //ToDo one Robot one tile

@@ -45,7 +45,7 @@ public class Game {
     private ArrayList<Card> wormpile = new ArrayList<>(6);
     private ArrayList<ClientHandler> clients;
 
-    //TODO: availablePiles (protocoll 1.0 bulletpoint 8)
+    //TODO: availablePiles (protocol 1.0 bulletpoint 8)
 
     private int distance;
     private final int port;
@@ -114,6 +114,12 @@ public class Game {
         JsonMapReader jsonMapReader = new JsonMapReader();
         List<List<List<BoardElement>>> gameMapList = jsonMapReader.readMapFromJson(currentMap);
         gameMap = new Map(convertMap(gameMapList));
+        if(gameMap == null){
+            System.out.println("Gamemap is null!!!");
+        }else {
+            System.out.println("Gamemap is not null");
+        }
+
 
     }
 
@@ -1999,6 +2005,9 @@ public class Game {
     }
 
 
+    public void initGameMap() {
+        setUpBoard();
+    }
 }
 
 
