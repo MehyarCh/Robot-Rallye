@@ -11,13 +11,10 @@ public class PushPanel extends BoardElement {
  ArrayList<String> orientations;
  private ArrayList<Integer> registers;
 
-
-
-
-    public PushPanel(String type, String isOnBoard, ArrayList<String> orientations) {
+    public PushPanel(String type, String isOnBoard, ArrayList<String> orientations, ArrayList<Integer> registers) {
         super(type,isOnBoard);
         this.orientations = orientations;
-
+        this.registers = registers;
     }
 
     public ArrayList<String> getOrientations() {

@@ -97,6 +97,7 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
         String type = null;
         String isOnBoard = null;
         ArrayList<String> orientations = new ArrayList<>();
+        ArrayList<Integer> registers = new ArrayList<>();
         int speed = 0;
         int count = 0;
         int number = 1;
@@ -129,7 +130,11 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
                 case "count" -> {
                     count = reader.nextInt();
                 }
-
+                case "registers" -> {
+                    reader.beginArray();
+                    while (reader.hasNext()) registers.add(reader.nextInt());
+                    reader.endArray();
+                }
                 default -> reader.skipValue();
             }
         }
@@ -138,6 +143,7 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
         assert type != null;
         return switch (type) {
             case "Empty" -> new Empty(type, isOnBoard);
+            case "Pit" -> new Empty(type, isOnBoard);
             case "StartPoint" -> new StartPoint(type, isOnBoard);
             case "CheckPoint" -> new CheckPoint(type, isOnBoard, count);
             case "RestartPoint" -> new RestartPoint(type, isOnBoard, orientations);
@@ -146,7 +152,8 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
             case "Laser" -> new Laser(type, isOnBoard, orientations, count);
             case "Energy-Space" -> new EnergySpace(type, isOnBoard, count);
             case "ConveyorBelt" -> new ConveyorBelt(type, isOnBoard, speed, orientations);
-            case "PushPanel" -> new PushPanel(type, isOnBoard, orientations);
+            case "PushPanel" -> new PushPanel(type, isOnBoard, orientations, registers);
+            case "Gear" -> new Gear(type, isOnBoard, orientations);
             default -> null;
         };
     }
