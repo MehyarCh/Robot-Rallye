@@ -12,14 +12,14 @@ public class ReplaceCard {
      */
 
     private int register;
-    private Card newCard;
+    private String newCard;
     private int clientID;
 
     public int getRegister() {
         return register;
     }
 
-    public Card getNewCard() {
+    public String getNewCard() {
         return newCard;
     }
 
@@ -27,7 +27,7 @@ public class ReplaceCard {
         return clientID;
     }
 
-    public ReplaceCard(int register, Card newCard, int clientID) {
+    public ReplaceCard(int register, String newCard, int clientID) {
         this.register = register;
         this.newCard = newCard;
         this.clientID = clientID;

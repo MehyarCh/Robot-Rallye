@@ -23,7 +23,7 @@ public class Player {
     private Card[] registers = new Card[5];
     private int registerTrack =0;
     private List <Card> discarded;
-
+    private ArrayList<String> cardsYouGotNow = new ArrayList<>();
 
 
     public Player() {
@@ -105,17 +105,30 @@ public class Player {
             for(int j=0; j<20; j++){
                 deck.add(takeCardFromDiscarded());
             }
+            shuffleDeck();
             while(hand.size()<= 9){
-                hand.add(drawCardFromDeck());
+                Card card = drawCardFromDeck();
+                hand.add(card);
+                cardsYouGotNow.add(card.toString());
             }
+
             return 2;
         }
     }
+
+    public ArrayList<String> getCardsYouGotNow() {
+        return cardsYouGotNow;
+    }
+
     private Card takeCardFromDiscarded(){
         //assert size >0
         Card card = discarded.get((discarded.size()-1));
         discarded.remove(discarded.size()-1);
         return card;
+    }
+
+    void shuffleDeck(){
+        //ToDO shuffle
     }
 
     public void playPhaseOne(){
@@ -213,6 +226,12 @@ public class Player {
     }
 
     public ArrayList<String> getHandasStrings() {
-        return null;
+        ArrayList<String> cards = new ArrayList<>();
+
+        for (Card card:
+                hand) {
+            cards.add(card.toString());
+        }
+        return cards;
     }
 }
