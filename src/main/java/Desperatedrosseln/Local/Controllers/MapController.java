@@ -49,9 +49,7 @@ public class MapController {
 
     @FXML
     public void showMap() throws IOException {
-        System.out.println(map.getMapFields());
         addLaserBeam(map.getMapFields());
-        System.out.println(map.getMapFields());
         buildMapGrid(map.getMapFields());
     }
 
@@ -125,7 +123,7 @@ public class MapController {
     }
 
     private void createLaserBeam(ArrayList<String> orientations, int count, ArrayList<String> fieldTypes, MapField adjacentField) {
-        boolean hasBlocker = fieldTypes.contains("Robot") || fieldTypes.contains("Antenna");
+        boolean hasBlocker = fieldTypes.contains("Robot") || fieldTypes.contains("Antenna") || fieldTypes.contains("CheckPoint");
 
         if (!hasBlocker) {
             if (fieldTypes.contains("Wall")) {
@@ -185,15 +183,6 @@ public class MapController {
 
         Image emptyImage =
                 new Image(getClass().getResource("/images/elements/empty/empty.png").toString());
-        Image startpointImage =
-                new Image(getClass().getResource("/images/elements/startpoint/startpoint.png").toString());
-        Image respawnPointImage =
-                new Image(getClass().getResource("/images/elements/respawnPoint/respawnPoint.png").toString());
-        Image energySpace1Image =
-                new Image(getClass().getResource("/images/elements/energySpace/energySpace1.png").toString());
-        Image checkpointImage =
-                new Image(getClass().getResource("/images/elements/checkpoint/checkpoint.png").toString());
-
 
         for (BoardElement boardElement : typeList) {
             ImageView stackElement = null;
@@ -206,11 +195,27 @@ public class MapController {
             }
 
             switch (boardElement.getType()) {
-                case "CheckPoint" -> stackElement = new ImageView(checkpointImage);
-                case "RestartPoint" -> stackElement = new ImageView(respawnPointImage);
+                case "Pit" -> {
+                    Image pitImage =
+                            new Image(getClass().getResource("/images/elements/pit/pit.png").toString());
+                    stackElement = new ImageView(pitImage);
+                }
+                case "CheckPoint" -> {
+                    Image checkpointImage =
+                            new Image(getClass().getResource("/images/elements/checkpoint/checkpoint.png").toString());
+                    stackElement = new ImageView(checkpointImage);
+                }
+                case "RestartPoint" -> {
+                    Image respawnPointImage =
+                            new Image(getClass().getResource("/images/elements/respawnPoint/respawnPoint.png").toString());
+                    stackElement = new ImageView(respawnPointImage);
+                }
                 case "StartPoint" -> {
+                    Image startpointImage =
+                            new Image(getClass().getResource("/images/elements/startpoint/startpoint.png").toString());
                     final boolean[] isTaken = {false};
                     stackElement = new ImageView(startpointImage);
+
                     stackElement.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
                         isTaken[0] = true;
 
@@ -257,7 +262,9 @@ public class MapController {
                 case "Energy-Space" -> stackElement = buildEnergySpace(boardElement);
                 case "Laser" -> stackElement = buildLaser(boardElement);
                 case "LaserBeam" -> stackElement = buildLaserBeam(boardElement);
+                case "PushPanel" -> stackElement = buildPushPanel(boardElement);
                 case "Wall" -> stackElement = buildWall(boardElement);
+                case "Gear" -> stackElement = buildGear(boardElement);
             }
 
             if (stackElement != null) {
@@ -282,18 +289,47 @@ public class MapController {
         return rotateElement(stackElement, orientations);
     }
 
+    @FXML ImageView buildGear(BoardElement boardElement) {
+        ImageView stackElement = null;
+        Gear gear = (Gear) boardElement;
+        if (Objects.equals(gear.getOrientations().get(0), "clockwise")) {
+            Image gearRightImage = new Image(getClass().getResource("/images/elements/gear/gearRight.png").toString());
+            stackElement = new ImageView(gearRightImage);
+        } else if (Objects.equals(gear.getOrientations().get(0), "counterclockwise")) {
+            Image gearLeftImage = new Image(getClass().getResource("/images/elements/gear/gearLeft.png").toString());
+            stackElement = new ImageView(gearLeftImage);
+        }
+        return stackElement;
+    }
+
+    @FXML
+    private ImageView buildPushPanel(BoardElement boardElement) {
+        ImageView stackElement = null;
+        PushPanel pushPanel = (PushPanel) boardElement;
+
+        if (pushPanel.getRegisters().contains(1)) {
+            Image pushPanel1Image = new Image(getClass().getResource("/images/elements/pushPanel/pushPanel1.png").toString());
+            stackElement = new ImageView(pushPanel1Image);
+        } else if (pushPanel.getRegisters().contains(2)) {
+            Image pushPanel2Image = new Image(getClass().getResource("/images/elements/pushPanel/pushPanel2.png").toString());
+            stackElement = new ImageView(pushPanel2Image);
+        }
+        return rotateElement(stackElement, pushPanel.getOrientations());
+    }
+
     @FXML
     private ImageView buildEnergySpace(BoardElement boardElement) {
-        Image energySpace1Image =
-                new Image(getClass().getResource("/images/elements/energySpace/energySpace1.png").toString());
-
         ImageView stackElement = null;
-
         EnergySpace energySpace = (EnergySpace) boardElement;
+
         if (energySpace.getCount() == 1) {
+            Image energySpace1Image =
+                    new Image(getClass().getResource("/images/elements/energySpace/energySpace1.png").toString());
             stackElement = new ImageView(energySpace1Image);
         } else if (energySpace.getCount() == 2) {
-            //stackElement = new ImageView(energySpace2Image);
+            Image energySpace2Image =
+                    new Image(getClass().getResource("/images/elements/energySpace/energySpace2.png").toString());
+            stackElement = new ImageView(energySpace2Image);
         }
 
         return stackElement;
@@ -301,15 +337,12 @@ public class MapController {
 
     @FXML
     private ImageView buildWall(BoardElement boardElement) throws IOException {
-        Image wall1Image =
-                new Image(getClass().getResource("/images/elements/wall/wall1.png").toString());
-        Image wall2Image =
-                new Image(getClass().getResource("/images/elements/wall/wall2.png").toString());
-
         ImageView stackElement = null;
         Wall wall = (Wall) boardElement;
 
         if (wall.getOrientations().size() == 1) {
+            Image wall1Image =
+                    new Image(getClass().getResource("/images/elements/wall/wall1.png").toString());
             stackElement = new ImageView(wall1Image);
             switch (wall.getOrientations().get(0)) {
                 case "right" -> stackElement.setStyle("-fx-rotate: 90");
@@ -317,6 +350,8 @@ public class MapController {
                 case "left" -> stackElement.setStyle("-fx-rotate: -90");
             }
         } else if (wall.getOrientations().size() == 2) {
+            Image wall2Image =
+                    new Image(getClass().getResource("/images/elements/wall/wall2.png").toString());
             stackElement = new ImageView(wall2Image);
 
             if (wall.getOrientations().contains("top") && wall.getOrientations().contains("right")) {
@@ -336,34 +371,6 @@ public class MapController {
 
     @FXML
     private ImageView buildConveyorBelt(BoardElement boardElement) throws IOException {
-        Image conveyorBeltTB1Image =
-                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTB1.png").toString());
-        Image conveyorBeltRB1Image =
-                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRB1.png").toString());
-        Image conveyorBeltRT1Image =
-                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRT1.png").toString());
-
-        Image conveyorBeltRTB1Image =
-                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRTB1.png").toString());
-        Image conveyorBeltTBL1Image =
-                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTBL1.png").toString());
-        Image conveyorBeltTRB1Image =
-                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTRB1.png").toString());
-
-
-        Image conveyorBeltTB2Image =
-                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTB2.png").toString());
-        Image conveyorBeltRB2Image =
-                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRB2.png").toString());
-        Image conveyorBeltRT2Image =
-                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRT2.png").toString());
-
-        Image conveyorBeltRTB2Image =
-                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRTB2.png").toString());
-        Image conveyorBeltTBL2Image =
-                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTBL2.png").toString());
-        Image conveyorBeltTRB2Image =
-                new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTRB2.png").toString());
 
         ConveyorBelt conveyorBelt = (ConveyorBelt) boardElement;
         ArrayList<String> orientations = conveyorBelt.getOrientations();
@@ -373,9 +380,35 @@ public class MapController {
         // Green
         if (conveyorBelt.getSpeed() == 1) {
             // two orientations
+            Image conveyorBeltTB1Image =
+                    new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTB1.png").toString());
+            Image conveyorBeltRB1Image =
+                    new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRB1.png").toString());
+            Image conveyorBeltRT1Image =
+                    new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRT1.png").toString());
+
+            Image conveyorBeltRTB1Image =
+                    new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRTB1.png").toString());
+            Image conveyorBeltTBL1Image =
+                    new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTBL1.png").toString());
+            Image conveyorBeltTRB1Image =
+                    new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTRB1.png").toString());
             stackElement = diffBelt(conveyorBeltTB1Image, conveyorBeltRB1Image, conveyorBeltRT1Image, conveyorBeltRTB1Image, conveyorBeltTBL1Image, conveyorBeltTRB1Image, orientations, stackElement);
         // Blue
         } else if (conveyorBelt.getSpeed() == 2) {
+            Image conveyorBeltTB2Image =
+                    new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTB2.png").toString());
+            Image conveyorBeltRB2Image =
+                    new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRB2.png").toString());
+            Image conveyorBeltRT2Image =
+                    new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRT2.png").toString());
+
+            Image conveyorBeltRTB2Image =
+                    new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltRTB2.png").toString());
+            Image conveyorBeltTBL2Image =
+                    new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTBL2.png").toString());
+            Image conveyorBeltTRB2Image =
+                    new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTRB2.png").toString());
             stackElement = diffBelt(conveyorBeltTB2Image, conveyorBeltRB2Image, conveyorBeltRT2Image, conveyorBeltRTB2Image, conveyorBeltTBL2Image, conveyorBeltTRB2Image, orientations, stackElement);
         } else {
             throw new IOException("Unknown conveyorSpeed");
@@ -499,22 +532,21 @@ public class MapController {
 
     @FXML
     private ImageView buildLaser(BoardElement boardElement) throws IOException {
-        Image laser1Image =
-                new Image(getClass().getResource("/images/elements/laser/laser1.png").toString());
-        Image laser2Image =
-                new Image(getClass().getResource("/images/elements/laser/laser2.png").toString());
-        Image laser3Image =
-                new Image(getClass().getResource("/images/elements/laser/laser3.png").toString());
-
 
         ImageView stackElement = null;
         Laser laser = (Laser) boardElement;
 
         if (laser.getCount() == 1) {
+            Image laser1Image =
+                    new Image(getClass().getResource("/images/elements/laser/laser1.png").toString());
             stackElement = new ImageView(laser1Image);
         } else if (laser.getCount() == 2) {
+            Image laser2Image =
+                    new Image(getClass().getResource("/images/elements/laser/laser2.png").toString());
             stackElement = new ImageView(laser2Image);
         } else if (laser.getCount() == 3) {
+            Image laser3Image =
+                    new Image(getClass().getResource("/images/elements/laser/laser3.png").toString());
             stackElement = new ImageView(laser3Image);
         } else {
             throw new IOException("Unknown laser count");
@@ -526,40 +558,38 @@ public class MapController {
     @FXML
     private ImageView buildLaserBeam(BoardElement boardElement) throws IOException {
 
-        Image laserBeamCenter1Image =
-                new Image(getClass().getResource("/images/elements/laser/laserBeamCenter1.png").toString());
-        Image laserBeamCenter2Image =
-                new Image(getClass().getResource("/images/elements/laser/laserBeamCenter2.png").toString());
-        Image laserBeamCenter3Image =
-                new Image(getClass().getResource("/images/elements/laser/laserBeamCenter3.png").toString());
-
-        Image laserBeamEnd1Image =
-                new Image(getClass().getResource("/images/elements/laser/laserBeamEnd1.png").toString());
-        Image laserBeamEnd2Image =
-                new Image(getClass().getResource("/images/elements/laser/laserBeamEnd2.png").toString());
-        Image laserBeamEnd3Image =
-                new Image(getClass().getResource("/images/elements/laser/laserBeamEnd3.png").toString());
-
         ImageView stackElement = null;
 
         LaserBeam laserBeam = (LaserBeam) boardElement;
 
         if (laserBeam.getCount() == 1) {
             if (laserBeam.isFullWidth()) {
+                Image laserBeamCenter1Image =
+                        new Image(getClass().getResource("/images/elements/laser/laserBeamCenter1.png").toString());
                 stackElement = new ImageView(laserBeamCenter1Image);
             } else {
+                Image laserBeamEnd1Image =
+                        new Image(getClass().getResource("/images/elements/laser/laserBeamEnd1.png").toString());
                 stackElement = new ImageView(laserBeamEnd1Image);
             }
         } else if (laserBeam.getCount() == 2) {
             if (laserBeam.isFullWidth()) {
+                Image laserBeamCenter2Image =
+                        new Image(getClass().getResource("/images/elements/laser/laserBeamCenter2.png").toString());
                 stackElement = new ImageView(laserBeamCenter2Image);
             } else {
+                Image laserBeamEnd2Image =
+                        new Image(getClass().getResource("/images/elements/laser/laserBeamEnd2.png").toString());
                 stackElement = new ImageView(laserBeamEnd2Image);
             }
         } else if (laserBeam.getCount() == 3) {
             if (laserBeam.isFullWidth()) {
+                Image laserBeamCenter3Image =
+                        new Image(getClass().getResource("/images/elements/laser/laserBeamCenter3.png").toString());
                 stackElement = new ImageView(laserBeamCenter3Image);
             } else {
+                Image laserBeamEnd3Image =
+                        new Image(getClass().getResource("/images/elements/laser/laserBeamEnd3.png").toString());
                 stackElement = new ImageView(laserBeamEnd3Image);
             }
         } else {

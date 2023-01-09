@@ -10,9 +10,9 @@ public class Gear extends BoardElement {
     ArrayList<String> orientations;
 
 
-    public Gear(String type, String isOnBoard) {
+    public Gear(String type, String isOnBoard, ArrayList<String> orientations) {
         super(type,isOnBoard); //can either be clockwise or counterclockwise -> turning direction
-
+        this.orientations = orientations;
     }
 
     public void execute(Robot curr){
@@ -28,5 +28,7 @@ public class Gear extends BoardElement {
         public String getOrientation(){
             return orientations.get(0);
         }
+
+        public ArrayList<String> getOrientations() { return orientations; }
 }
 
