@@ -54,9 +54,8 @@ public class MainController {
 
     List<List<MapField>> mapFields;
 
-
-    ArrayList<String> handCards1 = new ArrayList<>();
-    ArrayList<String> registerCards1 = new ArrayList<>();
+    ArrayList<String> handValues = new ArrayList<>();
+    ArrayList<String> registerValues = new ArrayList<>();
     @FXML
     private GridPane mapGrid;
 
@@ -94,9 +93,9 @@ public class MainController {
     private StackPane handCardEight;
     @FXML
     private StackPane handCardNine;
-    private ArrayList<StackPane> registerCards;
+    private ArrayList<StackPane> registerCards = new ArrayList<>();
+    private ArrayList<StackPane> handCards = new ArrayList<>();
     private int registerTrack=0;
-    private ArrayList<StackPane> handCards;
     private MoveOneLabel moveOneLabel;
     private MoveOneLabel anotherMoveOneLabel;
     private MoveTwoLabel moveTwoLabel;
@@ -116,7 +115,7 @@ public class MainController {
     private UTurn uTurnLabel;
 
 
-    EventHandler clickCard = (evt) -> {
+    /*EventHandler clickCard = (evt) -> {
 
         Label selectedCard = (Label) evt.getSource();
         //check if card is in hand, then add it to the next free register slot
@@ -156,7 +155,7 @@ public class MainController {
         }
         System.out.println("Card is not in hand");
         return false;
-    }
+    }*/
 
     public MainController() {
 
@@ -181,7 +180,6 @@ public class MainController {
             //TESTING THE MOVE CARDS FUNCTION
 
             //List of the StackPanes which represent the register
-            registerCards = new ArrayList<>();
             registerCards.add(registerCardOne);
             registerCards.add(registerCardTwo);
             registerCards.add(registerCardThree);
@@ -189,7 +187,6 @@ public class MainController {
             registerCards.add(registerCardFive);
 
             //List of the StackPanes which represent the handcards
-            handCards = new ArrayList<>();
             handCards.add(handCardOne);
             handCards.add(handCardTwo);
             handCards.add(handCardThree);
@@ -199,17 +196,6 @@ public class MainController {
             handCards.add(handCardSeven);
             handCards.add(handCardEight);
             handCards.add(handCardNine);
-            new Image(getClass().getResource("/images/card/move.jpg").toString());
-            //creating the cardLabels (images) and adding a clickCard which is the MouseEvent
-            moveOneLabel = new MoveOneLabel(clickCard);
-            moveTwoLabel = new MoveTwoLabel(clickCard);
-            anotherMoveOneLabel = new MoveOneLabel(clickCard);
-            moveThreeLabel = new MoveThreeLabel(clickCard);
-            //adding the labels
-
-            handCardOne.getChildren().add(moveOneLabel.getCardLabel());
-            handCardThree.getChildren().add(anotherMoveOneLabel.getCardLabel());
-            handCardThree.getChildren().add(moveThreeLabel.getCardLabel());
 
 
         } catch (IOException e) {
@@ -217,11 +203,19 @@ public class MainController {
         }
     }
 
+    public MapController getMapController(){
+        return mapController;
+    }
+
     public void startMainScene(Stage stage) throws IOException {
         this.stage = stage;
 
-
+        mapController = new MapController(mapGrid);
+        client.sendPlayerValues(0);
         // mapController.showMap("dizzyHighway");
+        fillDummyHand();
+        initRegisterValues();
+        updateCardImages();
 
         stage.setScene(scene);
         stage.setMinHeight(720);
@@ -229,10 +223,166 @@ public class MainController {
         stage.setMaximized(true);
         stage.setResizable(true);
         stage.show();
-        mapController = new MapController(mapGrid);
-        client.sendPlayerValues(0);
+
         //ToDo change it
-        showCardImage();
+
+        for (StackPane card : handCards) {
+            card.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+
+                int firstFreeRegister = registerValues.indexOf(null);
+                int firstFreeHand = handValues.indexOf(null);
+
+
+                if (mouseEvent.getSource() == handCardOne ||
+                        mouseEvent.getSource() == handCardTwo ||
+                        mouseEvent.getSource() == handCardThree ||
+                        mouseEvent.getSource() == handCardFour ||
+                        mouseEvent.getSource() == handCardFive ||
+                        mouseEvent.getSource() == handCardSix ||
+                        mouseEvent.getSource() == handCardSeven ||
+                        mouseEvent.getSource() == handCardEight ||
+                        mouseEvent.getSource() == handCardNine
+                ) {
+                    int index = handCards.indexOf(mouseEvent.getSource());
+
+                    if (handValues.get(index) != null) {
+                        if (firstFreeRegister != -1) {
+                            // adding to register
+                            registerValues.set(firstFreeRegister, handValues.get(index));
+                            // adding register image
+                            Image image = showCardImage(handValues.get(index));
+                            ImageView imageView = new ImageView(image);
+                            imageView.setFitHeight(110);
+                            imageView.setPreserveRatio(true);
+                            registerCards.get(firstFreeRegister).getChildren().add(imageView);
+                            // Removing from Hand
+                            handValues.set(index, null);
+                            // Removing handImage
+                            handCards.get(index).getChildren().remove(0);
+                        } else {
+                            System.out.println("Already 5 cards in the registers!");
+                        }
+                    }
+                } else {
+                    // adding to hand
+                    int index = registerCards.indexOf(mouseEvent.getSource());
+                    if (registerValues.get(index) != null) {
+                        handValues.set(firstFreeHand, registerValues.get(index));
+                        // adding hand image
+                        Image image = showCardImage(registerValues.get(index));
+                        ImageView imageView = new ImageView(image);
+                        imageView.setFitHeight(110);
+                        imageView.setPreserveRatio(true);
+                        handCards.get(firstFreeHand).getChildren().add(imageView);
+                        // Removing from register
+                        registerValues.set(index, null);
+                        // Removing registerImage
+                        registerCards.get(index).getChildren().remove(0);
+                    }
+                }
+            });
+        }
+        for (StackPane card : registerCards) {
+            card.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+
+                int firstFreeRegister = registerValues.indexOf(null);
+                int firstFreeHand = handValues.indexOf(null);
+
+
+                if (mouseEvent.getSource() == handCardOne ||
+                        mouseEvent.getSource() == handCardTwo ||
+                        mouseEvent.getSource() == handCardThree ||
+                        mouseEvent.getSource() == handCardFour ||
+                        mouseEvent.getSource() == handCardFive ||
+                        mouseEvent.getSource() == handCardSix ||
+                        mouseEvent.getSource() == handCardSeven ||
+                        mouseEvent.getSource() == handCardEight ||
+                        mouseEvent.getSource() == handCardNine
+                ) {
+                    int index = handCards.indexOf(mouseEvent.getSource());
+                    if (handValues.get(index) != null) {
+                        if (firstFreeRegister != -1) {
+                            // adding to register
+                            registerValues.set(firstFreeRegister, handValues.get(index));
+                            // adding register image
+                            Image image = showCardImage(handValues.get(index));
+                            ImageView imageView = new ImageView(image);
+                            imageView.setFitHeight(110);
+                            imageView.setPreserveRatio(true);
+                            registerCards.get(firstFreeRegister).getChildren().add(imageView);
+                            // Removing from Hand
+                            handValues.set(index, null);
+                            // Removing handImage
+                            handCards.get(index).getChildren().remove(0);
+                        } else {
+                            System.out.println("Already 5 cards in the registers!");
+                        }
+                    }
+                } else {
+                    // adding to hand
+                    int index = registerCards.indexOf(mouseEvent.getSource());
+                    if (registerValues.get(index) != null) {
+                        handValues.set(firstFreeHand, registerValues.get(index));
+                        // adding hand image
+                        Image image = showCardImage(registerValues.get(index));
+                        ImageView imageView = new ImageView(image);
+                        imageView.setFitHeight(110);
+                        imageView.setPreserveRatio(true);
+                        handCards.get(firstFreeHand).getChildren().add(imageView);
+                        // Removing from register
+                        registerValues.set(index, null);
+                        // Removing registerImage
+                        registerCards.get(index).getChildren().remove(0);
+                    }
+                }
+            });
+        }
+    }
+
+    public void fillDummyHand() {
+        handValues.add("RightTurn");
+        handValues.add("NoImage");
+        handValues.add("Move1");
+        handValues.add("LeftTurn");
+        handValues.add("U-Turn");
+        handValues.add("NoImage");
+        handValues.add("NoImage");
+        handValues.add("Move3");
+        handValues.add("Move3");
+    }
+
+    public void initRegisterValues() {
+        for (int i = 0; i < 5; i++) {
+            registerValues.add(null);
+            registerValues.size();
+        }
+    }
+
+    public void updateCardImages() {
+        int i = 0;
+
+        for (String cardValue : handValues) {
+            ImageView stackElement = new ImageView(showCardImage(cardValue));
+            stackElement.setPreserveRatio(true);
+            stackElement.setFitHeight(110);
+            handCards.get(i++).getChildren().add(stackElement);
+        }
+    }
+
+    public Image showCardImage(String cardValue) {
+        return switch (cardValue) {
+            case "Move1" -> new Image(getClass().getResource("/images/Card/move1.jpg").toString());
+            case "Move2" -> new Image(getClass().getResource("/images/Card/move2.jpg").toString());
+            case "LeftTurn" -> new Image(getClass().getResource("/images/Card/leftTurn.jpg").toString());
+            case "Move3" -> new Image(getClass().getResource("/images/Card/move3.jpg").toString());
+            case "RightTurn" -> new Image(getClass().getResource("/images/Card/rightTurn.jpg").toString());
+            case "U-Turn" -> new Image(getClass().getResource("/images/Card/u-turn.jpg").toString());
+            case "Again" -> new Image(getClass().getResource("/images/Card/again.jpg").toString());
+            case "PowerUp" -> new Image(getClass().getResource("/images/Card/powerup.jpg").toString());
+            case "MoveBack" -> new Image(getClass().getResource("/images/Card/moveback.jpg").toString());
+            case "Move" -> new Image(getClass().getResource("/images/Card/move.jpg").toString());
+            default -> new Image(getClass().getResource("/images/Card/no_such_card.png").toString());
+        };
     }
 
     @FXML
@@ -297,75 +447,4 @@ public class MainController {
         this.dos = client.getOutputStr();
         this.dis = client.getInputStr();
     }
-
-    public MapController getMapController() {
-        return mapController;
-    }
-
-    public void showCardImage() {
-        Image img;
-        int i = 0;
-        //for(String card: client.getCardsInHand()){
-        ArrayList<String> cards = new ArrayList<>();
-        cards.add("RightTurn");
-        cards.add("");
-        cards.add("Move1");
-        cards.add("LeftTurn");
-        cards.add("UTurn");
-        cards.add("");
-        cards.add("");
-        cards.add("Move3");
-        cards.add("Move3");
-        for (String card : cards) {
-            ImageView stackElement = null;
-            switch (card) {
-                case "Move1":
-                    img = new Image(getClass().getResource("/images/Card/move1.jpg").toString());
-                    break;
-                case "Move2":
-                    img = new Image(getClass().getResource("/images/Card/move2.jpg").toString());
-                    break;
-                case "LeftTurn":
-                    img = new Image(getClass().getResource("/images/Card/leftTurn.jpg").toString());
-                    break;
-                case "Move3":
-                    img = new Image(getClass().getResource("/images/Card/move3.jpg").toString());
-                    break;
-                case "RightTurn":
-                    img = new Image(getClass().getResource("/images/Card/rightTurn.jpg").toString());
-                    break;
-                case "UTurn":
-                    img = new Image(getClass().getResource("/images/Card/u-turn.jpg").toString());
-                    break;
-                case "Again":
-                    img = new Image(getClass().getResource("/images/Card/again.jpg").toString());
-                    break;
-                case "PowerUp":
-                    img = new Image(getClass().getResource("/images/Card/powerup.jpg").toString());
-                    break;
-                case "MoveBack":
-                    img = new Image(getClass().getResource("/images/Card/moveback.jpg").toString());
-                    break;
-                case "Move":
-                    img = new Image(getClass().getResource("/images/Card/move.jpg").toString());
-                    break;
-                default:
-                    img = new Image(getClass().getResource("/images/Card/no_such_card.png").toString());
-            }
-            stackElement = new ImageView(img);
-            stackElement.setPreserveRatio(true);
-            stackElement.setFitHeight(110);
-            handCards.get(i++).getChildren().add(stackElement);
-
-        }
-
-    }
-
-    public void selectHand(StackPane card){
-        registerCards.get(registerTrack++).getChildren().add(card.getChildren().get(0));
-        card.getChildren().removeAll();
-        registerTrack%=5;
-    }
-
-
 }
