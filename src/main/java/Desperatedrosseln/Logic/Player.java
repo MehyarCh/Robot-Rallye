@@ -225,4 +225,13 @@ public class Player {
         return card;
     }
 
+    public ArrayList<String> getHandasStrings() {
+        ArrayList<String> cards = new ArrayList<>();
+
+        for (Card card:
+                hand) {
+            cards.add(card.toString());
+        }
+        return cards;
+    }
 }
