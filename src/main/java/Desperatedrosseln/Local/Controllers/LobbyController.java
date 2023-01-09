@@ -7,24 +7,40 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static Desperatedrosseln.Local.Controllers.LoginController.client;
+
 public class LobbyController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    @FXML
+    private Button playerIcon1;
+    @FXML
+    private Button playerIcon2;
+    @FXML
+    private Button playerIcon3;
+    @FXML
+    private Button playerIcon4;
+    @FXML
+    private Button playerIcon5;
+    @FXML
+    private Button playerIcon6;
 
     public MainController mainController;
 
-    private Client client;
 
     private TextFlow textFlow;
 
     @FXML
     private Button playerIconPink;
+    @FXML
+    private Label playersonline;
 
     public LobbyController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/lobbyScene.fxml"));
@@ -48,6 +64,10 @@ public class LobbyController {
     }
 
     public void startLobbyScene(Stage stage) {
+        mainController = new MainController();
+        client.setMainController(mainController);
+        client.sendHelloServer();
+        playersonline.setText("Players currently in lobby: " );
         this.stage = stage;
         stage.setScene(scene);
         stage.setResizable(false);
@@ -56,32 +76,45 @@ public class LobbyController {
     }
 
     @FXML
-    public void switchToMainScene(ActionEvent event) throws IOException {
-        mainController = new MainController();
-        System.out.println("mainctrl null= " + mainController==null);
-        mainController.startMainScene(stage);
-    }
-    @FXML
-    public void onPlayerSix() throws IOException {
+    public void onButtonClicked(ActionEvent event) throws IOException {
+        Button clickedButton = (Button) event.getSource();
 
-        System.out.println("mainctrl null= " + mainController==null);
-        if(mainController == null){
-            mainController = new MainController();
-            client.setMainController(mainController);
+
+        int selectedRobot = 0;
+        switch (clickedButton.getId()) {
+            case "player-icon--1":
+                System.out.println("Brown WAS PRESSED");
+                selectedRobot = 1;
+                break;
+            case "player-icon--2":
+                System.out.println("Yellow WAS PRESSED");
+                selectedRobot = 2;
+                break;
+            case "player-icon--3":
+                System.out.println("Blue was Pressed");
+                selectedRobot = 3;
+                break;
+            case "player-icon--4":
+                System.out.println("Green was Pressed");
+                selectedRobot = 4;
+                break;
+            case "player-icon--5":
+                System.out.println("Orange was pressed");
+                selectedRobot = 5;
+                break;
+            case "player-icon--6":
+                System.out.println("Red was pressed");
+                selectedRobot = 6;
+                break;
         }
-        mainController.startMainScene(stage);
+
+        if(!client.getRobotIDs().contains(selectedRobot)){
+            mainController.setSelectedRobot(selectedRobot);
+            mainController.startMainScene(stage, selectedRobot);
+        }
+
     }
 
-    public Client getClient() {
-        return client;
-    }
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public TextFlow getTextFlow() {
-        return textFlow;
-    }
 }
 

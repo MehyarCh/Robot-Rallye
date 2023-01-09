@@ -10,10 +10,10 @@ public class SelectedCard {
         "register": 5
      */
 
-    private Card card;
+    private String card;
     private int register;
 
-    public Card getCard() {
+    public String getCard() {
         return card;
     }
 
@@ -21,7 +21,7 @@ public class SelectedCard {
         return register;
     }
 
-    public SelectedCard(Card card, int register) {
+    public SelectedCard(String card, int register) {
         this.card = card;
         this.register = register;
     }

@@ -83,7 +83,7 @@
 
 .navbar {
     -fx-background-color: #0D0221;
-    -fx-pref-height: 68px;
+    -fx-pref-height: 55px;
     -fx-alignment: center-right;
     -fx-padding: 0 0 0 32px;
 }
@@ -121,27 +121,27 @@
 }
 
 #player-icon--1 {
-    -fx-background-image: url("../images/player_pink.png");
+    -fx-background-image: url("../images/robots/brown.jpg");
 }
 
 #player-icon--2 {
-    -fx-background-image: url("../images/player_yellow.png");
+    -fx-background-image: url("../images/robots/yellow.jpg");
 }
 
 #player-icon--3 {
-    -fx-background-image: url("../images/player_blue.png");
+    -fx-background-image: url("../images/robots/blue.jpg");
 }
 
 #player-icon--4 {
-    -fx-background-image: url("../images/player_green.png");
+    -fx-background-image: url("../images/robots/green.jpg");
 }
 
 #player-icon--5 {
-    -fx-background-image: url("../images/player_orange.png");
+    -fx-background-image: url("../images/robots/orange.jpg");
 }
 
 #player-icon--6 {
-    -fx-background-image: url("../images/player_blue.png");
+    -fx-background-image: url("../images/robots/red.jpg");
 }
 
 .profile-wrapper {
@@ -175,11 +175,9 @@
 }
 
 .tile {
-    -fx-border-color: rgb(246, 1, 157);
-    -fx-border-size:2px;
-    -fx-border-style: solid;
-    -fx-pref-height: 40px;
-    -fx-pref-width: 40px;
+    -fx-border-color: #a9a9a9;
+    -fx-border-size: 2px;
+    -fx-border-style: none;
 }
 
 .card-wrapper {
@@ -188,7 +186,7 @@
     -fx-padding: 8 4px 16px 4px;
     -fx-vgap: 4px;
     -fx-background-image: url("../images/login-bg2-dark.jpg");
-    -fx-background-repeat: repeat;
+    -fx-background-repeat: no-repeat;
     -fx-background-position: center center;
 }
 
@@ -206,17 +204,103 @@
 
 }
 
-.card {
+.card-area {
+    -fx-background-image: url("../images/card.png");
+}
+
+#card {
     -fx-pref-width: 76px;
     -fx-pref-height: 110px;
     -fx-border-radius: 10px;
     -fx-alignment: center;
-    -fx-background-image: url("../images/card.png");
     -fx-background-size: contain;
-    -fx-text-fill: #fff;
+
+    /*-fx-text-fill: #fff;
     -fx-font-weight: 300;
-    -fx-font-size: 12px
+    -fx-font-size: 12px*/
 }
+
+.card--MoveOne {
+    -fx-background-color: blue;
+    -fx-opacity: 0.5;
+}
+
+.card--MoveTwo {
+    -fx-background-color: red;
+    -fx-opacity: 0.5;
+}
+
+.card--MoveThree{
+    -fx-background-color: green;
+    -fx-opacity: 0.5;
+}
+
+.card--MoveBack{
+
+}
+
+.card--Again{
+
+}
+
+.card--TurnLeft{
+
+}
+
+.card--TurnRight{
+
+}
+
+.card--UTurn{
+
+}
+
+.card--PowerUp{
+
+}
+
+.card--Spam{
+
+}
+
+.card--Trojan{
+
+}
+
+.card--Virus{
+
+}
+
+.card--Worm{
+
+}
+
+.card--EnergyRoutine{
+
+}
+
+.card--RepeatRoutine{
+
+}
+
+.card--SandboxRoutine{
+
+}
+
+.card--SpamFolder{
+
+}
+
+.card--SpeedRoutine{
+
+}
+
+.card--WeaselRoutine{
+
+}
+
+
+
 
 .sidebar {
     -fx-pref-height: 100%;

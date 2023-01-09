@@ -1,17 +1,25 @@
 package Desperatedrosseln.Local.Protocols;
 
 import Desperatedrosseln.Logic.Elements.BoardElement;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class GameStarted {
-
-    // Body enthält komplette Map mit speziellen FeldTypen und Orientation
-
-    private List<List<List<BoardElement>>> map;
-
-    public GameStarted(ArrayList<List<List<BoardElement>>> map){
-        this.map = map;
+    private List<List<List<BoardElement>>> gameMap;
+    public GameStarted(List<List<List<BoardElement>>> gameMap) {
+        this.gameMap = gameMap;
     }
+
+    public List<List<List<BoardElement>>> getGameMap() {
+        return gameMap;
+    }
+
+    public void setGameMap(List<List<List<BoardElement>>> gameMap) {
+        this.gameMap = gameMap;
+    }
+
+    public List<List<List<BoardElement>>> setTile(int x, int y, int z, BoardElement boardElement) {
+        gameMap.get(x).get(y).add(z, boardElement);
+        return gameMap;
+    }
+
 }

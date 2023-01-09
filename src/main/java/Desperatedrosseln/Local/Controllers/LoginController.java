@@ -1,13 +1,13 @@
 package Desperatedrosseln.Local.Controllers;
 
 import Desperatedrosseln.Local.Client;
-import Desperatedrosseln.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -20,8 +20,6 @@ import java.net.Socket;
 
 
 public class LoginController {
-    DataOutputStream dos;
-    DataInputStream dis;
 
     private Thread thread;
     public static Client client;
@@ -29,13 +27,14 @@ public class LoginController {
     private Scene scene;
     private Parent root;
     public LobbyController lobbyController;
-    private TextFlow chatLog;
 
     @FXML
     public Button joinButton;
 
     @FXML
     public TextField loginTextField;
+    @FXML
+    private Label loginwarning;
 
 
 
@@ -68,17 +67,22 @@ public class LoginController {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+
     }
 
     @FXML
     public void onLogin(ActionEvent event) throws IOException {
-        switchToLobbyScene();
-        connectClient();
-        lobbyController.setClient(client);
-       // client.sendMessage(loginTextField.getText());
-        client.setClientName(loginTextField.getText());
+        if (loginTextField.getText().isBlank()){
+            loginTextField.setStyle(String.valueOf(loginwarning));
+            loginwarning.setText("Please write your name to continue");
+        }else {
 
-        client.sendHelloServer();
+            client = new Client();
+            client.setClientName(loginTextField.getText());
+            switchToLobbyScene();
+
+            System.out.println("Hello welcome " + loginTextField.getText());
+        }
 
     }
     public void switchToLobbyScene() throws IOException {
@@ -86,32 +90,6 @@ public class LoginController {
         lobbyController.startLobbyScene(stage);
     }
 
-    private void connectClient() throws IOException {
 
-        Socket clientSocket = new Socket("localhost", 3000);
-        dos = new DataOutputStream(clientSocket.getOutputStream());
-        dis = new DataInputStream(clientSocket.getInputStream());
-
-        client = new Client(clientSocket);
-        /*
-        thread = new Thread(() -> {
-            try {
-                while(true) {
-
-                    String msg = dis.readUTF();
-
-                    System.out.println("RE : " + msg);
-
-                }
-            } catch(Exception E) {
-                E.printStackTrace();
-            }
-        });
-        thread.start();
-
-        */
-        thread = new Thread(client);
-        thread.start();
-    }
 
 }

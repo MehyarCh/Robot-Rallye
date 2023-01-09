@@ -3,6 +3,7 @@ package Desperatedrosseln.Local.Protocols;
 import Desperatedrosseln.Logic.Cards.Card;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CurrentCards {
 
@@ -20,9 +21,9 @@ public class CurrentCards {
             }
         ]
      */
-    private ArrayList<ActiveCards> activeCards = new ArrayList<ActiveCards>();
+    private List<ActiveCards> activeCards = new ArrayList<ActiveCards>();
 
-    public CurrentCards(ArrayList<ActiveCards> activeCards){
+    public CurrentCards(List<ActiveCards> activeCards){
         this.activeCards = activeCards;
     }
 

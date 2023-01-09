@@ -17,47 +17,47 @@
             <ImageView styleClass="logo, logo--login"/>
         </VBox>
         <VBox styleClass="login-form-wrapper">
-            <Label text="Choose a color"
+            <Label text="Choose a robot"
                    styleClass="headline-3, color--light"/>
             <HBox id="player-bar"
                   styleClass="player-bar, player-bar--lobby">
                 <VBox styleClass="player-wrapper">
-                    <Button onAction="#switchToMainScene"
+                    <Button onAction="#onButtonClicked"
                             id="player-icon--1"
                             styleClass="player-icon"/>
-                    <Label text="Pink"
+                    <Label text="Brown"
                            styleClass="headline-4, color--light"/>
                 </VBox>
                 <VBox styleClass="player-wrapper">
-                    <Button onAction="#switchToMainScene"
+                    <Button onAction="#onButtonClicked"
                             id="player-icon--2"
                             styleClass="player-icon"/>
                     <Label text="Yellow"
                            styleClass="headline-4, color--light"/>
                 </VBox>
                 <VBox styleClass="player-wrapper">
-                    <Button onAction="#switchToMainScene"
+                    <Button onAction="#onButtonClicked"
                             id="player-icon--3"
                             styleClass="player-icon"/>
                     <Label text="Blue"
                            styleClass="headline-4, color--light"/>
                 </VBox>
                 <VBox styleClass="player-wrapper">
-                    <Button onAction="#switchToMainScene"
+                    <Button onAction="#onButtonClicked"
                             id="player-icon--4"
                             styleClass="player-icon"/>
                     <Label text="Green"
                            styleClass="headline-4, color--light"/>
                 </VBox>
                 <VBox styleClass="player-wrapper">
-                    <Button onAction="#switchToMainScene"
+                    <Button onAction="#onButtonClicked"
                             id="player-icon--5"
                             styleClass="player-icon"/>
                     <Label text="Orange"
                            styleClass="headline-4, color--light"/>
                 </VBox>
                 <VBox styleClass="player-wrapper">
-                    <Button onAction="#onPlayerSix"
+                    <Button onAction="#onButtonClicked"
                             id="player-icon--6"
                             styleClass="player-icon"/>
                     <Label text="Red"
@@ -66,6 +66,7 @@
             </HBox>
         </VBox>
         <Label text="5 of 6 players ready"
+               fx:id="playersonline"
                styleClass="headline-3, color--light"/>
     </VBox>
 </VBox>
