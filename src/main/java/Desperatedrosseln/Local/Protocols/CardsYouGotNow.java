@@ -12,13 +12,13 @@ public class CardsYouGotNow {
             "card1",
             "..."
      */
-    private ArrayList<Card> cards;
+    private ArrayList<String> cards;
 
-    public ArrayList<Card> getCards() {
+    public ArrayList<String> getCards() {
         return cards;
     }
 
-    public CardsYouGotNow (ArrayList<Card> cards){
+    public CardsYouGotNow (ArrayList<String> cards){
         this.cards = cards;
     }
 
