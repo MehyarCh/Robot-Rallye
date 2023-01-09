@@ -222,7 +222,7 @@ public class Game {
 
                         //the active player plays their card in the current register
                         playCardByType(curr.getRegisterIndex(current_register), curr, current_register);
-                        //TODO:ReplaceCard Protokoll
+
 
                         activeCardsArrayList.add(new CurrentCards.ActiveCards(curr.getID(), curr.getRegisterIndex(current_register)));
 
@@ -290,12 +290,29 @@ public class Game {
 
 
         } else {
+
             if (curr.getRegisterIndex(register_number).toString().equals("Again")
                     && register_number > 0) {
                 curr.getRegisterIndex(register_number - 1).playCard(curr.getRobot());
+                switch (curr.getRegisterIndex(register_number - 1).toString()) {
+                    case "Move1":
+                    case "Move2":
+                    case "Move3":
+                    case "MoveBack":
+                        robotMovedProtokoll(curr.getRobot());
+                }
             } else {
                 curr.getRegisterIndex(register_number).playCard(curr.getRobot());
             }
+
+            switch (curr.getRegisterIndex(register_number).toString()) {
+                case "Move1":
+                case "Move2":
+                case "Move3":
+                case "MoveBack":
+                    robotMovedProtokoll(curr.getRobot());
+            }
+
         }
     }
 
@@ -421,6 +438,10 @@ public class Game {
         activateRobotsLasers();
         activateEnergySpaces();
         activateCheckpoints();
+        for(Player player: players){
+            robotMovedProtokoll(player.getRobot());
+        }
+
     }
 
     private void activateBoardLasers() {
@@ -657,6 +678,7 @@ public class Game {
                 //get robots on belts position (usually just one robot)
                 List<Robot> robotList = gameMap.getRobotsOnPos(belt.getPosition());
                 belt.execute(robotList);
+
             }
         }
         //activate green conveyor belts
@@ -805,7 +827,7 @@ public class Game {
      */
     public void robotMovedProtokoll(Robot robot) {
         JsonAdapter<Movement> movementJsonAdapter = moshi.adapter(Movement.class);
-        Movement movement = new Movement(robot.getID(), robot.getPosition().getX(), robot.getPosition().getY()); //TODO: is the difference between old and new coordinates needed, or just the new position? atm: only the new position is shown
+        Movement movement = new Movement(robot.getID(), robot.getPosition().getX(), robot.getPosition().getY());
         broadcastMessage("Movement", movementJsonAdapter.toJson(movement));
     }
 
