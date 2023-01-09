@@ -109,7 +109,7 @@ public class LobbyController {
         }
 
         if(!client.getRobotIDs().contains(selectedRobot)){
-            mainController.startMainScene(stage);
+            mainController.startMainScene(stage, selectedRobot);
         }
 
     }

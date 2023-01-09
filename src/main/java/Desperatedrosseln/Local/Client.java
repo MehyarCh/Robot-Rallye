@@ -76,7 +76,6 @@ public class Client implements Runnable {
             mainController.getMapController().setMap(map);
             mainController.getMapController().showMap();
             mainController.getMapController().setMap(gameStartedProtocolMessage.getMessageBody().getGameMap());
-
             return;
         }
         System.out.println(message);
