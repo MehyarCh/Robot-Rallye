@@ -109,7 +109,7 @@ public class Game {
     public boolean selectionFinished(){
         int i=0;
         while(i<players.size()){
-            if(players.get(i).getRegisters()[5] == null ){
+            if(players.get(i).getRegisters()[4] == null ){
                 return false;
             }
             i++;
