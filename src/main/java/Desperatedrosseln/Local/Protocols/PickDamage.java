@@ -10,18 +10,18 @@ public class PickDamage {
 
     private int count;
 
-    private List<Damagecard> availablePiles;
+    private List<String> availablePiles;
 
 
     public int getCount() {
         return count;
     }
 
-    public List<Damagecard> getAvailablePiles() {
+    public List<String> getAvailablePiles() {
         return availablePiles;
     }
 
-    public PickDamage(int count, List<Damagecard> availablePiles) {
+    public PickDamage(int count, List<String> availablePiles) {
         this.count = count;
         this.availablePiles = availablePiles;
     }
