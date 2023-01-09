@@ -1,14 +1,21 @@
 package Desperatedrosseln.Local.Controllers;
 
 import Desperatedrosseln.Json.utils.JsonMapReader;
+import Desperatedrosseln.Local.Client;
+import Desperatedrosseln.Local.Protocols.SetStartingPoint;
 import Desperatedrosseln.Logic.Elements.BoardElement;
+import Desperatedrosseln.Logic.Elements.Position;
 import Desperatedrosseln.Logic.Elements.Tiles.*;
 import Desperatedrosseln.Logic.Elements.Map;
 import Desperatedrosseln.Logic.Elements.MapField;
 
+import com.squareup.moshi.Json;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -16,10 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class MapController {
 
@@ -29,6 +33,12 @@ public class MapController {
     private int selectedRobot;
 
     private boolean hasStartpoint = false;
+
+    private ArrayList<Position> unavailableStartingPoints = new ArrayList<>();
+
+    HashMap<StackPane, Position> startingPoints = new HashMap<>();
+
+    Client client;
 
     @FXML
     private GridPane mapGrid;
@@ -51,6 +61,41 @@ public class MapController {
     public void showMap() throws IOException {
         addLaserBeam(map.getMapFields());
         buildMapGrid(map.getMapFields());
+    }
+
+    public class Position {
+        int x;
+        int y;
+
+        public Position(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public void setX(int x) {
+            this.x = x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public void setY(int y) {
+            this.y = y;
+        }
+
+        public boolean isEqual(Position position){
+            return x == position.getX() && y == position.getY();
+        }
+
+        @Override
+        public String toString() {
+            return "("+x+","+y+")";
+        }
     }
 
     private void addLaserBeam(List<List<MapField>> fieldList) {
@@ -156,7 +201,12 @@ public class MapController {
                 for (int i = 0; i < fieldList.size(); i++) {
                     for (int j = 0; j < fieldList.get(i).size(); j++) {
                         try {
-                            mapGrid.getChildren().add(createGridCell(i, j, fieldList.get(i).get(j)));
+                            StackPane stackPane = createGridCell(i, j, fieldList.get(i).get(j));
+                            mapGrid.getChildren().add(stackPane);
+                            if(fieldList.get(i).get(j).getTypes().get(0).getType().equals("StartingPoint")){
+                                //ToDo
+                                startingPoints.put(stackPane,new Position(i,j));
+                            }
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -217,12 +267,26 @@ public class MapController {
                     stackElement = new ImageView(startpointImage);
 
                     stackElement.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+
+                        Position currPos =new Position(x,y);
+                        System.out.println("pos "+currPos+" is Clicked");
+
+                        boolean isStartingPointTaken = false;
+
+                        for(Position pos: unavailableStartingPoints){
+                            if(pos.isEqual(currPos)){
+                                isStartingPointTaken = true;
+                            }
+                        }
+
                         isTaken[0] = true;
 
                         ImageView robot;
                         Image robotImage;
 
-                        if (!hasStartpoint) {
+
+
+                        if (!hasStartpoint && !isStartingPointTaken) {
                             switch (selectedRobot) {
                                 case 1 -> {
                                     robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/brown.png").toString());
@@ -254,6 +318,9 @@ public class MapController {
                             }
                             hasStartpoint = true;
                             cell.getChildren().add(robot);
+                            Moshi moshi = new Moshi.Builder().build();
+                            JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
+                            client.sendMessage("SetStartingPoint",setStartingPointJsonAdapter.toJson(new SetStartingPoint(x,y)));
                         }
                     });
                 }
@@ -615,6 +682,11 @@ public class MapController {
         map.setMapFields(convertMap(gameMap));
     }
 
+    public void addUnavailablePosition(int x, int y){
+        unavailableStartingPoints.add(new Position(x,y));
+    }
 
-
+    public void setClient(Client client) {
+        this.client = client;
+    }
 }

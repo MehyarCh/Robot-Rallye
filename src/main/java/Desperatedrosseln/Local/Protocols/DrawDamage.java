@@ -7,18 +7,18 @@ import java.util.ArrayList;
 public class DrawDamage {
 
     private int clientID;
-    private ArrayList<Card> cards;
+    private ArrayList<String> cards;
 
 
     public int getClientID() {
         return clientID;
     }
 
-    public ArrayList<Card> getCards() {
+    public ArrayList<String> getCards() {
         return cards;
     }
 
-    public DrawDamage(int clientID, ArrayList<Card> cards) {
+    public DrawDamage(int clientID, ArrayList<String> cards) {
         this.clientID = clientID;
         this.cards = cards;
     }

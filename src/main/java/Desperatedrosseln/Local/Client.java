@@ -17,13 +17,14 @@ public class Client implements Runnable {
     private DataOutputStream out;
     private int clientID;
 
-    ArrayList<String> cardsInHand;
+    private List<String> cardsInHand;
 
     HashMap<String, Integer> localPlayerList = new HashMap<>();
     private MainController mainController;
     private String protocol = "Version 0.1";
     ArrayList<Integer> robotIDs = new ArrayList<>();
     private String clientName;
+
 
 
     public Client() {
@@ -59,20 +60,25 @@ public class Client implements Runnable {
         sendMessage("HelloServer", helloServer);
     }
 
-    public void sendPlayerValues(int RobotID) {
+    public void sendPlayerValues(int robotID) {
         Moshi moshi = new Moshi.Builder().build();
-        JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);          //TODO:replace ClientID with player figure!!!!!
-        sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(clientName, clientID)));
+        JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);
+        sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(clientName, robotID)));
     }
 
 
     private void checkProtocolMessage(String message) throws IOException {
+        if (message.equals("{\"messageBody\":\"{}\",\"messageType\":\"Alive\"}")) {
+            return;
+        }
+
         //TODO: Logs
         if (message.startsWith("{\"messageType\":\"GameStarted\"")) {
             JsonDeserializer jsonDeserializer = new JsonDeserializer();
             ProtocolMessage<GameStarted> gameStartedProtocolMessage = jsonDeserializer.deserialize(message);
             GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();
             Desperatedrosseln.Logic.Elements.Map map = new Desperatedrosseln.Logic.Elements.Map(mainController.getMapController().convertMap(gameStarted.getGameMap()));
+            System.out.println(map);
             mainController.getMapController().setMap(map);
             mainController.getMapController().showMap();
             mainController.getMapController().setMap(gameStartedProtocolMessage.getMessageBody().getGameMap());
@@ -159,7 +165,10 @@ public class Client implements Runnable {
                 break;
             case "StartingPointTaken":
 
-                //ToDo
+                JsonAdapter<StartingPointTaken> startingPointTakenJsonAdapter = moshi.adapter(StartingPointTaken.class);
+                StartingPointTaken startingPointTaken = startingPointTakenJsonAdapter.fromJson(msg.getMessageBody());
+
+                mainController.getMapController().addUnavailablePosition(startingPointTaken.getX(), startingPointTaken.getY());
 
                 break;
             case "YourCards":
@@ -167,12 +176,13 @@ public class Client implements Runnable {
                 YourCards yourCards = yourCardsJsonAdapter.fromJson(msg.getMessageBody());
 
                 cardsInHand = yourCards.getCardsInHand();
+                mainController.fillHand();
+                mainController.updateCardImages();
+                mainController.cardClick();
 
                 JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
 
-
         }
-
     }
 
     private String getPlayerName(int from) {
@@ -274,7 +284,7 @@ public class Client implements Runnable {
         }
     }
 
-    public ArrayList<String> getCardsInHand() {
+    public List<String> getCardsInHand() {
         return cardsInHand;
     }
 

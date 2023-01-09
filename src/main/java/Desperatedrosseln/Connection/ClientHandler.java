@@ -4,6 +4,7 @@ import Desperatedrosseln.Json.utils.JsonMapReader;
 import Desperatedrosseln.Json.utils.JsonSerializer;
 import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Local.Protocols.Error;
+import Desperatedrosseln.Logic.Elements.BoardElement;
 import Desperatedrosseln.Logic.Elements.Robot;
 import Desperatedrosseln.Logic.Game;
 import Desperatedrosseln.Logic.Player;
@@ -13,6 +14,7 @@ import com.squareup.moshi.Moshi;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,6 +25,7 @@ public class ClientHandler implements Runnable {
     private DataOutputStream out;
     private String clientName;
     private Player player;
+    private int startingPositionsChosen=0;
     Timer timer = new Timer();
     public static ArrayList<ClientHandler> clients = new ArrayList<>();
     Moshi moshi = new Moshi.Builder().build();
@@ -74,7 +77,7 @@ public class ClientHandler implements Runnable {
         sendMessage("Error", errorJsonAdapter.toJson(new Error()));
     }
 
-    public void checkCommands(String msg) throws IOException {
+    public void checkCommands(String msg) throws IOException, ClassNotFoundException {
 
 
             if(msg == null){
@@ -149,19 +152,24 @@ public class ClientHandler implements Runnable {
                     JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
                     Game.setCurrentMap(mapSelectedJsonAdapter.fromJson(message.getMessageBody()).getMap());
 
-                    JsonAdapter<GameStarted> gameStartedJsonAdapter = moshi.adapter(GameStarted.class);
 
                     //ToDO send GameStarted with Map
                     System.out.println(game.getCurrentMap());
-                    ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted",new GameStarted(new JsonMapReader().readMapFromJson(game.getCurrentMap())));
+
+                    List<List<List<BoardElement>>> gameMap =new JsonMapReader().readMapFromJson(game.getCurrentMap());
+
+                    ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted",new GameStarted(gameMap));
                     String jsonGameStarted = new JsonSerializer().serialize(gameStartedProtocolMessage);
                     System.out.println(jsonGameStarted);
-                    try {
-                        out.writeUTF(jsonGameStarted);
-                        out.flush();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+
+                        try {
+                            out.writeUTF(jsonGameStarted);
+                            out.flush();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+
 
 
                     break;
@@ -200,7 +208,15 @@ public class ClientHandler implements Runnable {
                 case "SetStartingPoint":
                     JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
                     SetStartingPoint setStartingPoint = setStartingPointJsonAdapter.fromJson(message.getMessageBody());
+                    game.initGameMap();
                     game.placeRobot(player,setStartingPoint.getX(),setStartingPoint.getY());
+                    startingPositionsChosen++;
+                    if(startingPositionsChosen == clients.size()){
+                        JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
+                        ActivePhase activePhase2 = new ActivePhase(2);
+                        broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase2));
+                        game.runStep();
+                    }
 
                     //ToDo one Robot one tile
 
@@ -217,14 +233,16 @@ public class ClientHandler implements Runnable {
                     }else{
                         JsonAdapter<SelectionFinished> selectionFinishedJsonAdapter = moshi.adapter(SelectionFinished.class);
                         broadcastMessage("SelectionFinished", selectionFinishedJsonAdapter.toJson(new SelectionFinished(clientID)));
+                        if(game.selectionFinished()){
+                            JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
+                            ActivePhase activePhase3 = new ActivePhase(3);
+                            broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
+                            game.runStep();
+                        }
                     }
 
                     break;
-
             }
-
-
-
     }
 
 
@@ -241,6 +259,18 @@ public class ClientHandler implements Runnable {
 
         JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
         broadcastMessage("PlayerAdded", playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())));
+        if(clientID>1){
+            ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted",new GameStarted(new JsonMapReader().readMapFromJson(game.getCurrentMap())));
+            String jsonGameStarted = new JsonSerializer().serialize(gameStartedProtocolMessage);
+            System.out.println(jsonGameStarted);
+
+            try {
+                out.writeUTF(jsonGameStarted);
+                out.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public int getClientID() {
@@ -305,6 +335,8 @@ public class ClientHandler implements Runnable {
                 checkCommands(message);
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -316,5 +348,9 @@ public class ClientHandler implements Runnable {
 
     public String getClientName() {
         return clientName;
+    }
+
+    public DataOutputStream getOut() {
+        return out;
     }
 }

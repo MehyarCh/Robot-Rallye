@@ -14,6 +14,7 @@ import Desperatedrosseln.Logic.Elements.Tiles.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class Game {
     private ArrayList<Card> wormpile = new ArrayList<>(6);
     private ArrayList<ClientHandler> clients;
 
-    //TODO: availablePiles (protocoll 1.0 bulletpoint 8)
+    //TODO: availablePiles (protocol 1.0 bulletpoint 8)
 
     private int distance;
     private final int port;
@@ -105,6 +106,16 @@ public class Game {
             //TODO: set number of checkpoints dynamically from the gamemap info
         }
     }
+    public boolean selectionFinished(){
+        int i=0;
+        while(i<players.size()){
+            if(players.get(i).getRegisters()[5] == null ){
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
 
     /*
     Aufbauphase
@@ -113,6 +124,12 @@ public class Game {
         JsonMapReader jsonMapReader = new JsonMapReader();
         List<List<List<BoardElement>>> gameMapList = jsonMapReader.readMapFromJson(currentMap);
         gameMap = new Map(convertMap(gameMapList));
+        if(gameMap == null){
+            System.out.println("Gamemap is null!!!");
+        }else {
+            System.out.println("Gamemap is not null");
+        }
+        phase = 2;
 
     }
 
@@ -136,11 +153,11 @@ public class Game {
      * this method initiates the programmingphase
      */
     private void runProgrammingPhase() {
-        phase = 2;
         //send the current ActivePhase to all Clients
         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
         ActivePhase activePhase2 = new ActivePhase(phase);
         broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase2));
+
         for (Player player : players) {
             int shuffled = player.programmingPhase();
 
@@ -171,7 +188,7 @@ public class Game {
 
 
         }
-
+        phase = 3;
 
     }
 
@@ -323,18 +340,25 @@ public class Game {
      * @param numberOfCards: the number of spam cards to draw
      */
     private void drawSpamCard(Player player, int numberOfCards) {
+
+        ArrayList<String> cards = new ArrayList<>();
+
         if (spampile.size() >= numberOfCards) {
             for (int i = 0; i < numberOfCards; i++) {
                 drawDamageCard(player, "Spam");
+                cards.add("Spam");
             }
         } else if (spampile.size() > 0 && spampile.size() < numberOfCards) {
             drawDamageCard(player, "Spam");
+            cards.add("Spam");
         } else {
-            Damagecard requestedcard = chooseAnotherDamageCard(player);
+            Damagecard requestedcard = chooseAnotherDamageCard(player, numberOfCards);
             for (int i = 0; i < numberOfCards; i++) {
                 drawDamageCard(player, requestedcard.toString());
+                cards.add(requestedcard.toString());
             }
         }
+        drawDamageProtokoll(player.getRobot(), cards);
     }
 
     /**
@@ -369,6 +393,7 @@ public class Game {
                     wormpile.remove(wormpile.size() - 1);
                 }
             }
+
             default -> {
                 System.out.println("Invalid type of card");
             }
@@ -379,13 +404,32 @@ public class Game {
      * @param player
      * @returns the alternative damagecard the player wants to draw instead
      */
-    private Damagecard chooseAnotherDamageCard(Player player) {
+    private Damagecard chooseAnotherDamageCard(Player player, int count) {
         //TODO: protocol pickDamage and SelectedDamage
         //Request to client
-        //Get client request
-        Damagecard requestedcard = new Damagecard();
-        return requestedcard;
-    }
+        for (ClientHandler client : clients) {
+            if (client.getClientID() == player.getID()) {
+                //check all the DamageCard piles if they are empty or not - if not add them to availablePiles
+                List<String> availablePiles = new ArrayList<>();
+                if (viruspile.size()>0){
+                    availablePiles.add("Virus");
+                }
+                if (trojanpile.size()>0){
+                    availablePiles.add("Trojan");
+                }
+                if (wormpile.size()>0){
+                    availablePiles.add("Worm");
+                }
+                //send the request to the client which damagecards he wants to pick
+                JsonAdapter<PickDamage> pickDamageJsonAdapter = moshi.adapter(PickDamage.class);
+                client.sendMessage("PickDamage", pickDamageJsonAdapter.toJson(new PickDamage(count, availablePiles)));
+            }
+        }
+            //Get client answer - receive "SelectedDamage"
+            Damagecard requestedcard = new Damagecard();
+            return requestedcard;
+        }
+
 
     /**
      * returns a list of players in 6 field radius of the Position pos
@@ -414,6 +458,11 @@ public class Game {
         for (Card card : curr.getRegisters()) {
             curr.getDiscarded().add(card);
         }
+        //send reboot protocoll message to all clients
+        JsonAdapter<Reboot> rebootJsonAdapter = moshi.adapter(Reboot.class);
+        Reboot reboot = new Reboot(curr.getID());
+        broadcastMessage("Reboot", rebootJsonAdapter.toJson(reboot));
+        //ToDo: get rebootfield coordinates and send Movement protocoll
     }
 
     private void decideNextPlayer() {
@@ -629,6 +678,12 @@ public class Game {
          * take an energy cube from the
          * energy bank
          */
+
+        /*
+        JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
+        Energy energy = new Energy(robot.getID(), count, source);
+        broadcastMessage("Energy", energyJsonAdapter.toJson(energy));
+        */
     }
 
     private void activateCheckpoints() {
@@ -653,10 +708,17 @@ public class Game {
                 Player player = getPlayerByRobot(robot);
                 CheckPoint checkpoint1 = (CheckPoint) checkpoint;
                 checkpoint1.execute(player);
-                //TODO: protokoll checkpoint reached
+                //send checkpointreached protocoll message to every client
+                JsonAdapter<CheckPointReached> checkPointReachedJsonAdapter = moshi.adapter(CheckPointReached.class);
+                CheckPointReached checkPointReached = new CheckPointReached(robot.getID(), checkpoint1.getCount());
+                broadcastMessage("CheckPointReached", checkPointReachedJsonAdapter.toJson(checkPointReached));
+
                 if (player.getNextCheckPoint() > checkpoints.size()) {
                     System.out.println("Player " + player.getID() + "-" + player.getName() + " has won.");
-                    //TODO: protokoll gamefinished
+                    //if it was the last checkpoint, the player has won the game and the protocoll message gets sent
+                    JsonAdapter<GameFinished> gameFinishedJsonAdapter = moshi.adapter(GameFinished.class);
+                    GameFinished gameFinished = new GameFinished(robot.getID());
+                    broadcastMessage("GameFinished", gameFinishedJsonAdapter.toJson(gameFinished));
                     return;
                 }
             }
@@ -847,7 +909,7 @@ public class Game {
      * @param cards this method is used every time a player/robot takes damage and has to draw a Damagecard
      *              if he takes multiple Damagecards, only one message is sent, containing a list of all the Damagecards
      */
-    public void drawDamageProtokoll(Robot robot, ArrayList<Card> cards) {
+    public void drawDamageProtokoll(Robot robot, ArrayList<String> cards) {
         JsonAdapter<DrawDamage> drawDamageJsonAdapter = moshi.adapter(DrawDamage.class);
         DrawDamage drawDamage = new DrawDamage(robot.getID(), cards);
         broadcastMessage("DrawDamage", drawDamageJsonAdapter.toJson(drawDamage));
@@ -1953,6 +2015,9 @@ public class Game {
     }
 
 
+    public void initGameMap() {
+        setUpBoard();
+    }
 }
 
 

@@ -3,13 +3,14 @@ package Desperatedrosseln.Logic.AI;
 import Desperatedrosseln.Logic.Elements.Robot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AI {
     int activePhase;
     int currentPlayer;
     int ID;
     Robot robot;
-    ArrayList<String> cardsInHand;
+    private List<String> cardsInHand;
     public AI(int ai_id) {
         ID = ai_id;
     }
@@ -26,11 +27,11 @@ public class AI {
         this.robot = robot;
     }
 
-    public void setCardsInHand(ArrayList<String> cardsInHand) {
+    public void setCardsInHand(List<String> cardsInHand) {
         this.cardsInHand = cardsInHand;
     }
 
-    public ArrayList<String> getCardsInHand() {
+    public List<String> getCardsInHand() {
         return cardsInHand;
     }
 

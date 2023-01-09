@@ -5,14 +5,10 @@ package Desperatedrosseln.Local.Controllers;
 import Desperatedrosseln.Local.Protocols.SelectedCard;
 import Desperatedrosseln.Logic.Elements.MapField;
 import Desperatedrosseln.Local.CardLabels.*;
-import Desperatedrosseln.Local.Client;
-import Desperatedrosseln.Logic.Cards.*;
 import Desperatedrosseln.Logic.Cards.Programming.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
-import javafx.animation.*;
 import javafx.application.Platform;
-import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,15 +17,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.*;
-import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import javafx.util.*;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -54,8 +47,8 @@ public class MainController {
 
     List<List<MapField>> mapFields;
 
-    ArrayList<String> handValues = new ArrayList<>();
-    ArrayList<String> registerValues = new ArrayList<>();
+    private List<String> handValues = new ArrayList<>();
+    private List<String> registerValues = new ArrayList<>();
     @FXML
     private GridPane mapGrid;
 
@@ -93,9 +86,12 @@ public class MainController {
     private StackPane handCardEight;
     @FXML
     private StackPane handCardNine;
+    @FXML
+    private Button programdone;
     private ArrayList<StackPane> registerCards = new ArrayList<>();
     private ArrayList<StackPane> handCards = new ArrayList<>();
-    private int registerTrack=0;
+    private int selectedRobot=0;
+
     private MoveOneLabel moveOneLabel;
     private MoveOneLabel anotherMoveOneLabel;
     private MoveTwoLabel moveTwoLabel;
@@ -114,48 +110,6 @@ public class MainController {
 
     private UTurn uTurnLabel;
 
-
-    /*EventHandler clickCard = (evt) -> {
-
-        Label selectedCard = (Label) evt.getSource();
-        //check if card is in hand, then add it to the next free register slot
-        if (checkCard(selectedCard)) {
-            for (int j = 0; j < registerCards.size(); j++) {
-                //check if the registerCard StackPane only has one label (cardarea) in it
-                if (registerCards.get(j).getChildren().size() == 1) {
-                    registerCards.get(j).getChildren().add(selectedCard);
-                    System.out.println("Card added to register j: " + j);
-                    System.out.println(handCards.get(j).getChildren());
-                    System.out.println(registerCards.get(j).getChildren());
-                    return;
-                }
-
-
-            }
-            //when card is in the register, add it back to the hand
-        } else {
-            for (int k = 0; k < handCards.size(); k++) {
-                if (handCards.get(k).getChildren().size() == 1) {
-                    handCards.get(k).getChildren().add(selectedCard);
-                    System.out.println("Card added to hand k: " + k);
-                    return;
-                }
-            }
-        }
-
-    };
-
-    //Check if a card is in the hand of a player -> true
-    private boolean checkCard(Label card) {
-        for (int i = 0; i < handCards.size(); i++) {
-            if (handCards.get(i).getChildren().contains(card)) {
-                System.out.println("Card is in hand");
-                return true;
-            }
-        }
-        System.out.println("Card is not in hand");
-        return false;
-    }*/
 
     public MainController() {
 
@@ -211,11 +165,8 @@ public class MainController {
         this.stage = stage;
 
         mapController = new MapController(mapGrid, selectedRobot);
-        client.sendPlayerValues(0);
-        // mapController.showMap("dizzyHighway");
-        fillDummyHand();
-        initRegisterValues();
-        updateCardImages();
+        client.sendPlayerValues(selectedRobot);
+        mapController.setClient(client);
 
         stage.setScene(scene);
         stage.setMinHeight(720);
@@ -224,14 +175,17 @@ public class MainController {
         stage.setResizable(true);
         stage.show();
 
-        //ToDo change it
+    }
+
+    public void cardClick(){
+        initRegisterValues();
+        updateCardImages();
 
         for (StackPane card : handCards) {
             card.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
 
                 int firstFreeRegister = registerValues.indexOf(null);
                 int firstFreeHand = handValues.indexOf(null);
-
 
                 if (mouseEvent.getSource() == handCardOne ||
                         mouseEvent.getSource() == handCardTwo ||
@@ -339,6 +293,11 @@ public class MainController {
         }
     }
 
+    public void fillHand(){
+        for(String text : client.getCardsInHand()){
+            handValues.add(text);
+        }
+    }
     public void fillDummyHand() {
         handValues.add("RightTurn");
         handValues.add("NoImage");
@@ -359,24 +318,31 @@ public class MainController {
     }
 
     public void updateCardImages() {
-        int i = 0;
 
-        for (String cardValue : handValues) {
-            ImageView stackElement = new ImageView(showCardImage(cardValue));
-            stackElement.setPreserveRatio(true);
-            stackElement.setFitHeight(110);
-            handCards.get(i++).getChildren().add(stackElement);
-        }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                int i = 0;
+                for (String cardValue : handValues) {
+                    ImageView stackElement = new ImageView(showCardImage(cardValue));
+                    System.out.println(stackElement.toString());
+                    stackElement.setPreserveRatio(true);
+                    stackElement.setFitHeight(110);
+                    handCards.get(i++).getChildren().add(stackElement);
+                }
+            }
+        });
+
     }
 
     public Image showCardImage(String cardValue) {
         return switch (cardValue) {
-            case "Move1" -> new Image(getClass().getResource("/images/Card/move1.jpg").toString());
-            case "Move2" -> new Image(getClass().getResource("/images/Card/move2.jpg").toString());
-            case "LeftTurn" -> new Image(getClass().getResource("/images/Card/leftTurn.jpg").toString());
-            case "Move3" -> new Image(getClass().getResource("/images/Card/move3.jpg").toString());
-            case "RightTurn" -> new Image(getClass().getResource("/images/Card/rightTurn.jpg").toString());
-            case "U-Turn" -> new Image(getClass().getResource("/images/Card/u-turn.jpg").toString());
+            case "MoveOne" -> new Image(getClass().getResource("/images/Card/move1.jpg").toString());
+            case "MoveTwo" -> new Image(getClass().getResource("/images/Card/move2.jpg").toString());
+            case "TurnLeft" -> new Image(getClass().getResource("/images/Card/leftTurn.jpg").toString());
+            case "MoveThree" -> new Image(getClass().getResource("/images/Card/move3.jpg").toString());
+            case "TurnRight" -> new Image(getClass().getResource("/images/Card/rightTurn.jpg").toString());
+            case "UTurn" -> new Image(getClass().getResource("/images/Card/u-turn.jpg").toString());
             case "Again" -> new Image(getClass().getResource("/images/Card/again.jpg").toString());
             case "PowerUp" -> new Image(getClass().getResource("/images/Card/powerup.jpg").toString());
             case "MoveBack" -> new Image(getClass().getResource("/images/Card/moveback.jpg").toString());
@@ -393,27 +359,15 @@ public class MainController {
     }
     @FXML
     public void onProgrammingDone() {
-        //TODO: send register list to server
-        //TODO: send cards left in hand to server
-
-        ArrayList<String> cards = new ArrayList<>();
-        cards.add("RightTurn");
-        cards.add("Move1");
-        cards.add("LeftTurn");
-        cards.add("UTurn");
-        cards.add("Move3");
-        //ToDo change back to register
-
-        if(cards.size()==5){
+        if(registerValues.size()==5){
             Moshi moshi = new Moshi.Builder().build();
 
             JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
             for(int i=0 ; i<5 ; ++i){
-               client.sendMessage("SelectedCard",selectedCardJsonAdapter.toJson(new SelectedCard(cards.get(i),i)));
+               client.sendMessage("SelectedCard",selectedCardJsonAdapter.toJson(new SelectedCard(registerValues.get(i),i)));
             }
         }
-
-
+        programdone.setDisable(true);
     }
 
     @FXML
@@ -446,5 +400,13 @@ public class MainController {
     private void setStreams() {
         this.dos = client.getOutputStr();
         this.dis = client.getInputStr();
+    }
+
+    public int getSelectedRobot() {
+        return selectedRobot;
+    }
+
+    public void setSelectedRobot(int selectedRobot) {
+        this.selectedRobot = selectedRobot;
     }
 }
