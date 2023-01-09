@@ -290,14 +290,14 @@ public class MainController {
 
 
                 if (mouseEvent.getSource() == handCardOne ||
-                        mouseEvent.getSource() == handCardTwo ||
-                        mouseEvent.getSource() == handCardThree ||
-                        mouseEvent.getSource() == handCardFour ||
-                        mouseEvent.getSource() == handCardFive ||
-                        mouseEvent.getSource() == handCardSix ||
-                        mouseEvent.getSource() == handCardSeven ||
-                        mouseEvent.getSource() == handCardEight ||
-                        mouseEvent.getSource() == handCardNine
+                    mouseEvent.getSource() == handCardTwo ||
+                    mouseEvent.getSource() == handCardThree ||
+                    mouseEvent.getSource() == handCardFour ||
+                    mouseEvent.getSource() == handCardFive ||
+                    mouseEvent.getSource() == handCardSix ||
+                    mouseEvent.getSource() == handCardSeven ||
+                    mouseEvent.getSource() == handCardEight ||
+                    mouseEvent.getSource() == handCardNine
                 ) {
                     int index = handCards.indexOf(mouseEvent.getSource());
                     if (handValues.get(index) != null) {
