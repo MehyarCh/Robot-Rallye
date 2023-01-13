@@ -106,7 +106,7 @@ public class AIClient extends Thread{
 
                 localPlayerList.put(playerAdded.getName(), playerAdded.getClientID());
 
-                if (playerAdded.getClientID() == AI_ID) {                                      //TODO: Ready button?
+                if (playerAdded.getClientID() == AI_ID) {
                     sendChatMessage("Hello Everyone", -1);
                     JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
                     sendMessage("SetStatus", setStatusJsonAdapter.toJson(new SetStatus(true)));

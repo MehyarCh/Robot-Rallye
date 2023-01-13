@@ -26,6 +26,12 @@ public class Client implements Runnable {
     private String clientName;
 
 
+    private boolean isMyTurn = false;
+
+    public boolean getIsMyTurn() {
+        return isMyTurn;
+    }
+
 
     public Client() {
 
@@ -123,7 +129,7 @@ public class Client implements Runnable {
                 if(!robotIDs.contains(playerAdded.getFigure())){
                     robotIDs.add(playerAdded.getFigure());
                 }
-                if (playerAdded.getClientID() == clientID) {                                      //TODO: Ready button?
+                if (playerAdded.getClientID() == clientID) {
                     JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
                     sendMessage("SetStatus", setStatusJsonAdapter.toJson(new SetStatus(true)));
                 }
@@ -163,6 +169,7 @@ public class Client implements Runnable {
                 break;
             case "CardPlayed":
                 break;
+
             case "StartingPointTaken":
 
                 JsonAdapter<StartingPointTaken> startingPointTakenJsonAdapter = moshi.adapter(StartingPointTaken.class);
@@ -182,6 +189,15 @@ public class Client implements Runnable {
                 mainController.cardClick();
 
                 JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
+
+            case "CurrentPlayer":
+                if (msg.getMessageBody().equals(this.clientID)){
+                    isMyTurn = true;
+                    //ToDo: maybe add here PlayCard protocoll -> get the card in the current register and send it to the server via PlayCard
+                }
+                else if (!msg.getMessageBody().equals(this.clientID)){
+                    isMyTurn = false;
+                }
 
         }
     }
@@ -277,6 +293,12 @@ public class Client implements Runnable {
                 }
             } else if (message.startsWith("/addAI")) {
                 sendMessage("addAI", "");
+            }
+            else if (message.startsWith("/dc")) {
+                //disconnect the client from the server ->  closeAll in Clienthandler ToDo: fix this
+                this.logOut();
+                sendMessage("Logout", "");
+
             }
 
 

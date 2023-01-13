@@ -45,7 +45,6 @@ public class Game {
     private ArrayList<Card> wormpile = new ArrayList<>(6);
     private ArrayList<ClientHandler> clients;
 
-    //TODO: availablePiles (protocol 1.0 bulletpoint 8)
 
     private int distance;
     private final int port;
@@ -205,7 +204,6 @@ public class Game {
 
 
     private void broadcastMessage(String type, String json) {
-        //TODO:
         for (ClientHandler client :
                 clients) {
             client.sendMessage(type, json);
@@ -239,6 +237,7 @@ public class Game {
 
                         //the active player plays their card in the current register
                         playCardByType(curr.getRegisterIndex(current_register), curr, current_register);
+
 
 
                         activeCardsArrayList.add(new CurrentCards.ActiveCards(curr.getID(), curr.getRegisterIndex(current_register)));
@@ -915,12 +914,12 @@ public class Game {
         broadcastMessage("DrawDamage", drawDamageJsonAdapter.toJson(drawDamage));
     }
 
-    public void setPlayerValues() {                              //TODO: redo
+    /*public void setPlayerValues() {
         for (ClientHandler client :
                 ClientHandler.clients) {
             players.add(new Player(new Robot(ClientHandler.clients.indexOf(client))));
         }
-    }
+    }*/
 
     public String getCurrentMap() {
         return currentMap;
@@ -946,7 +945,7 @@ public class Game {
         return phase;
     }
 
-    public static String getDizzyHighway() {
+    /*public static String getDizzyHighway() {
         String dizzyhighway = "{\n" +
                 "  \"messageType\": \"GameStarted\",\n" +
                 "  \"messageBody\": {\n" +
@@ -2008,7 +2007,7 @@ public class Game {
                 "}\n";
 
         return dizzyhighway.replace("\n", "").replace("\r", "");
-    }
+    }*/
 
     public void addAI() {
         new AIClient(port, protocol);

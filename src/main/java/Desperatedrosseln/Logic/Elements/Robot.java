@@ -81,7 +81,7 @@ public class Robot extends BoardElement {
         return ID;
     }
 
-    public void push(String direction){ //TODO: maybe switch to an actual DIRECTION instead of String
+    public void push(String direction){
 
         switch (direction) {
             case "up":

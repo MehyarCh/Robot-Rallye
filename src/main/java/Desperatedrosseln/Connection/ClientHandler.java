@@ -53,7 +53,7 @@ public class ClientHandler implements Runnable {
 
             sendCurrentPlayers();
 
-            JsonAdapter<HelloClient> helloClientJsonAdapter = moshi.adapter(HelloClient.class);         //TODO: redo this
+            JsonAdapter<HelloClient> helloClientJsonAdapter = moshi.adapter(HelloClient.class);
             sendMessage("HelloClient", helloClientJsonAdapter.toJson(new HelloClient(protocol))); //send HelloClient
 
         } catch (IOException e) {
@@ -186,7 +186,6 @@ public class ClientHandler implements Runnable {
                                 clients) {
                             if (client.getClientID() == sendChat.getTo()) {
                                 client.sendMessage("ReceivedChat", receivedChatJsonAdapter.toJson(new ReceivedChat(sendChat.getMessage(), clientID, true)));
-                                //TODO: Display in current clients gui.
                             }
                         }
                     }
@@ -195,7 +194,6 @@ public class ClientHandler implements Runnable {
                 case "PlayCard":
                     JsonAdapter<CardPlayed> cardPlayedJsonAdapter = moshi.adapter(CardPlayed.class);
                     CardPlayed cardPlayed = new CardPlayed(player.getID(), cardPlayedJsonAdapter.fromJson(message.getMessageBody()).getCard()); //add clientID and the card that was played
-
 
                     broadcastMessage("CardPlayed", cardPlayedJsonAdapter.toJson(cardPlayed)); //send CardPlayed message to every client
                     
@@ -240,7 +238,9 @@ public class ClientHandler implements Runnable {
                             game.runStep();
                         }
                     }
-
+                case "Logout":
+                    closeAll(this.socket, this.in, this.out);
+                    //problem with alive message as soon as socket gets closed; -> ToDo: disconnect client properly (multiple errors)
                     break;
             }
     }
