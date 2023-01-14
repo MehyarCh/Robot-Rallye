@@ -42,9 +42,10 @@
     -fx-spacing: 16px;
     -fx-alignment: center;
     -fx-background-color: rgba(0, 0, 0, 0.8);
-    -fx-padding: 16px;
+    -fx-padding: 12px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 4, 0, 0, 0);
 }
+
 
 .login-form-wrapper {
     -fx-pref-width: 240px;
@@ -93,6 +94,31 @@
     -fx-pref-width: 97px;
     -fx-background-size: 97px 38px;
     -fx-padding: 0 0 0 32px;
+}
+.selected-map {
+    -fx-alignment: center;
+    -fx-pref-width: 120px;
+    -fx-pref-height: 120px;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 2px;
+    -fx-background-color: white;
+    -fx-background-color: white;
+}
+.choice-box {
+    -fx-background-color: white;
+    -fx-mark-color: blue;
+    -fx-text: "Choose a map..";
+    -fx-pref-width: 120px;
+}
+.vbox-highlight {
+    -fx-border-color: red;
+    -fx-border-insets: 5;
+    -fx-border-width: 3;
+    -fx-border-style: dashed;
+ }
+.ready-button {
+    -fx-height: 30px;
+    -fx-width: 120px;
 }
 
 .player-bar {

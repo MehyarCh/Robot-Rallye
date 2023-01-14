@@ -165,7 +165,6 @@ public class MainController {
         this.stage = stage;
 
         mapController = new MapController(mapGrid, selectedRobot);
-        client.sendPlayerValues(selectedRobot);
         mapController.setClient(client);
 
         stage.setScene(scene);

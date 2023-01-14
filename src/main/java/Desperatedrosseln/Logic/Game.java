@@ -14,7 +14,6 @@ import Desperatedrosseln.Logic.Elements.Tiles.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,11 +60,10 @@ public class Game {
         if (mapSelectionPlayer == -1) {
             mapSelectionPlayer = client.getPlayer().getID();
             Moshi moshi = new Moshi.Builder().build();
-            JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
-            JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
+
             ArrayList<String> maps = new ArrayList<>();
             maps.add("DizzyHighway");
-            client.sendMessage("SelectMap", selectMapJsonAdapter.toJson(new SelectMap(maps)));
+
         }
     }
 
@@ -2016,6 +2014,17 @@ public class Game {
 
     public void initGameMap() {
         setUpBoard();
+    }
+
+    public boolean playersAreReady() {
+        int i=0;
+        while (i<players.size()){
+            if(!players.get(i).isReady()){
+                return false;
+            }
+            i++;
+        }
+        return true;
     }
 }
 

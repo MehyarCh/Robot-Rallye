@@ -2,10 +2,12 @@ package Desperatedrosseln.Local;
 
 
 import Desperatedrosseln.Json.utils.JsonDeserializer;
+import Desperatedrosseln.Local.Controllers.LobbyController;
 import Desperatedrosseln.Local.Controllers.MainController;
 import Desperatedrosseln.Local.Protocols.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.Socket;
@@ -27,6 +29,9 @@ public class Client implements Runnable {
 
 
     private boolean isMyTurn = false;
+
+
+    private LobbyController lobbyController;
 
     public boolean getIsMyTurn() {
         return isMyTurn;
@@ -130,20 +135,18 @@ public class Client implements Runnable {
                     robotIDs.add(playerAdded.getFigure());
                 }
                 if (playerAdded.getClientID() == clientID) {
-                    JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
-                    sendMessage("SetStatus", setStatusJsonAdapter.toJson(new SetStatus(true)));
+
                 }
                 break;
             case "PlayerStatus":
+
                 break;
             case "SelectMap":
                 JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
                 SelectMap sm = selectMapJsonAdapter.fromJson(msg.getMessageBody());
 
-                //TODO: GUI map selection
-
-                JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
-                sendMessage("MapSelected", mapSelectedJsonAdapter.toJson(new MapSelected(sm.getMaps().get(0))));
+                lobbyController.addMapsToChoice(sm.getMaps());
+                lobbyController.canChooseMap();
 
                 break;
             case "ReceivedChat":
@@ -159,6 +162,8 @@ public class Client implements Runnable {
                 //skipped
                 JsonAdapter<GameStarted> gameStartedJsonAdapter = moshi.adapter(GameStarted.class);
                 GameStarted gameStarted = gameStartedJsonAdapter.fromJson(msg.getMessageBody());
+                Stage stage = new Stage();
+                mainController.startMainScene(stage, lobbyController.getSelectedRobot());
 
 
                 break;
@@ -191,13 +196,17 @@ public class Client implements Runnable {
                 JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
 
             case "CurrentPlayer":
-                if (msg.getMessageBody().equals(this.clientID)){
+                JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
+                CurrentPlayer currentPlayer = currentPlayerJsonAdapter.fromJson(msg.getMessageBody());
+                if (currentPlayer.getClientID() == this.clientID){
                     isMyTurn = true;
                     //ToDo: maybe add here PlayCard protocoll -> get the card in the current register and send it to the server via PlayCard
                 }
-                else if (!msg.getMessageBody().equals(this.clientID)){
+                else if (currentPlayer.getClientID() == this.clientID){
                     isMyTurn = false;
                 }
+
+
 
         }
     }
@@ -279,16 +288,19 @@ public class Client implements Runnable {
 
             if (message.startsWith("/dm")) {
                 if (messageParts.length < 3) {
+                    //lobbyController.addChatMessage("Please complete the  command.");
                     mainController.addChatMessage("Please complete the  command.");
                     return;
                 }
                 if (messageParts[1].equals(this.clientName)) {
+                    //lobbyController.addChatMessage("Please complete the  command.");
                     mainController.addChatMessage("You cannot send yourself private Messages, it is wierd. just think and talk to yourself.");
                     return;
                 }
                 if (localPlayerList.containsKey(messageParts[1])) {
                     sendMessage("SendChat", sendChatJsonAdapter.toJson(new SendChat(messageParts[2], localPlayerList.get(messageParts[1]))));
                 } else {
+                    //lobbyController.addChatMessage("Please complete the  command.");
                     mainController.addChatMessage("/dm did not work. Reason: invalid player name.");
                 }
             } else if (message.startsWith("/addAI")) {
@@ -313,6 +325,9 @@ public class Client implements Runnable {
 
     public ArrayList<Integer> getRobotIDs() {
         return robotIDs;
+    }
+    public void setLobbyController(LobbyController lobbyController) {
+        this.lobbyController = lobbyController;
     }
 }
 
