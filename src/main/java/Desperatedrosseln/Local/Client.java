@@ -275,7 +275,6 @@ public class Client implements Runnable {
                     mainController.addChatMessage("/dm did not work. Reason: invalid player name.");
                 }
             } else if (message.startsWith("/addAI")) {
-                sendMessage("addAI", "");
             }
 
 

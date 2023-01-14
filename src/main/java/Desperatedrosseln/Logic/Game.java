@@ -55,11 +55,12 @@ public class Game {
         this.protocol = protocol;
         this.port = port;
         this.clients = clients;
+        addAI();
     }
 
 
     public static void readyPlayer(ClientHandler client) {             //TODO: case player disconnects
-        if (mapSelectionPlayer == -1) {
+        if (!client.isAI && mapSelectionPlayer == -1) {
             mapSelectionPlayer = client.getPlayer().getID();
             Moshi moshi = new Moshi.Builder().build();
             JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);

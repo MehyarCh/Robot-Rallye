@@ -33,7 +33,7 @@ public class ClientHandler implements Runnable {
     private Game game;
 
     private int clientID;
-    private boolean isAI = false;
+    public boolean isAI = false;
 
     public Player getPlayer() {
         return player;
@@ -87,7 +87,12 @@ public class ClientHandler implements Runnable {
             Message message = messageJsonAdapter.fromJson(msg);
 
             if (!message.getMessageType().equals("Alive")) {
-                System.out.println(message.getMessageType() + ": " + message.getMessageBody());
+                if(isAI){
+                    System.out.println("--------"+message.getMessageType() + ": " + message.getMessageBody());
+                }else {
+                    System.out.println(message.getMessageType() + ": " + message.getMessageBody());
+                }
+
             }
 
             switch (message.getMessageType()) {
@@ -98,9 +103,7 @@ public class ClientHandler implements Runnable {
                     HelloServer helloServer = helloServerJsonAdapter.fromJson(message.getMessageBody());
 
                     if (helloServer.getProtocol().equals(this.protocol)) {
-                        if (helloServer.isAI) {
-                            isAI = true;
-                        }
+                        isAI = helloServer.isAI;
                         JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
                         sendMessage("Welcome", welcomeJsonAdapter.toJson(new Welcome(clientID)));
                         System.out.println("client Connected");
@@ -151,24 +154,32 @@ public class ClientHandler implements Runnable {
                 case "MapSelected":
                     JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
                     Game.setCurrentMap(mapSelectedJsonAdapter.fromJson(message.getMessageBody()).getMap());
-
+                    System.out.println(clientName+" chose "+mapSelectedJsonAdapter.fromJson(message.getMessageBody()).getMap());
 
                     //ToDO send GameStarted with Map
-                    System.out.println(game.getCurrentMap());
+                    System.out.println(game.getCurrentMap()+" selected by "+clientName);
 
                     List<List<List<BoardElement>>> gameMap =new JsonMapReader().readMapFromJson(game.getCurrentMap());
 
-                    ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted",new GameStarted(gameMap));
-                    String jsonGameStarted = new JsonSerializer().serialize(gameStartedProtocolMessage);
-                    System.out.println(jsonGameStarted);
+                    if(clientID>1){
+                        System.out.println(clientName+" error"+game.getCurrentMap());
+                        ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted",new GameStarted(new JsonMapReader().readMapFromJson(game.getCurrentMap())));
+                        String jsonGameStarted = new JsonSerializer().serialize(gameStartedProtocolMessage);
+                        System.out.println(jsonGameStarted);
 
-                        try {
-                            out.writeUTF(jsonGameStarted);
-                            out.flush();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                        for (ClientHandler client:
+                             clients) {
+                            try {
+                                client.getOut().writeUTF(jsonGameStarted);
+                                client.getOut().flush();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
 
+
+
+                    }
 
 
 
@@ -259,18 +270,7 @@ public class ClientHandler implements Runnable {
 
         JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
         broadcastMessage("PlayerAdded", playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())));
-        if(clientID>1){
-            ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted",new GameStarted(new JsonMapReader().readMapFromJson(game.getCurrentMap())));
-            String jsonGameStarted = new JsonSerializer().serialize(gameStartedProtocolMessage);
-            System.out.println(jsonGameStarted);
 
-            try {
-                out.writeUTF(jsonGameStarted);
-                out.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 
     public int getClientID() {
