@@ -26,7 +26,7 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
 
 
 
-        if(value instanceof Wall || value instanceof Laser || value instanceof LaserBeam Laser || value instanceof Antenna || value instanceof PushPanel || value instanceof ConveyorBelt){
+        if(value instanceof Wall || value instanceof Laser || value instanceof LaserBeam Laser || value instanceof Antenna || value instanceof PushPanel || value instanceof ConveyorBelt || value instanceof Gear){
 
             out.name("orientations");
             out.beginArray();

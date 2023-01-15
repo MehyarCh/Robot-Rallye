@@ -16,11 +16,7 @@ public class Pit extends BoardElement {
 
 
     public void execute(List<Desperatedrosseln.Logic.Elements.Robot> active_robots){
-        for(Robot curr : active_robots) {
-            if (curr.getPosition().getX() == super.getPosition().getX() || curr.getPosition().getY() == super.getPosition().getY()) {
-                curr.reboot(TOP);
-            }
-        }
+
     }
 
 
