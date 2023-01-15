@@ -161,19 +161,24 @@ public class MainController {
         return mapController;
     }
 
-    public void startMainScene(Stage stage, int selectedRobot) throws IOException {
-        this.stage = stage;
+    public void startMainScene(int selectedRobot) throws IOException {
 
-        mapController = new MapController(mapGrid, selectedRobot);
-        mapController.setClient(client);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                stage = new Stage();
 
-        stage.setScene(scene);
-        stage.setMinHeight(720);
-        stage.setMinWidth(1280);
-        stage.setMaximized(true);
-        stage.setResizable(true);
-        stage.show();
+                mapController = new MapController(mapGrid, selectedRobot);
+                mapController.setClient(client);
 
+                stage.setScene(scene);
+                stage.setMinHeight(720);
+                stage.setMinWidth(1280);
+                stage.setMaximized(true);
+                stage.setResizable(true);
+                stage.show();
+            }
+        });
     }
 
     public void cardClick(){

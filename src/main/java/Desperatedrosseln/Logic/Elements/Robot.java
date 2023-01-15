@@ -12,7 +12,7 @@ public class Robot extends BoardElement {
     private Position position = super.getPosition();
 
 
-    public Robot(int iD) { //ToDo: verify
+    public Robot(int iD) {
         super("Robot","placeholder");
         if(robotPositions == null){
             robotPositions = new ArrayList<>();

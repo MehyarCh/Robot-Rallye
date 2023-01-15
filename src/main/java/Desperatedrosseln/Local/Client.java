@@ -27,6 +27,7 @@ public class Client implements Runnable {
     ArrayList<Integer> robotIDs = new ArrayList<>();
     private String clientName;
 
+    public boolean isMainSceneStarted = false;
 
     private boolean isMyTurn = false;
 
@@ -131,7 +132,7 @@ public class Client implements Runnable {
                 PlayerAdded playerAdded = playerAddedJsonAdapter.fromJson(msg.getMessageBody());
 
                 localPlayerList.put(playerAdded.getName(), playerAdded.getClientID());
-                if(!robotIDs.contains(playerAdded.getFigure())){
+                if (!robotIDs.contains(playerAdded.getFigure())) {
                     robotIDs.add(playerAdded.getFigure());
                 }
                 if (playerAdded.getClientID() == clientID) {
@@ -152,19 +153,29 @@ public class Client implements Runnable {
             case "ReceivedChat":
                 JsonAdapter<ReceivedChat> receivedChatJsonAdapter = moshi.adapter(ReceivedChat.class);
                 ReceivedChat receivedChat = receivedChatJsonAdapter.fromJson(msg.getMessageBody());
-                if (receivedChat.isPrivate()) {
-                    mainController.addChatMessage(getPlayerName(receivedChat.getFrom()) + ": (Whispered)" + receivedChat.getMessage());
+
+
+                if (isMainSceneStarted) {
+                    if (receivedChat.isPrivate()) {
+                        mainController.addChatMessage(getPlayerName(receivedChat.getFrom()) + ": (Whispered)" + receivedChat.getMessage());
+                    } else {
+                        mainController.addChatMessage(getPlayerName(receivedChat.getFrom()) + ": " + receivedChat.getMessage());
+                    }
                 } else {
-                    mainController.addChatMessage(getPlayerName(receivedChat.getFrom()) + ": " + receivedChat.getMessage());
+                    if (receivedChat.isPrivate()) {
+                        lobbyController.addChatMessage(getPlayerName(receivedChat.getFrom()) + ": (Whispered)" + receivedChat.getMessage());
+                    } else {
+                        lobbyController.addChatMessage(getPlayerName(receivedChat.getFrom()) + ": " + receivedChat.getMessage());
+                    }
                 }
+
             case "GameStarted":
 
                 //skipped
                 JsonAdapter<GameStarted> gameStartedJsonAdapter = moshi.adapter(GameStarted.class);
                 GameStarted gameStarted = gameStartedJsonAdapter.fromJson(msg.getMessageBody());
-                Stage stage = new Stage();
-                mainController.startMainScene(stage, lobbyController.getSelectedRobot());
-
+                isMainSceneStarted = true;
+                mainController.startMainScene(lobbyController.getSelectedRobot());
 
                 break;
             case "Error":
@@ -198,14 +209,12 @@ public class Client implements Runnable {
             case "CurrentPlayer":
                 JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
                 CurrentPlayer currentPlayer = currentPlayerJsonAdapter.fromJson(msg.getMessageBody());
-                if (currentPlayer.getClientID() == this.clientID){
+                if (currentPlayer.getClientID() == this.clientID) {
                     isMyTurn = true;
                     //ToDo: maybe add here PlayCard protocoll -> get the card in the current register and send it to the server via PlayCard
-                }
-                else if (currentPlayer.getClientID() == this.clientID){
+                } else if (currentPlayer.getClientID() == this.clientID) {
                     isMyTurn = false;
                 }
-
 
 
         }
@@ -305,8 +314,7 @@ public class Client implements Runnable {
                 }
             } else if (message.startsWith("/addAI")) {
                 sendMessage("addAI", "");
-            }
-            else if (message.startsWith("/dc")) {
+            } else if (message.startsWith("/dc")) {
                 //disconnect the client from the server ->  closeAll in Clienthandler ToDo: fix this
                 this.logOut();
                 sendMessage("Logout", "");
@@ -326,6 +334,7 @@ public class Client implements Runnable {
     public ArrayList<Integer> getRobotIDs() {
         return robotIDs;
     }
+
     public void setLobbyController(LobbyController lobbyController) {
         this.lobbyController = lobbyController;
     }

@@ -112,7 +112,7 @@
                 <content>
                     <VBox fx:id="" styleClass="message-board">
                         <!--<TextArea fx:id="chatlog" editable="false"  prefHeight="600.0" style="-fx-background-color: red" />-->
-                        <TextFlow styleClass="textflow" fx:id="chatlog"/>
+                        <TextFlow styleClass="textflow" fx:id="chatlog_lobby"/>
                     </VBox>
                 </content>
             </ScrollPane>
@@ -120,7 +120,7 @@
                   GridPane.rowIndex="1"
                   GridPane.hgrow="ALWAYS"
                   styleClass="chat-input-wrapper">
-                <TextField fx:id="chat_input" onKeyPressed="#onMessageSend" styleClass="text-input, text-input--primary"/>
+                <TextField fx:id="chat_input_lobby" onKeyPressed="#onMessageSend" styleClass="text-input, text-input--primary"/>
                 <Button fx:id="send_button"
                         onAction="#onClickSend"
                         styleClass="button, send-button"/>

@@ -1,6 +1,5 @@
 package Desperatedrosseln.Local.Controllers;
 
-import Desperatedrosseln.Local.Client;
 import Desperatedrosseln.Local.Protocols.MapSelected;
 import Desperatedrosseln.Local.Protocols.Message;
 import Desperatedrosseln.Local.Protocols.SetStatus;
@@ -29,6 +28,7 @@ public class LobbyController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+
     @FXML
     private Button playerIcon1;
     @FXML
@@ -44,9 +44,9 @@ public class LobbyController {
     @FXML
     private ToggleButton readyButton;
     @FXML
-    private TextField chat_input;
+    private TextField chat_input_lobby;
     @FXML
-    private TextFlow chatlog;
+    private TextFlow chatlog_lobby;
     @FXML
     private ChoiceBox<String> mapSelection;
     @FXML
@@ -131,7 +131,6 @@ public class LobbyController {
             readyButton.setDisable(false);
         }
         client.sendPlayerValues(selectedRobot);
-        client.sendPlayerValues(selectedRobot);
 
     }
 
@@ -143,15 +142,15 @@ public class LobbyController {
     }
     @FXML
     public void onClickSend() {
-        if (!chat_input.getText().isEmpty()) {
-            String msg = chat_input.getText();
+        if (!chat_input_lobby.getText().isEmpty()) {
+            String msg = chat_input_lobby.getText();
 
             //System.out.println(client.getName()+ ": "+ msg);
 
             client.sendChatMessage(msg, -1);
 
-            chat_input.setText("");
-            chat_input.requestFocus();
+            chat_input_lobby.setText("");
+            chat_input_lobby.requestFocus();
         }
     }
     @FXML
@@ -159,7 +158,7 @@ public class LobbyController {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                chatlog.getChildren().add(new Text(message + "\n"));
+                chatlog_lobby.getChildren().add(new Text(message + "\n"));
             }
         });
     }
@@ -168,6 +167,7 @@ public class LobbyController {
         String map = mapSelection.getValue();
         JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
         client.sendMessage("MapSelected", mapSelectedJsonAdapter.toJson(new MapSelected(map)));
+        validateMapChoice.setDisable(true);
     }
     @FXML
     public void onReady() {
