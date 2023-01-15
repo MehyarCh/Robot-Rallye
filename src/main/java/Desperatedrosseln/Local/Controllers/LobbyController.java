@@ -1,24 +1,37 @@
 package Desperatedrosseln.Local.Controllers;
 
+import Desperatedrosseln.Local.Protocols.MapSelected;
+import Desperatedrosseln.Local.Protocols.Message;
+import Desperatedrosseln.Local.Protocols.SetStatus;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+import javafx.application.Platform;
 import Desperatedrosseln.Local.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 import static Desperatedrosseln.Local.Controllers.LoginController.client;
 
 public class LobbyController {
+    private Moshi moshi = new Moshi.Builder().build();
+    JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
     private Stage stage;
     private Scene scene;
     private Parent root;
+
     @FXML
     private Button playerIcon1;
     @FXML
@@ -31,16 +44,23 @@ public class LobbyController {
     private Button playerIcon5;
     @FXML
     private Button playerIcon6;
-
+    @FXML
+    private ToggleButton readyButton;
+    @FXML
+    private TextField chat_input_lobby;
+    @FXML
+    private TextFlow chatlog_lobby;
+    @FXML
+    private ChoiceBox<String> mapSelection;
+    @FXML
+    private Button validateMapChoice;
     public MainController mainController;
-
-
-    private TextFlow textFlow;
-
+    private boolean ready=false;
     @FXML
     private Button playerIconPink;
     @FXML
     private Label playersonline;
+    private int selectedRobot;
 
     public LobbyController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/lobbyScene.fxml"));
@@ -66,19 +86,19 @@ public class LobbyController {
     public void startLobbyScene(Stage stage) {
         mainController = new MainController();
         client.setMainController(mainController);
+        client.setLobbyController(this);
         client.sendHelloServer();
-        playersonline.setText("Players currently in lobby: " );
         this.stage = stage;
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setScene(scene);
+        //playersonline.setText("Players currently in lobby: " );
         stage.show();
     }
 
     @FXML
     public void onButtonClicked(ActionEvent event) throws IOException {
         Button clickedButton = (Button) event.getSource();
-
 
         int selectedRobot = 0;
         switch (clickedButton.getId()) {
@@ -109,12 +129,67 @@ public class LobbyController {
         }
 
         if(!client.getRobotIDs().contains(selectedRobot)){
+            this.selectedRobot = selectedRobot;
             mainController.setSelectedRobot(selectedRobot);
-            mainController.startMainScene(stage, selectedRobot);
+            readyButton.setDisable(false);
         }
+        client.sendPlayerValues(selectedRobot);
 
     }
 
+    @FXML
+    public void onMessageSend(KeyEvent event){
+        if (event.getCode().toString().equals("ENTER")) {
+            onClickSend();
+        }
+    }
+    @FXML
+    public void onClickSend() {
+        if (!chat_input_lobby.getText().isEmpty()) {
+            String msg = chat_input_lobby.getText();
 
+            //System.out.println(client.getName()+ ": "+ msg);
+
+            client.sendChatMessage(msg, -1);
+
+            chat_input_lobby.setText("");
+            chat_input_lobby.requestFocus();
+        }
+    }
+    @FXML
+    public void addChatMessage(String message) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                chatlog_lobby.getChildren().add(new Text(message + "\n"));
+            }
+        });
+    }
+    @FXML
+    public void onChooseMap(){
+        String map = mapSelection.getValue();
+        JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
+        client.sendMessage("MapSelected", mapSelectedJsonAdapter.toJson(new MapSelected(map.replaceAll("\s",""))));
+        validateMapChoice.setDisable(true);
+    }
+    @FXML
+    public void onReady() {
+        JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
+        client.sendMessage("SetStatus", setStatusJsonAdapter.toJson(new SetStatus(readyButton.isSelected())));
+    }
+
+    public void addMapsToChoice(List<String> maps){
+        for(String mapName: maps){
+            mapSelection.getItems().add(mapName);
+        }
+    }
+
+    public void canChooseMap() {
+        mapSelection.setDisable(false);
+        validateMapChoice.setDisable(false);
+    }
+    public int getSelectedRobot(){
+        return this.selectedRobot;
+    }
 }
 

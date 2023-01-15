@@ -12,7 +12,7 @@ module desperatedrosseln {
     opens Desperatedrosseln.Local.Protocols to moshi, com.google.gson;
     opens Desperatedrosseln.Logic.Elements.Tiles to moshi, com.google.gson;
     opens Desperatedrosseln.Json.utils to com.google.gson;
-    exports Desperatedrosseln;
+    opens Desperatedrosseln.Logic.Cards to moshi;
     opens Desperatedrosseln.Logic.Elements to com.google.gson, moshi;
-
+    exports Desperatedrosseln;
 }

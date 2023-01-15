@@ -1,7 +1,6 @@
 package Desperatedrosseln.Logic;
 
 import Desperatedrosseln.Logic.Cards.*;
-import Desperatedrosseln.Logic.Cards.Programming.*;
 import Desperatedrosseln.Logic.Elements.Robot;
 
 import java.util.ArrayList;
@@ -14,6 +13,9 @@ public class Player {
     private int next_checkpoint=1;
     private Robot robot;
     private List<Card> deck = new ArrayList<>(20);
+    private boolean ready;
+    private boolean firstToReady = false;
+
     public List<Card> getHand() {
         return hand;
     }
@@ -230,5 +232,11 @@ public class Player {
             cards.add(card.toString());
         }
         return cards;
+    }
+    public void setReady(boolean status){
+        this.ready = status;
+    }
+    public boolean isReady() {
+        return this.ready;
     }
 }

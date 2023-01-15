@@ -14,7 +14,6 @@ import Desperatedrosseln.Logic.Elements.Tiles.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class Game {
     private int current_player_index = 0;
 
     private int current_register = 0;
-    private static int mapSelectionPlayer = -1;
+    public static int mapSelectionPlayer = -1;
     //
     private ArrayList<Card> spampile = new ArrayList<>(38);
     private ArrayList<Card> viruspile = new ArrayList<>(18);
@@ -45,7 +44,6 @@ public class Game {
     private ArrayList<Card> wormpile = new ArrayList<>(6);
     private ArrayList<ClientHandler> clients;
 
-    //TODO: availablePiles (protocol 1.0 bulletpoint 8)
 
     private int distance;
     private final int port;
@@ -57,18 +55,6 @@ public class Game {
         this.clients = clients;
     }
 
-
-    public static void readyPlayer(ClientHandler client) {             //TODO: case player disconnects
-        if (mapSelectionPlayer == -1) {
-            mapSelectionPlayer = client.getPlayer().getID();
-            Moshi moshi = new Moshi.Builder().build();
-            JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
-            JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
-            ArrayList<String> maps = new ArrayList<>();
-            maps.add("DizzyHighway");
-            client.sendMessage("SelectMap", selectMapJsonAdapter.toJson(new SelectMap(maps)));
-        }
-    }
 
     public void placeRobot(Player player, int x, int y) {
         gameMap.addElement(player.getRobot(), x, y);
@@ -129,6 +115,13 @@ public class Game {
         }else {
             System.out.println("Gamemap is not null");
         }
+
+        for (int x = 0; x < gameMapList.size(); x++) {
+            for (int y = 0; y < gameMapList.get(x).size(); y++) {
+                gameMapList.get(x).get(y).get(0).setPosition(x,y);
+            }
+        }
+
         phase = 2;
 
     }
@@ -205,7 +198,6 @@ public class Game {
 
 
     private void broadcastMessage(String type, String json) {
-        //TODO:
         for (ClientHandler client :
                 clients) {
             client.sendMessage(type, json);
@@ -239,6 +231,7 @@ public class Game {
 
                         //the active player plays their card in the current register
                         playCardByType(curr.getRegisterIndex(current_register), curr, current_register);
+
 
 
                         activeCardsArrayList.add(new CurrentCards.ActiveCards(curr.getID(), curr.getRegisterIndex(current_register)));
@@ -279,7 +272,22 @@ public class Game {
                 }
                 case "Worm" -> {
                     drawSpamCard(curr, 2);
-                    curr.getRobot().reboot(DIRECTION.TOP);
+                    List<BoardElement> respawns = getListOf("RestartPoint");
+                    Position newPos = new Position(0,0);
+                    for (BoardElement respawn:
+                            respawns) {
+
+                            if(!gameMap.getMapFields().get(respawn.getPosition().getX()).get(respawn.getPosition().getY()).getTypes().contains(curr.getRobot())){
+                                newPos.copy(respawn.getPosition());
+                                curr.getRobot().reboot(TOP, newPos);
+                                rebootPlayer(curr);
+                                break;
+                            }
+
+
+                    }
+
+                    curr.getRobot().reboot(DIRECTION.TOP, newPos);
                     rebootPlayer(curr);
                 }
                 case "Trojan" -> {
@@ -860,18 +868,62 @@ public class Game {
 
     private void activatePits() {
         List<BoardElement> pits = getListOf("Pit");
+
+        List<BoardElement> respawns = getListOf("RestartPoint");
+        Position newPos = new Position(0,0);
+
+
+        for (BoardElement pit:
+                pits) {
+
+            for (Player player:
+                    players) {
+                if(!gameMap.getMapFields().get(pit.getPosition().getX()).get(pit.getPosition().getY()).getTypes().contains(player.getRobot())){
+
+                    for (BoardElement respawn:
+                           respawns) {
+
+                        for (Player curr:
+                                players) {
+                            if(!gameMap.getMapFields().get(respawn.getPosition().getX()).get(respawn.getPosition().getY()).getTypes().contains(curr.getRobot())){
+                                newPos.copy(respawn.getPosition());
+                                break;
+                            }
+
+                        }
+
+
+                    }
+
+
+                    player.getRobot().reboot(TOP, newPos);
+                    rebootPlayer(player);
+                    break;
+                }
+
+            }
+
+
+        }
+
+        /*
         for (BoardElement pit : pits) {
             if (robotOnElement(pit)) {
                 Pit pit1 = (Pit) pit;
                 List<Robot> robotList = gameMap.getRobotsOnPos(pit1.getPosition());
                 for (Robot curr : robotList) {
                     if (curr.getPosition().equals(pit1.getPosition())) {
-                        curr.reboot(TOP);
-                        rebootPlayer(getPlayerByRobot(curr));
+
+
                     }
                 }
             }
         }
+
+         */
+
+
+
     }
 
     public Player getNextPlayer() {
@@ -915,12 +967,12 @@ public class Game {
         broadcastMessage("DrawDamage", drawDamageJsonAdapter.toJson(drawDamage));
     }
 
-    public void setPlayerValues() {                              //TODO: redo
+    /*public void setPlayerValues() {
         for (ClientHandler client :
                 ClientHandler.clients) {
             players.add(new Player(new Robot(ClientHandler.clients.indexOf(client))));
         }
-    }
+    }*/
 
     public String getCurrentMap() {
         return currentMap;
@@ -2017,6 +2069,17 @@ public class Game {
 
     public void initGameMap() {
         setUpBoard();
+    }
+
+    public boolean playersAreReady() {
+        int i=0;
+        while (i<players.size()){
+            if(!players.get(i).isReady()){
+                return false;
+            }
+            i++;
+        }
+        return true;
     }
 }
 

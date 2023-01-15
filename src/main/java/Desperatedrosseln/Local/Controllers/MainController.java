@@ -161,77 +161,50 @@ public class MainController {
         return mapController;
     }
 
-    public void startMainScene(Stage stage, int selectedRobot) throws IOException {
-        this.stage = stage;
+    public void startMainScene(int selectedRobot) throws IOException {
 
-        mapController = new MapController(mapGrid, selectedRobot);
-        client.sendPlayerValues(selectedRobot);
-        mapController.setClient(client);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                stage = new Stage();
 
-        stage.setScene(scene);
-        stage.setMinHeight(720);
-        stage.setMinWidth(1280);
-        stage.setMaximized(true);
-        stage.setResizable(true);
-        stage.show();
+                mapController = new MapController(mapGrid, selectedRobot);
+                mapController.setClient(client);
 
+                stage.setScene(scene);
+                stage.setMinHeight(720);
+                stage.setMinWidth(1280);
+                stage.setMaximized(true);
+                stage.setResizable(true);
+                stage.show();
+            }
+        });
     }
 
     public void cardClick(){
-        initRegisterValues();
-        updateCardImages();
-
         for (StackPane card : handCards) {
             card.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
 
                 int firstFreeRegister = registerValues.indexOf(null);
-                int firstFreeHand = handValues.indexOf(null);
+                int index = handCards.indexOf(mouseEvent.getSource());
 
-                if (mouseEvent.getSource() == handCardOne ||
-                        mouseEvent.getSource() == handCardTwo ||
-                        mouseEvent.getSource() == handCardThree ||
-                        mouseEvent.getSource() == handCardFour ||
-                        mouseEvent.getSource() == handCardFive ||
-                        mouseEvent.getSource() == handCardSix ||
-                        mouseEvent.getSource() == handCardSeven ||
-                        mouseEvent.getSource() == handCardEight ||
-                        mouseEvent.getSource() == handCardNine
-                ) {
-                    int index = handCards.indexOf(mouseEvent.getSource());
-
-                    if (handValues.get(index) != null) {
-                        if (firstFreeRegister != -1) {
-                            // adding to register
-                            registerValues.set(firstFreeRegister, handValues.get(index));
-                            // adding register image
-                            Image image = showCardImage(handValues.get(index));
-                            ImageView imageView = new ImageView(image);
-                            imageView.setFitHeight(110);
-                            imageView.setPreserveRatio(true);
-                            registerCards.get(firstFreeRegister).getChildren().add(imageView);
-                            // Removing from Hand
-                            handValues.set(index, null);
-                            // Removing handImage
-                            handCards.get(index).getChildren().remove(0);
-                        } else {
-                            System.out.println("Already 5 cards in the registers!");
-                        }
-                    }
-                } else {
-                    // adding to hand
-                    int index = registerCards.indexOf(mouseEvent.getSource());
-                    if (registerValues.get(index) != null) {
-                        handValues.set(firstFreeHand, registerValues.get(index));
-                        // adding hand image
-                        Image image = showCardImage(registerValues.get(index));
+                if (handValues.get(index) != null) {
+                    if (firstFreeRegister != -1) {
+                        // adding to register
+                        registerValues.set(firstFreeRegister, handValues.get(index));
+                        System.out.println("added to register 1");
+                        // adding register image
+                        Image image = showCardImage(handValues.get(index));
                         ImageView imageView = new ImageView(image);
                         imageView.setFitHeight(110);
                         imageView.setPreserveRatio(true);
-                        handCards.get(firstFreeHand).getChildren().add(imageView);
-                        // Removing from register
-                        registerValues.set(index, null);
-                        // Removing registerImage
-                        registerCards.get(index).getChildren().remove(0);
+                        registerCards.get(firstFreeRegister).getChildren().add(imageView);
+                        // Removing from Hand
+                        handValues.set(index, null);
+                        // Removing handImage
+                        handCards.get(index).getChildren().remove(0);
+                    } else {
+                        System.out.println("Already 5 cards in the registers!");
                     }
                 }
             });
@@ -239,55 +212,28 @@ public class MainController {
         for (StackPane card : registerCards) {
             card.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
 
-                int firstFreeRegister = registerValues.indexOf(null);
+                System.out.println(handValues);
                 int firstFreeHand = handValues.indexOf(null);
 
+                System.out.println("This is a registerCard");
+                int index = registerCards.indexOf(mouseEvent.getSource());
 
-                if (mouseEvent.getSource() == handCardOne ||
-                    mouseEvent.getSource() == handCardTwo ||
-                    mouseEvent.getSource() == handCardThree ||
-                    mouseEvent.getSource() == handCardFour ||
-                    mouseEvent.getSource() == handCardFive ||
-                    mouseEvent.getSource() == handCardSix ||
-                    mouseEvent.getSource() == handCardSeven ||
-                    mouseEvent.getSource() == handCardEight ||
-                    mouseEvent.getSource() == handCardNine
-                ) {
-                    int index = handCards.indexOf(mouseEvent.getSource());
-                    if (handValues.get(index) != null) {
-                        if (firstFreeRegister != -1) {
-                            // adding to register
-                            registerValues.set(firstFreeRegister, handValues.get(index));
-                            // adding register image
-                            Image image = showCardImage(handValues.get(index));
-                            ImageView imageView = new ImageView(image);
-                            imageView.setFitHeight(110);
-                            imageView.setPreserveRatio(true);
-                            registerCards.get(firstFreeRegister).getChildren().add(imageView);
-                            // Removing from Hand
-                            handValues.set(index, null);
-                            // Removing handImage
-                            handCards.get(index).getChildren().remove(0);
-                        } else {
-                            System.out.println("Already 5 cards in the registers!");
-                        }
-                    }
-                } else {
-                    // adding to hand
-                    int index = registerCards.indexOf(mouseEvent.getSource());
-                    if (registerValues.get(index) != null) {
-                        handValues.set(firstFreeHand, registerValues.get(index));
-                        // adding hand image
-                        Image image = showCardImage(registerValues.get(index));
-                        ImageView imageView = new ImageView(image);
-                        imageView.setFitHeight(110);
-                        imageView.setPreserveRatio(true);
-                        handCards.get(firstFreeHand).getChildren().add(imageView);
-                        // Removing from register
-                        registerValues.set(index, null);
-                        // Removing registerImage
-                        registerCards.get(index).getChildren().remove(0);
-                    }
+                if (registerValues.get(index) != null) {
+                    handValues.set(firstFreeHand, registerValues.get(index));
+                    System.out.println("adding to hand");
+                    // adding hand image
+                    Image image = showCardImage(registerValues.get(index));
+                    ImageView imageView = new ImageView(image);
+                    imageView.setFitHeight(110);
+                    imageView.setPreserveRatio(true);
+                    handCards.get(firstFreeHand).getChildren().add(imageView);
+                    System.out.println("added image");
+                    // Removing from register
+                    registerValues.set(index, null);
+                    System.out.println("removed from register");
+                    // Removing registerImage
+                    registerCards.get(index).getChildren().remove(0);
+                    System.out.println("removed image");
                 }
             });
         }
