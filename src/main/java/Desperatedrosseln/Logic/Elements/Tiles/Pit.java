@@ -1,6 +1,7 @@
 package Desperatedrosseln.Logic.Elements.Tiles;
 
 import Desperatedrosseln.Logic.Elements.BoardElement;
+import Desperatedrosseln.Logic.Elements.Position;
 import Desperatedrosseln.Logic.Elements.Robot;
 
 import java.util.List;
@@ -15,10 +16,10 @@ public class Pit extends BoardElement {
     }
 
 
-    public void execute(List<Desperatedrosseln.Logic.Elements.Robot> active_robots){
+    public void execute(List<Desperatedrosseln.Logic.Elements.Robot> active_robots, Position newPos){
         for(Robot curr : active_robots) {
             if (curr.getPosition().getX() == super.getPosition().getX() || curr.getPosition().getY() == super.getPosition().getY()) {
-                curr.reboot(TOP);
+                curr.reboot(TOP, newPos);
             }
         }
     }

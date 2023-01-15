@@ -19,6 +19,11 @@ public class Position {
         return y;
     }
 
+    public void copy(Position pos){
+        x = pos.getX();
+        y = pos.getY();
+    }
+
     public void setY(int y) {
         this.y = y;
     }

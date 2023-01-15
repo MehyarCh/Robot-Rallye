@@ -126,6 +126,13 @@ public class Game {
         }else {
             System.out.println("Gamemap is not null");
         }
+
+        for (int x = 0; x < gameMapList.size(); x++) {
+            for (int y = 0; y < gameMapList.get(x).size(); y++) {
+                gameMapList.get(x).get(y).get(0).setPosition(x,y);
+            }
+        }
+
         phase = 2;
 
     }
@@ -276,7 +283,22 @@ public class Game {
                 }
                 case "Worm" -> {
                     drawSpamCard(curr, 2);
-                    curr.getRobot().reboot(DIRECTION.TOP);
+                    List<BoardElement> respawns = getListOf("RestartPoint");
+                    Position newPos = new Position(0,0);
+                    for (BoardElement respawn:
+                            respawns) {
+
+                            if(!gameMap.getMapFields().get(respawn.getPosition().getX()).get(respawn.getPosition().getY()).getTypes().contains(curr.getRobot())){
+                                newPos.copy(respawn.getPosition());
+                                curr.getRobot().reboot(TOP, newPos);
+                                rebootPlayer(curr);
+                                break;
+                            }
+
+
+                    }
+
+                    curr.getRobot().reboot(DIRECTION.TOP, newPos);
                     rebootPlayer(curr);
                 }
                 case "Trojan" -> {
@@ -857,18 +879,62 @@ public class Game {
 
     private void activatePits() {
         List<BoardElement> pits = getListOf("Pit");
+
+        List<BoardElement> respawns = getListOf("RestartPoint");
+        Position newPos = new Position(0,0);
+
+
+        for (BoardElement pit:
+                pits) {
+
+            for (Player player:
+                    players) {
+                if(!gameMap.getMapFields().get(pit.getPosition().getX()).get(pit.getPosition().getY()).getTypes().contains(player.getRobot())){
+
+                    for (BoardElement respawn:
+                           respawns) {
+
+                        for (Player curr:
+                                players) {
+                            if(!gameMap.getMapFields().get(respawn.getPosition().getX()).get(respawn.getPosition().getY()).getTypes().contains(curr.getRobot())){
+                                newPos.copy(respawn.getPosition());
+                                break;
+                            }
+
+                        }
+
+
+                    }
+
+
+                    player.getRobot().reboot(TOP, newPos);
+                    rebootPlayer(player);
+                    break;
+                }
+
+            }
+
+
+        }
+
+        /*
         for (BoardElement pit : pits) {
             if (robotOnElement(pit)) {
                 Pit pit1 = (Pit) pit;
                 List<Robot> robotList = gameMap.getRobotsOnPos(pit1.getPosition());
                 for (Robot curr : robotList) {
                     if (curr.getPosition().equals(pit1.getPosition())) {
-                        curr.reboot(TOP);
-                        rebootPlayer(getPlayerByRobot(curr));
+
+
                     }
                 }
             }
         }
+
+         */
+
+
+
     }
 
     public Player getNextPlayer() {
