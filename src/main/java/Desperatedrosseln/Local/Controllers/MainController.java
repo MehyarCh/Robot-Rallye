@@ -36,16 +36,11 @@ public class MainController {
 
     DataOutputStream dos;
     DataInputStream dis;
-
-
-    private Thread thread;
     private Stage stage;
     private Scene scene;
     private Parent root;
 
     private MapController mapController;
-
-    List<List<MapField>> mapFields;
 
     private List<String> handValues = new ArrayList<>();
     private List<String> registerValues = new ArrayList<>();

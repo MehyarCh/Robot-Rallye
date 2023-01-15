@@ -191,11 +191,11 @@ public class Client implements Runnable {
             @Override
             public void run() {
                 if(!mainController.getMapController().isStartingPointChosen){
-                    mainController.getMapController().autoSelectStartPoint();
+                    mainController.getMapController().runAutoStartPointSelection();
                     sendChatMessage("start point selected", -1);
                 }
             }
-        }, 10 * 1000); //5 seconds
+        }, 30 * 1000);
     }
 
     private void startCardSelectionTimer() {
@@ -208,7 +208,7 @@ public class Client implements Runnable {
                     sendChatMessage("random cards sent", -1);
                 }
             }
-        }, 10 * 1000); //5 seconds
+        }, 30 * 1000);//15 seconds
     }
 
     private String getPlayerName(int from) {
