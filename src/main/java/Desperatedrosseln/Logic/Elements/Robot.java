@@ -144,11 +144,11 @@ public class Robot extends BoardElement {
         }
     }
 
-    public void reboot(DIRECTION direction){
+    public void reboot(DIRECTION direction, Position newPos){
         //TODO: reboot robot
         setDirection(direction);
         //TODO: take robot actually out of the map
-        setPosition(0,0);
+        position.copy(newPos);
 
     }
 
