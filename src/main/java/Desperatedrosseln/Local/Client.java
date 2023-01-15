@@ -86,6 +86,7 @@ public class Client implements Runnable {
 
         //TODO: Logs
         if (message.startsWith("{\"messageType\":\"GameStarted\"")) {
+            mainController.startMainScene(lobbyController.getSelectedRobot());
             JsonDeserializer jsonDeserializer = new JsonDeserializer();
             ProtocolMessage<GameStarted> gameStartedProtocolMessage = jsonDeserializer.deserialize(message);
             GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();
@@ -169,15 +170,6 @@ public class Client implements Runnable {
                     }
                 }
 
-            case "GameStarted":
-
-                //skipped
-                JsonAdapter<GameStarted> gameStartedJsonAdapter = moshi.adapter(GameStarted.class);
-                GameStarted gameStarted = gameStartedJsonAdapter.fromJson(msg.getMessageBody());
-                isMainSceneStarted = true;
-                mainController.startMainScene(lobbyController.getSelectedRobot());
-
-                break;
             case "Error":
                 if (mainController != null) {
                     mainController.addChatMessage("Error Occurred");

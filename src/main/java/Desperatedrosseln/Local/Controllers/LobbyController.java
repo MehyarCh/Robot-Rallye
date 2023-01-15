@@ -166,7 +166,7 @@ public class LobbyController {
     public void onChooseMap(){
         String map = mapSelection.getValue();
         JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
-        client.sendMessage("MapSelected", mapSelectedJsonAdapter.toJson(new MapSelected(map)));
+        client.sendMessage("MapSelected", mapSelectedJsonAdapter.toJson(new MapSelected(map.replaceAll("\s",""))));
         validateMapChoice.setDisable(true);
     }
     @FXML

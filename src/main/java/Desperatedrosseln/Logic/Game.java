@@ -36,7 +36,7 @@ public class Game {
     private int current_player_index = 0;
 
     private int current_register = 0;
-    private static int mapSelectionPlayer = -1;
+    public static int mapSelectionPlayer = -1;
     //
     private ArrayList<Card> spampile = new ArrayList<>(38);
     private ArrayList<Card> viruspile = new ArrayList<>(18);

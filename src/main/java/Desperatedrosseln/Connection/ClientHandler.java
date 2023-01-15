@@ -31,7 +31,6 @@ public class ClientHandler implements Runnable {
     Moshi moshi = new Moshi.Builder().build();
     JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
     private Game game;
-    private int idOfFirstReady=-1;
 
     private int clientID;
     private boolean isAI = false;
@@ -147,10 +146,10 @@ public class ClientHandler implements Runnable {
                     boolean status = setStatusJsonAdapter.fromJson(message.getMessageBody()).isReady();
                     player.setReady(status);
 
-                    if(idOfFirstReady == -1 && status){
-                        idOfFirstReady = player.getID();
-                    }else if(idOfFirstReady == player.getID() && !status){
-                        idOfFirstReady = -1;
+                    if(Game.mapSelectionPlayer == -1 && status){
+                        Game.mapSelectionPlayer = player.getID();
+                    } else if(Game.mapSelectionPlayer == player.getID() && !status){
+                        Game.mapSelectionPlayer = -1;
                     }
 
                     JsonAdapter<PlayerStatus> playerStatusJsonAdapter = moshi.adapter(PlayerStatus.class);
@@ -163,11 +162,11 @@ public class ClientHandler implements Runnable {
                         JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
 
                         for (ClientHandler clientHandler : clients){
-                            if(clientHandler.getClientID() == idOfFirstReady){
+                            if(clientHandler.getClientID() == Game.mapSelectionPlayer){
                                 clientHandler.sendMessage("SelectMap", selectMapJsonAdapter.toJson(new SelectMap(maps)));
                             }
                         }
-                        //TODO: protokoll chosose a map
+
                     }
 //                    if (playerStatus.isReady()) {
 //                        Game.readyPlayer(this);
@@ -177,22 +176,23 @@ public class ClientHandler implements Runnable {
                     JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
                     Game.setCurrentMap(mapSelectedJsonAdapter.fromJson(message.getMessageBody()).getMap());
 
-
-                    //ToDO send GameStarted with Map
                     System.out.println(game.getCurrentMap());
 
-                    List<List<List<BoardElement>>> gameMap =new JsonMapReader().readMapFromJson(game.getCurrentMap());
+                    List<List<List<BoardElement>>> gameMap = new JsonMapReader().readMapFromJson(game.getCurrentMap());
+
 
                     ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted",new GameStarted(gameMap));
                     String jsonGameStarted = new JsonSerializer().serialize(gameStartedProtocolMessage);
                     System.out.println(jsonGameStarted);
 
+                    for(ClientHandler clientHandler : clients){
                         try {
-                            out.writeUTF(jsonGameStarted);
-                            out.flush();
-                        } catch (IOException e) {
+                            clientHandler.getOut().writeUTF(jsonGameStarted);
+                            clientHandler.getOut().flush();
+                        }catch (IOException e){
                             throw new RuntimeException(e);
                         }
+                    }
 
                     break;
 
@@ -261,8 +261,8 @@ public class ClientHandler implements Runnable {
                         }
                     }
                 case "Logout":
-                    if(player.getID() == idOfFirstReady){
-                        idOfFirstReady = -1;
+                    if(player.getID() == Game.mapSelectionPlayer){
+                        Game.mapSelectionPlayer = -1;
                     }
                     closeAll(this.socket, this.in, this.out);
                     //problem with alive message as soon as socket gets closed; -> ToDo: disconnect client properly (multiple errors)
