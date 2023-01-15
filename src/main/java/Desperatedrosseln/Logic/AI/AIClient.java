@@ -104,18 +104,19 @@ public class AIClient extends Thread {
 
     private void checkProtocolMessage(String message) throws IOException {
         //TODO: Logs
+        if (message.equals("{\"messageBody\":\"{}\",\"messageType\":\"Alive\"}")) {
+            return;
+        }
         Moshi moshi = new Moshi.Builder().build();
         if (message.startsWith("{\"messageType\":\"GameStarted\"")) {
             JsonDeserializer jsonDeserializer = new JsonDeserializer();
             ProtocolMessage<GameStarted> gameStartedProtocolMessage = jsonDeserializer.deserialize(message);
             GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();
             gameMap = gameStarted.getGameMap();
-
             JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
-            System.out.println("AI got gamestarted msg !!!!!!!!!!!");
             Position startPos = newStartPos();
-
             sendMessage("SetStartingPoint", setStartingPointJsonAdapter.toJson(new SetStartingPoint(startPos.getX(), startPos.getY())));
+
             return;
         }
 
@@ -233,17 +234,17 @@ public class AIClient extends Thread {
 
                         boolean isPosTaken = false;
 
-                        Position currPos = new Position(i,j);
-                        if(!unavailableStartingPoints.isEmpty()){
-                            for(Position pos: unavailableStartingPoints){
-                                if(pos.isEqual(currPos)){
+                        Position currPos = new Position(i, j);
+                        if (!unavailableStartingPoints.isEmpty()) {
+                            for (Position pos : unavailableStartingPoints) {
+                                if (pos.isEqual(currPos)) {
                                     isPosTaken = true;
                                 }
                             }
                         }
 
-                        if(!isPosTaken){
-                            sendChatMessage("got my starting pos ("+i+","+j+").",-1);
+                        if (!isPosTaken) {
+                            sendChatMessage("got my starting pos (" + i + "," + j + ").", -1);
                             return currPos;
                         }
 
@@ -252,7 +253,7 @@ public class AIClient extends Thread {
             }
         }
 
-        System.out.println("----------couldnt find Pos");
+
         return null;
     }
 

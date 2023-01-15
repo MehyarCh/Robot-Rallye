@@ -90,7 +90,7 @@ public class MainController {
     private Button programdone;
     private ArrayList<StackPane> registerCards = new ArrayList<>();
     private ArrayList<StackPane> handCards = new ArrayList<>();
-    private int selectedRobot=0;
+    private int selectedRobot = 0;
 
     private MoveOneLabel moveOneLabel;
     private MoveOneLabel anotherMoveOneLabel;
@@ -109,6 +109,7 @@ public class MainController {
     private TurnRight turnRightLabel;
 
     private UTurn uTurnLabel;
+    public boolean isProgrammingDone = false;
 
 
     public MainController() {
@@ -157,7 +158,7 @@ public class MainController {
         }
     }
 
-    public MapController getMapController(){
+    public MapController getMapController() {
         return mapController;
     }
 
@@ -177,7 +178,7 @@ public class MainController {
 
     }
 
-    public void cardClick(){
+    public void cardClick() {
         initRegisterValues();
         updateCardImages();
 
@@ -244,14 +245,14 @@ public class MainController {
 
 
                 if (mouseEvent.getSource() == handCardOne ||
-                    mouseEvent.getSource() == handCardTwo ||
-                    mouseEvent.getSource() == handCardThree ||
-                    mouseEvent.getSource() == handCardFour ||
-                    mouseEvent.getSource() == handCardFive ||
-                    mouseEvent.getSource() == handCardSix ||
-                    mouseEvent.getSource() == handCardSeven ||
-                    mouseEvent.getSource() == handCardEight ||
-                    mouseEvent.getSource() == handCardNine
+                        mouseEvent.getSource() == handCardTwo ||
+                        mouseEvent.getSource() == handCardThree ||
+                        mouseEvent.getSource() == handCardFour ||
+                        mouseEvent.getSource() == handCardFive ||
+                        mouseEvent.getSource() == handCardSix ||
+                        mouseEvent.getSource() == handCardSeven ||
+                        mouseEvent.getSource() == handCardEight ||
+                        mouseEvent.getSource() == handCardNine
                 ) {
                     int index = handCards.indexOf(mouseEvent.getSource());
                     if (handValues.get(index) != null) {
@@ -293,11 +294,13 @@ public class MainController {
         }
     }
 
-    public void fillHand(){
-        for(String text : client.getCardsInHand()){
+    public void fillHand() {
+        System.out.println(")))))))))))))))))))))) cards received from server" + client.getCardsInHand().size());
+        for (String text : client.getCardsInHand()) {
             handValues.add(text);
         }
     }
+
     public void fillDummyHand() {
         handValues.add("RightTurn");
         handValues.add("NoImage");
@@ -357,15 +360,12 @@ public class MainController {
             onClickSend();
         }
     }
+
     @FXML
     public void onProgrammingDone() {
-        if(registerValues.size()==5){
-            Moshi moshi = new Moshi.Builder().build();
-
-            JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
-            for(int i=0 ; i<5 ; ++i){
-               client.sendMessage("SelectedCard",selectedCardJsonAdapter.toJson(new SelectedCard(registerValues.get(i),i)));
-            }
+        if (registerValues.size() == 5) {
+            sendCards();
+            isProgrammingDone = true;
         }
         programdone.setDisable(true);
     }
@@ -409,4 +409,65 @@ public class MainController {
     public void setSelectedRobot(int selectedRobot) {
         this.selectedRobot = selectedRobot;
     }
+
+    public void sendRandomCards() {
+        System.out.println(handValues);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+
+                for (int firstFreeRegister = 0; firstFreeRegister < 5; firstFreeRegister++) {
+                    if (registerValues.get(firstFreeRegister) == null) {
+                        int index = (int) (Math.random() * handValues.size());
+                        System.out.println("index=" + index + ", ffr=" + firstFreeRegister);
+                        if (index == handValues.size()) {
+                            --index;
+                        }
+                        if (handValues.get(index) != null) {
+
+                            // adding to register
+                            registerValues.set(firstFreeRegister, handValues.get(index));
+                            // adding register image
+                            Image image = showCardImage(handValues.get(index));
+                            ImageView imageView = new ImageView(image);
+                            imageView.setFitHeight(110);
+                            imageView.setPreserveRatio(true);
+                            registerCards.get(firstFreeRegister).getChildren().add(imageView);
+                            // Removing from Hand
+                            handValues.set(index, null);
+                            // Removing handImage
+                            handCards.get(index).getChildren().remove(0);
+
+
+                        }
+                        --firstFreeRegister;
+                    }
+                }
+
+
+                while (registerValues.size() < 5) {
+
+                }
+                isProgrammingDone = true;
+                sendCards();
+                programdone.setDisable(true);
+
+            }
+        });
+
+    }
+
+    private void sendCards() {
+        Moshi moshi = new Moshi.Builder().build();
+
+        JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
+        int i = 0;
+        for (String card :
+                registerValues) {
+            client.sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(registerValues.get(i), i)));
+            ++i;
+        }
+    }
+
 }

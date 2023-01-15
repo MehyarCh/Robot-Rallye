@@ -154,18 +154,17 @@ public class ClientHandler implements Runnable {
                 case "MapSelected":
                     JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
                     Game.setCurrentMap(mapSelectedJsonAdapter.fromJson(message.getMessageBody()).getMap());
-                    System.out.println(clientName+" chose "+mapSelectedJsonAdapter.fromJson(message.getMessageBody()).getMap());
+
 
                     //ToDO send GameStarted with Map
-                    System.out.println(game.getCurrentMap()+" selected by "+clientName);
+
 
                     List<List<List<BoardElement>>> gameMap =new JsonMapReader().readMapFromJson(game.getCurrentMap());
 
                     if(clientID>1){
-                        System.out.println(clientName+" error"+game.getCurrentMap());
+
                         ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted",new GameStarted(new JsonMapReader().readMapFromJson(game.getCurrentMap())));
                         String jsonGameStarted = new JsonSerializer().serialize(gameStartedProtocolMessage);
-                        System.out.println(jsonGameStarted);
 
                         for (ClientHandler client:
                              clients) {
@@ -221,8 +220,9 @@ public class ClientHandler implements Runnable {
                     SetStartingPoint setStartingPoint = setStartingPointJsonAdapter.fromJson(message.getMessageBody());
                     game.initGameMap();
                     game.placeRobot(player,setStartingPoint.getX(),setStartingPoint.getY());
-                    startingPositionsChosen++;
-                    if(startingPositionsChosen == clients.size()){
+                    System.out.println(clientName+" val "+ ++startingPositionsChosen + "nos clients "+ clients.size());
+
+                    if(!isAI && startingPositionsChosen == clients.size()-1){
                         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
                         ActivePhase activePhase2 = new ActivePhase(2);
                         broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase2));
@@ -259,7 +259,6 @@ public class ClientHandler implements Runnable {
 
 
     private void setPlayerValues(PlayerValues playerValues) {
-        System.out.println("Setting player: " + playerValues.getName());
         player = new Player();
         player.setID(clientID);
         player.setName(playerValues.getName());
@@ -294,7 +293,7 @@ public class ClientHandler implements Runnable {
         for (ClientHandler client : clients) {
             client.sendMessage(type,json);
         }
-        System.out.println(json);
+        System.out.println(clientName+" BC "+json);
     }
 
 

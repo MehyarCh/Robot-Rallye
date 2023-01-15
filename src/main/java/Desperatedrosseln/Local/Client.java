@@ -16,7 +16,7 @@ public class Client implements Runnable {
     private DataInputStream in;
     private DataOutputStream out;
     private int clientID;
-
+    Timer timer = new Timer();
     private List<String> cardsInHand;
 
     HashMap<String, Integer> localPlayerList = new HashMap<>();
@@ -79,9 +79,11 @@ public class Client implements Runnable {
             GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();
             Desperatedrosseln.Logic.Elements.Map map = new Desperatedrosseln.Logic.Elements.Map(mainController.getMapController().convertMap(gameStarted.getGameMap()));
             System.out.println(map);
+            mainController.getMapController().setMapAsList(gameStarted.getGameMap());
             mainController.getMapController().setMap(map);
             mainController.getMapController().showMap();
             mainController.getMapController().setMap(gameStartedProtocolMessage.getMessageBody().getGameMap());
+            startStartPointSelectionTimer();
             return;
         }
         System.out.println(message);
@@ -151,8 +153,7 @@ public class Client implements Runnable {
             case "GameStarted":
 
                 //skipped
-                JsonAdapter<GameStarted> gameStartedJsonAdapter = moshi.adapter(GameStarted.class);
-                GameStarted gameStarted = gameStartedJsonAdapter.fromJson(msg.getMessageBody());
+
 
 
                 break;
@@ -179,10 +180,35 @@ public class Client implements Runnable {
                 mainController.fillHand();
                 mainController.updateCardImages();
                 mainController.cardClick();
-
-                JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
+                startCardSelectionTimer();
 
         }
+    }
+
+    private void startStartPointSelectionTimer() {
+        System.out.println("Timer started for Start point selection");
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if(!mainController.getMapController().isStartingPointChosen){
+                    mainController.getMapController().autoSelectStartPoint();
+                    sendChatMessage("start point selected", -1);
+                }
+            }
+        }, 10 * 1000); //5 seconds
+    }
+
+    private void startCardSelectionTimer() {
+        System.out.println("Timer started for Card selection");
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if(!mainController.isProgrammingDone){
+                    mainController.sendRandomCards();
+                    sendChatMessage("random cards sent", -1);
+                }
+            }
+        }, 10 * 1000); //5 seconds
     }
 
     private String getPlayerName(int from) {

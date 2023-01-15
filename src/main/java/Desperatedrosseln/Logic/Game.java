@@ -50,6 +50,7 @@ public class Game {
     private int distance;
     private final int port;
     private String protocol = "Version 1.0";
+    private boolean isRunning = false;
 
     public Game(int port, String protocol, ArrayList<ClientHandler> clients) {
         this.protocol = protocol;
@@ -77,6 +78,10 @@ public class Game {
 
     public void runStep() throws ClassNotFoundException {
 
+        if(isRunning){
+            return;
+        }
+
         switch (phase) {
             case 0:
                 System.out.println("Starting Phase");
@@ -96,6 +101,8 @@ public class Game {
                 break;
 
         }
+
+        isRunning =true;
 
     }
 
@@ -131,7 +138,7 @@ public class Game {
             System.out.println("Gamemap is not null");
         }
         phase = 2;
-
+        isRunning = false;
     }
 
     private List<List<MapField>> convertMap(List<List<List<BoardElement>>> gameMapList) {
@@ -190,6 +197,7 @@ public class Game {
 
         }
         phase = 3;
+        isRunning = false;
 
     }
 
@@ -254,6 +262,8 @@ public class Game {
             broadcastMessage("CurrentCards", currentCardsJsonAdapter.toJson(new CurrentCards(activeCardsArrayList)));
             activateElements();
         }
+
+        isRunning = false;
     }
 
     /**
