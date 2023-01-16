@@ -3,19 +3,16 @@ package Desperatedrosseln.Local.Controllers;
 import Desperatedrosseln.Json.utils.JsonMapReader;
 import Desperatedrosseln.Local.Client;
 import Desperatedrosseln.Local.Protocols.SetStartingPoint;
+import Desperatedrosseln.Logic.AI.AIClient;
 import Desperatedrosseln.Logic.Elements.BoardElement;
-import Desperatedrosseln.Logic.Elements.Position;
 import Desperatedrosseln.Logic.Elements.Tiles.*;
 import Desperatedrosseln.Logic.Elements.Map;
 import Desperatedrosseln.Logic.Elements.MapField;
 
-import com.squareup.moshi.Json;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -29,10 +26,12 @@ public class MapController {
 
     private final JsonMapReader jsonMapReader;
     private Map map;
+    private List<List<List<BoardElement>>> mapAsList;
 
     private int selectedRobot;
 
-    private boolean hasStartpoint = false;
+
+
 
     private ArrayList<Position> unavailableStartingPoints = new ArrayList<>();
 
@@ -42,6 +41,7 @@ public class MapController {
 
     @FXML
     private GridPane mapGrid;
+    public boolean isStartingPointChosen = false;
 
     public MapController(GridPane mapGrid, int selectedRobot) {
         this.mapGrid = mapGrid;
@@ -62,6 +62,8 @@ public class MapController {
         addLaserBeam(map.getMapFields());
         buildMapGrid(map.getMapFields());
     }
+
+
 
     public class Position {
         int x;
@@ -286,7 +288,7 @@ public class MapController {
 
 
 
-                        if (!hasStartpoint && !isStartingPointTaken) {
+                        if (!isStartingPointTaken && !isStartingPointTaken) {
                             switch (selectedRobot) {
                                 case 1 -> {
                                     robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/brown.png").toString());
@@ -316,11 +318,11 @@ public class MapController {
                                     robot = new ImageView();
                                 }
                             }
-                            hasStartpoint = true;
                             cell.getChildren().add(robot);
                             Moshi moshi = new Moshi.Builder().build();
                             JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
                             client.sendMessage("SetStartingPoint",setStartingPointJsonAdapter.toJson(new SetStartingPoint(x,y)));
+                            isStartingPointChosen = true;
                         }
                     });
                 }
@@ -689,4 +691,119 @@ public class MapController {
     public void setClient(Client client) {
         this.client = client;
     }
+
+    public void setMapAsList(List<List<List<BoardElement>>> mapAsList) {
+        this.mapAsList = mapAsList;
+    }
+
+    public void autoSelectStartPoint() {
+        Position finalPos = null;
+        for (int i = 0; i < mapAsList.size(); i++) {
+            for (int j = 0; j < mapAsList.get(i).size(); j++) {
+                for (BoardElement element :
+                        mapAsList.get(i).get(j)) {
+                    if (element.getType().equals("StartPoint") && !isStartingPointChosen) {
+
+                        boolean isPosTaken = false;
+
+                        Position currPos = new Position(i, j);
+                        if (!unavailableStartingPoints.isEmpty()) {
+                            for (Position pos : unavailableStartingPoints) {
+                                if (pos.isEqual(currPos)) {
+                                    isPosTaken = true;
+                                }
+                            }
+                        }
+                        if (!isPosTaken) {
+                            finalPos = new Position(currPos.x, currPos.y);
+                            isStartingPointChosen = true;
+
+                        }
+
+
+                    }
+                }
+            }
+        }
+        StackPane cell = new StackPane();
+        cell.getStyleClass().add("tile");
+        GridPane.setColumnIndex(cell, finalPos.getX());
+        GridPane.setRowIndex(cell,finalPos.getY());
+        Image startpointImage =
+                new Image(getClass().getResource("/images/elements/startpoint/startpoint.png").toString());
+
+        ImageView stackElement = new ImageView(startpointImage);
+
+        System.out.println("pos "+finalPos+" is Clicked");
+
+        boolean isStartingPointTaken = false;
+
+        for(Position pos: unavailableStartingPoints){
+            if(pos.isEqual(finalPos)){
+                isStartingPointTaken = true;
+            }
+        }
+
+
+        ImageView robot;
+        Image robotImage;
+
+        if (!isStartingPointTaken && !isStartingPointTaken) {
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            switch (selectedRobot) {
+                case 1 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/brown.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 2 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/yellow.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 3 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/blue.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 4 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/green.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 5 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/orange.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 6 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/red.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                default -> {
+                    robot = new ImageView();
+                }
+            }
+            cell.getChildren().add(robot);
+            Moshi moshi = new Moshi.Builder().build();
+            JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
+            client.sendMessage("SetStartingPoint",setStartingPointJsonAdapter.toJson(new SetStartingPoint(finalPos.x, finalPos.y)));
+            isStartingPointChosen = true;
+        }
+
+        if (stackElement != null) {
+            int tileSize = 50;
+            stackElement.setFitWidth(tileSize);
+            stackElement.setPreserveRatio(true);
+            cell.getChildren().add(stackElement);
+        }
+
+
+    }
+
+    public void runAutoStartPointSelection(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                autoSelectStartPoint();
+            }
+        });
+    }
+
+
 }

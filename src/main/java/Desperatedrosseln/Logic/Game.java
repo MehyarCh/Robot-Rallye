@@ -48,6 +48,7 @@ public class Game {
     private int distance;
     private final int port;
     private String protocol = "Version 1.0";
+    private boolean isRunning = false;
 
     public Game(int port, String protocol, ArrayList<ClientHandler> clients) {
         this.protocol = protocol;
@@ -56,11 +57,27 @@ public class Game {
     }
 
 
+    public static void readyPlayer(ClientHandler client) {             //TODO: case player disconnects
+        if (!client.isAI && mapSelectionPlayer == -1) {
+            mapSelectionPlayer = client.getPlayer().getID();
+            Moshi moshi = new Moshi.Builder().build();
+            JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
+            JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
+            ArrayList<String> maps = new ArrayList<>();
+            maps.add("DizzyHighway");
+            client.sendMessage("SelectMap", selectMapJsonAdapter.toJson(new SelectMap(maps)));
+        }
+    }
+
     public void placeRobot(Player player, int x, int y) {
         gameMap.addElement(player.getRobot(), x, y);
     }
 
     public void runStep() throws ClassNotFoundException {
+
+        if(isRunning){
+            return;
+        }
 
         switch (phase) {
             case 0:
@@ -81,6 +98,8 @@ public class Game {
                 break;
 
         }
+
+        isRunning =true;
 
     }
 
@@ -123,7 +142,7 @@ public class Game {
         }
 
         phase = 2;
-
+        isRunning = false;
     }
 
     private List<List<MapField>> convertMap(List<List<List<BoardElement>>> gameMapList) {
@@ -182,6 +201,7 @@ public class Game {
 
         }
         phase = 3;
+        isRunning = false;
 
     }
 
@@ -233,7 +253,6 @@ public class Game {
                         playCardByType(curr.getRegisterIndex(current_register), curr, current_register);
 
 
-
                         activeCardsArrayList.add(new CurrentCards.ActiveCards(curr.getID(), curr.getRegisterIndex(current_register)));
 
 
@@ -246,6 +265,8 @@ public class Game {
             broadcastMessage("CurrentCards", currentCardsJsonAdapter.toJson(new CurrentCards(activeCardsArrayList)));
             activateElements();
         }
+
+        isRunning = false;
     }
 
     /**

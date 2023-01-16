@@ -18,7 +18,7 @@ public class Client implements Runnable {
     private DataInputStream in;
     private DataOutputStream out;
     private int clientID;
-
+    Timer timer = new Timer();
     private List<String> cardsInHand;
 
     HashMap<String, Integer> localPlayerList = new HashMap<>();
@@ -92,9 +92,11 @@ public class Client implements Runnable {
             GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();
             Desperatedrosseln.Logic.Elements.Map map = new Desperatedrosseln.Logic.Elements.Map(mainController.getMapController().convertMap(gameStarted.getGameMap()));
             System.out.println(map);
+            mainController.getMapController().setMapAsList(gameStarted.getGameMap());
             mainController.getMapController().setMap(map);
             mainController.getMapController().showMap();
             mainController.getMapController().setMap(gameStartedProtocolMessage.getMessageBody().getGameMap());
+            startStartPointSelectionTimer();
             return;
         }
         System.out.println(message);
@@ -141,7 +143,6 @@ public class Client implements Runnable {
                 }
                 break;
             case "PlayerStatus":
-
                 break;
             case "SelectMap":
                 JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
@@ -169,7 +170,13 @@ public class Client implements Runnable {
                         lobbyController.addChatMessage(getPlayerName(receivedChat.getFrom()) + ": " + receivedChat.getMessage());
                     }
                 }
+            case "GameStarted":
 
+                //skipped
+
+
+
+                break;
             case "Error":
                 if (mainController != null) {
                     mainController.addChatMessage("Error Occurred");
@@ -177,7 +184,6 @@ public class Client implements Runnable {
                 break;
             case "CardPlayed":
                 break;
-
             case "StartingPointTaken":
 
                 JsonAdapter<StartingPointTaken> startingPointTakenJsonAdapter = moshi.adapter(StartingPointTaken.class);
@@ -195,8 +201,10 @@ public class Client implements Runnable {
                 mainController.updateCardImages();
                 mainController.initRegisterValues();
                 mainController.cardClick();
+                startCardSelectionTimer();
 
-                JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
+        }
+    }
 
             case "CurrentPlayer":
                 JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
@@ -210,6 +218,30 @@ public class Client implements Runnable {
 
 
         }
+    private void startStartPointSelectionTimer() {
+        System.out.println("Timer started for Start point selection");
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if(!mainController.getMapController().isStartingPointChosen){
+                    mainController.getMapController().runAutoStartPointSelection();
+                    sendChatMessage("start point selected", -1);
+                }
+            }
+        }, 30 * 1000);
+    }
+
+    private void startCardSelectionTimer() {
+        System.out.println("Timer started for Card selection");
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if(!mainController.isProgrammingDone){
+                    mainController.sendRandomCards();
+                    sendChatMessage("random cards sent", -1);
+                }
+            }
+        }, 30 * 1000);//15 seconds
     }
 
     private String getPlayerName(int from) {
