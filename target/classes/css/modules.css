@@ -1,0 +1,371 @@
+
+/* general modules */
+
+.logo {
+    -fx-background-image: url("../images/logo.png");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+}
+
+/* login scene */
+
+.scene--small {
+    -fx-pref-height: 500px;
+    -fx-pref-width: 960px;
+    -fx-padding: 32px;
+    -fx-alignment: center;
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+}
+
+.login-scene {
+    -fx-background-image: url("../images/login-bg.jpg");
+}
+
+.lobby-scene {
+    -fx-background-image: url("../images/lobby-bg.jpg");
+}
+
+
+.logo-wrapper {
+    -fx-alignment: center;
+}
+
+.logo--login {
+    -fx-pref-height: 100px;
+    -fx-pref-width: 320px;
+}
+
+.overlay {
+    -fx-min-height: 400px;
+    -fx-max-width:500px;
+    -fx-spacing: 16px;
+    -fx-alignment: center;
+    -fx-background-color: rgba(0, 0, 0, 0.8);
+    -fx-padding: 16px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 4, 0, 0, 0);
+}
+
+.login-form-wrapper {
+    -fx-pref-width: 240px;
+    -fx-max-width: 240px;
+    -fx-spacing: 16px;
+}
+
+.login-form-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #cccccc;
+}
+
+.login-form-text-input {
+
+}
+
+.login-button-wrapper {
+    -fx-spacing: 16px;
+    -fx-alignment: center;
+}
+
+.login-warning {
+    -fx-text-fill: #FD1D53;
+    -fx-font-size: 10;
+    -fx-font-weight: 300;
+    -fx-alignment: center-left;
+}
+
+/* main scene */
+
+.main-scene {
+    -fx-pref-height: 720px;
+    -fx-pref-width: 1280px;
+}
+
+.navbar {
+    -fx-background-color: #0D0221;
+    -fx-pref-height: 55px;
+    -fx-alignment: center-right;
+    -fx-padding: 0 0 0 32px;
+}
+
+.logo--navbar {
+    -fx-pref-height: 56px;
+    -fx-pref-width: 97px;
+    -fx-background-size: 97px 38px;
+    -fx-padding: 0 0 0 32px;
+}
+
+.player-bar {
+    -fx-alignment: center;
+    -fx-spacing: 16px;
+    -fx-padding: 0 130px 0 0;
+}
+
+.player-bar--lobby {
+    -fx-padding: 0;
+    -fx-min-width: 280px;
+}
+
+.player-wrapper {
+    -fx-alignment: center;
+    -fx-spacing: 2px;
+}
+
+.player-icon {
+    -fx-pref-height: 32px;
+    -fx-pref-width: 32px;
+    -fx-background-size: 32px;
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-color: transparent;
+}
+
+#player-icon--1 {
+    -fx-background-image: url("../images/player_pink.png");
+}
+
+#player-icon--2 {
+    -fx-background-image: url("../images/player_yellow.png");
+}
+
+#player-icon--3 {
+    -fx-background-image: url("../images/player_blue.png");
+}
+
+#player-icon--4 {
+    -fx-background-image: url("../images/player_green.png");
+}
+
+#player-icon--5 {
+    -fx-background-image: url("../images/player_orange.png");
+}
+
+#player-icon--6 {
+    -fx-background-image: url("../images/player_blue.png");
+}
+
+.profile-wrapper {
+    -fx-pref-width: 230px;
+    -fx-padding: 0 32px 0 16px;
+    -fx-spacing: 8px;
+    -fx-alignment: center-left;
+    -fx-text-fill: #ffffff;
+}
+
+.profile-status {
+    -fx-alignment: center-left;
+    -fx-text-fill: #ffffff;
+}
+
+.profile-name {
+    -fx-font-size: 12px;
+    -fx-font-weight: 300;
+}
+
+.profile-energy {
+    -fx-font-size: 10px;
+    -fx-font-weight: 700;
+}
+
+.center {
+}
+
+.map {
+    -fx-alignment: center;
+}
+
+.tile {
+    -fx-border-color: #a9a9a9;
+    -fx-border-size: 2px;
+    -fx-border-style: none;
+}
+
+.card-wrapper {
+    -fx-background-color: #04010c;
+    -fx-alignment: center;
+    -fx-padding: 8 4px 16px 4px;
+    -fx-vgap: 4px;
+    -fx-background-image: url("../images/login-bg2-dark.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+.card-row {
+    -fx-alignment: center;
+    -fx-hgap: 16px;
+    -fx-padding: 0;
+}
+
+.upper-card-row {
+
+}
+
+.lower-card-row {
+
+}
+
+.card-area {
+    -fx-background-image: url("../images/card.png");
+}
+
+#card {
+    -fx-pref-width: 76px;
+    -fx-pref-height: 110px;
+    -fx-border-radius: 10px;
+    -fx-alignment: center;
+    -fx-background-size: contain;
+
+    /*-fx-text-fill: #fff;
+    -fx-font-weight: 300;
+    -fx-font-size: 12px*/
+}
+
+.card--MoveOne {
+    -fx-background-color: blue;
+    -fx-opacity: 0.5;
+}
+
+.card--MoveTwo {
+    -fx-background-color: red;
+    -fx-opacity: 0.5;
+}
+
+.card--MoveThree{
+    -fx-background-color: green;
+    -fx-opacity: 0.5;
+}
+
+.card--MoveBack{
+
+}
+
+.card--Again{
+
+}
+
+.card--TurnLeft{
+
+}
+
+.card--TurnRight{
+
+}
+
+.card--UTurn{
+
+}
+
+.card--PowerUp{
+
+}
+
+.card--Spam{
+
+}
+
+.card--Trojan{
+
+}
+
+.card--Virus{
+
+}
+
+.card--Worm{
+
+}
+
+.card--EnergyRoutine{
+
+}
+
+.card--RepeatRoutine{
+
+}
+
+.card--SandboxRoutine{
+
+}
+
+.card--SpamFolder{
+
+}
+
+.card--SpeedRoutine{
+
+}
+
+.card--WeaselRoutine{
+
+}
+
+
+
+
+.sidebar {
+    -fx-pref-height: 100%;
+    -fx-pref-width: 230px;
+    -fx-padding: 16px 0 8px 0;
+    -fx-alignment: bottom-center;
+    -fx-spacing: 40px;
+    -fx-background-color: linear-gradient(to top right, #020015, #19002a);
+}
+
+.chat-input-wrapper {
+    -fx-spacing: 8px;
+    -fx-alignment: bottom-center;
+    -fx-padding: 0 16px;
+}
+
+.scroll-board {
+    -fx-hbar-policy: Never;
+    -fx-alignment: bottom-center;
+    -fx-pannable: true;
+}
+
+.message-board {
+    -fx-spacing: 8px;
+    -fx-pref-height: 100%;
+    -fx-fill-width: true;
+}
+
+.message-wrapper {
+    -fx-padding: 0 16px;
+    -fx-fill-width: true;
+}
+
+.message-label {
+    -fx-text-fill: #cccccc;
+    -fx-font-weight: 300;
+}
+
+.message {
+    -fx-min-height: 40px;
+    -fx-padding: 4px 8px;
+    -fx-font-size: 12;
+    -fx-font-weight: 500;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4;
+    -fx-text-fill: #ffffff;
+    -fx-wrap-text: true;
+}
+
+.message--primary {
+    -fx-border-color: rgb(246, 1, 157);
+}
+
+.message--server {
+    -fx-border-color: #f9c80e;
+}
+
+.message--default {
+    -fx-border-color: #18123f;
+}
+
+/* Lobby scene */
+
+
+
+
+

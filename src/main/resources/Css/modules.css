@@ -172,6 +172,7 @@
 
 .map {
     -fx-alignment: center;
+    -fx-background-color: linear-gradient(to top right, #020015,#19002a);
 }
 
 .tile {
