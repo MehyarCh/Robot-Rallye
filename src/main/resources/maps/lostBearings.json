@@ -7,7 +7,7 @@
           {
             "type": "RestartPoint",
             "isOnBoard": "5B",
-            "orientations": ["bottom"]
+            "orientations": ["right"]
           }
         ],
         [
@@ -395,14 +395,16 @@
         ],
         [
           {
-            "type": "Empty",
-            "isOnBoard": "1A"
+            "type": "Gear",
+            "isOnBoard": "4A",
+            "orientations": ["counterclockwise"]
           }
         ],
         [
           {
-            "type": "Empty",
-            "isOnBoard": "1A"
+            "type": "Gear",
+            "isOnBoard": "4A",
+            "orientations": ["clockwise"]
           }
         ],
         [
@@ -554,9 +556,9 @@
         ],
         [
           {
-            "type": "Energy-Space",
-            "isOnBoard": "1A",
-            "count": 1
+            "type": "Gear",
+            "isOnBoard": "4A",
+            "orientations": ["clockwise"]
           }
         ],
         [
@@ -620,9 +622,9 @@
         ],
         [
           {
-            "type": "Energy-Space",
-            "isOnBoard": "1A",
-            "count": 1
+            "type": "Gear",
+            "isOnBoard": "4A",
+            "orientations": ["counterclockwise"]
           }
         ],
         [
@@ -770,16 +772,17 @@
         ],
         [
           {
-            "type": "Empty",
-            "isOnBoard": "1A"
+            "type": "Gear",
+            "isOnBoard": "1A",
+            "orientations": ["clockwise"]
           }
         ],
         [
           {
-            "type": "Empty",
-            "isOnBoard": "1A"
+            "type": "Gear",
+            "isOnBoard": "1A",
+            "orientations": ["counterclockwise"]
           }
-
         ],
         [
           {
