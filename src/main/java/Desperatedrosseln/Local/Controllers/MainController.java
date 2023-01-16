@@ -177,7 +177,7 @@ public class MainController {
                 mapController = new MapController(mapGrid, selectedRobot, calcMaxMapHeight());
                 mapController.setClient(client);
                 stage.show();
-                startTimer();
+                //startTimer();
             }
 
 
@@ -195,6 +195,7 @@ public class MainController {
                 Platform.runLater(() -> {
                             timeLabel.setText(String.valueOf(seconds--));
                             if (seconds < 0 || mapController.hasStartpoint) {
+                                System.out.println(Thread.currentThread().getName());
                                 timer.cancel();
                             }
                         }
@@ -383,6 +384,8 @@ public class MainController {
     }
 
     public void cardClick() {
+        Moshi moshi = new Moshi.Builder().build();
+        JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
         for (StackPane card : handCards) {
             card.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
 
@@ -404,6 +407,7 @@ public class MainController {
                         handValues.set(index, null);
                         // Removing handImage
                         handCards.get(index).getChildren().remove(0);
+                        client.sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(registerValues.get(firstFreeRegister), firstFreeRegister)));
                     } else {
                         System.out.println("Already 5 cards in the registers!");
                     }
@@ -435,6 +439,8 @@ public class MainController {
                     // Removing registerImage
                     registerCards.get(index).getChildren().remove(0);
                     System.out.println("removed image");
+                    client.sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(handValues.get(firstFreeHand), firstFreeHand)));
+
                 }
             });
         }

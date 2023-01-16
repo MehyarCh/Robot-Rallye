@@ -50,6 +50,7 @@ public class Client implements Runnable {
         }
 
         new Thread(this).start();
+        System.out.println(Thread.currentThread().getName());
     }
 
     public void sendMessage(String type, String body) {
@@ -80,9 +81,12 @@ public class Client implements Runnable {
 
 
     private void checkProtocolMessage(String message) throws IOException {
-        if (message.equals("{\"messageBody\":\"{}\",\"messageType\":\"Alive\"}")) {
+       /* if (message.equals("{\"messageBody\":\"{}\",\"messageType\":\"Alive\"}")) {
+            System.out.println("Alive################");
             return;
         }
+
+        */
 
         //TODO: Logs
         if (message.startsWith("{\"messageType\":\"GameStarted\"")) {
@@ -96,7 +100,7 @@ public class Client implements Runnable {
             mainController.getMapController().setMap(map);
             mainController.getMapController().showMap();
             mainController.getMapController().setMap(gameStartedProtocolMessage.getMessageBody().getGameMap());
-            startStartPointSelectionTimer();
+            //startStartPointSelectionTimer();
             return;
         }
         System.out.println(message);
@@ -121,7 +125,7 @@ public class Client implements Runnable {
                 break;
             case "Alive":
                 sendMessage(msg.getMessageType(), msg.getMessageBody());
-                //System.out.println("Alive check from server");
+                System.out.println("Alive check from server");
                 break;
             case "Welcome":
                 JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
@@ -200,7 +204,7 @@ public class Client implements Runnable {
                 mainController.updateCardImages();
                 mainController.initRegisterValues();
                 mainController.cardClick();
-                startCardSelectionTimer();
+                //startCardSelectionTimer();
                 break;
             case "CurrentPlayer":
                 JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);

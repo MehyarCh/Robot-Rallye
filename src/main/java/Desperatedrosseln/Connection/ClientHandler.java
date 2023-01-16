@@ -80,187 +80,188 @@ public class ClientHandler implements Runnable {
     public void checkCommands(String msg) throws IOException, ClassNotFoundException {
 
 
-            if(msg == null){
-                return;
+        if (msg == null) {
+            return;
+        }
+
+        Message message = messageJsonAdapter.fromJson(msg);
+
+        if (!message.getMessageType().equals("Alive")) {
+            if (isAI) {
+                System.out.println("--------" + message.getMessageType() + ": " + message.getMessageBody());
+            } else {
+                System.out.println(message.getMessageType() + ": " + message.getMessageBody());
             }
 
-            Message message = messageJsonAdapter.fromJson(msg);
+        }
 
-            if (!message.getMessageType().equals("Alive")) {
-                if(isAI){
-                    System.out.println("--------"+message.getMessageType() + ": " + message.getMessageBody());
-                }else {
-                    System.out.println(message.getMessageType() + ": " + message.getMessageBody());
+        switch (message.getMessageType()) {
+
+            case "HelloServer":
+                JsonAdapter<HelloServer> helloServerJsonAdapter = moshi.adapter(HelloServer.class);
+                clientID = clients.indexOf(this) + 1;
+                HelloServer helloServer = helloServerJsonAdapter.fromJson(message.getMessageBody());
+
+                if (helloServer.getProtocol().equals(this.protocol)) {
+                    isAI = helloServer.isAI;
+                    JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
+                    sendMessage("Welcome", welcomeJsonAdapter.toJson(new Welcome(clientID)));
+                    System.out.println("client Connected");
+                } else {
+                    System.out.println("invalid protocol");
+                    sendErrorMessage();
                 }
+                break;
 
-            }
+            case "Alive":
+                //System.out.println("client is alive");
+                break;
 
-            switch (message.getMessageType()) {
+            case "PlayerValues":
+                JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);
 
-                case "HelloServer":
-                    JsonAdapter<HelloServer> helloServerJsonAdapter = moshi.adapter(HelloServer.class);
-                    clientID = clients.indexOf(this) + 1;
-                    HelloServer helloServer = helloServerJsonAdapter.fromJson(message.getMessageBody());
+                PlayerValues playerValues = playerValuesJsonAdapter.fromJson(message.getMessageBody());
 
-                    if (helloServer.getProtocol().equals(this.protocol)) {
-                        isAI = helloServer.isAI;
-                        JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
-                        sendMessage("Welcome", welcomeJsonAdapter.toJson(new Welcome(clientID)));
-                        System.out.println("client Connected");
-                    } else {
-                        System.out.println("invalid protocol");
-                        sendErrorMessage();
+                boolean robotTaken = false;
+                if (!game.getPlayers().isEmpty()) {
+                    for (Player player :
+                            game.getPlayers()) {
+                        if (player.getRobot().getID() == playerValues.getFigure()) {
+                            sendErrorMessage();
+                            robotTaken = true;
+                        }
                     }
-                    break;
-
-                case "Alive":
-                    //
-                    //System.out.println("client is alive");
-                    break;
-
-                case "PlayerValues":
-                    JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);
-
-                    PlayerValues playerValues = playerValuesJsonAdapter.fromJson(message.getMessageBody());
-
-                    boolean robotTaken = false;
-                    if (!game.getPlayers().isEmpty()) {
-                        for (Player player :
-                                game.getPlayers()) {
-                            if (player.getRobot().getID() == playerValues.getFigure()) {
-                                sendErrorMessage();
-                                robotTaken = true;
-                            }
-                        }
-                        if (!robotTaken) {
-                            setPlayerValues(playerValues);
-                        }
-
-                    } else {
+                    if (!robotTaken) {
                         setPlayerValues(playerValues);
                     }
 
+                } else {
+                    setPlayerValues(playerValues);
+                }
 
-                    break;
-                case "SetStatus":
 
-                    JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
-                    boolean status = setStatusJsonAdapter.fromJson(message.getMessageBody()).isReady();
-                    player.setReady(status);
+                break;
+            case "SetStatus":
 
-                    if(Game.mapSelectionPlayer == -1 && status){
-                        Game.mapSelectionPlayer = player.getID();
-                    } else if(Game.mapSelectionPlayer == player.getID() && !status){
-                        Game.mapSelectionPlayer = -1;
-                    }
+                JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
+                boolean status = setStatusJsonAdapter.fromJson(message.getMessageBody()).isReady();
+                player.setReady(status);
 
-                    JsonAdapter<PlayerStatus> playerStatusJsonAdapter = moshi.adapter(PlayerStatus.class);
-                    PlayerStatus playerStatus = new PlayerStatus(player.getID(), status);
-                    broadcastMessage("PlayerStatus", playerStatusJsonAdapter.toJson(playerStatus));
+                if (Game.mapSelectionPlayer == -1 && status) {
+                    Game.mapSelectionPlayer = player.getID();
+                } else if (Game.mapSelectionPlayer == player.getID() && !status) {
+                    Game.mapSelectionPlayer = -1;
+                }
 
-                    //if all players are ready, the first to be ready chooses the map
-                    if(game.playersAreReady() && Game.getPlayers().size()>1 ){
-                        JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
-                        JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
+                JsonAdapter<PlayerStatus> playerStatusJsonAdapter = moshi.adapter(PlayerStatus.class);
+                PlayerStatus playerStatus = new PlayerStatus(player.getID(), status);
+                broadcastMessage("PlayerStatus", playerStatusJsonAdapter.toJson(playerStatus));
 
-                        for (ClientHandler clientHandler : clients){
-                            if(clientHandler.getClientID() == Game.mapSelectionPlayer){
-                                clientHandler.sendMessage("SelectMap", selectMapJsonAdapter.toJson(new SelectMap(maps)));
-                            }
+                //if all players are ready, the first to be ready chooses the map
+                if (game.playersAreReady() && Game.getPlayers().size() > 1) {
+                    JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
+                    JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
+
+                    for (ClientHandler clientHandler : clients) {
+                        if (clientHandler.getClientID() == Game.mapSelectionPlayer) {
+                            clientHandler.sendMessage("SelectMap", selectMapJsonAdapter.toJson(new SelectMap(maps)));
                         }
-
                     }
+
+                }
 //                    if (playerStatus.isReady()) {
 //                        Game.readyPlayer(this);
 //                    }
-                    break;
-                case "MapSelected":
-                    JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
-                    Game.setCurrentMap(mapSelectedJsonAdapter.fromJson(message.getMessageBody()).getMap());
+                break;
+            case "MapSelected":
+                JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
+                Game.setCurrentMap(mapSelectedJsonAdapter.fromJson(message.getMessageBody()).getMap());
 
-                    System.out.println(game.getCurrentMap());
+                System.out.println(game.getCurrentMap());
 
-                    //ToDO send GameStarted with Map
-
-
-                    List<List<List<BoardElement>>> gameMap = new JsonMapReader().readMapFromJson(game.getCurrentMap());
-
-                    if(clients.size()>1){
-
-                        ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted",new GameStarted(new JsonMapReader().readMapFromJson(game.getCurrentMap())));
-                        String jsonGameStarted = new JsonSerializer().serialize(gameStartedProtocolMessage);
-
-                        for (ClientHandler client:
-                             clients) {
-                            try {
-                                client.getOut().writeUTF(jsonGameStarted);
-                                client.getOut().flush();
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
+                //ToDO send GameStarted with Map
 
 
+                List<List<List<BoardElement>>> gameMap = new JsonMapReader().readMapFromJson(game.getCurrentMap());
 
-                    }
+                if (clients.size() > 1) {
 
+                    ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted", new GameStarted(new JsonMapReader().readMapFromJson(game.getCurrentMap())));
+                    String jsonGameStarted = new JsonSerializer().serialize(gameStartedProtocolMessage);
 
-
-                    break;
-
-                case "SendChat":
-
-                    JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
-                    SendChat sendChat = sendChatJsonAdapter.fromJson(message.getMessageBody());
-                    JsonAdapter<ReceivedChat> receivedChatJsonAdapter = moshi.adapter(ReceivedChat.class);
-                    if (sendChat.getTo() == -1) {
-                        broadcastMessage("ReceivedChat", receivedChatJsonAdapter.toJson(new ReceivedChat(sendChat.getMessage(), clientID, false)));
-                    } else {
-                        for (ClientHandler client :
-                                clients) {
-                            if (client.getClientID() == sendChat.getTo()) {
-                                client.sendMessage("ReceivedChat", receivedChatJsonAdapter.toJson(new ReceivedChat(sendChat.getMessage(), clientID, true)));
-                            }
+                    for (ClientHandler client :
+                            clients) {
+                        try {
+                            client.getOut().writeUTF(jsonGameStarted);
+                            client.getOut().flush();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
                     }
-                    break;
 
-                case "PlayCard":
-                    JsonAdapter<CardPlayed> cardPlayedJsonAdapter = moshi.adapter(CardPlayed.class);
-                    CardPlayed cardPlayed = new CardPlayed(player.getID(), cardPlayedJsonAdapter.fromJson(message.getMessageBody()).getCard()); //add clientID and the card that was played
 
-                    broadcastMessage("CardPlayed", cardPlayedJsonAdapter.toJson(cardPlayed)); //send CardPlayed message to every client
-                    
-                default:
-                    broadcastMessage(" ", "SERVER BRO");
+                }
 
-                case "addAI":
-                    game.addAI();
-                    break;
-                case "SetStartingPoint":
-                    JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
-                    SetStartingPoint setStartingPoint = setStartingPointJsonAdapter.fromJson(message.getMessageBody());
-                    game.initGameMap();
-                    game.placeRobot(player,setStartingPoint.getX(),setStartingPoint.getY());
-                    System.out.println(clientName+" val "+ ++game.startingPositionsChosen + "nos clients "+ clients.size());
 
-                    if(!isAI && game.startingPositionsChosen == clients.size() && !game.isRunning()){
-                        game.runStep();
+                break;
+
+            case "SendChat":
+
+                JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
+                SendChat sendChat = sendChatJsonAdapter.fromJson(message.getMessageBody());
+                JsonAdapter<ReceivedChat> receivedChatJsonAdapter = moshi.adapter(ReceivedChat.class);
+                if (sendChat.getTo() == -1) {
+                    broadcastMessage("ReceivedChat", receivedChatJsonAdapter.toJson(new ReceivedChat(sendChat.getMessage(), clientID, false)));
+                } else {
+                    for (ClientHandler client :
+                            clients) {
+                        if (client.getClientID() == sendChat.getTo()) {
+                            client.sendMessage("ReceivedChat", receivedChatJsonAdapter.toJson(new ReceivedChat(sendChat.getMessage(), clientID, true)));
+                        }
                     }
+                }
+                break;
 
-                    //ToDo one Robot one tile
+            case "PlayCard":
+                JsonAdapter<CardPlayed> cardPlayedJsonAdapter = moshi.adapter(CardPlayed.class);
+                CardPlayed cardPlayed = new CardPlayed(player.getID(), cardPlayedJsonAdapter.fromJson(message.getMessageBody()).getCard()); //add clientID and the card that was played
 
-                    JsonAdapter<StartingPointTaken> startingPointTakenJsonAdapter = moshi.adapter(StartingPointTaken.class);
-                    broadcastMessage("StartingPointTaken", startingPointTakenJsonAdapter.toJson(new StartingPointTaken(setStartingPoint.getX(),setStartingPoint.getY(),clientID)));
-                    break;
-                case "SelectedCard":
-                    JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
-                    SelectedCard selectedCard = selectedCardJsonAdapter.fromJson(message.getMessageBody());
-                    player.addToRegister(selectedCard.getCard());
-                    if(player.getRegisterSize()<5){
-                       JsonAdapter<CardSelected> cardSelectedJsonAdapter = moshi.adapter(CardSelected.class);
-                       broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID,selectedCard.getRegister())));
-                    }else{
+                broadcastMessage("CardPlayed", cardPlayedJsonAdapter.toJson(cardPlayed)); //send CardPlayed message to every client
+
+            default:
+                broadcastMessage(" ", "SERVER BRO");
+
+            case "addAI":
+                game.addAI();
+                break;
+            case "SetStartingPoint":
+                JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
+                SetStartingPoint setStartingPoint = setStartingPointJsonAdapter.fromJson(message.getMessageBody());
+                game.initGameMap();
+                game.placeRobot(player, setStartingPoint.getX(), setStartingPoint.getY());
+                System.out.println(clientName + " val " + ++game.startingPositionsChosen + "nos clients " + clients.size());
+
+                if (!isAI && game.startingPositionsChosen == clients.size() && !game.isRunning()) {
+                    game.runStep();
+                }
+
+                //ToDo one Robot one tile
+
+                JsonAdapter<StartingPointTaken> startingPointTakenJsonAdapter = moshi.adapter(StartingPointTaken.class);
+                broadcastMessage("StartingPointTaken", startingPointTakenJsonAdapter.toJson(new StartingPointTaken(setStartingPoint.getX(), setStartingPoint.getY(), clientID)));
+                break;
+            case "SelectedCard":
+                JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
+                SelectedCard selectedCard = selectedCardJsonAdapter.fromJson(message.getMessageBody());
+                player.addToRegister(selectedCard.getCard());
+                JsonAdapter<CardSelected> cardSelectedJsonAdapter = moshi.adapter(CardSelected.class);
+                if (selectedCard.getCard() == null) {
+                    broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID, selectedCard.getRegister(), false)));
+                } else {
+                    broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID, selectedCard.getRegister(), true)));
+                }
+                break;
+                   /* }else{
                         JsonAdapter<SelectionFinished> selectionFinishedJsonAdapter = moshi.adapter(SelectionFinished.class);
                         broadcastMessage("SelectionFinished", selectionFinishedJsonAdapter.toJson(new SelectionFinished(clientID)));
                         if(game.selectionFinished()){
@@ -268,16 +269,16 @@ public class ClientHandler implements Runnable {
                             ActivePhase activePhase3 = new ActivePhase(3);
                             broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
                             game.runStep();
-                        }
-                    }
-                case "Logout":
-                    if(player.getID() == Game.mapSelectionPlayer){
-                        Game.mapSelectionPlayer = -1;
-                    }
-                    closeAll(this.socket, this.in, this.out);
-                    //problem with alive message as soon as socket gets closed; -> ToDo: disconnect client properly (multiple errors)
-                    break;
-            }
+                        }*/
+
+            case "Logout":
+                if (player.getID() == Game.mapSelectionPlayer) {
+                    Game.mapSelectionPlayer = -1;
+                }
+                closeAll(this.socket, this.in, this.out);
+                //problem with alive message as soon as socket gets closed; -> ToDo: disconnect client properly (multiple errors)
+                break;
+        }
     }
 
 
@@ -302,7 +303,6 @@ public class ClientHandler implements Runnable {
 
 
     public void sendMessage(String type,String json) {
-
         try {
             out.writeUTF(messageJsonAdapter.toJson(new Message(type,json)));
             out.flush();
@@ -347,7 +347,8 @@ public class ClientHandler implements Runnable {
             @Override
             public void run() {
                 JsonAdapter<Alive> aliveJsonAdapter = moshi.adapter(Alive.class);
-                sendMessage("Alive", aliveJsonAdapter.toJson(new Alive()));     //after 5s alive message gets sent to the client.
+                sendMessage("Alive", aliveJsonAdapter.toJson(new Alive()));
+                System.out.println(Thread.currentThread().getName());//after 5s alive message gets sent to the client.
             }
         }, 5 * 1000, 5 * 1000); //5 seconds
 
