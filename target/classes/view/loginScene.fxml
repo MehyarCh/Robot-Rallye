@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      styleClass="scene--small, login-scene">
+
+    <VBox styleClass="overlay">
+        <VBox styleClass="logo-wrapper">
+            <Label text="" styleClass="logo, logo--login"/>
+            <ImageView styleClass="logo, logo--login"/>
+        </VBox>
+        <VBox styleClass="login-form-wrapper">
+            <VBox styleClass="login-form-item">
+                <Label text="Name" styleClass="login-form-label"/>
+                <TextField fx:id="loginTextField" styleClass="text-input, text-input--primary, login-form-text-input"/>
+            </VBox>
+            <Label fx:id="loginwarning" layoutX="88.0" layoutY="446.0" prefWidth="245.0" textFill="RED"/>
+        </VBox>
+        <VBox styleClass="login-button-wrapper">
+            <Button text="JOIN LOBBY"
+                    fx:id="joinButton"
+                    onAction="#onLogin"
+                    styleClass="button, login-button, button--primary"/>
+            <Button text="CREATE LOBBY"
+                    styleClass="button, login-button, button--disabled"/>
+        </VBox>
+    </VBox>
+</VBox>
+
+

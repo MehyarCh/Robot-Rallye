@@ -14,7 +14,6 @@ import Desperatedrosseln.Logic.Elements.Tiles.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +34,9 @@ public class Game {
     private int phase = 0;
     private Player playing;
     private int current_player_index = 0;
-
+    public int startingPositionsChosen=0;
     private int current_register = 0;
-    private static int mapSelectionPlayer = -1;
+    public static int mapSelectionPlayer = -1;
     //
     private ArrayList<Card> spampile = new ArrayList<>(38);
     private ArrayList<Card> viruspile = new ArrayList<>(18);
@@ -45,11 +44,11 @@ public class Game {
     private ArrayList<Card> wormpile = new ArrayList<>(6);
     private ArrayList<ClientHandler> clients;
 
-    //TODO: availablePiles (protocol 1.0 bulletpoint 8)
 
     private int distance;
     private final int port;
     private String protocol = "Version 1.0";
+    private boolean isRunning = false;
 
     public Game(int port, String protocol, ArrayList<ClientHandler> clients) {
         this.protocol = protocol;
@@ -59,7 +58,7 @@ public class Game {
 
 
     public static void readyPlayer(ClientHandler client) {             //TODO: case player disconnects
-        if (mapSelectionPlayer == -1) {
+        if (!client.isAI && mapSelectionPlayer == -1) {
             mapSelectionPlayer = client.getPlayer().getID();
             Moshi moshi = new Moshi.Builder().build();
             JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
@@ -76,6 +75,10 @@ public class Game {
 
     public void runStep() throws ClassNotFoundException {
 
+        if(isRunning){
+            return;
+        }
+        isRunning = true;
         switch (phase) {
             case 0:
                 System.out.println("Starting Phase");
@@ -95,6 +98,8 @@ public class Game {
                 break;
 
         }
+
+
 
     }
 
@@ -129,8 +134,15 @@ public class Game {
         }else {
             System.out.println("Gamemap is not null");
         }
-        phase = 2;
 
+        for (int x = 0; x < gameMapList.size(); x++) {
+            for (int y = 0; y < gameMapList.get(x).size(); y++) {
+                gameMapList.get(x).get(y).get(0).setPosition(x,y);
+            }
+        }
+
+        phase = 2;
+        isRunning = false;
     }
 
     private List<List<MapField>> convertMap(List<List<List<BoardElement>>> gameMapList) {
@@ -189,6 +201,7 @@ public class Game {
 
         }
         phase = 3;
+        isRunning = false;
 
     }
 
@@ -205,7 +218,6 @@ public class Game {
 
 
     private void broadcastMessage(String type, String json) {
-        //TODO:
         for (ClientHandler client :
                 clients) {
             client.sendMessage(type, json);
@@ -253,6 +265,8 @@ public class Game {
             broadcastMessage("CurrentCards", currentCardsJsonAdapter.toJson(new CurrentCards(activeCardsArrayList)));
             activateElements();
         }
+
+        isRunning = false;
     }
 
     /**
@@ -279,7 +293,22 @@ public class Game {
                 }
                 case "Worm" -> {
                     drawSpamCard(curr, 2);
-                    curr.getRobot().reboot(DIRECTION.TOP);
+                    List<BoardElement> respawns = getListOf("RestartPoint");
+                    Position newPos = new Position(0,0);
+                    for (BoardElement respawn:
+                            respawns) {
+
+                            if(!gameMap.getMapFields().get(respawn.getPosition().getX()).get(respawn.getPosition().getY()).getTypes().contains(curr.getRobot())){
+                                newPos.copy(respawn.getPosition());
+                                curr.getRobot().reboot(TOP, newPos);
+                                rebootPlayer(curr);
+                                break;
+                            }
+
+
+                    }
+
+                    curr.getRobot().reboot(DIRECTION.TOP, newPos);
                     rebootPlayer(curr);
                 }
                 case "Trojan" -> {
@@ -860,18 +889,62 @@ public class Game {
 
     private void activatePits() {
         List<BoardElement> pits = getListOf("Pit");
+
+        List<BoardElement> respawns = getListOf("RestartPoint");
+        Position newPos = new Position(0,0);
+
+
+        for (BoardElement pit:
+                pits) {
+
+            for (Player player:
+                    players) {
+                if(!gameMap.getMapFields().get(pit.getPosition().getX()).get(pit.getPosition().getY()).getTypes().contains(player.getRobot())){
+
+                    for (BoardElement respawn:
+                           respawns) {
+
+                        for (Player curr:
+                                players) {
+                            if(!gameMap.getMapFields().get(respawn.getPosition().getX()).get(respawn.getPosition().getY()).getTypes().contains(curr.getRobot())){
+                                newPos.copy(respawn.getPosition());
+                                break;
+                            }
+
+                        }
+
+
+                    }
+
+
+                    player.getRobot().reboot(TOP, newPos);
+                    rebootPlayer(player);
+                    break;
+                }
+
+            }
+
+
+        }
+
+        /*
         for (BoardElement pit : pits) {
             if (robotOnElement(pit)) {
                 Pit pit1 = (Pit) pit;
                 List<Robot> robotList = gameMap.getRobotsOnPos(pit1.getPosition());
                 for (Robot curr : robotList) {
                     if (curr.getPosition().equals(pit1.getPosition())) {
-                        curr.reboot(TOP);
-                        rebootPlayer(getPlayerByRobot(curr));
+
+
                     }
                 }
             }
         }
+
+         */
+
+
+
     }
 
     public Player getNextPlayer() {
@@ -915,12 +988,12 @@ public class Game {
         broadcastMessage("DrawDamage", drawDamageJsonAdapter.toJson(drawDamage));
     }
 
-    public void setPlayerValues() {                              //TODO: redo
+    /*public void setPlayerValues() {
         for (ClientHandler client :
                 ClientHandler.clients) {
             players.add(new Player(new Robot(ClientHandler.clients.indexOf(client))));
         }
-    }
+    }*/
 
     public String getCurrentMap() {
         return currentMap;
@@ -946,1070 +1019,6 @@ public class Game {
         return phase;
     }
 
-    public static String getDizzyHighway() {
-        String dizzyhighway = "{\n" +
-                "  \"messageType\": \"GameStarted\",\n" +
-                "  \"messageBody\": {\n" +
-                "    \"gameMap\": [\n" +
-                "      [\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"StartPoint\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Antenna\",\n" +
-                "            \"isOnBoard\": \"Start A\",\n" +
-                "            \"orientations\": [\"right\"]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"StartPoint\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      ],\n" +
-                "      [\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"StartPoint\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Wall\",\n" +
-                "            \"isOnBoard\": \"Start A\",\n" +
-                "            \"orientations\": [\n" +
-                "              \"top\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"StartPoint\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"StartPoint\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Wall\",\n" +
-                "            \"isOnBoard\": \"Start A\",\n" +
-                "            \"orientations\": [\n" +
-                "              \"bottom\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"StartPoint\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      ],\n" +
-                "      [\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"Start A\",\n" +
-                "            \"speed\": 1,\n" +
-                "            \"orientations\": [\n" +
-                "              \"right\",\n" +
-                "              \"left\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Wall\",\n" +
-                "            \"isOnBoard\": \"Start A\",\n" +
-                "            \"orientations\": \"right\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Wall\",\n" +
-                "            \"isOnBoard\": \"Start A\",\n" +
-                "            \"orientations\": \"right\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"Start A\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"Start A\",\n" +
-                "            \"speed\": 1,\n" +
-                "            \"orientations\": [\n" +
-                "              \"right\",\n" +
-                "              \"left\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      ],\n" +
-                "      [\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"right\",\n" +
-                "              \"left\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"right\",\n" +
-                "              \"left\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Energy-Space\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"count\": 1\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      ],\n" +
-                "      [\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"bottom\",\n" +
-                "              \"top\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"bottom\",\n" +
-                "              \"top\",\n" +
-                "              \"right\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"bottom\",\n" +
-                "              \"top\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"bottom\",\n" +
-                "              \"top\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"bottom\",\n" +
-                "              \"top\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"bottom\",\n" +
-                "              \"top\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"bottom\",\n" +
-                "              \"top\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"bottom\",\n" +
-                "              \"top\",\n" +
-                "              \"left\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"right\",\n" +
-                "              \"top\",\n" +
-                "              \"left\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      ],\n" +
-                "      [\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"bottom\",\n" +
-                "              \"top\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"left\",\n" +
-                "              \"top\",\n" +
-                "              \"right\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Energy-Space\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"count\": 1\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"right\",\n" +
-                "              \"left\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      ],\n" +
-                "      [\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"left\",\n" +
-                "              \"right\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Wall\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"orientations\": [\"top\"]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Wall\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"orientations\": [\"bottom\"]\n" +
-                "          },\n" +
-                "          {\n" +
-                "            \"type\": \"Laser\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"orientations\": [\"top\"],\n" +
-                "            \"count\": 1\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Wall\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"orientations\": [\"left\"]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"right\",\n" +
-                "              \"left\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      ],\n" +
-                "      [\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"left\",\n" +
-                "              \"right\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"RestartPoint\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"orientations\": [\"bottom\"]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Energy-Space\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"count\": 1\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Wall\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"orientations\": [\"right\"]\n" +
-                "          },\n" +
-                "          {\n" +
-                "            \"type\": \"Laser\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"orientations\": [\"right\"],\n" +
-                "            \"count\": 1\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"right\",\n" +
-                "              \"left\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      ],\n" +
-                "      [\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"left\",\n" +
-                "              \"right\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Wall\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"orientations\": [\"left\"]\n" +
-                "          },\n" +
-                "          {\n" +
-                "            \"type\": \"Laser\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"orientations\": [\"left\"],\n" +
-                "            \"count\": 1\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Energy-Space\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"count\": 1\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"right\",\n" +
-                "              \"left\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      ],\n" +
-                "      [\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"left\",\n" +
-                "              \"right\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Wall\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"orientations\": [\"right\"]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Wall\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"orientations\": [\"top\"]\n" +
-                "          },\n" +
-                "          {\n" +
-                "            \"type\": \"Laser\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"orientations\": [\"top\"],\n" +
-                "            \"count\": 1\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Wall\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"orientations\": [\"bottom\"]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"right\",\n" +
-                "              \"left\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      ],\n" +
-                "      [\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"left\",\n" +
-                "              \"right\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Energy-Space\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"count\": 1\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"right\",\n" +
-                "              \"bottom\",\n" +
-                "              \"left\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"top\",\n" +
-                "              \"bottom\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      ],\n" +
-                "      [\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"left\",\n" +
-                "              \"bottom\",\n" +
-                "              \"right\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"top\",\n" +
-                "              \"bottom\",\n" +
-                "              \"right\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"top\",\n" +
-                "              \"bottom\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"top\",\n" +
-                "              \"bottom\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"top\",\n" +
-                "              \"bottom\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"top\",\n" +
-                "              \"bottom\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"top\",\n" +
-                "              \"bottom\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"top\",\n" +
-                "              \"bottom\",\n" +
-                "              \"left\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": 2,\n" +
-                "            \"orientations\": [\n" +
-                "              \"top\",\n" +
-                "              \"bottom\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      ],\n" +
-                "      [\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Energy-Space\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"count\": 1\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": \"2\",\n" +
-                "            \"orientations\": [\n" +
-                "              \"left\",\n" +
-                "              \"right\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"ConveyorBelt\",\n" +
-                "            \"isOnBoard\": \"5B\",\n" +
-                "            \"speed\": \"2\",\n" +
-                "            \"orientations\": [\n" +
-                "              \"left\",\n" +
-                "              \"right\"\n" +
-                "            ]\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"CheckPoint\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ],\n" +
-                "        [\n" +
-                "          {\n" +
-                "            \"type\": \"Empty\",\n" +
-                "            \"isOnBoard\": \"5B\"\n" +
-                "          }\n" +
-                "        ]\n" +
-                "      ]\n" +
-                "    ]\n" +
-                "  }\n" +
-                "}\n";
-
-        return dizzyhighway.replace("\n", "").replace("\r", "");
-    }
-
     public void addAI() {
         new AIClient(port, protocol);
     }
@@ -2017,6 +1026,21 @@ public class Game {
 
     public void initGameMap() {
         setUpBoard();
+    }
+
+    public boolean playersAreReady() {
+        int i=0;
+        while (i<players.size()){
+            if(!players.get(i).isReady()){
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 }
 

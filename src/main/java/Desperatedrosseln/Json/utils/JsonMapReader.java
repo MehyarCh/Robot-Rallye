@@ -11,16 +11,21 @@ public class JsonMapReader {
 
     private JsonFileReader jsonFileReader;
     private JsonDeserializer deserializer;
-    private String testMap;
     private final String dizzyHighway;
+    private final String extraCrispy;
+    private final String deathTrap;
+    private final String lostBearings;
 
     public JsonMapReader(){
         jsonFileReader = new JsonFileReader();
         try {
             deserializer = new JsonDeserializer();
             dizzyHighway = jsonFileReader.readFile("src/main/resources/maps/dizzyHighway.json");
+            extraCrispy = jsonFileReader.readFile("src/main/resources/maps/extraCrispy.json");
+            deathTrap = jsonFileReader.readFile("src/main/resources/maps/deathTrap.json");
+            lostBearings = jsonFileReader.readFile("src/main/resources/maps/lostBearings.json");;
         } catch (IOException e) {
-            System.out.println("123");
+            System.out.println("error occurred at jsonMapReader()");
             throw new RuntimeException(e);
         }
     }
@@ -48,12 +53,17 @@ public class JsonMapReader {
     public List<List<List<BoardElement>>> readMapFromJson(String mapName) {
         ProtocolMessage<GameStarted> message;
         switch (mapName) {
-            case "testMap":
-                message = deserializer.deserialize(testMap);
-                return message.getMessageBody().getGameMap();
             case "DizzyHighway":
                 message = deserializer.deserialize(dizzyHighway);
-                //System.out.println(message.getMessageBody().getGameMap());
+                return message.getMessageBody().getGameMap();
+            case "ExtraCrispy":
+                message = deserializer.deserialize(extraCrispy);
+                return message.getMessageBody().getGameMap();
+            case "DeathTrap":
+                message = deserializer.deserialize(deathTrap);
+                return message.getMessageBody().getGameMap();
+            case "LostBearings":
+                message = deserializer.deserialize(lostBearings);
                 return message.getMessageBody().getGameMap();
             default:
                 return null;

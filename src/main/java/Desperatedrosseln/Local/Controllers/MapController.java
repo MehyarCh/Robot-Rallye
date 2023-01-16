@@ -4,18 +4,14 @@ import Desperatedrosseln.Json.utils.JsonMapReader;
 import Desperatedrosseln.Local.Client;
 import Desperatedrosseln.Local.Protocols.SetStartingPoint;
 import Desperatedrosseln.Logic.Elements.BoardElement;
-import Desperatedrosseln.Logic.Elements.Position;
 import Desperatedrosseln.Logic.Elements.Tiles.*;
 import Desperatedrosseln.Logic.Elements.Map;
 import Desperatedrosseln.Logic.Elements.MapField;
 
-import com.squareup.moshi.Json;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -32,36 +28,20 @@ public class MapController {
 
     private int selectedRobot;
 
-    private boolean hasStartpoint = false;
+    public boolean hasStartpoint = false;
 
     private ArrayList<Position> unavailableStartingPoints = new ArrayList<>();
 
-    HashMap<StackPane, Position> startingPoints = new HashMap<>();
+    private HashMap<StackPane, Position> startingPoints = new HashMap<>();
 
-    Client client;
+    private Client client;
 
     @FXML
     private GridPane mapGrid;
+    private final int maxMapHeight;
+    private List<List<List<BoardElement>>> mapAsList;
+    private int tileSize = 35;
 
-    public MapController(GridPane mapGrid, int selectedRobot) {
-        this.mapGrid = mapGrid;
-        this.jsonMapReader = new JsonMapReader();
-        this.selectedRobot = selectedRobot;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public void setMap(Map map) {
-        this.map = map;
-    }
-
-    @FXML
-    public void showMap() throws IOException {
-        addLaserBeam(map.getMapFields());
-        buildMapGrid(map.getMapFields());
-    }
 
     public class Position {
         int x;
@@ -98,6 +78,34 @@ public class MapController {
         }
     }
 
+    public MapController(GridPane mapGrid, int selectedRobot, int maxMapHeight) {
+        this.mapGrid = mapGrid;
+        this.jsonMapReader = new JsonMapReader();
+        this.selectedRobot = selectedRobot;
+        this.maxMapHeight = maxMapHeight;
+        this.tileSize = maxMapHeight / 10;
+        System.out.println("mapcontroller constructor: "+maxMapHeight);
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
+    @FXML
+    public void showMap() {
+        Platform.runLater(() -> {
+            addLaserBeam(map.getMapFields());
+            buildMapGrid(map.getMapFields());
+
+            // Robot by clicking
+            // ->
+        });
+    }
+
     private void addLaserBeam(List<List<MapField>> fieldList) {
 
         String laserOrientation;
@@ -106,8 +114,6 @@ public class MapController {
             for (int j = 0; j < fieldList.get(i).size(); j++) {
                 ArrayList<String> fieldTypes = new ArrayList<>();
                 MapField adjacentField;
-
-                // Here it gets glitchy but it works... Needs refactoring asap!
 
                 for (int k = 0; k < fieldList.get(i).get(j).getTypes().size(); k++) {
                     boolean hasLaser = Objects.equals(fieldList.get(i).get(j).getTypes().get(k).getType(), "Laser");
@@ -194,36 +200,27 @@ public class MapController {
         return mapFields;
     }
 
-    private void buildMapGrid(List<List<MapField>> fieldList) throws IOException {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < fieldList.size(); i++) {
-                    for (int j = 0; j < fieldList.get(i).size(); j++) {
-                        try {
-                            StackPane stackPane = createGridCell(i, j, fieldList.get(i).get(j));
-                            mapGrid.getChildren().add(stackPane);
-                            if(fieldList.get(i).get(j).getTypes().get(0).getType().equals("StartingPoint")){
-                                //ToDo
-                                startingPoints.put(stackPane,new Position(i,j));
-                            }
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+    private void buildMapGrid(List<List<MapField>> fieldList){
+        for (int i = 0; i < fieldList.size(); i++) {
+            for (int j = 0; j < fieldList.get(i).size(); j++) {
+                try {
+                    StackPane stackPane = createGridCell(i, j, fieldList.get(i).get(j));
+                    mapGrid.getChildren().add(stackPane);
+                    if(fieldList.get(i).get(j).getTypes().get(0).getType().equals("StartingPoint")){
+                        //ToDo
+                        startingPoints.put(stackPane,new Position(i,j));
                     }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }
-        });
-
-
+        }
     }
 
     @FXML
     private StackPane createGridCell(int x, int y, MapField mapField) throws IOException {
-        List<String> addEmpty = Arrays.asList("Antenna", "CheckPoint", "ConveyorBelt", "RestartPoint", "StartPoint", "Energy-Space", "Wall", "Empty");
-
+        List<String> addEmpty = Arrays.asList("Antenna", "CheckPoint", "ConveyorBelt", "RestartPoint", "StartPoint", "Energy-Space", "Wall", "Empty","Gear");
         List<BoardElement> typeList = mapField.getTypes();
-        int tileSize = 50;
 
         StackPane cell = new StackPane();
         cell.getStyleClass().add("tile");
@@ -239,7 +236,8 @@ public class MapController {
 
             if (addEmpty.contains(boardElement.getType())) {
                 ImageView empty = new ImageView(emptyImage);
-                empty.setFitWidth(tileSize);
+                tileSize = 50;
+                empty.setFitHeight(tileSize);
                 empty.setPreserveRatio(true);
                 cell.getChildren().add(empty);
             }
@@ -263,66 +261,9 @@ public class MapController {
                 case "StartPoint" -> {
                     Image startpointImage =
                             new Image(getClass().getResource("/images/elements/startpoint/startpoint.png").toString());
-                    final boolean[] isTaken = {false};
+                    final boolean[] isTaken={false};
                     stackElement = new ImageView(startpointImage);
-
-                    stackElement.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-
-                        Position currPos =new Position(x,y);
-                        System.out.println("pos "+currPos+" is Clicked");
-
-                        boolean isStartingPointTaken = false;
-
-                        for(Position pos: unavailableStartingPoints){
-                            if(pos.isEqual(currPos)){
-                                isStartingPointTaken = true;
-                            }
-                        }
-
-                        isTaken[0] = true;
-
-                        ImageView robot;
-                        Image robotImage;
-
-
-
-                        if (!hasStartpoint && !isStartingPointTaken) {
-                            switch (selectedRobot) {
-                                case 1 -> {
-                                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/brown.png").toString());
-                                    robot = new ImageView(robotImage);
-                                }
-                                case 2 -> {
-                                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/yellow.png").toString());
-                                    robot = new ImageView(robotImage);
-                                }
-                                case 3 -> {
-                                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/blue.png").toString());
-                                    robot = new ImageView(robotImage);
-                                }
-                                case 4 -> {
-                                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/green.png").toString());
-                                    robot = new ImageView(robotImage);
-                                }
-                                case 5 -> {
-                                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/orange.png").toString());
-                                    robot = new ImageView(robotImage);
-                                }
-                                case 6 -> {
-                                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/red.png").toString());
-                                    robot = new ImageView(robotImage);
-                                }
-                                default -> {
-                                    robot = new ImageView();
-                                }
-                            }
-                            hasStartpoint = true;
-                            cell.getChildren().add(robot);
-                            Moshi moshi = new Moshi.Builder().build();
-                            JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
-                            client.sendMessage("SetStartingPoint",setStartingPointJsonAdapter.toJson(new SetStartingPoint(x,y)));
-                        }
-                    });
+                    placeRobotOnClick(cell, stackElement, x, y, isTaken);
                 }
                 case "Antenna" -> stackElement = buildAntenna(boardElement);
                 case "ConveyorBelt" -> stackElement = buildConveyorBelt(boardElement);
@@ -335,13 +276,154 @@ public class MapController {
             }
 
             if (stackElement != null) {
-                stackElement.setFitWidth(tileSize);
+                stackElement.setFitHeight(tileSize);
                 stackElement.setPreserveRatio(true);
                 cell.getChildren().add(stackElement);
             }
         }
         return cell;
     }
+    private void placeRobot(StackPane cell, int x, int y, boolean[] isTaken){
+        Position currPos = new Position(x,y);
+        System.out.println("pos "+currPos+" is Clicked");
+
+        boolean isStartingPointTaken = false;
+
+        for(Position pos: unavailableStartingPoints){
+            System.out.println("99999999999999999999999");
+            System.out.println(currPos+"=="+pos);
+            if(pos.isEqual(currPos)){
+                isStartingPointTaken = true;
+                break;
+            }
+        }
+        if(!isStartingPointTaken){
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+
+        isTaken[0] = true;
+
+
+        Image robotImage;
+        ImageView robot;
+
+        if (!hasStartpoint && !isStartingPointTaken) {
+            switch (selectedRobot) {
+                case 1 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/brown.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 2 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/yellow.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 3 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/blue.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 4 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/green.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 5 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/orange.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 6 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/red.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                default -> {
+                    robot = new ImageView("/images/Cards/no_such_card.png");
+                }
+            }
+            hasStartpoint = true;
+            robot.setPreserveRatio(true);
+            robot.setFitHeight(tileSize - 10);
+            cell.getChildren().add(robot);
+            //System.out.println(getRobotByXY(x, y));
+           // setOnTile(getRobotByXY(x, y), 1, 1);
+            Moshi moshi = new Moshi.Builder().build();
+            JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
+            client.sendMessage("SetStartingPoint",setStartingPointJsonAdapter.toJson(new SetStartingPoint(x,y)));
+        }
+    }
+    private void placeRobotOnClick(StackPane cell, ImageView stackElement, int x, int y, boolean[] isTaken) {
+        stackElement.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+                placeRobot(cell,x,y,isTaken);
+        });
+    }
+
+    private void setOnTile(ImageView stackElement, int newX, int newY) {
+
+        int oldMapIndex = mapGrid.getChildren().indexOf(stackElement.getParent());
+        int newMapIndex = getMapIndex(newX, newY);
+
+        StackPane newStackPane = (StackPane) mapGrid.getChildren().get(newMapIndex);
+        StackPane oldStackPane = (StackPane) mapGrid.getChildren().get(oldMapIndex);
+        newStackPane.getChildren().add(stackElement);
+        oldStackPane.getChildren().remove(stackElement);
+    }
+
+    private int getMapIndex(int x, int y) {
+        List<List<StackPane>> mapGridList = makeGridPane2d(mapGrid);
+
+        int mapIndex = -1;
+        int counter = 0;
+
+        for (int i = 0; i < mapGridList.size(); i++) {
+            for (int j = 0; j < mapGridList.get(i).size(); j++) {
+                if (i == x && j == y) {
+                    mapIndex = counter;
+                    break;
+                } else {
+                    counter++;
+                }
+            }
+        }
+        return mapIndex;
+    }
+
+    private ImageView getRobotByXY(int x, int y) {
+        int mapIndex = getMapIndex(x, y);
+        StackPane stackPane = (StackPane) mapGrid.getChildren().get(mapIndex);
+        ImageView imageView = (ImageView) stackPane.getChildren().get(stackPane.getChildren().size()-1);
+        if (
+                imageView.getImage().getUrl().equals("/images/Robots/OnTiles/red.png") ||
+                        imageView.getImage().getUrl().equals("/images/Robots/OnTiles/blue.png") ||
+                        imageView.getImage().getUrl().equals("/images/Robots/OnTiles/orange.png") ||
+                        imageView.getImage().getUrl().equals("/images/Robots/OnTiles/green.png") ||
+                        imageView.getImage().getUrl().equals("/images/Robots/OnTiles/yellow.png") ||
+                        imageView.getImage().getUrl().equals("/images/Robots/OnTiles/brown.png")
+        ) {
+            return imageView;
+        } else {
+            throw new RuntimeException("There is no Robot on this Tile");
+        }
+    }
+
+    private List<List<StackPane>> makeGridPane2d(GridPane mapGrid) {
+        List<List<StackPane>> stackPaneList = new ArrayList<>();
+
+        int rows = map.getMapFields().size();
+        int columns = map.getMapFields().get(0).size();
+
+        int counter = 0;
+
+        System.out.println(mapGrid.getChildren().size());
+
+        for (int i = 0; i < rows; i++) {
+            List<StackPane> column = new ArrayList<>();
+            for (int j = 0; j < columns; j++) {
+                column.add((StackPane) mapGrid.getChildren().get(counter));
+            }
+            stackPaneList.add(column);
+        }
+        System.out.println(mapGrid.getChildren().get(0) == stackPaneList.get(0).get(0));
+        return stackPaneList;
+    }
+
+
 
     @FXML
     private ImageView buildAntenna(BoardElement boardElement) {
@@ -356,13 +438,15 @@ public class MapController {
         return rotateElement(stackElement, orientations);
     }
 
-    @FXML ImageView buildGear(BoardElement boardElement) {
+    @FXML
+    private ImageView buildGear(BoardElement boardElement) {
         ImageView stackElement = null;
         Gear gear = (Gear) boardElement;
-        if (Objects.equals(gear.getOrientations().get(0), "clockwise")) {
+        System.out.println(gear.getOrientations());
+        if (gear.getOrientations().get(0).equals("clockwise")) {
             Image gearRightImage = new Image(getClass().getResource("/images/elements/gear/gearRight.png").toString());
             stackElement = new ImageView(gearRightImage);
-        } else if (Objects.equals(gear.getOrientations().get(0), "counterclockwise")) {
+        } else if (gear.getOrientations().get(0).equals("counterclockwise")) {
             Image gearLeftImage = new Image(getClass().getResource("/images/elements/gear/gearLeft.png").toString());
             stackElement = new ImageView(gearLeftImage);
         }
@@ -373,12 +457,14 @@ public class MapController {
     private ImageView buildPushPanel(BoardElement boardElement) {
         ImageView stackElement = null;
         PushPanel pushPanel = (PushPanel) boardElement;
-
-        if (pushPanel.getRegisters().contains(1)) {
-            Image pushPanel1Image = new Image(getClass().getResource("/images/elements/pushPanel/pushPanel1.png").toString());
+        //change this if to something with register
+        if (pushPanel.getIsOnBoard().equals("2AA")) {
+            Image pushPanel1Image =
+                    new Image(getClass().getResource("/images/elements/pushPanel/pushPanel1.png").toString());
             stackElement = new ImageView(pushPanel1Image);
-        } else if (pushPanel.getRegisters().contains(2)) {
-            Image pushPanel2Image = new Image(getClass().getResource("/images/elements/pushPanel/pushPanel2.png").toString());
+        } else if (pushPanel.getIsOnBoard().equals("2A")) {
+            Image pushPanel2Image =
+                    new Image(getClass().getResource("/images/elements/pushPanel/pushPanel2.png").toString());
             stackElement = new ImageView(pushPanel2Image);
         }
         return rotateElement(stackElement, pushPanel.getOrientations());
@@ -408,8 +494,7 @@ public class MapController {
         Wall wall = (Wall) boardElement;
 
         if (wall.getOrientations().size() == 1) {
-            Image wall1Image =
-                    new Image(getClass().getResource("/images/elements/wall/wall1.png").toString());
+            Image wall1Image = new Image(getClass().getResource("/images/elements/wall/wall1.png").toString());
             stackElement = new ImageView(wall1Image);
             switch (wall.getOrientations().get(0)) {
                 case "right" -> stackElement.setStyle("-fx-rotate: 90");
@@ -461,7 +546,7 @@ public class MapController {
             Image conveyorBeltTRB1Image =
                     new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTRB1.png").toString());
             stackElement = diffBelt(conveyorBeltTB1Image, conveyorBeltRB1Image, conveyorBeltRT1Image, conveyorBeltRTB1Image, conveyorBeltTBL1Image, conveyorBeltTRB1Image, orientations, stackElement);
-        // Blue
+            // Blue
         } else if (conveyorBelt.getSpeed() == 2) {
             Image conveyorBeltTB2Image =
                     new Image(getClass().getResource("/images/elements/conveyorBelt/conveyorBeltTB2.png").toString());
@@ -602,7 +687,6 @@ public class MapController {
 
         ImageView stackElement = null;
         Laser laser = (Laser) boardElement;
-
         if (laser.getCount() == 1) {
             Image laser1Image =
                     new Image(getClass().getResource("/images/elements/laser/laser1.png").toString());
@@ -682,11 +766,126 @@ public class MapController {
         map.setMapFields(convertMap(gameMap));
     }
 
-    public void addUnavailablePosition(int x, int y){
+    public void addUnavailablePosition(int x, int y ){
         unavailableStartingPoints.add(new Position(x,y));
+    }
+    public void addEnemiesToTheScreen(int x, int y ,int robotID){
+        int mapIndex = getMapIndex(x, y);
+        System.out.println("********************"+mapIndex);
+        placeEnemyRobots((StackPane) mapGrid.getChildren().get(mapIndex),x, y,robotID);
+    }
+
+    void placeEnemyRobots(StackPane cell, int x, int y, int robotID){
+        Position currPos = new Position(x,y);
+
+        boolean isStartingPointTaken = false;
+
+
+
+        Image robotImage;
+        ImageView robot;
+
+            switch (robotID) {
+                case 1 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/brown.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 2 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/yellow.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 3 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/blue.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 4 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/green.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 5 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/orange.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                case 6 -> {
+                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/red.png").toString());
+                    robot = new ImageView(robotImage);
+                }
+                default -> {
+                    robot = new ImageView("/images/Cards/no_such_card.png");
+                }
+            }
+
+            robot.setPreserveRatio(true);
+            robot.setFitHeight(tileSize - 10);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                cell.getChildren().add(robot);
+            }
+        });
+
+        
+
+
     }
 
     public void setClient(Client client) {
-        this.client = client;
+        this.client =client;
     }
+
+    public void autoSelectStartPoint() {
+        Position finalPos = null;
+        for (int i = 0; i < mapAsList.size(); i++) {
+            for (int j = 0; j < mapAsList.get(i).size(); j++) {
+                for (BoardElement element :
+                        mapAsList.get(i).get(j)) {
+                    if (element.getType().equals("StartPoint") && !hasStartpoint) {
+
+                        boolean isPosTaken = false;
+
+                        Position currPos = new Position(i, j);
+                        if (!unavailableStartingPoints.isEmpty()) {
+                            for (Position pos : unavailableStartingPoints) {
+                                if (pos.isEqual(currPos)) {
+                                    isPosTaken = true;
+                                }
+                            }
+                        }
+                        if (!isPosTaken) {
+                            finalPos = new Position(currPos.x, currPos.y);
+                            hasStartpoint = true;
+
+                        }
+
+
+                    }
+                }
+            }
+        }
+        Moshi moshi = new Moshi.Builder().build();
+        JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
+        client.sendMessage("SetStartingPoint",setStartingPointJsonAdapter.toJson(new SetStartingPoint(finalPos.x, finalPos.y)));
+        int mapIndex = getMapIndex(finalPos.x, finalPos.y);
+        boolean[] isTaken = {false};
+        placeRobot((StackPane) mapGrid.getChildren().get(mapIndex),finalPos.x, finalPos.y,isTaken);
+
+    }
+
+    public void runAutoStartPointSelection(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                autoSelectStartPoint();
+            }
+        });
+    }
+    public void setMapAsList(List<List<List<BoardElement>>> mapAsList) {
+        this.mapAsList = mapAsList;
+    }
+
+
+
+
+
 }

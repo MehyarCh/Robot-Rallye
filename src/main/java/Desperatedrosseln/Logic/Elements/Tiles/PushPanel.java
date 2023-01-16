@@ -26,7 +26,6 @@ public class PushPanel extends BoardElement {
     }
 
     public void execute(List<Desperatedrosseln.Logic.Elements.Robot> robotList) {
-        //TODO
         for(Robot curr : robotList) {
             curr.push(orientations.get(0)); //first element of the orientations list in panel contains the direction in which the push panel pushes the robot
         }

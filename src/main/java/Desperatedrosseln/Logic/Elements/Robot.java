@@ -12,7 +12,7 @@ public class Robot extends BoardElement {
     private Position position = super.getPosition();
 
 
-    public Robot(int iD) { //ToDo: verify
+    public Robot(int iD) {
         super("Robot","placeholder");
         if(robotPositions == null){
             robotPositions = new ArrayList<>();
@@ -81,7 +81,7 @@ public class Robot extends BoardElement {
         return ID;
     }
 
-    public void push(String direction){ //TODO: maybe switch to an actual DIRECTION instead of String
+    public void push(String direction){
 
         switch (direction) {
             case "up":
@@ -144,11 +144,11 @@ public class Robot extends BoardElement {
         }
     }
 
-    public void reboot(DIRECTION direction){
+    public void reboot(DIRECTION direction, Position newPos){
         //TODO: reboot robot
         setDirection(direction);
         //TODO: take robot actually out of the map
-        setPosition(0,0);
+        position.copy(newPos);
 
     }
 
