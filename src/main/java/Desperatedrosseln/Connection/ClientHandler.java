@@ -313,7 +313,7 @@ public class ClientHandler implements Runnable {
 
     // messageType: 0 = broadcast to all others, 1 = to everyone
     public void broadcastMessage(String type,String json) {
-        System.out.println(clients);
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+clients);
         for (ClientHandler client : clients) {
             client.sendMessage(type,json);
         }
@@ -377,9 +377,9 @@ public class ClientHandler implements Runnable {
         return out;
     }
     public void initializeMaps(){
-        maps.add("Dizzy Highway");
-        maps.add("Extra Crispy");
-        maps.add("Lost Bearings");
-        maps.add("Death Trap");
+        maps.add("DizzyHighway");
+        maps.add("ExtraCrispy");
+        maps.add("LostBearings");
+        maps.add("DeathTrap");
     }
 }

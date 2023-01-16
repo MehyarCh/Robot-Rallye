@@ -106,7 +106,6 @@ public class MainController {
 
     private UTurn uTurnLabel;
     public boolean isProgrammingDone = false;
-    private Timer timer;
     @FXML
     private Label timeLabel;
 
@@ -185,7 +184,7 @@ public class MainController {
         });
     }
     public void startTimer() {
-        timer = new Timer();
+        Timer timer = new Timer();
 
         timer.scheduleAtFixedRate(new TimerTask() {
 

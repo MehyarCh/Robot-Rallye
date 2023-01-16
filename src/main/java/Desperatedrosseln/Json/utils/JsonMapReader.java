@@ -21,9 +21,9 @@ public class JsonMapReader {
         try {
             deserializer = new JsonDeserializer();
             dizzyHighway = jsonFileReader.readFile("src/main/resources/maps/dizzyHighway.json");
-            extraCrispy = "";
-            deathTrap = "";
-            lostBearings = "";
+            extraCrispy = jsonFileReader.readFile("src/main/resources/maps/extraCrispy.json");
+            deathTrap = jsonFileReader.readFile("src/main/resources/maps/deathTrap.json");
+            lostBearings = jsonFileReader.readFile("src/main/resources/maps/lostBearings.json");;
         } catch (IOException e) {
             System.out.println("error occurred at jsonMapReader()");
             throw new RuntimeException(e);

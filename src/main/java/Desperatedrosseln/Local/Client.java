@@ -18,7 +18,7 @@ public class Client implements Runnable {
     private DataInputStream in;
     private DataOutputStream out;
     private int clientID;
-    Timer timer = new Timer();
+
     private List<String> cardsInHand;
     HashMap<Integer, Integer> playersWithRobots = new HashMap<>();
     HashMap<String, Integer> localPlayerList = new HashMap<>();
@@ -219,6 +219,7 @@ public class Client implements Runnable {
 
 
     private void startStartPointSelectionTimer() {
+        Timer timer = new Timer();
         System.out.println("Timer started for Start point selection");
         timer.schedule(new TimerTask() {
             @Override
@@ -232,6 +233,7 @@ public class Client implements Runnable {
     }
 
     private void startCardSelectionTimer() {
+        Timer timer = new Timer();
         System.out.println("Timer started for Card selection");
         timer.schedule(new TimerTask() {
             @Override
@@ -241,7 +243,7 @@ public class Client implements Runnable {
                     sendChatMessage("random cards sent", -1);
                 }
             }
-        }, 30 * 1000);//15 seconds
+        }, 30 * 1000);
     }
 
     private String getPlayerName(int from) {
@@ -282,7 +284,7 @@ public class Client implements Runnable {
                 }
             }
         } catch (IOException e) {
-            logOut();
+            //logOut();
         }
     }
 
