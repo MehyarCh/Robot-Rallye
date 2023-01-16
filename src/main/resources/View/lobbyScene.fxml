@@ -17,27 +17,24 @@
             xmlns:fx="http://javafx.com/fxml"
             styleClass="scene--small, lobby-scene">
     <left>
-        <VBox styleClass="vbox-highlight">
-            <VBox styleClass="selected-map">
-                <Label fx:id="mapText"/>
-            </VBox>
+        <VBox styleClass="overlay, map-selection-overlay">
             <VBox styleClass="vbox-highlight">
-                <ChoiceBox fx:id="mapSelection"
-                           styleClass="choice-box"
-                           disable="true"/>
-                <Button onAction="#onChooseMap"
-                        fx:id="validateMapChoice"
-                        disable="true"
-                        text="Validate Choice"
-                        styleClass="ready-button"/>
+                <VBox styleClass="selected-map">
+                    <Label fx:id="mapText" text="Maps"/>
+                </VBox>
+                <VBox styleClass="vbox-highlight">
+                    <ChoiceBox fx:id="mapSelection"
+                               styleClass="button, button--sm, button--primary, choice-box"
+                               accessibleText="Maps"
+                               value="Maps"
+                               disable="true"/>
+                </VBox>
             </VBox>
-            <VBox styleClass="vbox-highlight">
-                <ToggleButton onAction="#onReady"
-                              fx:id="readyButton"
-                              text="Ready"
-                              disable="true"
-                              styleClass="ready-button"/>
-            </VBox>
+            <Button onAction="#onChooseMap"
+                    fx:id="validateMapChoice"
+                    disable="true"
+                    text="Choose Map"
+                    styleClass="button, button--sm, button--primary"/>
         </VBox>
     </left>
     <center>
@@ -95,6 +92,11 @@
                     </VBox>
                 </HBox>
             </VBox>
+            <ToggleButton onAction="#onReady"
+                          fx:id="readyButton"
+                          text="Ready"
+                          disable="true"
+                          styleClass="button, login-button, button--primary"/>
             <Label text= "Players currently in lobby: "
                    fx:id="playersonline"
                    styleClass="headline-3, color--light"/>

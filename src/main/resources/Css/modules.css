@@ -46,6 +46,22 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 4, 0, 0, 0);
 }
 
+.map-selection-overlay {
+    -fx-alignment: center;
+    -fx-spacing: 50px;
+    -fx-fill-width: true;
+}
+
+.vbox-highlight {
+    -fx-fill-height: true;
+    -fx-fill-width: true;
+    -fx-alignment: top-center;
+}
+
+.selected-map {
+
+}
+
 .login-form-wrapper {
     -fx-pref-width: 240px;
     -fx-max-width: 240px;
@@ -72,6 +88,27 @@
     -fx-font-size: 10;
     -fx-font-weight: 300;
     -fx-alignment: center-left;
+}
+
+.choice-box {
+    -fx-pref-height: 30px;
+    -fx-fill-width: true;
+    -fx-padding: 0 4px;
+    -fx-text-fill: #fff;
+    -fx-mark-color: rgb(246, 1, 157);
+}
+.choice-box .context-menu {
+    -fx-background-color: black;
+    -fx-text-fill: #fff;
+}
+.choice-box .menu-item:focused {
+    -fx-background-color: #f9c80e;
+}
+.choice-box .menu-item > .label {
+    -fx-text-fill: white;
+}
+.choice-box .menu-item:focused > .label {
+    -fx-text-fill: black;
 }
 
 /* main scene */

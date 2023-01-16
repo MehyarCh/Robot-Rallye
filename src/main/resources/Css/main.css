@@ -142,16 +142,20 @@
     -fx-min-width: 32px;
 }
 .programdone-button {
-    -fx-background-color: red;
     -fx-text: "Done";
     -fx-text-color: white;
     -fx-background-size: 32px;
-    -fx-background-color: transparent;
     -fx-pref-height: 32px;
     -fx-pref-width: 120px;
     -fx-min-height: 32px;
     -fx-min-width: 32px;
+}
 
+.button--sm {
+    -fx-pref-height: 36px;
+    -fx-padding: 0 8px;
+    -fx-min-width: 100px;
+    -fx-max-width: 150px;
 }
 
 

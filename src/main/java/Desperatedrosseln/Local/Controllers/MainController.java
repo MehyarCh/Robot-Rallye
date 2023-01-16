@@ -177,7 +177,7 @@ public class MainController {
                 mapController = new MapController(mapGrid, selectedRobot, calcMaxMapHeight());
                 mapController.setClient(client);
                 stage.show();
-                //startTimer();
+                startTimer();
             }
 
 
@@ -440,7 +440,6 @@ public class MainController {
                     registerCards.get(index).getChildren().remove(0);
                     System.out.println("removed image");
                     client.sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(handValues.get(firstFreeHand), firstFreeHand)));
-
                 }
             });
         }
