@@ -26,7 +26,7 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
 
 
 
-        if(value instanceof Wall || value instanceof Laser || value instanceof LaserBeam Laser || value instanceof Antenna || value instanceof PushPanel || value instanceof ConveyorBelt || value instanceof Gear){
+        if(value instanceof RestartPoint || value instanceof Wall || value instanceof Laser || value instanceof LaserBeam Laser || value instanceof Antenna || value instanceof PushPanel || value instanceof ConveyorBelt || value instanceof Gear){
 
             out.name("orientations");
             out.beginArray();
@@ -58,6 +58,11 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
                     break;
                 case "ConveyorBelt":ConveyorBelt conveyorBelt = (ConveyorBelt) value;
                     for (String orientation : conveyorBelt.getOrientations()) {
+                        out.value(orientation);
+                    }
+                    break;
+                case "RestartPoint": RestartPoint restartPoint = (RestartPoint) value;
+                    for (String orientation : restartPoint.getOrientations()) {
                         out.value(orientation);
                     }
                     break;

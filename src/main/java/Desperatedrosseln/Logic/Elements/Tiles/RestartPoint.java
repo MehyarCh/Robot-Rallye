@@ -11,4 +11,12 @@ public class RestartPoint extends BoardElement {
         super(type, isOnBoard);
         this.orientations = orientations;
     }
+
+    public ArrayList<String> getOrientations() {
+        return orientations;
+    }
+
+    public void setOrientations(ArrayList<String> orientations) {
+        this.orientations = orientations;
+    }
 }

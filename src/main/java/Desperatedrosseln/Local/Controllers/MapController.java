@@ -253,11 +253,7 @@ public class MapController {
                             new Image(getClass().getResource("/images/elements/checkpoint/checkpoint.png").toString());
                     stackElement = new ImageView(checkpointImage);
                 }
-                case "RestartPoint" -> {
-                    Image respawnPointImage =
-                            new Image(getClass().getResource("/images/elements/respawnPoint/respawnPoint.png").toString());
-                    stackElement = new ImageView(respawnPointImage);
-                }
+                case "RestartPoint" -> { stackElement = buildRestartPoint(boardElement);}
                 case "StartPoint" -> {
                     Image startpointImage =
                             new Image(getClass().getResource("/images/elements/startpoint/startpoint.png").toString());
@@ -283,6 +279,22 @@ public class MapController {
         }
         return cell;
     }
+
+    @FXML
+    private ImageView buildRestartPoint(BoardElement boardElement) {
+        Image restartPointImage =
+                new Image(getClass().getResource("/images/elements/respawnPoint/respawnPoint.png").toString());
+
+        RestartPoint restartPoint = (RestartPoint) boardElement;
+        ArrayList<String> orientations = restartPoint.getOrientations();
+
+        ImageView stackElement = new ImageView(restartPointImage);
+        System.out.println(restartPoint.getOrientations());
+        return rotateElement(stackElement, orientations);
+
+    }
+
+
     private void placeRobot(StackPane cell, int x, int y, boolean[] isTaken){
         Position currPos = new Position(x,y);
         System.out.println("pos "+currPos+" is Clicked");
