@@ -61,6 +61,11 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
                         out.value(orientation);
                     }
                     break;
+                case "Gear":Gear gear = (Gear) value;
+                    for (String orientation : gear.getOrientations()) {
+                        out.value(orientation);
+                    }
+                    break;
             }
             out.endArray();
         }

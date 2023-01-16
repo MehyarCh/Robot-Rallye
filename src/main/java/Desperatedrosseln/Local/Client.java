@@ -20,7 +20,7 @@ public class Client implements Runnable {
     private int clientID;
     Timer timer = new Timer();
     private List<String> cardsInHand;
-
+    HashMap<Integer, Integer> playersWithRobots = new HashMap<>();
     HashMap<String, Integer> localPlayerList = new HashMap<>();
     private MainController mainController;
     private String protocol = "Version 0.1";
@@ -137,10 +137,11 @@ public class Client implements Runnable {
                 localPlayerList.put(playerAdded.getName(), playerAdded.getClientID());
                 if (!robotIDs.contains(playerAdded.getFigure())) {
                     robotIDs.add(playerAdded.getFigure());
-                }
-                if (playerAdded.getClientID() == clientID) {
+
+                    mapRobotToClient(playerAdded.getClientID(),playerAdded.getFigure());
 
                 }
+
                 break;
             case "PlayerStatus":
                 break;
@@ -155,8 +156,6 @@ public class Client implements Runnable {
             case "ReceivedChat":
                 JsonAdapter<ReceivedChat> receivedChatJsonAdapter = moshi.adapter(ReceivedChat.class);
                 ReceivedChat receivedChat = receivedChatJsonAdapter.fromJson(msg.getMessageBody());
-
-
                 if (isMainSceneStarted) {
                     if (receivedChat.isPrivate()) {
                         mainController.addChatMessage(getPlayerName(receivedChat.getFrom()) + ": (Whispered)" + receivedChat.getMessage());
@@ -185,11 +184,11 @@ public class Client implements Runnable {
             case "CardPlayed":
                 break;
             case "StartingPointTaken":
-
                 JsonAdapter<StartingPointTaken> startingPointTakenJsonAdapter = moshi.adapter(StartingPointTaken.class);
                 StartingPointTaken startingPointTaken = startingPointTakenJsonAdapter.fromJson(msg.getMessageBody());
 
                 mainController.getMapController().addUnavailablePosition(startingPointTaken.getX(), startingPointTaken.getY());
+                mainController.getMapController().addEnemiesToTheScreen(startingPointTaken.getX(), startingPointTaken.getY(),playersWithRobots.get(startingPointTaken.getClientID()));
 
                 break;
             case "YourCards":
@@ -202,10 +201,7 @@ public class Client implements Runnable {
                 mainController.initRegisterValues();
                 mainController.cardClick();
                 startCardSelectionTimer();
-
-        }
-    }
-
+                break;
             case "CurrentPlayer":
                 JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
                 CurrentPlayer currentPlayer = currentPlayerJsonAdapter.fromJson(msg.getMessageBody());
@@ -218,12 +214,16 @@ public class Client implements Runnable {
 
 
         }
+    }
+
+
+
     private void startStartPointSelectionTimer() {
         System.out.println("Timer started for Start point selection");
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(!mainController.getMapController().isStartingPointChosen){
+                if(!mainController.getMapController().hasStartpoint){
                     mainController.getMapController().runAutoStartPointSelection();
                     sendChatMessage("start point selected", -1);
                 }
@@ -361,6 +361,9 @@ public class Client implements Runnable {
 
     public void setLobbyController(LobbyController lobbyController) {
         this.lobbyController = lobbyController;
+    }
+    public void mapRobotToClient(int clientID,int robotID){
+        playersWithRobots.put(clientID,robotID);
     }
 }
 

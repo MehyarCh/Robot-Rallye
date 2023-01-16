@@ -25,7 +25,6 @@ public class ClientHandler implements Runnable {
     private DataOutputStream out;
     private String clientName;
     private Player player;
-    private int startingPositionsChosen=0;
     Timer timer = new Timer();
     public static ArrayList<ClientHandler> clients = new ArrayList<>();
     Moshi moshi = new Moshi.Builder().build();
@@ -186,7 +185,7 @@ public class ClientHandler implements Runnable {
 
                     List<List<List<BoardElement>>> gameMap = new JsonMapReader().readMapFromJson(game.getCurrentMap());
 
-                    if(clientID>1){
+                    if(clients.size()>1){
 
                         ProtocolMessage<GameStarted> gameStartedProtocolMessage = new ProtocolMessage<>("GameStarted",new GameStarted(new JsonMapReader().readMapFromJson(game.getCurrentMap())));
                         String jsonGameStarted = new JsonSerializer().serialize(gameStartedProtocolMessage);
@@ -243,12 +242,9 @@ public class ClientHandler implements Runnable {
                     SetStartingPoint setStartingPoint = setStartingPointJsonAdapter.fromJson(message.getMessageBody());
                     game.initGameMap();
                     game.placeRobot(player,setStartingPoint.getX(),setStartingPoint.getY());
-                    System.out.println(clientName+" val "+ ++startingPositionsChosen + "nos clients "+ clients.size());
+                    System.out.println(clientName+" val "+ ++game.startingPositionsChosen + "nos clients "+ clients.size());
 
-                    if(!isAI && startingPositionsChosen == clients.size()-1){
-                        JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
-                        ActivePhase activePhase2 = new ActivePhase(2);
-                        broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase2));
+                    if(!isAI && game.startingPositionsChosen == clients.size() && !game.isRunning()){
                         game.runStep();
                     }
 
