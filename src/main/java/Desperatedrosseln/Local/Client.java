@@ -175,7 +175,7 @@ public class Client implements Runnable {
                 }
             case "GameStarted":
 
-                //skipped
+                //see above
 
 
 

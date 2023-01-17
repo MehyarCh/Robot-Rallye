@@ -17,6 +17,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class LoginController {
@@ -35,6 +37,8 @@ public class LoginController {
     public TextField loginTextField;
     @FXML
     private Label loginwarning;
+
+    private static final Logger logger = LogManager.getLogger(LoginController.class);
 
 
 
@@ -82,6 +86,14 @@ public class LoginController {
             switchToLobbyScene();
 
             System.out.println("Hello welcome " + loginTextField.getText());
+
+            //Logging test
+            logger.trace("We've just greeted the user!");
+            logger.debug("We've just greeted the user!");
+            logger.info("We've just greeted the user!");
+            logger.warn("We've just greeted the user!");
+            logger.error("We've just greeted the user!");
+            logger.fatal("We've just greeted the user!");
         }
 
     }
