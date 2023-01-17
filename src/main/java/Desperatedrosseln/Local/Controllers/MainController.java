@@ -23,6 +23,8 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -108,6 +110,8 @@ public class MainController {
     public boolean isProgrammingDone = false;
     @FXML
     private Label timeLabel;
+
+    private static final Logger logger = LogManager.getLogger(MainController.class);
 
 
     public MainController() {
@@ -274,8 +278,9 @@ public class MainController {
         if (registerValues.size() == 5) {
             sendCards();
             isProgrammingDone = true;
+            programdone.setDisable(true);
+            logger.info(client.getName() + " is done programming");
         }
-        programdone.setDisable(true);
     }
 
     @FXML
@@ -318,7 +323,7 @@ public class MainController {
     }
 
     public void sendRandomCards() {
-        System.out.println(handValues);
+        logger.debug(client + " got sent the following random cards: " + handValues);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -327,7 +332,7 @@ public class MainController {
                 for (int firstFreeRegister = 0; firstFreeRegister < 5; firstFreeRegister++) {
                     if (registerValues.get(firstFreeRegister) == null) {
                         int index = (int) (Math.random() * handValues.size());
-                        System.out.println("index=" + index + ", ffr=" + firstFreeRegister);
+                        //System.out.println("index=" + index + ", ffr=" + firstFreeRegister);
                         if (index == handValues.size()) {
                             --index;
                         }
@@ -367,8 +372,8 @@ public class MainController {
 
     private void sendCards() {
         Moshi moshi = new Moshi.Builder().build();
-
         JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
+
         int i = 0;
         for (String card :
                 registerValues) {
@@ -379,13 +384,14 @@ public class MainController {
 
     @FXML
     int calcMaxMapHeight() {
-        System.out.println(stage.getHeight() + " - " + scene.getRoot().getChildrenUnmodifiable().get(0).getScaleY() + "-" + cardWrapper.getHeight() + "-100");
+        logger.debug("Maximum map height = " + stage.getHeight() + " - " + scene.getRoot().getChildrenUnmodifiable().get(0).getScaleY() + "-" + cardWrapper.getHeight() + "-100");
         return (int) (stage.getHeight() - scene.getRoot().getChildrenUnmodifiable().get(0).getScaleY() - cardWrapper.getHeight() - 100);
     }
 
     public void cardClick() {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
+
         for (StackPane card : handCards) {
             card.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
 
@@ -396,7 +402,7 @@ public class MainController {
                     if (firstFreeRegister != -1) {
                         // adding to register
                         registerValues.set(firstFreeRegister, handValues.get(index));
-                        System.out.println("added to register 1");
+                        //System.out.println("added to register 1");
                         // adding register image
                         Image image = showCardImage(handValues.get(index));
                         ImageView imageView = new ImageView(image);
@@ -409,7 +415,7 @@ public class MainController {
                         handCards.get(index).getChildren().remove(0);
                         client.sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(registerValues.get(firstFreeRegister), firstFreeRegister)));
                     } else {
-                        System.out.println("Already 5 cards in the registers!");
+                        logger.trace("Already 5 cards in the registers!");
                     }
                 }
             });
@@ -417,28 +423,28 @@ public class MainController {
         for (StackPane card : registerCards) {
             card.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
 
-                System.out.println(handValues);
+                //System.out.println(handValues);
                 int firstFreeHand = handValues.indexOf(null);
 
-                System.out.println("This is a registerCard");
+                //System.out.println("This is a registerCard");
                 int index = registerCards.indexOf(mouseEvent.getSource());
 
                 if (registerValues.get(index) != null) {
                     handValues.set(firstFreeHand, registerValues.get(index));
-                    System.out.println("adding to hand");
+                    logger.trace("adding to hand");
                     // adding hand image
                     Image image = showCardImage(registerValues.get(index));
                     ImageView imageView = new ImageView(image);
                     imageView.setFitHeight(110);
                     imageView.setPreserveRatio(true);
                     handCards.get(firstFreeHand).getChildren().add(imageView);
-                    System.out.println("added image");
+                    logger.trace("added image");
                     // Removing from register
                     registerValues.set(index, null);
-                    System.out.println("removed from register");
+                    logger.trace("removed from register");
                     // Removing registerImage
                     registerCards.get(index).getChildren().remove(0);
-                    System.out.println("removed image");
+                    logger.trace("removed image");
                     client.sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(handValues.get(firstFreeHand), firstFreeHand)));
                 }
             });

@@ -85,15 +85,8 @@ public class LoginController {
             client.setClientName(loginTextField.getText());
             switchToLobbyScene();
 
-            System.out.println("Hello welcome " + loginTextField.getText());
+            logger.info(loginTextField.getText() + " joined the Lobby");
 
-            //Logging test
-            logger.trace("We've just greeted the user!");
-            logger.debug("We've just greeted the user!");
-            logger.info("We've just greeted the user!");
-            logger.warn("We've just greeted the user!");
-            logger.error("We've just greeted the user!");
-            logger.fatal("We've just greeted the user!");
         }
 
     }

@@ -17,6 +17,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.*;
@@ -41,6 +43,8 @@ public class MapController {
     private final int maxMapHeight;
     private List<List<List<BoardElement>>> mapAsList;
     private int tileSize = 35;
+
+    private static final Logger logger = LogManager.getLogger(MapController.class);
 
 
     public class Position {
@@ -84,7 +88,7 @@ public class MapController {
         this.selectedRobot = selectedRobot;
         this.maxMapHeight = maxMapHeight;
         this.tileSize = maxMapHeight / 10;
-        System.out.println("mapcontroller constructor: "+maxMapHeight);
+        logger.debug("mapcontroller constructor: "+maxMapHeight);
     }
 
     public Map getMap() {

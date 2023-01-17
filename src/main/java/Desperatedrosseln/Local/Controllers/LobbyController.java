@@ -19,6 +19,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
@@ -62,6 +64,8 @@ public class LobbyController {
     private Label playersonline;
     private int selectedRobot;
 
+    private static final Logger logger = LogManager.getLogger(LobbyController.class);
+
     public LobbyController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/lobbyScene.fxml"));
         loader.setController(this);
@@ -103,27 +107,27 @@ public class LobbyController {
         int selectedRobot = 0;
         switch (clickedButton.getId()) {
             case "player-icon--1":
-                System.out.println("Brown WAS PRESSED");
+                logger.info(client.getName() + " chose BROWN");
                 selectedRobot = 1;
                 break;
             case "player-icon--2":
-                System.out.println("Yellow WAS PRESSED");
+                logger.info(client.getName() + " chose YELLOW");
                 selectedRobot = 2;
                 break;
             case "player-icon--3":
-                System.out.println("Blue was Pressed");
+                logger.info(client.getName() + " chose BLUE");
                 selectedRobot = 3;
                 break;
             case "player-icon--4":
-                System.out.println("Green was Pressed");
+                logger.info(client.getName() + " chose GREEN");
                 selectedRobot = 4;
                 break;
             case "player-icon--5":
-                System.out.println("Orange was pressed");
+                logger.info(client.getName() + " chose ORANGE");
                 selectedRobot = 5;
                 break;
             case "player-icon--6":
-                System.out.println("Red was pressed");
+                logger.info(client.getName() + " chose RED");
                 selectedRobot = 6;
                 break;
         }
