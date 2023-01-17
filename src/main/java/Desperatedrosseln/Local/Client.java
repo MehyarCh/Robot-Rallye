@@ -90,7 +90,9 @@ public class Client implements Runnable {
 
         //TODO: Logs
         if (message.startsWith("{\"messageType\":\"GameStarted\"")) {
-            mainController.startMainScene(lobbyController.getSelectedRobot());
+            Stage stage = lobbyController.getStage();
+            System.out.println(stage.getHeight());
+            mainController.startMainScene(stage, lobbyController.getSelectedRobot());
             JsonDeserializer jsonDeserializer = new JsonDeserializer();
             ProtocolMessage<GameStarted> gameStartedProtocolMessage = jsonDeserializer.deserialize(message);
             GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();

@@ -48,6 +48,9 @@ public class MainController {
     private GridPane mapGrid;
     @FXML
     private GridPane cardWrapper;
+
+    @FXML
+    private StackPane centerStack;
     @FXML
     private Button send_button;
     @FXML
@@ -162,27 +165,42 @@ public class MainController {
         return mapController;
     }
 
-    public void startMainScene(int selectedRobot) throws IOException {
+    public void startMainScene(Stage stage, int selectedRobot) throws IOException {
         client.isMainSceneStarted = true;
+        this.stage = stage;
+        mapController = new MapController(mapGrid, selectedRobot, calcMaxMapHeight());
+        mapController.setClient(client);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                stage = new Stage();
                 stage.setScene(scene);
                 stage.setMinHeight(720);
                 stage.setMinWidth(1280);
                 stage.setMaximized(true);
                 stage.setResizable(true);
-
-                mapController = new MapController(mapGrid, selectedRobot, calcMaxMapHeight());
-                mapController.setClient(client);
                 stage.show();
                 startTimer();
             }
-
-
         });
     }
+    @FXML void showOverlay(String content) {
+        HBox overlay = new HBox();
+        Label label = new Label(content);
+
+        label.getStyleClass().add("main-overlay-label");
+        overlay.getStyleClass().add("main-overlay");
+
+        overlay.getChildren().add(label);
+
+        centerStack.getChildren().add(overlay);
+    }
+
+    @FXML
+    private void hideOverlay() {
+        centerStack.getChildren().remove(centerStack.getChildren().size() - 1);
+    }
+
+
     public void startTimer() {
         Timer timer = new Timer();
 

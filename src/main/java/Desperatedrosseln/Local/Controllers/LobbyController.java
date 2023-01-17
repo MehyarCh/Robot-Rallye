@@ -55,7 +55,7 @@ public class LobbyController {
     @FXML
     private Button validateMapChoice;
     public MainController mainController;
-    private boolean ready=false;
+    private boolean ready = false;
     @FXML
     private Button playerIconPink;
     @FXML
@@ -81,6 +81,10 @@ public class LobbyController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 
     public void startLobbyScene(Stage stage) {

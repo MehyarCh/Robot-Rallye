@@ -12,7 +12,7 @@
 .scene--small {
     -fx-pref-height: 500px;
     -fx-pref-width: 960px;
-    -fx-padding: 32px;
+    -fx-padding: 48px;
     -fx-alignment: center;
     -fx-background-repeat: stretch;
     -fx-background-position: center center;
@@ -20,10 +20,13 @@
 
 .login-scene {
     -fx-background-image: url("../images/login-bg.jpg");
+    -fx-padding: 48px 154px;
 }
 
 .lobby-scene {
     -fx-background-image: url("../images/lobby-bg.jpg");
+    -fx-padding: 16px 32px;
+    -fx-spacing: 8px;
 }
 
 
@@ -36,20 +39,34 @@
     -fx-pref-width: 320px;
 }
 
+.map-picker {
+    -fx-fill-width: true;
+    -fx-pref-height: 200px;
+    -fx-background-color: #000;
+}
+
 .overlay {
-    -fx-min-height: 400px;
-    -fx-max-width:500px;
     -fx-spacing: 16px;
     -fx-alignment: center;
     -fx-background-color: rgba(0, 0, 0, 0.8);
-    -fx-padding: 16px;
+    -fx-padding: 32px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 4, 0, 0, 0);
 }
 
+.lobby-overlay {
+    -fx-fill-width: true;
+}
+
+.lobby-sidebar {
+    -fx-fill-width: true;
+    -fx-fill-height: true;
+    -fx-pref-width: 200px;
+}
 .map-selection-overlay {
     -fx-alignment: center;
-    -fx-spacing: 50px;
+    -fx-spacing: 0px;
     -fx-fill-width: true;
+    -fx-pref-height: 90px;
 }
 
 .vbox-highlight {
@@ -134,13 +151,12 @@
 
 .player-bar {
     -fx-alignment: center;
-    -fx-spacing: 16px;
+    -fx-spacing: 32px;
     -fx-padding: 0 130px 0 0;
 }
 
 .player-bar--lobby {
     -fx-padding: 0;
-    -fx-min-width: 280px;
 }
 
 .player-wrapper {
@@ -149,12 +165,17 @@
 }
 
 .player-icon {
-    -fx-pref-height: 32px;
-    -fx-pref-width: 32px;
-    -fx-background-size: 32px;
+    -fx-min-height: 32px;
+    -fx-min-width: 32px;
+    -fx-background-size:32px;
     -fx-background-repeat: stretch;
     -fx-background-position: center center;
-    -fx-background-color: transparent;
+}
+
+.player-icon--lg {
+    -fx-min-height: 48px;
+    -fx-min-width: 48px;
+    -fx-background-size:48px;
 }
 
 #player-icon--1 {

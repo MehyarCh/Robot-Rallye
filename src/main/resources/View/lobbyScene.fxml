@@ -16,29 +16,8 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             styleClass="scene--small, lobby-scene">
-    <left>
-        <VBox styleClass="overlay, map-selection-overlay">
-            <VBox styleClass="vbox-highlight">
-                <VBox styleClass="selected-map">
-                    <Label fx:id="mapText" text="Maps"/>
-                </VBox>
-                <VBox styleClass="vbox-highlight">
-                    <ChoiceBox fx:id="mapSelection"
-                               styleClass="button, button--sm, button--primary, choice-box"
-                               accessibleText="Maps"
-                               value="Maps"
-                               disable="true"/>
-                </VBox>
-            </VBox>
-            <Button onAction="#onChooseMap"
-                    fx:id="validateMapChoice"
-                    disable="true"
-                    text="Choose Map"
-                    styleClass="button, button--sm, button--primary"/>
-        </VBox>
-    </left>
     <center>
-        <VBox styleClass="overlay">
+        <VBox styleClass="overlay, lobby-overlay">
             <VBox styleClass="logo-wrapper">
                 <Label text="" styleClass="logo, logo--login"/>
                 <ImageView styleClass="logo, logo--login"/>
@@ -51,42 +30,42 @@
                     <VBox styleClass="player-wrapper">
                         <Button onAction="#onButtonClicked"
                                 id="player-icon--1"
-                                styleClass="player-icon"/>
+                                styleClass="player-icon, player-icon--lg"/>
                         <Label text="Brown"
                                styleClass="headline-4, color--light"/>
                     </VBox>
                     <VBox styleClass="player-wrapper">
                         <Button onAction="#onButtonClicked"
                                 id="player-icon--2"
-                                styleClass="player-icon"/>
+                                styleClass="player-icon, player-icon--lg"/>
                         <Label text="Yellow"
                                styleClass="headline-4, color--light"/>
                     </VBox>
                     <VBox styleClass="player-wrapper">
                         <Button onAction="#onButtonClicked"
                                 id="player-icon--3"
-                                styleClass="player-icon"/>
+                                styleClass="player-icon player-icon, player-icon--lg"/>
                         <Label text="Blue"
                                styleClass="headline-4, color--light"/>
                     </VBox>
                     <VBox styleClass="player-wrapper">
                         <Button onAction="#onButtonClicked"
                                 id="player-icon--4"
-                                styleClass="player-icon"/>
+                                styleClass="player-icon, player-icon--lg"/>
                         <Label text="Green"
                                styleClass="headline-4, color--light"/>
                     </VBox>
                     <VBox styleClass="player-wrapper">
                         <Button onAction="#onButtonClicked"
                                 id="player-icon--5"
-                                styleClass="player-icon"/>
+                                styleClass="player-icon, player-icon--lg"/>
                         <Label text="Orange"
                                styleClass="headline-4, color--light"/>
                     </VBox>
                     <VBox styleClass="player-wrapper">
                         <Button onAction="#onButtonClicked"
                                 id="player-icon--6"
-                                styleClass="player-icon"/>
+                                styleClass="player-icon, player-icon--lg"/>
                         <Label text="Red"
                                styleClass="headline-4, color--light"/>
                     </VBox>
@@ -103,7 +82,7 @@
         </VBox>
     </center>
     <right>
-        <GridPane styleClass="sidebar">
+        <GridPane styleClass="lobby-sidebar">
             <ScrollPane GridPane.columnIndex="0"
                         GridPane.rowIndex="0"
                         GridPane.hgrow="ALWAYS"
@@ -111,12 +90,10 @@
                         fitToWidth="true"
                         fitToHeight="true"
                         styleClass="scroll-board">
-                <content>
-                    <VBox fx:id="" styleClass="message-board">
-                        <!--<TextArea fx:id="chatlog" editable="false"  prefHeight="600.0" style="-fx-background-color: red" />-->
-                        <TextFlow styleClass="textflow" fx:id="chatlog_lobby"/>
-                    </VBox>
-                </content>
+                <VBox fx:id="" styleClass="message-board">
+
+                    <TextFlow styleClass="textflow" fx:id="chatlog_lobby"/>
+                </VBox>
             </ScrollPane>
             <HBox GridPane.columnIndex="0"
                   GridPane.rowIndex="1"
@@ -130,8 +107,24 @@
         </GridPane>
     </right>
 
-
-
+    <bottom>
+        <HBox styleClass="overlay, lobby-overlay, map-selection-overlay">
+            <HBox styleClass="vbox-highlight">
+                <HBox styleClass="vbox-highlight">
+                    <ChoiceBox fx:id="mapSelection"
+                               styleClass="button, button--sm, button--primary, choice-box"
+                               accessibleText="Maps"
+                               value="Maps"
+                               disable="true"/>
+                </HBox>
+            </HBox>
+            <Button onAction="#onChooseMap"
+                    fx:id="validateMapChoice"
+                    disable="true"
+                    text="Choose Map"
+                    styleClass="button, button--sm, button--primary"/>
+        </HBox>
+    </bottom>
 </BorderPane>
 
 
