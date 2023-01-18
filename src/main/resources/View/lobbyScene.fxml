@@ -83,22 +83,12 @@
                        styleClass="headline-3, color--light"/>
             </VBox>
             <HBox styleClass="overlay, lobby-overlay, map-selection-overlay, border-radius, border-radius--xs">
-                <HBox fx:id="mapOptionWrapper" styleClass="map-option-wrapper" />
-
-                <HBox styleClass="vbox-highlight">
-                    <HBox styleClass="vbox-highlight">
-                        <ChoiceBox fx:id="mapSelection"
-                                   styleClass="button, button--sm, button--primary, choice-box"
-                                   accessibleText="Maps"
-                                   value="Maps"
-                                   disable="true"/>
-                    </HBox>
-                </HBox>
                 <Button onAction="#onChooseMap"
                         fx:id="validateMapChoice"
                         disable="true"
                         text="Choose Map"
                         styleClass="button, button--sm, button--primary"/>
+                <HBox fx:id="mapOptionWrapper" styleClass="map-option-wrapper" />
             </HBox>
         </VBox>
     </center>

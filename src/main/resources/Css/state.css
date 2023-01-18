@@ -10,3 +10,7 @@
     -fx-background-color: #ddd;
 }
 
+.map-option-overlay:hover {
+    -fx-opacity: 0;
+}
+

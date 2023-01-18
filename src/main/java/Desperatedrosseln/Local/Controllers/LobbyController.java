@@ -190,19 +190,22 @@ public class LobbyController {
     }
 
     public void addMapsToChoice(List<String> maps){
-        for(String mapName: maps){
-            System.out.println(mapName);
 
-            //StackPane mapOption = createMapOption(mapName);
-            //mapOptionWrapper.getChildren().add(mapOption);
+        Platform.runLater(() -> {
+            for(String mapName: maps){
+                System.out.println(mapName);
 
-            mapSelection.getItems().add(mapName);
-        }
+                StackPane mapOption = createMapOption(mapName);
+                mapOptionWrapper.getChildren().add(mapOption);
+            }
+        });
+
     }
 
     private StackPane createMapOption(String mapName) {
         Label mapOptionTitle = new Label(mapName);
         mapOptionTitle.getStyleClass().add("map-option-title");
+        mapOptionTitle.getStyleClass().add("color--light");
 
         HBox mapOptionOverlay = new HBox(mapOptionTitle);
         mapOptionOverlay.getStyleClass().add("map-option-overlay");
@@ -221,20 +224,24 @@ public class LobbyController {
             case "DeathTrap":
                 image = new Image(getClass().getResource("/images/Maps/dizzyHighway.png").toString());
             default:
-                image = new Image("ERROR");
+                image = new Image(getClass().getResource("/images/Maps/dizzyHighway.png").toString());
                 break;
         }
         ImageView mapOptionImage = new ImageView(image);
+        mapOptionImage.setPreserveRatio(true);
+        mapOptionImage.setFitHeight(62);
         mapOptionImage.getStyleClass().add("map-option-image");
 
         StackPane mapOption = new StackPane(mapOptionImage, mapOptionOverlay);
-        mapOption.getStyleClass().add("map-option, border-radius, border-radius--sm");
+        mapOption.getStyleClass().add("map-option");
+        mapOption.getStyleClass().add("border-radius");
+        mapOption.getStyleClass().add("border-radius--sm");
 
         return mapOption;
     }
 
     public void canChooseMap() {
-        mapSelection.setDisable(false);
+        //mapSelection.setDisable(false);
         validateMapChoice.setDisable(false);
     }
     public int getSelectedRobot(){
