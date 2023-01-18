@@ -13,7 +13,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,6 +26,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import static Desperatedrosseln.Local.Controllers.LoginController.client;
 
@@ -52,6 +57,8 @@ public class LobbyController {
     private TextFlow chatlog_lobby;
     @FXML
     private ChoiceBox<String> mapSelection;
+    @FXML
+    private HBox mapOptionWrapper;
     @FXML
     private Button validateMapChoice;
     public MainController mainController;
@@ -184,8 +191,46 @@ public class LobbyController {
 
     public void addMapsToChoice(List<String> maps){
         for(String mapName: maps){
+            System.out.println(mapName);
+
+            //StackPane mapOption = createMapOption(mapName);
+            //mapOptionWrapper.getChildren().add(mapOption);
+
             mapSelection.getItems().add(mapName);
         }
+    }
+
+    private StackPane createMapOption(String mapName) {
+        Label mapOptionTitle = new Label(mapName);
+        mapOptionTitle.getStyleClass().add("map-option-title");
+
+        HBox mapOptionOverlay = new HBox(mapOptionTitle);
+        mapOptionOverlay.getStyleClass().add("map-option-overlay");
+
+        System.out.println("########################################### Going In");
+
+        Image image;
+        switch (mapName) {
+            case "DizzyHighway":
+                image = new Image(getClass().getResource("/images/Maps/dizzyHighway.png").toString());
+                break;
+            case "ExtraCrispy":
+                image = new Image(getClass().getResource("/images/Maps/dizzyHighway.png").toString());
+            case "LostBearings":
+                image = new Image(getClass().getResource("/images/Maps/dizzyHighway.png").toString());
+            case "DeathTrap":
+                image = new Image(getClass().getResource("/images/Maps/dizzyHighway.png").toString());
+            default:
+                image = new Image("ERROR");
+                break;
+        }
+        ImageView mapOptionImage = new ImageView(image);
+        mapOptionImage.getStyleClass().add("map-option-image");
+
+        StackPane mapOption = new StackPane(mapOptionImage, mapOptionOverlay);
+        mapOption.getStyleClass().add("map-option, border-radius, border-radius--sm");
+
+        return mapOption;
     }
 
     public void canChooseMap() {
@@ -195,5 +240,6 @@ public class LobbyController {
     public int getSelectedRobot(){
         return this.selectedRobot;
     }
+
 }
 

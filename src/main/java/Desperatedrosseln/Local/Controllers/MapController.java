@@ -322,27 +322,27 @@ public class MapController {
         if (!hasStartpoint && !isStartingPointTaken) {
             switch (selectedRobot) {
                 case 1 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/brown.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/Robots/brown.jpg").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 2 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/yellow.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/Robots/yellow.jpg").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 3 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/blue.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/Robots/blue.jpg").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 4 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/green.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/Robots/green.jpg").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 5 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/orange.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/Robots/orange.jpg").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 6 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/red.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/Robots/red.jpg").toString());
                     robot = new ImageView(robotImage);
                 }
                 default -> {
@@ -792,34 +792,32 @@ public class MapController {
 
         boolean isStartingPointTaken = false;
 
-
-
         Image robotImage;
         ImageView robot;
 
             switch (robotID) {
                 case 1 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/brown.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/Robots/brown.jpg").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 2 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/yellow.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/Robots/yellow.jpg").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 3 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/blue.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/Robots/blue.jpg").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 4 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/green.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/Robots/green.jpg").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 5 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/orange.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/Robots/orange.jpg").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 6 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/red.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/Robots/red.jpg").toString());
                     robot = new ImageView(robotImage);
                 }
                 default -> {

@@ -7,8 +7,6 @@
     -fx-background-position: center center;
 }
 
-/* login scene */
-
 .scene--small {
     -fx-pref-height: 500px;
     -fx-pref-width: 960px;
@@ -26,7 +24,6 @@
 .lobby-scene {
     -fx-background-image: url("../images/lobby-bg.jpg");
     -fx-padding: 16px 32px;
-    -fx-spacing: 8px;
 }
 
 
@@ -45,29 +42,58 @@
     -fx-background-color: #000;
 }
 
+.lobby-center-wrapper {
+    -fx-spacing: 8px;
+}
+
 .overlay {
     -fx-spacing: 16px;
     -fx-alignment: center;
     -fx-background-color: rgba(0, 0, 0, 0.8);
-    -fx-padding: 32px;
+    -fx-padding: 48px 32px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 4, 0, 0, 0);
 }
 
 .lobby-overlay {
+    -fx-padding: 0 32px;
+}
+
+.map-selection-overlay {
+    -fx-spacing: 0px;
+    -fx-pref-height: 90px;
+}
+
+.map-option-wrapper {
+    -fx-fill-height: true;
     -fx-fill-width: true;
+    -fx-spacing: 8px;
+}
+
+.map-option {
+    -fx-pref-height: 78px;
+    -fx-max-height: 78px;
+    -fx-pref-width: 101px;
+}
+
+.map-option-image {
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+
+.map-option-overlay {
+    -fx-background-color: rgba(0, 0, 0, 0.6);
+    -fx-alignment: center;
+}
+
+.map-option-title {
+    -fx-text-fill: #fff;
+    -fx-font-size: 18px;
 }
 
 .lobby-sidebar {
-    -fx-fill-width: true;
-    -fx-fill-height: true;
     -fx-pref-width: 200px;
 }
-.map-selection-overlay {
-    -fx-alignment: center;
-    -fx-spacing: 0px;
-    -fx-fill-width: true;
-    -fx-pref-height: 90px;
-}
+
 
 .vbox-highlight {
     -fx-fill-height: true;
@@ -82,7 +108,7 @@
 .login-form-wrapper {
     -fx-pref-width: 240px;
     -fx-max-width: 240px;
-    -fx-spacing: 16px;
+    -fx-spacing: 8px;
 }
 
 .login-form-label {
@@ -167,15 +193,20 @@
 .player-icon {
     -fx-min-height: 32px;
     -fx-min-width: 32px;
-    -fx-background-size:32px;
-    -fx-background-repeat: stretch;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
     -fx-background-position: center center;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-border-color: transparent;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
 }
 
 .player-icon--lg {
     -fx-min-height: 48px;
     -fx-min-width: 48px;
-    -fx-background-size:48px;
+    -fx-background-size: 48px;
 }
 
 #player-icon--1 {
@@ -279,101 +310,18 @@
     -fx-font-size: 12px*/
 }
 
-.card--MoveOne {
-    -fx-background-color: blue;
-    -fx-opacity: 0.5;
-}
-
-.card--MoveTwo {
-    -fx-background-color: red;
-    -fx-opacity: 0.5;
-}
-
-.card--MoveThree{
-    -fx-background-color: green;
-    -fx-opacity: 0.5;
-}
-
-.card--MoveBack{
-
-}
-
-.card--Again{
-
-}
-
-.card--TurnLeft{
-
-}
-
-.card--TurnRight{
-
-}
-
-.card--UTurn{
-
-}
-
-.card--PowerUp{
-
-}
-
-.card--Spam{
-
-}
-
-.card--Trojan{
-
-}
-
-.card--Virus{
-
-}
-
-.card--Worm{
-
-}
-
-.card--EnergyRoutine{
-
-}
-
-.card--RepeatRoutine{
-
-}
-
-.card--SandboxRoutine{
-
-}
-
-.card--SpamFolder{
-
-}
-
-.card--SpeedRoutine{
-
-}
-
-.card--WeaselRoutine{
-
-}
-
-
-
-
 .sidebar {
-    -fx-pref-height: 100%;
+    -fx-fill-height: true;
     -fx-pref-width: 230px;
-    -fx-padding: 16px 0 8px 0;
     -fx-alignment: bottom-center;
     -fx-spacing: 40px;
-    -fx-background-color: linear-gradient(to top right, #020015, #19002a);
+    -fx-background-color: linear-gradient(to top right, rgba(2,0, 21, 0.9), rgba(25,0, 42, 0.9));
 }
 
 .chat-input-wrapper {
+    -fx-alignment: center;
     -fx-spacing: 8px;
-    -fx-alignment: bottom-center;
-    -fx-padding: 0 16px;
+    -fx-padding: 16px;
 }
 
 .scroll-board {
@@ -386,10 +334,15 @@
     -fx-spacing: 8px;
     -fx-pref-height: 100%;
     -fx-fill-width: true;
+    -fx-padding: 16px;
+}
+
+.chat-headline {
+    -fx-text-alignment: center;
 }
 
 .message-wrapper {
-    -fx-padding: 0 16px;
+    -fx-padding: 8;
     -fx-fill-width: true;
 }
 

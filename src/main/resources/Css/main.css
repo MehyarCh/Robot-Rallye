@@ -55,8 +55,7 @@
 .scroll-bar:vertical .increment-arrow,
 .scroll-bar:vertical .decrement-arrow{
     -fx-background-color: transparent;
-
-    -fx-padding :0.0 0.15em;
+    -fx-padding: 0.0 0.15em;
 }
 
 .scroll-bar:horizontal .thumb,
@@ -68,6 +67,40 @@
 .scroll-bar:vertical .thumb:hover {
 
 }
+
+.border-radius {
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-border-color: transparent;
+}
+
+.border-radius--xs {
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.border-radius--sm {
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.border-radius--md {
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.border-radius--lg {
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+}
+
+.border-radius--xl {
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+}
+
+
+
 
 .color--light {
     -fx-text-fill: #dddddd;
@@ -96,12 +129,15 @@
     -fx-font-size: 10px;
 }
 
+.text-input-wrapper {
+
+}
+
 .text-input {
-    -fx-pref-width: 240px;
-    -fx-max-width: 240px;
-    -fx-pref-height: 40px;
-    -fx-background-color: none;
+    -fx-pref-width: 100%;
+    -fx-pref-height: 36px;
     -fx-border-style: hidden none solid none;
+    -fx-background-color: transparent;
     -fx-border-width: 1px;
     -fx-font-size: 14px;
     -fx-font-weight: 300;
@@ -122,7 +158,21 @@
 }
 
 .margin--primary {
-    -fx-margin: 8px;
+    -fx-padding: 8px;
+    -fx-border-insets: 8px;
+    -fx-background-insets: 8px;
+}
+
+.margin-right--primary {
+    -fx-padding: 0 8px 0 0;
+    -fx-border-insets: 0 8px 0 0;
+    -fx-background-insets: 0 8px 0 0;
+}
+
+.margin-left--primary {
+    -fx-padding: 0 0 0 8px;
+    -fx-border-insets: 0 0 0 8px;
+    -fx-background-insets: 0 0 0 8px;
 }
 
 .button {
@@ -138,13 +188,11 @@
 }
 .send-button {
     -fx-background-image: url("../images/send_button.png");
-    -fx-background-size: 32px;
     -fx-background-position: center;
+    -fx-background-size: 32px;
     -fx-background-color: transparent;
     -fx-pref-height: 32px;
     -fx-pref-width: 32px;
-    -fx-min-height: 32px;
-    -fx-min-width: 32px;
 }
 
 .programdone-button {

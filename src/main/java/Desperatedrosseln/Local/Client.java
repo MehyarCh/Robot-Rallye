@@ -153,9 +153,9 @@ public class Client implements Runnable {
                 break;
             case "SelectMap":
                 JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
-                SelectMap sm = selectMapJsonAdapter.fromJson(msg.getMessageBody());
+                SelectMap selectMap = selectMapJsonAdapter.fromJson(msg.getMessageBody());
 
-                lobbyController.addMapsToChoice(sm.getMaps());
+                lobbyController.addMapsToChoice(selectMap.getMaps());
                 lobbyController.canChooseMap();
 
                 break;
