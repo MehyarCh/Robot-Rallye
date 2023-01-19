@@ -182,7 +182,7 @@
 
 .player-wrapper {
     -fx-alignment: center;
-    -fx-spacing: 2px;
+    -fx-spacing: 4px;
 }
 
 .player-icon {
@@ -194,8 +194,8 @@
     -fx-border-style: solid;
     -fx-border-width: 1px;
     -fx-border-color: transparent;
-    -fx-border-radius: 4px;
-    -fx-background-radius: 4px;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
 }
 
 .player-icon--lg {
@@ -329,7 +329,7 @@
     -fx-spacing: 8px;
     -fx-pref-height: 100%;
     -fx-fill-width: true;
-    -fx-padding: 16px;
+    -fx-padding: 32px 16px;
 }
 
 .chat-headline {

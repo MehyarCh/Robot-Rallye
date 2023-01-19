@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;500;700&family=Kanit&display=swap');
 
 .root {
-    /*-fx-font-family: 'Comfortaa', cursive;*/
+    -fx-font-family: 'Comfortaa', cursive;
     -fx-pref-height: 360;
     -fx-pref-width: 720;
 }
