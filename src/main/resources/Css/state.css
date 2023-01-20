@@ -22,9 +22,34 @@
 
 }
 
+#player-icon-1:disabled{
+    -fx-background-image: url("../images/robots/brownDisabled.jpg");
+}
+
+#player-icon-2:disabled{
+    -fx-background-image: url("../images/robots/yellowDisabled.jpg");
+}
+
+#player-icon--3:disabled {
+    -fx-background-image: url("../images/robots/blueDisabled.jpg");
+}
+
+#player-icon--4:disabled {
+    -fx-background-image: url("../images/robots/greenDisabled.jpg");
+}
+
+#player-icon--5:disabled {
+    -fx-background-image: url("../images/robots/orangeDisabled.jpg");
+}
+
+#player-icon--6:disabled {
+    -fx-background-image: url("../images/robots/redDisabled.jpg");
+}
+
 #readyButton:selected{
     -fx-background-color: #F6019D;
 }
+
 
 
 

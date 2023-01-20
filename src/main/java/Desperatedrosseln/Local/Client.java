@@ -146,6 +146,28 @@ public class Client implements Runnable {
 
                     mapRobotToClient(playerAdded.getClientID(),playerAdded.getFigure());
 
+                    switch (playerAdded.getFigure()){
+
+                        case 1:
+                            //ToDo: disable #player-icon-1
+                            break;
+                        case 2:
+                            //ToDo: disable #player-icon-2
+                            break;
+                        case 3:
+                            //ToDo: disable #player-icon-3
+                            break;
+                        case 4:
+                            //ToDo: disable #player-icon-4
+                            break;
+                        case 5:
+                            //ToDo: disable #player-icon-5
+                            break;
+                        case 6:
+                            //ToDo: disable #player-icon-6
+                            break;
+                    }
+
                 }
 
                 break;
