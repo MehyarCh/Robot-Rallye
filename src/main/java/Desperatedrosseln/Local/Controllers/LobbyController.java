@@ -16,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
@@ -36,6 +37,8 @@ public class LobbyController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+
+    private String selectedMap;
 
     @FXML
     private Button playerIcon1;
@@ -178,11 +181,11 @@ public class LobbyController {
     }
     @FXML
     public void onChooseMap(){
-        String map = mapSelection.getValue();
         JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
-        client.sendMessage("MapSelected", mapSelectedJsonAdapter.toJson(new MapSelected(map.replaceAll("\s",""))));
+        client.sendMessage("MapSelected", mapSelectedJsonAdapter.toJson(new MapSelected(selectedMap.replaceAll("\s",""))));
         validateMapChoice.setDisable(true);
     }
+
     @FXML
     public void onReady() {
         JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
@@ -210,23 +213,15 @@ public class LobbyController {
         HBox mapOptionOverlay = new HBox(mapOptionTitle);
         mapOptionOverlay.getStyleClass().add("map-option-overlay");
 
-        System.out.println("########################################### Going In");
+        Image image = switch (mapName) {
+            case "DizzyHighway" -> new Image(getClass().getResource("/images/maps/dizzyHighway.png").toString());
+            case "ExtraCrispy" -> new Image(getClass().getResource("/images/maps/extraCrispy.png").toString());
+            case "LostBearings" -> new Image(getClass().getResource("/images/maps/lostBearings.png").toString());
+            case "DeathTrap" -> new Image(getClass().getResource("/images/maps/deathTrap.png").toString());
+            case "Twister" -> new Image(getClass().getResource("/images/maps/twister.png").toString());
+            default -> new Image(getClass().getResource("/images/maps/no_such_card.png").toString());
+        };
 
-        Image image;
-        switch (mapName) {
-            case "DizzyHighway":
-                image = new Image(getClass().getResource("/images/Maps/dizzyHighway.png").toString());
-                break;
-            case "ExtraCrispy":
-                image = new Image(getClass().getResource("/images/Maps/dizzyHighway.png").toString());
-            case "LostBearings":
-                image = new Image(getClass().getResource("/images/Maps/dizzyHighway.png").toString());
-            case "DeathTrap":
-                image = new Image(getClass().getResource("/images/Maps/dizzyHighway.png").toString());
-            default:
-                image = new Image(getClass().getResource("/images/Maps/dizzyHighway.png").toString());
-                break;
-        }
         ImageView mapOptionImage = new ImageView(image);
         mapOptionImage.setPreserveRatio(true);
         mapOptionImage.setFitHeight(62);
@@ -236,6 +231,11 @@ public class LobbyController {
         mapOption.getStyleClass().add("map-option");
         mapOption.getStyleClass().add("border-radius");
         mapOption.getStyleClass().add("border-radius--sm");
+
+        mapOption.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            selectedMap = mapName;
+            System.out.println("#########++++++++++###########" + selectedMap);
+        });
 
         return mapOption;
     }

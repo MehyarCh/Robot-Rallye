@@ -14,15 +14,13 @@
     -fx-opacity: 0;
 }
 
+.player-icon:hover, .player-icon:focused {
+    -fx-background-color: linear-gradient(#F6019D, #e77a00);
+}
+
 .map-option:hover {
-    -fx-background-color: linear-gradient(#F6019D, #7804bb);
-    -fx-background-insets: 0 0 -1 0, 0, 1, 1;
-    -fx-background-radius: 3, 3, 2, 1;
-    -fx-text-fill: #000;
-    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
-}
-
-.player-icon:hover {
 
 }
+
+
 

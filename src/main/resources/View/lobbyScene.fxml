@@ -46,7 +46,7 @@
                         <VBox styleClass="player-wrapper">
                             <Button onAction="#onButtonClicked"
                                     id="player-icon--3"
-                                    styleClass="player-icon player-icon, player-icon--lg"/>
+                                    styleClass="player-icon, player-icon--lg"/>
                             <Label text="Blue"
                                    styleClass="headline-4, color--light"/>
                         </VBox>
