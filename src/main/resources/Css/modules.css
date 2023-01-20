@@ -194,8 +194,7 @@
     -fx-border-color: transparent;
     -fx-border-style: solid;
     -fx-border-width: 3px;
-    -fx-border-radius: 4px;
-    -fx-background-radius: 4px;
+
 }
 
 .player-icon--lg {
@@ -373,6 +372,6 @@
 /* Lobby scene */
 
 
-
-
-
+.readyButton {
+    -fx-text-fill: white;
+}

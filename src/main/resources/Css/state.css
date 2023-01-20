@@ -14,12 +14,16 @@
     -fx-opacity: 0;
 }
 
-.player-icon:hover, .player-icon:focused {
-    -fx-background-color: linear-gradient(#F6019D, #e77a00);
+.player-icon:hover, .player-icon:focused, .player-icon:selected {
+    -fx-border-color: linear-gradient(white, darkgrey);
 }
 
 .map-option:hover {
 
+}
+
+#readyButton:selected{
+    -fx-background-color: #F6019D;
 }
 
 
