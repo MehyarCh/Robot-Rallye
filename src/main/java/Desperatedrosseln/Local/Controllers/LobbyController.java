@@ -13,7 +13,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,7 +29,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static Desperatedrosseln.Local.Controllers.LoginController.client;
 
@@ -33,6 +42,11 @@ public class LobbyController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+
+    private String selectedMap;
+
+    @FXML
+    private VBox center;
 
     @FXML
     private Button playerIcon1;
@@ -55,9 +69,11 @@ public class LobbyController {
     @FXML
     private ChoiceBox<String> mapSelection;
     @FXML
+    private HBox mapOptionWrapper;
+    @FXML
     private Button validateMapChoice;
     public MainController mainController;
-    private boolean ready=false;
+    private boolean ready = false;
     @FXML
     private Button playerIconPink;
     @FXML
@@ -65,6 +81,10 @@ public class LobbyController {
     private int selectedRobot;
 
     private static final Logger logger = LogManager.getLogger(LobbyController.class);
+
+    private List<Button> robotIcons = new ArrayList<>();
+
+    private List<Button> selectedIcons = new ArrayList<>();
 
     public LobbyController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/lobbyScene.fxml"));
@@ -87,6 +107,10 @@ public class LobbyController {
         }
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
     public void startLobbyScene(Stage stage) {
         mainController = new MainController();
         client.setMainController(mainController);
@@ -97,7 +121,18 @@ public class LobbyController {
         stage.setResizable(false);
         stage.setScene(scene);
         //playersonline.setText("Players currently in lobby: " );
+        initRobotIconsList();
+        //center.requestFocus();
         stage.show();
+    }
+
+    private void initRobotIconsList(){
+        robotIcons.add(playerIcon1);
+        robotIcons.add(playerIcon2);
+        robotIcons.add(playerIcon3);
+        robotIcons.add(playerIcon4);
+        robotIcons.add(playerIcon5);
+        robotIcons.add(playerIcon6);
     }
 
     @FXML
@@ -133,9 +168,17 @@ public class LobbyController {
         }
 
         if(!client.getRobotIDs().contains(selectedRobot)){
+            selectedIcons.add(clickedButton);
+
             this.selectedRobot = selectedRobot;
             mainController.setSelectedRobot(selectedRobot);
             readyButton.setDisable(false);
+            for (Button button: robotIcons) {
+
+                if (event.getSource() != button) {
+                    button.setDisable(true);
+                }
+            }
         }
         client.sendPlayerValues(selectedRobot);
 
@@ -171,11 +214,11 @@ public class LobbyController {
     }
     @FXML
     public void onChooseMap(){
-        String map = mapSelection.getValue();
         JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
-        client.sendMessage("MapSelected", mapSelectedJsonAdapter.toJson(new MapSelected(map.replaceAll("\s",""))));
+        client.sendMessage("MapSelected", mapSelectedJsonAdapter.toJson(new MapSelected(selectedMap.replaceAll("\s",""))));
         validateMapChoice.setDisable(true);
     }
+
     @FXML
     public void onReady() {
         JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
@@ -183,17 +226,84 @@ public class LobbyController {
     }
 
     public void addMapsToChoice(List<String> maps){
-        for(String mapName: maps){
-            mapSelection.getItems().add(mapName);
-        }
+
+        Platform.runLater(() -> {
+            for(String mapName: maps){
+                System.out.println(mapName);
+
+                StackPane mapOption = createMapOption(mapName);
+                mapOptionWrapper.getChildren().add(mapOption);
+            }
+        });
+
+    }
+
+    private StackPane createMapOption(String mapName) {
+        Label mapOptionTitle = new Label(mapName);
+        mapOptionTitle.getStyleClass().add("map-option-title");
+        mapOptionTitle.getStyleClass().add("color--light");
+
+        HBox mapOptionOverlay = new HBox(mapOptionTitle);
+        mapOptionOverlay.getStyleClass().add("map-option-overlay");
+
+        Image image = switch (mapName) {
+            case "DizzyHighway" -> new Image(getClass().getResource("/images/maps/dizzyHighway.png").toString());
+            case "ExtraCrispy" -> new Image(getClass().getResource("/images/maps/extraCrispy.png").toString());
+            case "LostBearings" -> new Image(getClass().getResource("/images/maps/lostBearings.png").toString());
+            case "DeathTrap" -> new Image(getClass().getResource("/images/maps/deathTrap.png").toString());
+            case "Twister" -> new Image(getClass().getResource("/images/maps/twister.png").toString());
+            default -> new Image(getClass().getResource("/images/maps/no_such_card.png").toString());
+        };
+
+        ImageView mapOptionImage = new ImageView(image);
+        mapOptionImage.setPreserveRatio(true);
+        mapOptionImage.setFitHeight(62);
+        mapOptionImage.getStyleClass().add("map-option-image");
+
+        StackPane mapOption = new StackPane(mapOptionImage, mapOptionOverlay);
+        mapOption.getStyleClass().add("map-option");
+        mapOption.getStyleClass().add("border-radius");
+        mapOption.getStyleClass().add("border-radius--sm");
+
+        mapOption.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            selectedMap = mapName;
+            System.out.println("#########++++++++++###########" + selectedMap);
+        });
+
+        return mapOption;
     }
 
     public void canChooseMap() {
-        mapSelection.setDisable(false);
+        //mapSelection.setDisable(false);
         validateMapChoice.setDisable(false);
     }
     public int getSelectedRobot(){
         return this.selectedRobot;
     }
+
+    public void disableRobotIcon(int figure){
+        switch (figure){
+            case 1:
+                playerIcon1.setDisable(true);
+                break;
+            case 2:
+                playerIcon2.setDisable(true);
+                break;
+            case 3:
+                playerIcon3.setDisable(true);
+                break;
+            case 4:
+                playerIcon4.setDisable(true);
+                break;
+            case 5:
+                playerIcon5.setDisable(true);
+                break;
+            case 6:
+                playerIcon6.setDisable(true);
+                break;
+        }
+
+    }
+
 }
 

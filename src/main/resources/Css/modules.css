@@ -7,12 +7,10 @@
     -fx-background-position: center center;
 }
 
-/* login scene */
-
 .scene--small {
     -fx-pref-height: 500px;
     -fx-pref-width: 960px;
-    -fx-padding: 32px;
+    -fx-padding: 48px;
     -fx-alignment: center;
     -fx-background-repeat: stretch;
     -fx-background-position: center center;
@@ -20,10 +18,12 @@
 
 .login-scene {
     -fx-background-image: url("../images/login-bg.jpg");
+    -fx-padding: 48px 154px;
 }
 
 .lobby-scene {
     -fx-background-image: url("../images/lobby-bg.jpg");
+    -fx-padding: 16px 32px;
 }
 
 
@@ -36,36 +36,74 @@
     -fx-pref-width: 320px;
 }
 
+.map-picker {
+    -fx-fill-width: true;
+    -fx-pref-height: 200px;
+    -fx-background-color: #000;
+}
+
+.lobby-center-wrapper {
+    -fx-spacing: 8px;
+}
+
 .overlay {
-    -fx-min-height: 400px;
-    -fx-max-width:500px;
     -fx-spacing: 16px;
     -fx-alignment: center;
     -fx-background-color: rgba(0, 0, 0, 0.8);
-    -fx-padding: 16px;
+    -fx-padding: 48px 32px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 4, 0, 0, 0);
 }
 
-.map-selection-overlay {
-    -fx-alignment: center;
-    -fx-spacing: 50px;
-    -fx-fill-width: true;
+.lobby-overlay {
+    -fx-padding: 0 32px;
 }
 
-.vbox-highlight {
+.map-selection-overlay {
+    -fx-alignment: center-left;
+    -fx-padding: 0 32px;
+    -fx-spacing: 32px;
+    -fx-pref-height: 90px;
+}
+
+.map-option-wrapper {
     -fx-fill-height: true;
     -fx-fill-width: true;
-    -fx-alignment: top-center;
+    -fx-spacing: 16px;
+    -fx-alignment: center;
 }
 
-.selected-map {
+.map-option {
+    -fx-pref-height: 62px;
+    -fx-max-height: 62px;
+    -fx-pref-width: 80px;
+}
 
+.map-option-image {
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+.map-option-overlay {
+    -fx-pref-height: 62px;
+    -fx-max-height: 62px;
+    -fx-pref-width: 80px;
+    -fx-background-color: rgba(0, 0, 0, 0.8);
+    -fx-alignment: center;
+}
+
+.map-option-title {
+    -fx-font-size: 11px;
+}
+
+.lobby-sidebar {
+    -fx-pref-width: 200px;
 }
 
 .login-form-wrapper {
     -fx-pref-width: 240px;
     -fx-max-width: 240px;
-    -fx-spacing: 16px;
+    -fx-spacing: 8px;
 }
 
 .login-form-label {
@@ -134,27 +172,35 @@
 
 .player-bar {
     -fx-alignment: center;
-    -fx-spacing: 16px;
+    -fx-spacing: 32px;
     -fx-padding: 0 130px 0 0;
 }
 
 .player-bar--lobby {
     -fx-padding: 0;
-    -fx-min-width: 280px;
 }
 
 .player-wrapper {
     -fx-alignment: center;
-    -fx-spacing: 2px;
+    -fx-spacing: 4px;
 }
 
 .player-icon {
-    -fx-pref-height: 32px;
-    -fx-pref-width: 32px;
-    -fx-background-size: 32px;
-    -fx-background-repeat: stretch;
+    -fx-min-height: 32px;
+    -fx-min-width: 32px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
     -fx-background-position: center center;
-    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-style: solid;
+    -fx-border-width: 3px;
+
+}
+
+.player-icon--lg {
+    -fx-min-height: 48px;
+    -fx-min-width: 48px;
+    -fx-background-size: 48px;
 }
 
 #player-icon--1 {
@@ -258,101 +304,18 @@
     -fx-font-size: 12px*/
 }
 
-.card--MoveOne {
-    -fx-background-color: blue;
-    -fx-opacity: 0.5;
-}
-
-.card--MoveTwo {
-    -fx-background-color: red;
-    -fx-opacity: 0.5;
-}
-
-.card--MoveThree{
-    -fx-background-color: green;
-    -fx-opacity: 0.5;
-}
-
-.card--MoveBack{
-
-}
-
-.card--Again{
-
-}
-
-.card--TurnLeft{
-
-}
-
-.card--TurnRight{
-
-}
-
-.card--UTurn{
-
-}
-
-.card--PowerUp{
-
-}
-
-.card--Spam{
-
-}
-
-.card--Trojan{
-
-}
-
-.card--Virus{
-
-}
-
-.card--Worm{
-
-}
-
-.card--EnergyRoutine{
-
-}
-
-.card--RepeatRoutine{
-
-}
-
-.card--SandboxRoutine{
-
-}
-
-.card--SpamFolder{
-
-}
-
-.card--SpeedRoutine{
-
-}
-
-.card--WeaselRoutine{
-
-}
-
-
-
-
 .sidebar {
-    -fx-pref-height: 100%;
+    -fx-fill-height: true;
     -fx-pref-width: 230px;
-    -fx-padding: 16px 0 8px 0;
     -fx-alignment: bottom-center;
     -fx-spacing: 40px;
-    -fx-background-color: linear-gradient(to top right, #020015, #19002a);
+    -fx-background-color: linear-gradient(to top right, rgba(2,0, 21, 0.9), rgba(25,0, 42, 0.9));
 }
 
 .chat-input-wrapper {
+    -fx-alignment: center;
     -fx-spacing: 8px;
-    -fx-alignment: bottom-center;
-    -fx-padding: 0 16px;
+    -fx-padding: 16px;
 }
 
 .scroll-board {
@@ -365,10 +328,15 @@
     -fx-spacing: 8px;
     -fx-pref-height: 100%;
     -fx-fill-width: true;
+    -fx-padding: 32px 16px;
+}
+
+.chat-headline {
+    -fx-text-alignment: center;
 }
 
 .message-wrapper {
-    -fx-padding: 0 16px;
+    -fx-padding: 8;
     -fx-fill-width: true;
 }
 
@@ -404,6 +372,9 @@
 /* Lobby scene */
 
 
+.readyButton {
+    -fx-text-fill: white;
+}
 
-
-
+.player-icon-1 {
+}

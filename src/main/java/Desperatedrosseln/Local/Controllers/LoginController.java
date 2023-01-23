@@ -42,6 +42,7 @@ public class LoginController {
 
 
 
+    private Label loginWarning;
 
     public LoginController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/loginScene.fxml"));
@@ -77,8 +78,8 @@ public class LoginController {
     @FXML
     public void onLogin(ActionEvent event) throws IOException {
         if (loginTextField.getText().isBlank()){
-            loginTextField.setStyle(String.valueOf(loginwarning));
-            loginwarning.setText("Please write your name to continue");
+            //loginTextField.setStyle(String.valueOf(loginWarning));
+            loginWarning.setText("Your name cannot be empty!");
         }else {
 
             client = new Client();

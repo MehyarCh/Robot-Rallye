@@ -90,7 +90,9 @@ public class Client implements Runnable {
 
         //TODO: Logs
         if (message.startsWith("{\"messageType\":\"GameStarted\"")) {
-            mainController.startMainScene(lobbyController.getSelectedRobot());
+            Stage stage = lobbyController.getStage();
+            System.out.println(stage.getHeight());
+            mainController.startMainScene(stage, lobbyController.getSelectedRobot());
             JsonDeserializer jsonDeserializer = new JsonDeserializer();
             ProtocolMessage<GameStarted> gameStartedProtocolMessage = jsonDeserializer.deserialize(message);
             GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();
@@ -143,17 +145,21 @@ public class Client implements Runnable {
                     robotIDs.add(playerAdded.getFigure());
 
                     mapRobotToClient(playerAdded.getClientID(),playerAdded.getFigure());
+                    //disable all other robot choice buttons in the GUI if it is already taken
 
                 }
-
+                /*if (playerAdded.getClientID() != clientID) {
+                    lobbyController.disableRobotIcon(playerAdded.getFigure());
+                }*/
                 break;
+
             case "PlayerStatus":
                 break;
             case "SelectMap":
                 JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
-                SelectMap sm = selectMapJsonAdapter.fromJson(msg.getMessageBody());
+                SelectMap selectMap = selectMapJsonAdapter.fromJson(msg.getMessageBody());
 
-                lobbyController.addMapsToChoice(sm.getMaps());
+                lobbyController.addMapsToChoice(selectMap.getMaps());
                 lobbyController.canChooseMap();
 
                 break;
@@ -181,10 +187,10 @@ public class Client implements Runnable {
 
                 break;
             case "Error":
-                if (mainController != null) {
+                /*if (mainController != null) {
                     mainController.addChatMessage("Error Occurred");
                 }
-                break;
+                break;*/
             case "CardPlayed":
                 break;
             case "StartingPointTaken":
@@ -192,8 +198,9 @@ public class Client implements Runnable {
                 StartingPointTaken startingPointTaken = startingPointTakenJsonAdapter.fromJson(msg.getMessageBody());
 
                 mainController.getMapController().addUnavailablePosition(startingPointTaken.getX(), startingPointTaken.getY());
-                mainController.getMapController().addEnemiesToTheScreen(startingPointTaken.getX(), startingPointTaken.getY(),playersWithRobots.get(startingPointTaken.getClientID()));
-
+                mainController.getMapController().addRobotToUI(startingPointTaken.getX(), startingPointTaken.getY(),playersWithRobots.get(startingPointTaken.getClientID()));
+                System.out.println(startingPointTaken.getClientID());
+                System.out.println(startingPointTaken.getClientID());
                 break;
             case "YourCards":
                 JsonAdapter<YourCards> yourCardsJsonAdapter = moshi.adapter(YourCards.class);
@@ -224,7 +231,6 @@ public class Client implements Runnable {
 
     private void startStartPointSelectionTimer() {
         Timer timer = new Timer();
-        System.out.println("Timer started for Start point selection");
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
