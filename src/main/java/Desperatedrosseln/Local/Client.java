@@ -50,6 +50,7 @@ public class Client implements Runnable {
         }
 
         new Thread(this).start();
+        System.out.println(Thread.currentThread().getName());
     }
 
     public void sendMessage(String type, String body) {
@@ -90,11 +91,13 @@ public class Client implements Runnable {
         //TODO: Logs
         if (message.startsWith("{\"messageType\":\"GameStarted\"")) {
             Stage stage = lobbyController.getStage();
+            System.out.println(stage.getHeight());
             mainController.startMainScene(stage, lobbyController.getSelectedRobot());
             JsonDeserializer jsonDeserializer = new JsonDeserializer();
             ProtocolMessage<GameStarted> gameStartedProtocolMessage = jsonDeserializer.deserialize(message);
             GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();
             Desperatedrosseln.Logic.Elements.Map map = new Desperatedrosseln.Logic.Elements.Map(mainController.getMapController().convertMap(gameStarted.getGameMap()));
+            System.out.println(map);
             mainController.getMapController().setMapAsList(gameStarted.getGameMap());
             mainController.getMapController().setMap(map);
             mainController.getMapController().showMap();
@@ -102,6 +105,7 @@ public class Client implements Runnable {
             //startStartPointSelectionTimer();
             return;
         }
+        System.out.println(message);
         Moshi moshi = new Moshi.Builder().build();
         Message msg;
         {
@@ -141,6 +145,29 @@ public class Client implements Runnable {
                     robotIDs.add(playerAdded.getFigure());
 
                     mapRobotToClient(playerAdded.getClientID(),playerAdded.getFigure());
+
+                    switch (playerAdded.getFigure()){
+
+                        case 1:
+                            //ToDo: disable #player-icon-1
+                            break;
+                        case 2:
+                            //ToDo: disable #player-icon-2
+                            break;
+                        case 3:
+                            //ToDo: disable #player-icon-3
+                            break;
+                        case 4:
+                            //ToDo: disable #player-icon-4
+                            break;
+                        case 5:
+                            //ToDo: disable #player-icon-5
+                            break;
+                        case 6:
+                            //ToDo: disable #player-icon-6
+                            break;
+                    }
+
                 }
 
                 break;
