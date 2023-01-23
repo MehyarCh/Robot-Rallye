@@ -19,6 +19,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,6 +27,8 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,6 +42,9 @@ public class LobbyController {
     private Parent root;
 
     private String selectedMap;
+
+    @FXML
+    private VBox center;
 
     @FXML
     private Button playerIcon1;
@@ -71,6 +77,10 @@ public class LobbyController {
     @FXML
     private Label playersonline;
     private int selectedRobot;
+
+    private List<Button> robotIcons = new ArrayList<>();
+
+    private List<Button> selectedIcons = new ArrayList<>();
 
     public LobbyController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/lobbyScene.fxml"));
@@ -107,7 +117,18 @@ public class LobbyController {
         stage.setResizable(false);
         stage.setScene(scene);
         //playersonline.setText("Players currently in lobby: " );
+        initRobotIconsList();
+        //center.requestFocus();
         stage.show();
+    }
+
+    private void initRobotIconsList(){
+        robotIcons.add(playerIcon1);
+        robotIcons.add(playerIcon2);
+        robotIcons.add(playerIcon3);
+        robotIcons.add(playerIcon4);
+        robotIcons.add(playerIcon5);
+        robotIcons.add(playerIcon6);
     }
 
     @FXML
@@ -143,9 +164,17 @@ public class LobbyController {
         }
 
         if(!client.getRobotIDs().contains(selectedRobot)){
+            selectedIcons.add(clickedButton);
+
             this.selectedRobot = selectedRobot;
             mainController.setSelectedRobot(selectedRobot);
             readyButton.setDisable(false);
+            for (Button button: robotIcons) {
+
+                if (event.getSource() != button) {
+                    button.setDisable(true);
+                }
+            }
         }
         client.sendPlayerValues(selectedRobot);
 
@@ -246,6 +275,30 @@ public class LobbyController {
     }
     public int getSelectedRobot(){
         return this.selectedRobot;
+    }
+
+    public void disableRobotIcon(int figure){
+        switch (figure){
+            case 1:
+                playerIcon1.setDisable(true);
+                break;
+            case 2:
+                playerIcon2.setDisable(true);
+                break;
+            case 3:
+                playerIcon3.setDisable(true);
+                break;
+            case 4:
+                playerIcon4.setDisable(true);
+                break;
+            case 5:
+                playerIcon5.setDisable(true);
+                break;
+            case 6:
+                playerIcon6.setDisable(true);
+                break;
+        }
+
     }
 
 }

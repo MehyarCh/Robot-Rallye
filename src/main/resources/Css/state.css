@@ -22,11 +22,11 @@
 
 }
 
-#player-icon-1:disabled{
+#player-icon--1:disabled{
     -fx-background-image: url("../images/robots/brownDisabled.jpg");
 }
 
-#player-icon-2:disabled{
+#player-icon--2:disabled{
     -fx-background-image: url("../images/robots/yellowDisabled.jpg");
 }
 
@@ -49,6 +49,31 @@
 #readyButton:selected{
     -fx-background-color: #F6019D;
 }
+
+#player-icon--1:focused{
+    -fx-background-image: url("../images/robots/brown.jpg");
+}
+
+#player-icon--2:focused{
+    -fx-background-image: url("../images/robots/yellow.jpg");
+}
+
+#player-icon--3:focused {
+    -fx-background-image: url("../images/robots/blue.jpg");
+}
+
+#player-icon--4:focused {
+    -fx-background-image: url("../images/robots/green.jpg");
+}
+
+#player-icon--5:focused {
+    -fx-background-image: url("../images/robots/orange.jpg");
+}
+
+#player-icon--6:focused {
+    -fx-background-image: url("../images/robots/red.jpg");
+}
+
 
 
 

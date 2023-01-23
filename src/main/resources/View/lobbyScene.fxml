@@ -18,7 +18,7 @@
             xmlns:fx="http://javafx.com/fxml"
             styleClass="scene--small, lobby-scene">
     <center>
-        <VBox styleClass="lobby-center-wrapper">
+        <VBox fx:id = "center" styleClass="lobby-center-wrapper">
             <VBox VBox.vgrow="ALWAYS" styleClass="overlay, lobby-overlay, border-radius, border-radius--xs">
                 <VBox styleClass="logo-wrapper">
                     <Label text="" styleClass="logo, logo--login"/>
@@ -32,13 +32,15 @@
                         <VBox styleClass="player-wrapper">
                             <Button onAction="#onButtonClicked"
                                     id="player-icon--1"
-                                    styleClass="player-icon, player-icon--lg"/>
+                                    fx:id = "playerIcon1"
+                                    styleClass="player-icon, player-icon--lg, player-icon-1"/>
                             <Label text="Brown"
                                    styleClass="headline-4, color--light"/>
                         </VBox>
                         <VBox styleClass="player-wrapper">
                             <Button onAction="#onButtonClicked"
                                     id="player-icon--2"
+                                    fx:id = "playerIcon2"
                                     styleClass="player-icon, player-icon--lg"/>
                             <Label text="Yellow"
                                    styleClass="headline-4, color--light"/>
@@ -46,6 +48,7 @@
                         <VBox styleClass="player-wrapper">
                             <Button onAction="#onButtonClicked"
                                     id="player-icon--3"
+                                    fx:id = "playerIcon3"
                                     styleClass="player-icon, player-icon--lg"/>
                             <Label text="Blue"
                                    styleClass="headline-4, color--light"/>
@@ -53,6 +56,7 @@
                         <VBox styleClass="player-wrapper">
                             <Button onAction="#onButtonClicked"
                                     id="player-icon--4"
+                                    fx:id = "playerIcon4"
                                     styleClass="player-icon, player-icon--lg"/>
                             <Label text="Green"
                                    styleClass="headline-4, color--light"/>
@@ -60,6 +64,7 @@
                         <VBox styleClass="player-wrapper">
                             <Button onAction="#onButtonClicked"
                                     id="player-icon--5"
+                                    fx:id = "playerIcon5"
                                     styleClass="player-icon, player-icon--lg"/>
                             <Label text="Orange"
                                    styleClass="headline-4, color--light"/>
@@ -67,6 +72,7 @@
                         <VBox styleClass="player-wrapper">
                             <Button onAction="#onButtonClicked"
                                     id="player-icon--6"
+                                    fx:id = "playerIcon6"
                                     styleClass="player-icon, player-icon--lg"/>
                             <Label text="Red"
                                    styleClass="headline-4, color--light"/>

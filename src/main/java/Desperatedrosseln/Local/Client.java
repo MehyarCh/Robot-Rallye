@@ -145,32 +145,14 @@ public class Client implements Runnable {
                     robotIDs.add(playerAdded.getFigure());
 
                     mapRobotToClient(playerAdded.getClientID(),playerAdded.getFigure());
-
-                    switch (playerAdded.getFigure()){
-
-                        case 1:
-                            //ToDo: disable #player-icon-1
-                            break;
-                        case 2:
-                            //ToDo: disable #player-icon-2
-                            break;
-                        case 3:
-                            //ToDo: disable #player-icon-3
-                            break;
-                        case 4:
-                            //ToDo: disable #player-icon-4
-                            break;
-                        case 5:
-                            //ToDo: disable #player-icon-5
-                            break;
-                        case 6:
-                            //ToDo: disable #player-icon-6
-                            break;
-                    }
+                    //disable all other robot choice buttons in the GUI if it is already taken
 
                 }
-
+                /*if (playerAdded.getClientID() != clientID) {
+                    lobbyController.disableRobotIcon(playerAdded.getFigure());
+                }*/
                 break;
+
             case "PlayerStatus":
                 break;
             case "SelectMap":
@@ -205,10 +187,10 @@ public class Client implements Runnable {
 
                 break;
             case "Error":
-                if (mainController != null) {
+                /*if (mainController != null) {
                     mainController.addChatMessage("Error Occurred");
                 }
-                break;
+                break;*/
             case "CardPlayed":
                 break;
             case "StartingPointTaken":
