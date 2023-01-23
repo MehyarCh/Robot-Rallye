@@ -111,6 +111,9 @@ public class MainController {
 
     private UTurn uTurnLabel;
     public boolean isProgrammingDone = false;
+
+    @FXML
+    private Label profileIcon;
     @FXML
     private Label timeLabel;
 
@@ -174,6 +177,7 @@ public class MainController {
         this.stage = stage;
         mapController = new MapController(mapGrid, selectedRobot, calcMaxMapHeight());
         mapController.setClient(client);
+        setProfileIcon();
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -186,6 +190,31 @@ public class MainController {
                 startTimer();
             }
         });
+    }
+
+    @FXML
+    private void setProfileIcon(){
+        switch (selectedRobot){
+            case 1:
+                profileIcon.setId("player-icon--1");
+                break;
+            case 2:
+                profileIcon.setId("player-icon--2");
+                break;
+            case 3:
+                profileIcon.setId("player-icon--3");
+                break;
+            case 4:
+                profileIcon.setId("player-icon--4");
+                break;
+            case 5:
+                profileIcon.setId("player-icon--5");
+                break;
+            case 6:
+                profileIcon.setId("player-icon--6");
+                break;
+
+        }
     }
     @FXML void showOverlay(String content) {
         HBox overlay = new HBox();
