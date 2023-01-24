@@ -474,11 +474,11 @@ public class MapController {
         ImageView stackElement = null;
         PushPanel pushPanel = (PushPanel) boardElement;
         //change this if to something with register
-        if (pushPanel.getIsOnBoard().equals("2AA")) {
+        if (pushPanel.getRegisters().contains(1)) {
             Image pushPanel1Image =
                     new Image(getClass().getResource("/images/elements/pushPanel/pushPanel1.png").toString());
             stackElement = new ImageView(pushPanel1Image);
-        } else if (pushPanel.getIsOnBoard().equals("2A")) {
+        } else if (pushPanel.getRegisters().contains(2)) {
             Image pushPanel2Image =
                     new Image(getClass().getResource("/images/elements/pushPanel/pushPanel2.png").toString());
             stackElement = new ImageView(pushPanel2Image);
