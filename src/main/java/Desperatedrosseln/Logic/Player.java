@@ -2,6 +2,8 @@ package Desperatedrosseln.Logic;
 
 import Desperatedrosseln.Logic.Cards.*;
 import Desperatedrosseln.Logic.Elements.Robot;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +24,12 @@ public class Player {
 
     private List<Card> hand = new ArrayList<>(9);
     private Card[] registers = new Card[5];
+
     private int registerTrack =0;
     private List <Card> discarded = new ArrayList<>();
     private ArrayList<String> cardsYouGotNow = new ArrayList<>();
 
+    private static final Logger logger = LogManager.getLogger();
 
     public Player() {
 
@@ -33,6 +37,10 @@ public class Player {
 
     public Card[] getRegisters() {
         return registers;
+    }
+
+    public int getRegisterTrack() {
+        return registerTrack;
     }
 
     public List<Card> getDeck() {
@@ -188,19 +196,24 @@ public class Player {
         }
     }
     //also increments registerTrack
-    public void addToRegister(String cardString){
-        if(registerTrack == 5){
-            System.out.println("register full for " + name);
-            return;
-        }
+    public void addToRegister(String cardString, int register){
+        Card card;
 
-        Card card = getCardFromHand(cardString);
-        registers[registerTrack++] = card;
-        if(registerTrack==4){
-            for(Card cardsae : registers){
-                System.out.println(cardsae);
+        if(cardString.equals("null")){
+            card = null;
+        }
+        else {
+            card = getCardFromHand(cardString);
+        }
+        registers[register] = card;
+        int cardsnotnull = 0;
+        for (Card cardae: registers){
+            if(cardae != null){
+                cardsnotnull = cardsnotnull+1;
             }
         }
+        registerTrack = cardsnotnull;
+        logger.warn(" registertrack: " + registerTrack + " ,ID: " + ID);
     }
     public int getRegisterSize(){
         return registers.length;

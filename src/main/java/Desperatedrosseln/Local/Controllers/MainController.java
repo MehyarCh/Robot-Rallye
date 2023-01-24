@@ -111,7 +111,7 @@ public class MainController {
 
     private UTurn uTurnLabel;
     public boolean isProgrammingDone = false;
-
+    Moshi moshi = new Moshi.Builder().build();
     @FXML
     private Label profileIcon;
     @FXML
@@ -321,7 +321,7 @@ public class MainController {
     @FXML
     public void onProgrammingDone() {
         if (registerValues.size() == 5) {
-            sendCards();
+            //sendCards();
             isProgrammingDone = true;
             programdone.setDisable(true);
             logger.info(client.getName() + " is done programming");
@@ -373,7 +373,7 @@ public class MainController {
             @Override
             public void run() {
 
-
+                JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
                 for (int firstFreeRegister = 0; firstFreeRegister < 5; firstFreeRegister++) {
                     if (registerValues.get(firstFreeRegister) == null) {
                         int index = (int) (Math.random() * handValues.size());
@@ -385,6 +385,7 @@ public class MainController {
 
                             // adding to register
                             registerValues.set(firstFreeRegister, handValues.get(index));
+                            client.sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(handValues.get(index), firstFreeRegister)));
                             // adding register image
                             Image image = showCardImage(handValues.get(index));
                             ImageView imageView = new ImageView(image);
@@ -405,7 +406,7 @@ public class MainController {
 
                 }
                 isProgrammingDone = true;
-                sendCards();
+                //sendCards();
                 programdone.setDisable(true);
 
             }
@@ -414,7 +415,6 @@ public class MainController {
     }
 
     private void sendCards() {
-        Moshi moshi = new Moshi.Builder().build();
 
         JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
 
@@ -483,7 +483,7 @@ public class MainController {
                     registerValues.set(index, null);
                     // Removing registerImage
                     registerCards.get(index).getChildren().remove(0);
-                    client.sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(handValues.get(firstFreeHand), firstFreeHand)));
+                    client.sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(/*handValues.get(index)*/ "null", firstFreeHand)));
                 }
             });
         }

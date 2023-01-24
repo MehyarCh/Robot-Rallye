@@ -13,6 +13,8 @@ import Desperatedrosseln.Logic.Elements.BoardElement;
 import Desperatedrosseln.Logic.Elements.Tiles.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +46,7 @@ public class Game {
     private ArrayList<Card> wormpile = new ArrayList<>(6);
     private ArrayList<ClientHandler> clients;
 
-
+    private static final Logger logger = LogManager.getLogger();
     private int distance;
     private final int port;
     private String protocol = "Version 1.0";
@@ -112,12 +114,19 @@ public class Game {
         }
     }
     public boolean selectionFinished(){
-        int i=0;
+        /*int i=0;
         while(i<players.size()){
-            if(players.get(i).getRegisters().length < 5){
+            logger.warn(players.get(i).getRegisterTrack() + " ID: " + players.get(i).getID());
+            if(players.get(i).getRegisterTrack() < 5){
                 return false;
             }
             i++;
+        }*/
+        for (Player player: players){
+            logger.warn(player.getRegisterTrack() + " ID: " + player.getID());
+            if(player.getRegisterTrack() < 5){
+                return false;
+            }
         }
         return true;
     }
