@@ -74,7 +74,16 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
             }
             out.endArray();
         }
-
+        // Write the "registers" field for PushPanel tiles
+        if (value instanceof PushPanel) {
+            PushPanel pushPanel = (PushPanel) value;
+            out.name("registers");
+            out.beginArray();
+            for (Integer pushPanelRegisters : pushPanel.getRegisters()){
+                out.value(pushPanelRegisters);
+            }
+            out.endArray();
+        }
 
 
         // Write the "speed" field for ConveyorBelt tiles
