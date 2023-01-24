@@ -166,7 +166,7 @@ public class AIClient extends Thread {
                     for (int i = 2; i <=5 ; i++) {
                         if(!robotIDs.contains(i)){
                             robotID = i;
-                            sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(AIName, AI_ID)));
+                            sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(AIName, robotID)));
                             break;
                         }
                     }
