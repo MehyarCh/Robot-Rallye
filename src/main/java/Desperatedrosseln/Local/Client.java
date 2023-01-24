@@ -5,9 +5,12 @@ import Desperatedrosseln.Json.utils.JsonDeserializer;
 import Desperatedrosseln.Local.Controllers.LobbyController;
 import Desperatedrosseln.Local.Controllers.MainController;
 import Desperatedrosseln.Local.Protocols.*;
+import Desperatedrosseln.Logic.Elements.Robot;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
@@ -31,13 +34,19 @@ public class Client implements Runnable {
 
     private boolean isMyTurn = false;
 
-
+    public boolean lobbyControllerInitialized = false;
     private LobbyController lobbyController;
 
     public boolean getIsMyTurn() {
         return isMyTurn;
     }
 
+    public List<Integer> takenRobots = new ArrayList<>();
+    private static final Logger logger = LogManager.getLogger(MainController.class);
+
+    public void setLobbyControllerInitialized(boolean lobbyControllerInitialized) {
+        this.lobbyControllerInitialized = lobbyControllerInitialized;
+    }
 
     public Client() {
 
@@ -50,7 +59,7 @@ public class Client implements Runnable {
         }
 
         new Thread(this).start();
-        System.out.println(Thread.currentThread().getName());
+        logger.trace(Thread.currentThread().getName());
     }
 
     public void sendMessage(String type, String body) {
@@ -80,6 +89,10 @@ public class Client implements Runnable {
     }
 
 
+    /**
+     * @param message = the incoming protocoll message
+     * this method checks the type of each received message and continues according to the protocoll
+     */
     private void checkProtocolMessage(String message) throws IOException {
        /* if (message.equals("{\"messageBody\":\"{}\",\"messageType\":\"Alive\"}")) {
             System.out.println("Alive################");
@@ -88,16 +101,13 @@ public class Client implements Runnable {
 
         */
 
-        //TODO: Logs
         if (message.startsWith("{\"messageType\":\"GameStarted\"")) {
             Stage stage = lobbyController.getStage();
-            System.out.println(stage.getHeight());
             mainController.startMainScene(stage, lobbyController.getSelectedRobot());
             JsonDeserializer jsonDeserializer = new JsonDeserializer();
             ProtocolMessage<GameStarted> gameStartedProtocolMessage = jsonDeserializer.deserialize(message);
             GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();
             Desperatedrosseln.Logic.Elements.Map map = new Desperatedrosseln.Logic.Elements.Map(mainController.getMapController().convertMap(gameStarted.getGameMap()));
-            System.out.println(map);
             mainController.getMapController().setMapAsList(gameStarted.getGameMap());
             mainController.getMapController().setMap(map);
             mainController.getMapController().showMap();
@@ -114,7 +124,7 @@ public class Client implements Runnable {
         }
 
         if (!msg.getMessageType().equals("Alive")) {
-            System.out.println(msg.getMessageType() + ": " + msg.getMessageBody());
+            logger.trace(msg.getMessageType() + ": " + msg.getMessageBody());
         }
 
         switch (msg.getMessageType()) {
@@ -127,12 +137,10 @@ public class Client implements Runnable {
                 break;
             case "Alive":
                 sendMessage(msg.getMessageType(), msg.getMessageBody());
-                System.out.println("Alive check from server");
                 break;
             case "Welcome":
                 JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
                 this.clientID = welcomeJsonAdapter.fromJson(msg.getMessageBody()).getClientID();
-                System.out.println("welcome Client " + clientID);
                 //sendPlayerValues(clientID);
                 break;
 
@@ -142,15 +150,15 @@ public class Client implements Runnable {
 
                 localPlayerList.put(playerAdded.getName(), playerAdded.getClientID());
                 if (!robotIDs.contains(playerAdded.getFigure())) {
+                    //add robotID to the list of taken robots
                     robotIDs.add(playerAdded.getFigure());
-
                     mapRobotToClient(playerAdded.getClientID(),playerAdded.getFigure());
-                    //disable all other robot choice buttons in the GUI if it is already taken
 
+                    //check if the message is about another client and disable the specific robot-icon that he chose in this GUI
+                    if (lobbyControllerInitialized && playerAdded.getClientID() != this.clientID){
+                        lobbyController.disableRobotIcon(playerAdded.getFigure());
+                    }
                 }
-                /*if (playerAdded.getClientID() != clientID) {
-                    lobbyController.disableRobotIcon(playerAdded.getFigure());
-                }*/
                 break;
 
             case "PlayerStatus":
@@ -199,8 +207,7 @@ public class Client implements Runnable {
 
                 mainController.getMapController().addUnavailablePosition(startingPointTaken.getX(), startingPointTaken.getY());
                 mainController.getMapController().addRobotToUI(startingPointTaken.getX(), startingPointTaken.getY(),playersWithRobots.get(startingPointTaken.getClientID()));
-                System.out.println(startingPointTaken.getClientID());
-                System.out.println(startingPointTaken.getClientID());
+                logger.info(startingPointTaken.getClientID());
                 break;
             case "YourCards":
                 JsonAdapter<YourCards> yourCardsJsonAdapter = moshi.adapter(YourCards.class);
@@ -244,7 +251,7 @@ public class Client implements Runnable {
 
     private void startCardSelectionTimer() {
         Timer timer = new Timer();
-        System.out.println("Timer started for Card selection");
+        logger.info("Timer started for Card selection");
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -319,7 +326,7 @@ public class Client implements Runnable {
     }
 
     public void setClientName(String clientName) {
-        System.out.println("Setting local client name to " + clientName);
+        logger.info("Setting local client name to " + clientName);
         this.clientName = clientName;
     }
 
@@ -339,7 +346,7 @@ public class Client implements Runnable {
                 }
                 if (messageParts[1].equals(this.clientName)) {
                     //lobbyController.addChatMessage("Please complete the  command.");
-                    mainController.addChatMessage("You cannot send yourself private Messages, it is wierd. just think and talk to yourself.");
+                    mainController.addChatMessage("You cannot send yourself private Messages, it is weird. Just think and talk to yourself.");
                     return;
                 }
                 if (localPlayerList.containsKey(messageParts[1])) {

@@ -111,10 +111,15 @@ public class LobbyController {
         return stage;
     }
 
+    /**
+     * starts the lobby scene
+     * already disables all unavailable robot-choices
+     */
     public void startLobbyScene(Stage stage) {
         mainController = new MainController();
         client.setMainController(mainController);
         client.setLobbyController(this);
+        client.setLobbyControllerInitialized(true);
         client.sendHelloServer();
         this.stage = stage;
         stage.setScene(scene);
@@ -124,8 +129,12 @@ public class LobbyController {
         initRobotIconsList();
         //center.requestFocus();
         stage.show();
+        disableTakenRobots(client.getRobotIDs());
     }
 
+    /**
+     * initializes a list containing all robot-choice-buttons
+     */
     private void initRobotIconsList(){
         robotIcons.add(playerIcon1);
         robotIcons.add(playerIcon2);
@@ -135,6 +144,12 @@ public class LobbyController {
         robotIcons.add(playerIcon6);
     }
 
+    /**
+     * this method is called when the user chooses one of the robots in the GUI (icons)
+     * sets the clients selectedrobot to the chosen one
+     * disables all other robot choices for this player
+     * sends PlayerValues protocoll message to the Server
+     */
     @FXML
     public void onButtonClicked(ActionEvent event) throws IOException {
         Button clickedButton = (Button) event.getSource();
@@ -184,12 +199,19 @@ public class LobbyController {
 
     }
 
+    /**
+     * this method gets called when the user sends a text message with the ENTER key on the keyboard
+     */
     @FXML
     public void onMessageSend(KeyEvent event){
         if (event.getCode().toString().equals("ENTER")) {
             onClickSend();
         }
     }
+
+    /**
+     * this method gets called when the user sends a text message with the send button in the GUI
+     */
     @FXML
     public void onClickSend() {
         if (!chat_input_lobby.getText().isEmpty()) {
@@ -201,6 +223,59 @@ public class LobbyController {
 
             chat_input_lobby.setText("");
             chat_input_lobby.requestFocus();
+        }
+    }
+
+    /**
+     * @param robotIDs contains all the already taken robots
+     * this method disables every robot icon in the GUI that has already been chosen by other players
+     */
+    @FXML
+    public void disableTakenRobots(ArrayList<Integer> robotIDs){
+        if (robotIDs.contains(1)){
+            playerIcon1.setDisable(true);
+        }
+        if (robotIDs.contains(2)){
+            playerIcon2.setDisable(true);
+        }
+        if (robotIDs.contains(3)){
+            playerIcon3.setDisable(true);
+        }
+        if (robotIDs.contains(4)){
+            playerIcon4.setDisable(true);
+        }
+        if (robotIDs.contains(5)){
+            playerIcon5.setDisable(true);
+        }
+        if (robotIDs.contains(6)){
+            playerIcon6.setDisable(true);
+        }
+    }
+
+    /**
+     * @param figure is the chosen robot whose icon-button should be disabled
+     * this method is used from outside of this class to disable only one robot-icon
+     */
+    public void disableRobotIcon(int figure){
+        switch (figure){
+            case 1:
+                playerIcon1.setDisable(true);
+                break;
+            case 2:
+                playerIcon2.setDisable(true);
+                break;
+            case 3:
+                playerIcon3.setDisable(true);
+                break;
+            case 4:
+                playerIcon4.setDisable(true);
+                break;
+            case 5:
+                playerIcon5.setDisable(true);
+                break;
+            case 6:
+                playerIcon6.setDisable(true);
+                break;
         }
     }
     @FXML
@@ -281,29 +356,7 @@ public class LobbyController {
         return this.selectedRobot;
     }
 
-    public void disableRobotIcon(int figure){
-        switch (figure){
-            case 1:
-                playerIcon1.setDisable(true);
-                break;
-            case 2:
-                playerIcon2.setDisable(true);
-                break;
-            case 3:
-                playerIcon3.setDisable(true);
-                break;
-            case 4:
-                playerIcon4.setDisable(true);
-                break;
-            case 5:
-                playerIcon5.setDisable(true);
-                break;
-            case 6:
-                playerIcon6.setDisable(true);
-                break;
-        }
 
-    }
 
 }
 
