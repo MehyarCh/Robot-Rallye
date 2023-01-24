@@ -10,15 +10,19 @@
     -fx-background-color: #ddd;
 }
 
-.map-option-overlay:hover {
+.map-option-overlay:hover{
+    -fx-opacity: 0;
+}
+
+.map-option:focused .map-option-overlay {
     -fx-opacity: 0;
 }
 
 .player-icon:hover, .player-icon:focused, .player-icon:selected {
-    -fx-border-color: linear-gradient(white, darkgrey);
+    -fx-border-width: 3px;
 }
 
-.map-option:hover {
+.player-icon:focused {
 
 }
 

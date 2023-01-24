@@ -45,6 +45,8 @@ public class LobbyController {
 
     private String selectedMap;
 
+    private boolean hasSelectedMap = false;
+
     @FXML
     private VBox center;
 
@@ -122,7 +124,7 @@ public class LobbyController {
         stage.setScene(scene);
         //playersonline.setText("Players currently in lobby: " );
         initRobotIconsList();
-        //center.requestFocus();
+        center.requestFocus();
         stage.show();
     }
 
@@ -141,30 +143,30 @@ public class LobbyController {
 
         int selectedRobot = 0;
         switch (clickedButton.getId()) {
-            case "player-icon--1":
+            case "player-icon--1" -> {
                 logger.info(client.getName() + " chose BROWN");
                 selectedRobot = 1;
-                break;
-            case "player-icon--2":
+            }
+            case "player-icon--2" -> {
                 logger.info(client.getName() + " chose YELLOW");
                 selectedRobot = 2;
-                break;
-            case "player-icon--3":
+            }
+            case "player-icon--3" -> {
                 logger.info(client.getName() + " chose BLUE");
                 selectedRobot = 3;
-                break;
-            case "player-icon--4":
+            }
+            case "player-icon--4" -> {
                 logger.info(client.getName() + " chose GREEN");
                 selectedRobot = 4;
-                break;
-            case "player-icon--5":
+            }
+            case "player-icon--5" -> {
                 logger.info(client.getName() + " chose ORANGE");
                 selectedRobot = 5;
-                break;
-            case "player-icon--6":
+            }
+            case "player-icon--6" -> {
                 logger.info(client.getName() + " chose RED");
                 selectedRobot = 6;
-                break;
+            }
         }
 
         if(!client.getRobotIDs().contains(selectedRobot)){
@@ -259,6 +261,8 @@ public class LobbyController {
         mapOptionImage.setPreserveRatio(true);
         mapOptionImage.setFitHeight(62);
         mapOptionImage.getStyleClass().add("map-option-image");
+        mapOptionImage.getStyleClass().add("border-radius");
+        mapOptionImage.getStyleClass().add("border-radius--sm");
 
         StackPane mapOption = new StackPane(mapOptionImage, mapOptionOverlay);
         mapOption.getStyleClass().add("map-option");
@@ -267,9 +271,7 @@ public class LobbyController {
 
         mapOption.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             selectedMap = mapName;
-            System.out.println("#########++++++++++###########" + selectedMap);
         });
-
         return mapOption;
     }
 

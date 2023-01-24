@@ -180,8 +180,6 @@ public class ClientHandler implements Runnable {
                 System.out.println(game.getCurrentMap());
 
                 //ToDO send GameStarted with Map
-
-
                 List<List<List<BoardElement>>> gameMap = new JsonMapReader().readMapFromJson(game.getCurrentMap());
 
                 if (clients.size() > 1) {
@@ -201,10 +199,7 @@ public class ClientHandler implements Runnable {
 
 
                 }
-
-
                 break;
-
             case "SendChat":
 
                 JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
@@ -221,13 +216,10 @@ public class ClientHandler implements Runnable {
                     }
                 }
                 break;
-
             case "PlayCard":
                 JsonAdapter<CardPlayed> cardPlayedJsonAdapter = moshi.adapter(CardPlayed.class);
                 CardPlayed cardPlayed = new CardPlayed(player.getID(), cardPlayedJsonAdapter.fromJson(message.getMessageBody()).getCard()); //add clientID and the card that was played
-
                 broadcastMessage("CardPlayed", cardPlayedJsonAdapter.toJson(cardPlayed)); //send CardPlayed message to every client
-
             default:
                 broadcastMessage(" ", "SERVER BRO");
 
@@ -259,18 +251,14 @@ public class ClientHandler implements Runnable {
                     broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID, selectedCard.getRegister(), false)));
                 } else {
                     broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID, selectedCard.getRegister(), true)));
+                    if(game.selectionFinished()) {
+                        JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
+                        ActivePhase activePhase3 = new ActivePhase(3);
+                        broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
+                        game.runStep();
+                    }
                 }
                 break;
-                   /* }else{
-                        JsonAdapter<SelectionFinished> selectionFinishedJsonAdapter = moshi.adapter(SelectionFinished.class);
-                        broadcastMessage("SelectionFinished", selectionFinishedJsonAdapter.toJson(new SelectionFinished(clientID)));
-                        if(game.selectionFinished()){
-                            JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
-                            ActivePhase activePhase3 = new ActivePhase(3);
-                            broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
-                            game.runStep();
-                        }*/
-
             case "Logout":
                 if (player.getID() == Game.mapSelectionPlayer) {
                     Game.mapSelectionPlayer = -1;
@@ -294,7 +282,6 @@ public class ClientHandler implements Runnable {
 
         JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
         broadcastMessage("PlayerAdded", playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())));
-
     }
 
     public int getClientID() {

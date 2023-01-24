@@ -90,6 +90,8 @@
     -fx-pref-width: 80px;
     -fx-background-color: rgba(0, 0, 0, 0.8);
     -fx-alignment: center;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
 }
 
 .map-option-title {
@@ -191,10 +193,14 @@
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover;
     -fx-background-position: center center;
-    -fx-border-color: transparent;
     -fx-border-style: solid;
-    -fx-border-width: 3px;
-
+    -fx-border-width: 0px;
+    -fx-border-insets: -3px;
+    -fx-border-radius: 2px;
+    -fx-background-radius: 2px;
+    -fx-background-color: transparent;
+    -fx-background-insets: -2px;
+    -fx-focus-color: transparent;
 }
 
 .player-icon--lg {
@@ -205,26 +211,32 @@
 
 #player-icon--1 {
     -fx-background-image: url("../images/robots/brown.jpg");
+    -fx-border-color: linear-gradient(#a6480c, #793507);
 }
 
 #player-icon--2 {
     -fx-background-image: url("../images/robots/yellow.jpg");
+    -fx-border-color: linear-gradient(#f9c80e, #9d7f06);
 }
 
 #player-icon--3 {
     -fx-background-image: url("../images/robots/blue.jpg");
+    -fx-border-color: linear-gradient(#023788, #2de2e6);
 }
 
 #player-icon--4 {
     -fx-background-image: url("../images/robots/green.jpg");
+    -fx-border-color: linear-gradient(#028809, #f9c80e);
 }
 
 #player-icon--5 {
     -fx-background-image: url("../images/robots/orange.jpg");
+    -fx-border-color: linear-gradient(#ff6c11, #f58435);
 }
 
 #player-icon--6 {
     -fx-background-image: url("../images/robots/red.jpg");
+    -fx-border-color: linear-gradient(#a40512, #a4056b);
 }
 
 .profile-wrapper {

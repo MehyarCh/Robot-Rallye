@@ -8,6 +8,9 @@ import Desperatedrosseln.Local.Protocols.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
@@ -40,7 +43,6 @@ public class Client implements Runnable {
 
 
     public Client() {
-
         try {
             clientSocket = new Socket("localhost", 3000);
             this.in = new DataInputStream(clientSocket.getInputStream());
@@ -48,15 +50,12 @@ public class Client implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         new Thread(this).start();
-        System.out.println(Thread.currentThread().getName());
     }
 
     public void sendMessage(String type, String body) {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
-
         try {
             out.writeUTF(messageJsonAdapter.toJson(new Message(type, body)));
             out.flush();
@@ -81,23 +80,14 @@ public class Client implements Runnable {
 
 
     private void checkProtocolMessage(String message) throws IOException {
-       /* if (message.equals("{\"messageBody\":\"{}\",\"messageType\":\"Alive\"}")) {
-            System.out.println("Alive################");
-            return;
-        }
-
-        */
-
         //TODO: Logs
         if (message.startsWith("{\"messageType\":\"GameStarted\"")) {
             Stage stage = lobbyController.getStage();
-            System.out.println(stage.getHeight());
             mainController.startMainScene(stage, lobbyController.getSelectedRobot());
             JsonDeserializer jsonDeserializer = new JsonDeserializer();
             ProtocolMessage<GameStarted> gameStartedProtocolMessage = jsonDeserializer.deserialize(message);
             GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();
             Desperatedrosseln.Logic.Elements.Map map = new Desperatedrosseln.Logic.Elements.Map(mainController.getMapController().convertMap(gameStarted.getGameMap()));
-            System.out.println(map);
             mainController.getMapController().setMapAsList(gameStarted.getGameMap());
             mainController.getMapController().setMap(map);
             mainController.getMapController().showMap();
@@ -144,7 +134,7 @@ public class Client implements Runnable {
                 if (!robotIDs.contains(playerAdded.getFigure())) {
                     robotIDs.add(playerAdded.getFigure());
 
-                    mapRobotToClient(playerAdded.getClientID(),playerAdded.getFigure());
+                    mapRobotToClient(playerAdded.getClientID(), playerAdded.getFigure());
                     //disable all other robot choice buttons in the GUI if it is already taken
 
                 }
@@ -180,11 +170,7 @@ public class Client implements Runnable {
                     }
                 }
             case "GameStarted":
-
                 //see above
-
-
-
                 break;
             case "Error":
                 /*if (mainController != null) {
@@ -196,11 +182,8 @@ public class Client implements Runnable {
             case "StartingPointTaken":
                 JsonAdapter<StartingPointTaken> startingPointTakenJsonAdapter = moshi.adapter(StartingPointTaken.class);
                 StartingPointTaken startingPointTaken = startingPointTakenJsonAdapter.fromJson(msg.getMessageBody());
-
                 mainController.getMapController().addUnavailablePosition(startingPointTaken.getX(), startingPointTaken.getY());
-                mainController.getMapController().addRobotToUI(startingPointTaken.getX(), startingPointTaken.getY(),playersWithRobots.get(startingPointTaken.getClientID()));
-                System.out.println(startingPointTaken.getClientID());
-                System.out.println(startingPointTaken.getClientID());
+                mainController.getMapController().addRobotToUI(playersWithRobots.get(startingPointTaken.getClientID()), startingPointTaken.getX(), startingPointTaken.getY());
                 break;
             case "YourCards":
                 JsonAdapter<YourCards> yourCardsJsonAdapter = moshi.adapter(YourCards.class);
@@ -222,12 +205,16 @@ public class Client implements Runnable {
                 } else if (currentPlayer.getClientID() == this.clientID) {
                     isMyTurn = false;
                 }
-
-
+            case "Movement":
+                JsonAdapter<Movement> movementJsonAdapter = moshi.adapter(Movement.class);
+                Movement movement = movementJsonAdapter.fromJson(msg.getMessageBody());
+                mainController.getMapController().move(movement.getClientID(), movement.getX(), movement.getY());
+            case "PlayerTurning":
+                JsonAdapter<PlayerTurning> playerTurningJsonAdapter = moshi.adapter(PlayerTurning.class);
+                PlayerTurning playerTurning = playerTurningJsonAdapter.fromJson(msg.getMessageBody());
+                mainController.getMapController().rotateRobot(playerTurning.getClientID(), playerTurning.getRotation());
         }
     }
-
-
 
     private void startStartPointSelectionTimer() {
         Timer timer = new Timer();
@@ -263,7 +250,6 @@ public class Client implements Runnable {
                 return key;
             }
         }
-
         return null;
     }
 
@@ -287,11 +273,7 @@ public class Client implements Runnable {
         try {
             while (!clientSocket.isClosed()) {
                 message = in.readUTF();
-                if (message != null) {
-                    checkProtocolMessage(message);
-                } else {
-                    break;
-                }
+                checkProtocolMessage(message);
             }
         } catch (IOException e) {
             //logOut();
@@ -354,7 +336,6 @@ public class Client implements Runnable {
                 //disconnect the client from the server ->  closeAll in Clienthandler ToDo: fix this
                 this.logOut();
                 sendMessage("Logout", "");
-
             }
 
 

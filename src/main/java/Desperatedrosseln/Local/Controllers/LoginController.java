@@ -40,8 +40,7 @@ public class LoginController {
 
     private static final Logger logger = LogManager.getLogger(LoginController.class);
 
-
-
+    @FXML
     private Label loginWarning;
 
     public LoginController() throws IOException {

@@ -243,7 +243,7 @@ public class Game {
             for (int played = 1; played <= players.size(); played++) {
                 //find the current player and let them play
                 for (Player curr : players) {
-                    if (curr.equals(playing) && rebooted_players.indexOf(curr) == -1) {
+                    if (curr.equals(playing) && !rebooted_players.contains(curr)) {
                         //Server sends currentPlayer message to every Client
                         JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
                         CurrentPlayer currentPlayer = new CurrentPlayer(playing.getID());
@@ -252,20 +252,15 @@ public class Game {
                         //the active player plays their card in the current register
                         playCardByType(curr.getRegisterIndex(current_register), curr, current_register);
 
-
                         activeCardsArrayList.add(new CurrentCards.ActiveCards(curr.getID(), curr.getRegisterIndex(current_register)));
-
-
                         decideNextPlayer();
                     }
                 }
-
             }
             JsonAdapter<CurrentCards> currentCardsJsonAdapter = moshi.adapter(CurrentCards.class);
             broadcastMessage("CurrentCards", currentCardsJsonAdapter.toJson(new CurrentCards(activeCardsArrayList)));
             activateElements();
         }
-
         isRunning = false;
     }
 
