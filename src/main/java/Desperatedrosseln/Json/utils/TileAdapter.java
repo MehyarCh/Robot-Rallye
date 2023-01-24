@@ -85,7 +85,7 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
         }
 
         // Write the "count" field for Laser and Energy-Space tiles
-        if (value instanceof Laser || value instanceof EnergySpace) {
+        if (value instanceof Laser || value instanceof EnergySpace || value instanceof CheckPoint) {
             int count = 0;
             if (value instanceof Laser) {
                 Laser laser = (Laser) value;
@@ -93,6 +93,9 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
             } else if (value instanceof EnergySpace) {
                 EnergySpace energySpace = (EnergySpace) value;
                 count = energySpace.getCount();
+            }else if (value instanceof CheckPoint) {
+                CheckPoint checkPoint = (CheckPoint) value;
+                count = checkPoint.getCount();
             }
             out.name("count");
             out.value(count);
@@ -110,7 +113,6 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
         ArrayList<Integer> registers = new ArrayList<>();
         int speed = 0;
         int count = 0;
-        int number = 1;
 
         // Read the JSON object and determine the type of tile to create
         if (reader.peek() == JsonToken.NULL) {

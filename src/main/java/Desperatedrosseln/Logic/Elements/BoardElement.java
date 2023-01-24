@@ -1,11 +1,7 @@
 package Desperatedrosseln.Logic.Elements;
 
-import java.util.List;
 
 public class BoardElement {
-
-    public List<String> types;
-
     private String type;
     private String isOnBoard;
     private transient Position position;

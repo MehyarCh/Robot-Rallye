@@ -204,7 +204,7 @@ public class Client implements Runnable {
                 mainController.updateCardImages();
                 mainController.initRegisterValues();
                 mainController.cardClick();
-                //startCardSelectionTimer();
+                startCardSelectionTimer();
                 break;
             case "CurrentPlayer":
                 JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);

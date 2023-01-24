@@ -147,7 +147,7 @@ public class ClientHandler implements Runnable {
                 boolean status = setStatusJsonAdapter.fromJson(message.getMessageBody()).isReady();
                 player.setReady(status);
 
-                if (Game.mapSelectionPlayer == -1 && status) {
+                if (!isAI && Game.mapSelectionPlayer == -1 && status) {
                     Game.mapSelectionPlayer = player.getID();
                 } else if (Game.mapSelectionPlayer == player.getID() && !status) {
                     Game.mapSelectionPlayer = -1;
@@ -169,9 +169,7 @@ public class ClientHandler implements Runnable {
                     }
 
                 }
-//                    if (playerStatus.isReady()) {
-//                        Game.readyPlayer(this);
-//                    }
+
                 break;
             case "MapSelected":
                 JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
@@ -241,7 +239,7 @@ public class ClientHandler implements Runnable {
                 game.placeRobot(player, setStartingPoint.getX(), setStartingPoint.getY());
                 System.out.println(clientName + " val " + ++game.startingPositionsChosen + "nos clients " + clients.size());
 
-                if (!isAI && game.startingPositionsChosen == clients.size() && !game.isRunning()) {
+                if ( game.startingPositionsChosen == clients.size() && !game.isRunning()) {
                     game.runStep();
                 }
 

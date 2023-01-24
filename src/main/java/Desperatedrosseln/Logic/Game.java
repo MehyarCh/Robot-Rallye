@@ -54,6 +54,7 @@ public class Game {
         this.protocol = protocol;
         this.port = port;
         this.clients = clients;
+        addAI();
     }
 
 
@@ -129,11 +130,6 @@ public class Game {
         JsonMapReader jsonMapReader = new JsonMapReader();
         List<List<List<BoardElement>>> gameMapList = jsonMapReader.readMapFromJson(currentMap);
         gameMap = new Map(convertMap(gameMapList));
-        if(gameMap == null){
-            System.out.println("Gamemap is null!!!");
-        }else {
-            System.out.println("Gamemap is not null");
-        }
 
         for (int x = 0; x < gameMapList.size(); x++) {
             for (int y = 0; y < gameMapList.get(x).size(); y++) {

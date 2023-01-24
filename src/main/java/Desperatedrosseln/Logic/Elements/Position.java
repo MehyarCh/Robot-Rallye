@@ -6,7 +6,7 @@ public class Position {
     private int y;
 
     public Position(int x, int y) {
-        //switched x and y ToDO: fix
+        //ToDO: fix switched x and y
         this.x = y;
         this.y = x;
     }
@@ -32,5 +32,10 @@ public class Position {
     }
     public boolean equals(Position otherPosition){
         return x == otherPosition.getX() && y == otherPosition.getY();
+    }
+
+    @Override
+    public String toString() {
+        return "("+x+","+y+")";
     }
 }

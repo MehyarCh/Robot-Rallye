@@ -18,7 +18,6 @@ public class Robot extends BoardElement {
             robotPositions = new ArrayList<>();
         }
         robotPositions.add(position);
-        this.direction = direction;
 
         this.ID = iD;
 
@@ -157,7 +156,7 @@ public class Robot extends BoardElement {
         return direction;
     }
 
-    private void setDirection(DIRECTION direction) {
+    public void setDirection(DIRECTION direction) {
         this.direction= direction;
     }
 
