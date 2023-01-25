@@ -28,8 +28,8 @@ public class Game {
     private Map gameMap;
     private static String currentMap;
     private static ArrayList<Player> players = new ArrayList<>();
-    private ArrayList<BoardElement> boardElements;
-    private List<Player> rebooted_players;
+    private ArrayList<BoardElement> boardElements = new ArrayList<>();
+    private List<Player> rebooted_players = new ArrayList<>();
     Moshi moshi = new Moshi.Builder().build();
 
     JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
@@ -252,16 +252,19 @@ public class Game {
         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
         ActivePhase activePhase3 = new ActivePhase(phase);
         broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
-
+        decideNextPlayer();
         //for each register
         for (int current_register = 0; current_register < 5; current_register++) {
+            logger.debug("Activating register: "+ current_register);
             this.current_register = current_register;
             //each player plays their register
             ArrayList<CurrentCards.ActiveCards> activeCardsArrayList = new ArrayList<>();
             for (int played = 1; played <= players.size(); played++) {
                 //find the current player and let them play
                 for (Player curr : players) {
-                    if (curr.equals(playing) && !rebooted_players.contains(curr)) {
+                    logger.debug("Register " + current_register + "For Player: "+ curr.getID());
+                    //Isn't going into condition
+                    if (curr.getID()==playing.getID() && !rebooted_players.contains(curr)) {
                         //Server sends currentPlayer message to every Client
                         JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
                         CurrentPlayer currentPlayer = new CurrentPlayer(playing.getID());
@@ -271,7 +274,7 @@ public class Game {
                         playCardByType(curr.getRegisterIndex(current_register), curr, current_register);
 
                         activeCardsArrayList.add(new CurrentCards.ActiveCards(curr.getID(), curr.getRegisterIndex(current_register)));
-                        decideNextPlayer();
+
                     }
                 }
             }

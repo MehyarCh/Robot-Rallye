@@ -265,7 +265,7 @@ public class ClientHandler implements Runnable {
                         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
                         ActivePhase activePhase3 = new ActivePhase(3);
                         broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
-                        //game.runStep();
+                        game.runStep();
                         String hand = "{";
                         for(ClientHandler client: clients){
                             hand += client.getClientID();
