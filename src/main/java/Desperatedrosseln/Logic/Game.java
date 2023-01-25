@@ -13,6 +13,8 @@ import Desperatedrosseln.Logic.Elements.BoardElement;
 import Desperatedrosseln.Logic.Elements.Tiles.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +28,8 @@ public class Game {
     private Map gameMap;
     private static String currentMap;
     private static ArrayList<Player> players = new ArrayList<>();
-    private ArrayList<BoardElement> boardElements;
-    private List<Player> rebooted_players;
+    private ArrayList<BoardElement> boardElements = new ArrayList<>();
+    private List<Player> rebooted_players = new ArrayList<>();
     Moshi moshi = new Moshi.Builder().build();
 
     JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
@@ -44,7 +46,7 @@ public class Game {
     private ArrayList<Card> wormpile = new ArrayList<>(6);
     private ArrayList<ClientHandler> clients;
 
-
+    private static final Logger logger = LogManager.getLogger();
     private int distance;
     private final int port;
     private String protocol = "Version 1.0";
@@ -113,12 +115,19 @@ public class Game {
         }
     }
     public boolean selectionFinished(){
-        int i=0;
+        /*int i=0;
         while(i<players.size()){
-            if(players.get(i).getRegisters().length < 5){
+            logger.warn(players.get(i).getRegisterTrack() + " ID: " + players.get(i).getID());
+            if(players.get(i).getRegisterTrack() < 5){
                 return false;
             }
             i++;
+        }*/
+        for (Player player: players){
+            logger.warn(player.getRegisterTrack() + " ID: " + player.getID());
+            if(player.getRegisterTrack() < 5){
+                return false;
+            }
         }
         return true;
     }
@@ -139,6 +148,15 @@ public class Game {
 
         phase = 2;
         isRunning = false;
+
+        //setting up boardelements
+        for(int i=0; i<gameMap.getMapFields().size(); i++){
+            for(int j=0; j<gameMap.getMapFields().get(0).size(); j++){
+                for(BoardElement element : gameMap.getMapFields().get(0).get(0).getTypes()){
+                    boardElements.add(element);
+                }
+            }
+        }
     }
 
     private List<List<MapField>> convertMap(List<List<List<BoardElement>>> gameMapList) {
@@ -230,16 +248,19 @@ public class Game {
         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
         ActivePhase activePhase3 = new ActivePhase(phase);
         broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
-
+        decideNextPlayer();
         //for each register
         for (int current_register = 0; current_register < 5; current_register++) {
+            logger.debug("Activating register: "+ current_register);
             this.current_register = current_register;
             //each player plays their register
             ArrayList<CurrentCards.ActiveCards> activeCardsArrayList = new ArrayList<>();
             for (int played = 1; played <= players.size(); played++) {
                 //find the current player and let them play
                 for (Player curr : players) {
-                    if (curr.equals(playing) && rebooted_players.indexOf(curr) == -1) {
+                    logger.debug("Register " + current_register + "For Player: "+ curr.getID());
+                    //Isn't going into condition
+                    if (curr.getID()==playing.getID() && !rebooted_players.contains(curr)) {
                         //Server sends currentPlayer message to every Client
                         JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
                         CurrentPlayer currentPlayer = new CurrentPlayer(playing.getID());
@@ -248,20 +269,15 @@ public class Game {
                         //the active player plays their card in the current register
                         playCardByType(curr.getRegisterIndex(current_register), curr, current_register);
 
-
                         activeCardsArrayList.add(new CurrentCards.ActiveCards(curr.getID(), curr.getRegisterIndex(current_register)));
 
-
-                        decideNextPlayer();
                     }
                 }
-
             }
             JsonAdapter<CurrentCards> currentCardsJsonAdapter = moshi.adapter(CurrentCards.class);
             broadcastMessage("CurrentCards", currentCardsJsonAdapter.toJson(new CurrentCards(activeCardsArrayList)));
             activateElements();
         }
-
         isRunning = false;
     }
 

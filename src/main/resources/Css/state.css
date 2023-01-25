@@ -10,3 +10,75 @@
     -fx-background-color: #ddd;
 }
 
+.map-option-overlay:hover{
+    -fx-opacity: 0;
+}
+
+.map-option:focused .map-option-overlay {
+    -fx-opacity: 0;
+}
+
+.player-icon:hover, .player-icon:focused, .player-icon:selected {
+    -fx-border-width: 3px;
+}
+
+.player-icon:focused {
+
+}
+
+#player-icon--1:disabled{
+    -fx-background-image: url("../images/robots/brownDisabled.jpg");
+}
+
+#player-icon--2:disabled{
+    -fx-background-image: url("../images/robots/yellowDisabled.jpg");
+}
+
+#player-icon--3:disabled {
+    -fx-background-image: url("../images/robots/blueDisabled.jpg");
+}
+
+#player-icon--4:disabled {
+    -fx-background-image: url("../images/robots/greenDisabled.jpg");
+}
+
+#player-icon--5:disabled {
+    -fx-background-image: url("../images/robots/orangeDisabled.jpg");
+}
+
+#player-icon--6:disabled {
+    -fx-background-image: url("../images/robots/redDisabled.jpg");
+}
+
+#readyButton:selected{
+    -fx-background-color: #F6019D;
+}
+
+#player-icon--1:focused{
+    -fx-background-image: url("../images/robots/brown.jpg");
+}
+
+#player-icon--2:focused{
+    -fx-background-image: url("../images/robots/yellow.jpg");
+}
+
+#player-icon--3:focused {
+    -fx-background-image: url("../images/robots/blue.jpg");
+}
+
+#player-icon--4:focused {
+    -fx-background-image: url("../images/robots/green.jpg");
+}
+
+#player-icon--5:focused {
+    -fx-background-image: url("../images/robots/orange.jpg");
+}
+
+#player-icon--6:focused {
+    -fx-background-image: url("../images/robots/red.jpg");
+}
+
+
+
+
+

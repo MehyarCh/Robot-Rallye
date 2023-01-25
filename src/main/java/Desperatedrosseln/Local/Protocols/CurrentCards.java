@@ -20,11 +20,15 @@ public class CurrentCards {
             }
         ]
      */
+
     private List<ActiveCards> activeCards = new ArrayList<ActiveCards>();
 
     public CurrentCards(List<ActiveCards> activeCards){
         this.activeCards = activeCards;
     }
+
+
+
 
     public static class ActiveCards {
         private int clientID;

@@ -5,9 +5,13 @@ import Desperatedrosseln.Json.utils.JsonDeserializer;
 import Desperatedrosseln.Local.Controllers.LobbyController;
 import Desperatedrosseln.Local.Controllers.MainController;
 import Desperatedrosseln.Local.Protocols.*;
+import Desperatedrosseln.Logic.Elements.Robot;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Level;
 
 import java.io.*;
 import java.net.Socket;
@@ -31,16 +35,21 @@ public class Client implements Runnable {
 
     private boolean isMyTurn = false;
 
-
+    public boolean lobbyControllerInitialized = false;
     private LobbyController lobbyController;
 
     public boolean getIsMyTurn() {
         return isMyTurn;
     }
 
+    public List<Integer> takenRobots = new ArrayList<>();
+    private static final Logger logger = LogManager.getLogger(MainController.class);
+
+    public void setLobbyControllerInitialized(boolean lobbyControllerInitialized) {
+        this.lobbyControllerInitialized = lobbyControllerInitialized;
+    }
 
     public Client() {
-
         try {
             clientSocket = new Socket("localhost", 3000);
             this.in = new DataInputStream(clientSocket.getInputStream());
@@ -48,15 +57,12 @@ public class Client implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         new Thread(this).start();
-        System.out.println(Thread.currentThread().getName());
     }
 
     public void sendMessage(String type, String body) {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
-
         try {
             out.writeUTF(messageJsonAdapter.toJson(new Message(type, body)));
             out.flush();
@@ -80,22 +86,19 @@ public class Client implements Runnable {
     }
 
 
+    /**
+     * @param message = the incoming protocoll message
+     * this method checks the type of each received message and continues according to the protocoll
+     */
     private void checkProtocolMessage(String message) throws IOException {
-       /* if (message.equals("{\"messageBody\":\"{}\",\"messageType\":\"Alive\"}")) {
-            System.out.println("Alive################");
-            return;
-        }
-
-        */
-
         //TODO: Logs
         if (message.startsWith("{\"messageType\":\"GameStarted\"")) {
-            mainController.startMainScene(lobbyController.getSelectedRobot());
+            Stage stage = lobbyController.getStage();
+            mainController.startMainScene(stage, lobbyController.getSelectedRobot());
             JsonDeserializer jsonDeserializer = new JsonDeserializer();
             ProtocolMessage<GameStarted> gameStartedProtocolMessage = jsonDeserializer.deserialize(message);
             GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();
             Desperatedrosseln.Logic.Elements.Map map = new Desperatedrosseln.Logic.Elements.Map(mainController.getMapController().convertMap(gameStarted.getGameMap()));
-            System.out.println(map);
             mainController.getMapController().setMapAsList(gameStarted.getGameMap());
             mainController.getMapController().setMap(map);
             mainController.getMapController().showMap();
@@ -112,7 +115,7 @@ public class Client implements Runnable {
         }
 
         if (!msg.getMessageType().equals("Alive")) {
-            System.out.println(msg.getMessageType() + ": " + msg.getMessageBody());
+            logger.trace(msg.getMessageType() + ": " + msg.getMessageBody());
         }
 
         switch (msg.getMessageType()) {
@@ -125,12 +128,10 @@ public class Client implements Runnable {
                 break;
             case "Alive":
                 sendMessage(msg.getMessageType(), msg.getMessageBody());
-                System.out.println("Alive check from server");
                 break;
             case "Welcome":
                 JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
                 this.clientID = welcomeJsonAdapter.fromJson(msg.getMessageBody()).getClientID();
-                System.out.println("welcome Client " + clientID);
                 //sendPlayerValues(clientID);
                 break;
 
@@ -140,20 +141,26 @@ public class Client implements Runnable {
 
                 localPlayerList.put(playerAdded.getName(), playerAdded.getClientID());
                 if (!robotIDs.contains(playerAdded.getFigure())) {
+                    //add robotID to the list of taken robots
                     robotIDs.add(playerAdded.getFigure());
 
-                    mapRobotToClient(playerAdded.getClientID(),playerAdded.getFigure());
+                    mapRobotToClient(playerAdded.getClientID(), playerAdded.getFigure());
+                    //disable all other robot choice buttons in the GUI if it is already taken
 
+                    //check if the message is about another client and disable the specific robot-icon that he chose in this GUI
+                    if (lobbyControllerInitialized && playerAdded.getClientID() != this.clientID){
+                        lobbyController.disableRobotIcon(playerAdded.getFigure());
+                    }
                 }
-
                 break;
+
             case "PlayerStatus":
                 break;
             case "SelectMap":
                 JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
-                SelectMap sm = selectMapJsonAdapter.fromJson(msg.getMessageBody());
+                SelectMap selectMap = selectMapJsonAdapter.fromJson(msg.getMessageBody());
 
-                lobbyController.addMapsToChoice(sm.getMaps());
+                lobbyController.addMapsToChoice(selectMap.getMaps());
                 lobbyController.canChooseMap();
 
                 break;
@@ -174,26 +181,20 @@ public class Client implements Runnable {
                     }
                 }
             case "GameStarted":
-
                 //see above
-
-
-
                 break;
             case "Error":
-                if (mainController != null) {
+                /*if (mainController != null) {
                     mainController.addChatMessage("Error Occurred");
                 }
-                break;
+                break;*/
             case "CardPlayed":
                 break;
             case "StartingPointTaken":
                 JsonAdapter<StartingPointTaken> startingPointTakenJsonAdapter = moshi.adapter(StartingPointTaken.class);
                 StartingPointTaken startingPointTaken = startingPointTakenJsonAdapter.fromJson(msg.getMessageBody());
-
                 mainController.getMapController().addUnavailablePosition(startingPointTaken.getX(), startingPointTaken.getY());
-                mainController.getMapController().addEnemiesToTheScreen(startingPointTaken.getX(), startingPointTaken.getY(),playersWithRobots.get(startingPointTaken.getClientID()));
-
+                mainController.getMapController().addRobotToUI(playersWithRobots.get(startingPointTaken.getClientID()), startingPointTaken.getX(), startingPointTaken.getY());
                 break;
             case "YourCards":
                 JsonAdapter<YourCards> yourCardsJsonAdapter = moshi.adapter(YourCards.class);
@@ -215,16 +216,19 @@ public class Client implements Runnable {
                 } else if (currentPlayer.getClientID() == this.clientID) {
                     isMyTurn = false;
                 }
-
-
+            case "Movement":
+                JsonAdapter<Movement> movementJsonAdapter = moshi.adapter(Movement.class);
+                Movement movement = movementJsonAdapter.fromJson(msg.getMessageBody());
+                mainController.getMapController().move(movement.getClientID(), movement.getX(), movement.getY());
+            case "PlayerTurning":
+                JsonAdapter<PlayerTurning> playerTurningJsonAdapter = moshi.adapter(PlayerTurning.class);
+                PlayerTurning playerTurning = playerTurningJsonAdapter.fromJson(msg.getMessageBody());
+                mainController.getMapController().rotateRobot(playerTurning.getClientID(), playerTurning.getRotation());
         }
     }
 
-
-
     private void startStartPointSelectionTimer() {
         Timer timer = new Timer();
-        System.out.println("Timer started for Start point selection");
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -238,7 +242,7 @@ public class Client implements Runnable {
 
     private void startCardSelectionTimer() {
         Timer timer = new Timer();
-        System.out.println("Timer started for Card selection");
+        logger.info("Timer started for Card selection");
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -257,7 +261,6 @@ public class Client implements Runnable {
                 return key;
             }
         }
-
         return null;
     }
 
@@ -281,11 +284,7 @@ public class Client implements Runnable {
         try {
             while (!clientSocket.isClosed()) {
                 message = in.readUTF();
-                if (message != null) {
-                    checkProtocolMessage(message);
-                } else {
-                    break;
-                }
+                checkProtocolMessage(message);
             }
         } catch (IOException e) {
             //logOut();
@@ -313,7 +312,7 @@ public class Client implements Runnable {
     }
 
     public void setClientName(String clientName) {
-        System.out.println("Setting local client name to " + clientName);
+        logger.info("Setting local client name to " + clientName);
         this.clientName = clientName;
     }
 
@@ -333,7 +332,7 @@ public class Client implements Runnable {
                 }
                 if (messageParts[1].equals(this.clientName)) {
                     //lobbyController.addChatMessage("Please complete the  command.");
-                    mainController.addChatMessage("You cannot send yourself private Messages, it is wierd. just think and talk to yourself.");
+                    mainController.addChatMessage("You cannot send yourself private Messages, it is weird. Just think and talk to yourself.");
                     return;
                 }
                 if (localPlayerList.containsKey(messageParts[1])) {
@@ -348,7 +347,6 @@ public class Client implements Runnable {
                 //disconnect the client from the server ->  closeAll in Clienthandler ToDo: fix this
                 this.logOut();
                 sendMessage("Logout", "");
-
             }
 
 

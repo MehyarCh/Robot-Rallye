@@ -10,7 +10,7 @@
       xmlns:fx="http://javafx.com/fxml"
       styleClass="scene--small, login-scene">
 
-    <VBox styleClass="overlay">
+    <VBox styleClass="overlay, border-radius, border-radius--xs">
         <VBox styleClass="logo-wrapper">
             <Label text="" styleClass="logo, logo--login"/>
             <ImageView styleClass="logo, logo--login"/>
@@ -20,7 +20,7 @@
                 <Label text="Name" styleClass="login-form-label"/>
                 <TextField fx:id="loginTextField" styleClass="text-input, text-input--primary, login-form-text-input"/>
             </VBox>
-            <Label fx:id="loginwarning" layoutX="88.0" layoutY="446.0" prefWidth="245.0" textFill="RED"/>
+            <Label fx:id="loginWarning" styleClass="login-warning" />
         </VBox>
         <VBox styleClass="login-button-wrapper">
             <Button text="JOIN LOBBY"

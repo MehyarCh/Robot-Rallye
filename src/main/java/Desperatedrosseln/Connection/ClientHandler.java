@@ -10,6 +10,8 @@ import Desperatedrosseln.Logic.Game;
 import Desperatedrosseln.Logic.Player;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
@@ -38,6 +40,8 @@ public class ClientHandler implements Runnable {
         return player;
     }
     private List<String> maps = new ArrayList<>();
+
+    private static final Logger logger = LogManager.getLogger();
 
 
     public ClientHandler(Socket socket, Game game, String protocol) {
@@ -178,8 +182,6 @@ public class ClientHandler implements Runnable {
                 System.out.println(game.getCurrentMap());
 
                 //ToDO send GameStarted with Map
-
-
                 List<List<List<BoardElement>>> gameMap = new JsonMapReader().readMapFromJson(game.getCurrentMap());
 
                 if (clients.size() > 1) {
@@ -199,10 +201,7 @@ public class ClientHandler implements Runnable {
 
 
                 }
-
-
                 break;
-
             case "SendChat":
 
                 JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
@@ -219,13 +218,10 @@ public class ClientHandler implements Runnable {
                     }
                 }
                 break;
-
             case "PlayCard":
                 JsonAdapter<CardPlayed> cardPlayedJsonAdapter = moshi.adapter(CardPlayed.class);
                 CardPlayed cardPlayed = new CardPlayed(player.getID(), cardPlayedJsonAdapter.fromJson(message.getMessageBody()).getCard()); //add clientID and the card that was played
-
                 broadcastMessage("CardPlayed", cardPlayedJsonAdapter.toJson(cardPlayed)); //send CardPlayed message to every client
-
             default:
                 broadcastMessage(" ", "SERVER BRO");
 
@@ -251,24 +247,36 @@ public class ClientHandler implements Runnable {
             case "SelectedCard":
                 JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
                 SelectedCard selectedCard = selectedCardJsonAdapter.fromJson(message.getMessageBody());
-                player.addToRegister(selectedCard.getCard());
+                //add this to the players register in Game as well
+                logger.debug(selectedCard.getCard(), selectedCard.getRegister());
+                player.addToRegister(selectedCard.getCard(), selectedCard.getRegister());
+
                 JsonAdapter<CardSelected> cardSelectedJsonAdapter = moshi.adapter(CardSelected.class);
-                if (selectedCard.getCard() == null) {
+                if (selectedCard.getCard().equals("null")) {
                     broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID, selectedCard.getRegister(), false)));
+                    //replace the card through "null" in the register and replace the null spot in the hand with the card that got put back
+                    player.addToRegister(selectedCard.getCard(), selectedCard.getRegister());
                 } else {
                     broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID, selectedCard.getRegister(), true)));
+                    logger.trace(game.selectionFinished());
+                    if(game.selectionFinished()) {
+                        JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
+                        ActivePhase activePhase3 = new ActivePhase(3);
+                        broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
+                        game.runStep();
+                        String hand = "{";
+                        for(ClientHandler client: clients){
+                            hand += client.getClientID();
+                            for(int i = 0; i<5; i++) {
+                                hand = hand + " " + client.getPlayer().getRegisters()[i] + ",";
+                            }
+                            hand = hand + "}";
+                            logger.warn(hand);
+                            hand = "{";
+                        }
+                    }
                 }
                 break;
-                   /* }else{
-                        JsonAdapter<SelectionFinished> selectionFinishedJsonAdapter = moshi.adapter(SelectionFinished.class);
-                        broadcastMessage("SelectionFinished", selectionFinishedJsonAdapter.toJson(new SelectionFinished(clientID)));
-                        if(game.selectionFinished()){
-                            JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
-                            ActivePhase activePhase3 = new ActivePhase(3);
-                            broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
-                            game.runStep();
-                        }*/
-
             case "Logout":
                 if (player.getID() == Game.mapSelectionPlayer) {
                     Game.mapSelectionPlayer = -1;
@@ -292,7 +300,6 @@ public class ClientHandler implements Runnable {
 
         JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
         broadcastMessage("PlayerAdded", playerAddedJsonAdapter.toJson(new PlayerAdded(player.getID(), player.getName(), player.getRobot().getID())));
-
     }
 
     public int getClientID() {
@@ -311,11 +318,9 @@ public class ClientHandler implements Runnable {
 
     // messageType: 0 = broadcast to all others, 1 = to everyone
     public void broadcastMessage(String type,String json) {
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+clients);
         for (ClientHandler client : clients) {
             client.sendMessage(type,json);
         }
-        System.out.println(clientName+" BC "+json);
     }
 
 

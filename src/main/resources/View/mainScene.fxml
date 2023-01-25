@@ -86,7 +86,7 @@
                   GridPane.rowIndex="0"
                   styleClass="profile-wrapper">
                 <Label text="."
-                       id="player-icon--1"
+                       fx:id="profileIcon"
                        styleClass="player-icon"/>
                 <VBox styleClass="profile-status">
                     <Label text="PlayerName"

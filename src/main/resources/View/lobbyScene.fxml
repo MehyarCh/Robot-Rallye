@@ -13,97 +13,93 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.StackPane?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             styleClass="scene--small, lobby-scene">
-    <left>
-        <VBox styleClass="overlay, map-selection-overlay">
-            <VBox styleClass="vbox-highlight">
-                <VBox styleClass="selected-map">
-                    <Label fx:id="mapText" text="Maps"/>
-                </VBox>
-                <VBox styleClass="vbox-highlight">
-                    <ChoiceBox fx:id="mapSelection"
-                               styleClass="button, button--sm, button--primary, choice-box"
-                               accessibleText="Maps"
-                               value="Maps"
-                               disable="true"/>
-                </VBox>
-            </VBox>
-            <Button onAction="#onChooseMap"
-                    fx:id="validateMapChoice"
-                    disable="true"
-                    text="Choose Map"
-                    styleClass="button, button--sm, button--primary"/>
-        </VBox>
-    </left>
     <center>
-        <VBox styleClass="overlay">
-            <VBox styleClass="logo-wrapper">
-                <Label text="" styleClass="logo, logo--login"/>
-                <ImageView styleClass="logo, logo--login"/>
-            </VBox>
-            <VBox styleClass="login-form-wrapper">
-                <Label text="Choose a robot"
+        <VBox fx:id = "center" styleClass="lobby-center-wrapper">
+            <VBox VBox.vgrow="ALWAYS" styleClass="overlay, lobby-overlay, border-radius, border-radius--xs">
+                <VBox styleClass="logo-wrapper">
+                    <Label text="" styleClass="logo, logo--login"/>
+                    <ImageView styleClass="logo, logo--login"/>
+                </VBox>
+                <VBox styleClass="login-form-wrapper">
+                    <Label text="Choose a robot"
+                           styleClass="headline-3, color--light"/>
+                    <HBox id="player-bar"
+                          styleClass="player-bar, player-bar--lobby">
+                        <VBox styleClass="player-wrapper">
+                            <Button onAction="#onButtonClicked"
+                                    id="player-icon--1"
+                                    fx:id = "playerIcon1"
+                                    styleClass="player-icon, player-icon--lg, player-icon-1"/>
+                            <Label text="Brown"
+                                   styleClass="headline-4, color--light"/>
+                        </VBox>
+                        <VBox styleClass="player-wrapper">
+                            <Button onAction="#onButtonClicked"
+                                    id="player-icon--2"
+                                    fx:id = "playerIcon2"
+                                    styleClass="player-icon, player-icon--lg"/>
+                            <Label text="Yellow"
+                                   styleClass="headline-4, color--light"/>
+                        </VBox>
+                        <VBox styleClass="player-wrapper">
+                            <Button onAction="#onButtonClicked"
+                                    id="player-icon--3"
+                                    fx:id = "playerIcon3"
+                                    styleClass="player-icon, player-icon--lg"/>
+                            <Label text="Blue"
+                                   styleClass="headline-4, color--light"/>
+                        </VBox>
+                        <VBox styleClass="player-wrapper">
+                            <Button onAction="#onButtonClicked"
+                                    id="player-icon--4"
+                                    fx:id = "playerIcon4"
+                                    styleClass="player-icon, player-icon--lg"/>
+                            <Label text="Green"
+                                   styleClass="headline-4, color--light"/>
+                        </VBox>
+                        <VBox styleClass="player-wrapper">
+                            <Button onAction="#onButtonClicked"
+                                    id="player-icon--5"
+                                    fx:id = "playerIcon5"
+                                    styleClass="player-icon, player-icon--lg"/>
+                            <Label text="Orange"
+                                   styleClass="headline-4, color--light"/>
+                        </VBox>
+                        <VBox styleClass="player-wrapper">
+                            <Button onAction="#onButtonClicked"
+                                    id="player-icon--6"
+                                    fx:id = "playerIcon6"
+                                    styleClass="player-icon, player-icon--lg"/>
+                            <Label text="Red"
+                                   styleClass="headline-4, color--light"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+                <ToggleButton onAction="#onReady"
+                              fx:id="readyButton"
+                              text="Ready"
+                              disable="true"
+                              styleClass="button, login-button, button--primary"/>
+                <Label text= "Players currently in lobby: "
+                       fx:id="playersonline"
                        styleClass="headline-3, color--light"/>
-                <HBox id="player-bar"
-                      styleClass="player-bar, player-bar--lobby">
-                    <VBox styleClass="player-wrapper">
-                        <Button onAction="#onButtonClicked"
-                                id="player-icon--1"
-                                styleClass="player-icon"/>
-                        <Label text="Brown"
-                               styleClass="headline-4, color--light"/>
-                    </VBox>
-                    <VBox styleClass="player-wrapper">
-                        <Button onAction="#onButtonClicked"
-                                id="player-icon--2"
-                                styleClass="player-icon"/>
-                        <Label text="Yellow"
-                               styleClass="headline-4, color--light"/>
-                    </VBox>
-                    <VBox styleClass="player-wrapper">
-                        <Button onAction="#onButtonClicked"
-                                id="player-icon--3"
-                                styleClass="player-icon"/>
-                        <Label text="Blue"
-                               styleClass="headline-4, color--light"/>
-                    </VBox>
-                    <VBox styleClass="player-wrapper">
-                        <Button onAction="#onButtonClicked"
-                                id="player-icon--4"
-                                styleClass="player-icon"/>
-                        <Label text="Green"
-                               styleClass="headline-4, color--light"/>
-                    </VBox>
-                    <VBox styleClass="player-wrapper">
-                        <Button onAction="#onButtonClicked"
-                                id="player-icon--5"
-                                styleClass="player-icon"/>
-                        <Label text="Orange"
-                               styleClass="headline-4, color--light"/>
-                    </VBox>
-                    <VBox styleClass="player-wrapper">
-                        <Button onAction="#onButtonClicked"
-                                id="player-icon--6"
-                                styleClass="player-icon"/>
-                        <Label text="Red"
-                               styleClass="headline-4, color--light"/>
-                    </VBox>
-                </HBox>
             </VBox>
-            <ToggleButton onAction="#onReady"
-                          fx:id="readyButton"
-                          text="Ready"
-                          disable="true"
-                          styleClass="button, login-button, button--primary"/>
-            <Label text= "Players currently in lobby: "
-                   fx:id="playersonline"
-                   styleClass="headline-3, color--light"/>
+            <HBox styleClass="overlay, lobby-overlay, map-selection-overlay, border-radius, border-radius--xs">
+                <Button onAction="#onChooseMap"
+                        fx:id="validateMapChoice"
+                        disable="true"
+                        text="Choose Map"
+                        styleClass="button, button--sm, button--primary"/>
+                <HBox fx:id="mapOptionWrapper" styleClass="map-option-wrapper" />
+            </HBox>
         </VBox>
     </center>
     <right>
-        <GridPane styleClass="sidebar">
+        <GridPane styleClass="sidebar, lobby-sidebar, margin-left--primary, border-radius, border-radius--xs">
             <ScrollPane GridPane.columnIndex="0"
                         GridPane.rowIndex="0"
                         GridPane.hgrow="ALWAYS"
@@ -111,27 +107,22 @@
                         fitToWidth="true"
                         fitToHeight="true"
                         styleClass="scroll-board">
-                <content>
-                    <VBox fx:id="" styleClass="message-board">
-                        <!--<TextArea fx:id="chatlog" editable="false"  prefHeight="600.0" style="-fx-background-color: red" />-->
-                        <TextFlow styleClass="textflow" fx:id="chatlog_lobby"/>
-                    </VBox>
-                </content>
+                <VBox fx:id="" styleClass="message-board">
+                    <Label text="RoboRally Chat" styleClass="chat-headline, headline-2, color--light" />
+                    <TextFlow styleClass="textflow" fx:id="chatlog_lobby"/>
+                </VBox>
             </ScrollPane>
             <HBox GridPane.columnIndex="0"
                   GridPane.rowIndex="1"
                   GridPane.hgrow="ALWAYS"
                   styleClass="chat-input-wrapper">
-                <TextField fx:id="chat_input_lobby" onKeyPressed="#onMessageSend" styleClass="text-input, text-input--primary"/>
+                <TextField HBox.hgrow="ALWAYS" fx:id="chat_input_lobby" onKeyPressed="#onMessageSend" styleClass="text-input, text-input--primary"/>
                 <Button fx:id="send_button"
                         onAction="#onClickSend"
                         styleClass="button, send-button"/>
             </HBox>
         </GridPane>
     </right>
-
-
-
 </BorderPane>
 
 
