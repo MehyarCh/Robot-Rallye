@@ -152,6 +152,15 @@ public class Game {
 
         phase = 2;
         isRunning = false;
+
+        //setting up boardelements
+        for(int i=0; i<gameMap.getMapFields().size(); i++){
+            for(int j=0; j<gameMap.getMapFields().get(0).size(); j++){
+                for(BoardElement element : gameMap.getMapFields().get(0).get(0).getTypes()){
+                    boardElements.add(element);
+                }
+            }
+        }
     }
 
     private List<List<MapField>> convertMap(List<List<List<BoardElement>>> gameMapList) {

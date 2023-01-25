@@ -28,7 +28,7 @@ public class Map {
                         robots.add((Robot) boardElement);
                     }
                 }
-                }
+            }
 
         }
         return robots;
