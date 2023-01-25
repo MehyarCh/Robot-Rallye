@@ -250,7 +250,9 @@ public class ClientHandler implements Runnable {
                 JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
                 SelectedCard selectedCard = selectedCardJsonAdapter.fromJson(message.getMessageBody());
                 //add this to the players register in Game as well
+                logger.debug(selectedCard.getCard(), selectedCard.getRegister());
                 player.addToRegister(selectedCard.getCard(), selectedCard.getRegister());
+
                 JsonAdapter<CardSelected> cardSelectedJsonAdapter = moshi.adapter(CardSelected.class);
                 if (selectedCard.getCard().equals("null")) {
                     broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID, selectedCard.getRegister(), false)));

@@ -200,14 +200,18 @@ public class Player {
         Card card;
 
         if(cardString.equals("null")){
+            logger.debug("cardString = null");
             card = null;
         }
         else {
             card = getCardFromHand(cardString);
+            logger.debug("card != null");
         }
         registers[register] = card;
         int cardsnotnull = 0;
+        //for (int i = 0; i<2; i++)
         for (Card cardae: registers){
+            logger.debug("Karte: " + cardae);
             if(cardae != null){
                 cardsnotnull = cardsnotnull+1;
             }
