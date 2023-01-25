@@ -256,9 +256,11 @@ public class ClientHandler implements Runnable {
                 JsonAdapter<CardSelected> cardSelectedJsonAdapter = moshi.adapter(CardSelected.class);
                 if (selectedCard.getCard().equals("null")) {
                     broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID, selectedCard.getRegister(), false)));
+                    //replace the card through "null" in the register and replace the null spot in the hand with the card that got put back
+                    player.addToRegister(selectedCard.getCard(), selectedCard.getRegister());
                 } else {
                     broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID, selectedCard.getRegister(), true)));
-                    logger.error(game.selectionFinished());
+                    logger.trace(game.selectionFinished());
                     if(game.selectionFinished()) {
                         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
                         ActivePhase activePhase3 = new ActivePhase(3);
@@ -318,11 +320,9 @@ public class ClientHandler implements Runnable {
 
     // messageType: 0 = broadcast to all others, 1 = to everyone
     public void broadcastMessage(String type,String json) {
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+clients);
         for (ClientHandler client : clients) {
             client.sendMessage(type,json);
         }
-        System.out.println(clientName+" BC "+json);
     }
 
 

@@ -483,7 +483,7 @@ public class MainController {
                     registerValues.set(index, null);
                     // Removing registerImage
                     registerCards.get(index).getChildren().remove(0);
-                    client.sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(/*handValues.get(index)*/ "null", firstFreeHand)));
+                    client.sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(/*handValues.get(index)*/ "null", index)));
                 }
             });
         }

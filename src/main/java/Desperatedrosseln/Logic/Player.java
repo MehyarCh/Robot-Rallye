@@ -173,14 +173,17 @@ public class Player {
      */
     public void resetRegisterCard(int register){
         int i=0;
+        logger.warn("The Hand before the Card was put back: "+ hand);
         while(i<hand.size()){
-            if(hand.get(i)== null){
-                hand.add(i, registers[register]);
-                hand.remove(i+1);
+            if(hand.get(i) == null){
+                hand.set(i, registers[register]);
+                break;
             }
-            i++;
+            else{
+                i++;
+            }
         }
-        registers[register] = null;
+        logger.warn("The Hand after the Card was put back: "+ hand);
     }
 
     /**
@@ -195,21 +198,27 @@ public class Player {
             }
         }
     }
-    //also increments registerTrack
+
+    /**
+     * @param cardString (can be null or any other cardtype): is the type of card to be added to the ...
+     * @param register <-
+     * also increments registerTrack
+     */
+
     public void addToRegister(String cardString, int register){
         Card card;
 
         if(cardString.equals("null")){
-            logger.debug("cardString = null");
             card = null;
+            //new
+            resetRegisterCard(register);
         }
         else {
             card = getCardFromHand(cardString);
-            logger.debug("card != null");
         }
         registers[register] = card;
         int cardsnotnull = 0;
-        //for (int i = 0; i<2; i++)
+
         for (Card cardae: registers){
             logger.debug("Karte: " + cardae);
             if(cardae != null){
@@ -217,7 +226,7 @@ public class Player {
             }
         }
         registerTrack = cardsnotnull;
-        logger.warn(" registertrack: " + registerTrack + " ,ID: " + ID);
+        logger.info(" registertrack: " + registerTrack + " ,ID: " + ID);
     }
     public int getRegisterSize(){
         return registers.length;
@@ -232,12 +241,19 @@ public class Player {
         Card card = null;
         int i=0;
         while(i<hand.size()){
-            if(hand.get(i).toString().equals(type)){
+            if(hand.get(i) != null && hand.get(i).toString().equals(type)){
                 card = hand.get(i);
-                hand.remove(i);
+                logger.debug("Hand VOR remove: " + hand);
+                hand.set(i, null);
+                logger.debug("Hand nach remove: " + hand);
+                logger.debug("Karte an Index: " + i + " wurde genommen");
+                break;
             }
-            i++;
+            else{
+                i++;
+            }
         }
+        logger.debug("Karte die von der Hand genommen wurde: " + card);
         return card;
     }
 
