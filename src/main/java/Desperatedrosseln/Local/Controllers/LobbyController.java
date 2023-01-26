@@ -301,15 +301,16 @@ public class LobbyController {
     }
 
     public void addMapsToChoice(List<String> maps){
+        if (!client.isGotSentMaps()) {
+            Platform.runLater(() -> {
+                for (String mapName : maps) {
 
-        Platform.runLater(() -> {
-            for(String mapName: maps){
-
-                StackPane mapOption = createMapOption(mapName);
-                mapOptionWrapper.getChildren().add(mapOption);
-            }
-        });
-
+                    StackPane mapOption = createMapOption(mapName);
+                    mapOptionWrapper.getChildren().add(mapOption);
+                }
+                client.setGotSentMaps(true);
+            });
+        }
     }
 
     private StackPane createMapOption(String mapName) {

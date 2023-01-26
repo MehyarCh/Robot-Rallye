@@ -38,6 +38,16 @@ public class Client implements Runnable {
     public boolean lobbyControllerInitialized = false;
     private LobbyController lobbyController;
 
+    public boolean isGotSentMaps() {
+        return gotSentMaps;
+    }
+
+    public void setGotSentMaps(boolean gotSentMaps) {
+        this.gotSentMaps = gotSentMaps;
+    }
+
+    private boolean gotSentMaps = false;
+
     public boolean getIsMyTurn() {
         return isMyTurn;
     }
