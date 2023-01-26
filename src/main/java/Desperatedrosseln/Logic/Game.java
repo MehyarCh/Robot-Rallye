@@ -124,7 +124,6 @@ public class Game {
             i++;
         }*/
         for (Player player: players){
-            logger.warn(player.getRegisterTrack() + " ID: " + player.getID());
             if(player.getRegisterTrack() < 5){
                 return false;
             }

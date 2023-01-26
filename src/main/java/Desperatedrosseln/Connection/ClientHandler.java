@@ -58,7 +58,7 @@ public class ClientHandler implements Runnable {
             sendCurrentPlayers();
 
             JsonAdapter<HelloClient> helloClientJsonAdapter = moshi.adapter(HelloClient.class);
-            sendMessage("HelloClient", helloClientJsonAdapter.toJson(new HelloClient(protocol))); //send HelloClient
+            sendMessage("HelloClient", helloClientJsonAdapter.toJson(new HelloClient(protocol)));//send HelloClient
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -92,7 +92,7 @@ public class ClientHandler implements Runnable {
 
         if (!message.getMessageType().equals("Alive")) {
             if (isAI) {
-                logger.trace("--------" + message.getMessageType() + ": " + message.getMessageBody());
+                logger.info("AI-message" + message.getMessageType() + ": " + message.getMessageBody());
             } else {
                 logger.info(message.getMessageType() + ": " + message.getMessageBody());
             }
@@ -230,6 +230,7 @@ public class ClientHandler implements Runnable {
                 SetStartingPoint setStartingPoint = setStartingPointJsonAdapter.fromJson(message.getMessageBody());
                 game.initGameMap();
                 game.placeRobot(player, setStartingPoint.getX(), setStartingPoint.getY());
+                ++game.startingPositionsChosen;
 
                 if ( game.startingPositionsChosen == clients.size() && !game.isRunning()) {
                     game.runStep();
