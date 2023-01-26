@@ -4,6 +4,7 @@ import Desperatedrosseln.Json.utils.JsonDeserializer;
 import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Logic.Elements.BoardElement;
 import Desperatedrosseln.Logic.Elements.Robot;
+import Desperatedrosseln.Logic.Game;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
@@ -12,6 +13,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,6 +34,8 @@ public class AIClient extends Thread {
     List<List<List<BoardElement>>> gameMap;
     private int robotID;
     private HashMap<Integer,Robot> players = new HashMap<>();
+    List<String> upgrades = new ArrayList<>();
+    private boolean memorySwapping;
 
     public class Position {
         int x;
@@ -212,9 +216,33 @@ public class AIClient extends Thread {
                 JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
                 ai.setActivePhase(activePhaseJsonAdapter.fromJson(msg.getMessageBody()).getPhase());
                 break;
-            case "GameStarted":
+            case "ExchangeShop":
+                JsonAdapter<ExchangeShop> exchangeShopJsonAdapter = moshi.adapter(ExchangeShop.class);
+                ExchangeShop exchangeShop = exchangeShopJsonAdapter.fromJson(msg.getMessageBody());
+                List<String> shopCards = exchangeShop.getCards();
+                //ToDo: Card Selection
+                Collections.shuffle(shopCards);
+                JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter = moshi.adapter(BuyUpgrade.class);
+                sendMessage("BuyUpgrade",buyUpgradeJsonAdapter.toJson(new BuyUpgrade(true,shopCards.get(0))));
+                break;
+            case "RefillShop":
+                JsonAdapter<RefillShop> refillShopJsonAdapter = moshi.adapter(RefillShop.class);
+                RefillShop refillShop = refillShopJsonAdapter.fromJson(msg.getMessageBody());
+                List<String> refillShopCards = refillShop.getCards();
+                //ToDo: Card Selection
+                Collections.shuffle(refillShopCards);
+                JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter1 = moshi.adapter(BuyUpgrade.class);
+                sendMessage("BuyUpgrade",buyUpgradeJsonAdapter1.toJson(new BuyUpgrade(true,refillShopCards.get(0))));
 
+                break;
+            case "UpgradeBought":
+                JsonAdapter<UpgradeBought> upgradeBoughtJsonAdapter = moshi.adapter(UpgradeBought.class);
+                UpgradeBought upgradeBought = upgradeBoughtJsonAdapter.fromJson(msg.getMessageBody());
 
+                if(upgradeBought.getClientID() == AI_ID){
+                    String upgrade = upgradeBought.getCard();
+                    upgrades.add(upgrade);
+                }
                 break;
 
             case "StartingPointTaken":
@@ -248,6 +276,15 @@ public class AIClient extends Thread {
 
                 //sendChatMessage(ai.getTinyPath(),-1);
 
+                if(memorySwapping){
+
+                    for (int i = 0; i < 3; i++) {
+
+                    }
+
+                    memorySwapping = false;
+                }
+
                 for (int i = 0; i < 5; ++i) {
                     if(i<regCards.size()){
                         sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(regCards.get(i), i)));
@@ -257,6 +294,11 @@ public class AIClient extends Thread {
                     }
 
                 }
+
+                break;
+            case "Energy":
+                break;
+            case "Logout":
 
                 break;
             case "Error":

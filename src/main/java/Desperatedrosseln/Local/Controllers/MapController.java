@@ -350,7 +350,7 @@ public class MapController {
                     robot = new ImageView(robotImage);
                 }
                 default -> {
-                    robot = new ImageView("/images/Cards/no_such_card.png");
+                    robot = new ImageView("/images/Card/no_such_card.png");
                 }
             }
             hasStartpoint = true;

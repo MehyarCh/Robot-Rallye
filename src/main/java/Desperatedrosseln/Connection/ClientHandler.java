@@ -4,6 +4,11 @@ import Desperatedrosseln.Json.utils.JsonMapReader;
 import Desperatedrosseln.Json.utils.JsonSerializer;
 import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Local.Protocols.Error;
+import Desperatedrosseln.Logic.Cards.Card;
+import Desperatedrosseln.Logic.Cards.Upgrade.AdminPrivilege;
+import Desperatedrosseln.Logic.Cards.Upgrade.MemorySwap;
+import Desperatedrosseln.Logic.Cards.Upgrade.RearLaser;
+import Desperatedrosseln.Logic.Cards.Upgrade.SpamBlocker;
 import Desperatedrosseln.Logic.Elements.BoardElement;
 import Desperatedrosseln.Logic.Elements.Robot;
 import Desperatedrosseln.Logic.Game;
@@ -37,6 +42,7 @@ public class ClientHandler implements Runnable {
     public Player getPlayer() {
         return player;
     }
+
     private List<String> maps = new ArrayList<>();
 
 
@@ -199,6 +205,7 @@ public class ClientHandler implements Runnable {
 
 
                 }
+                game.initGameMap();
 
 
                 break;
@@ -223,24 +230,61 @@ public class ClientHandler implements Runnable {
             case "PlayCard":
                 JsonAdapter<CardPlayed> cardPlayedJsonAdapter = moshi.adapter(CardPlayed.class);
                 CardPlayed cardPlayed = new CardPlayed(player.getID(), cardPlayedJsonAdapter.fromJson(message.getMessageBody()).getCard()); //add clientID and the card that was played
-
+                game.playCard(player, cardPlayed.getCard());
                 broadcastMessage("CardPlayed", cardPlayedJsonAdapter.toJson(cardPlayed)); //send CardPlayed message to every client
 
-            default:
-                broadcastMessage(" ", "SERVER BRO");
 
             case "addAI":
                 game.addAI();
                 break;
+            case "BuyUpgrade":
+                JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter = moshi.adapter(BuyUpgrade.class);
+                String cardString = buyUpgradeJsonAdapter.fromJson(message.getMessageBody()).getCard();
+                boolean isBuying = buyUpgradeJsonAdapter.fromJson(message.getMessageBody()).isBuying();
+
+
+                Card card = null;
+                switch (cardString) {
+                    case "AdminPrivilege":
+                        card = new AdminPrivilege();
+                        game.addUpgrade(player, card);
+                        break;
+                    case "MemorySwap":
+                        card = new MemorySwap();
+                        game.addUpgrade(player, card);
+                        break;
+                    case "RearLaser":
+                        card = new RearLaser();
+                        game.addUpgrade(player, card);
+                        break;
+                    case "SpamBlocker":
+                        card = new SpamBlocker();
+                        game.addUpgrade(player, card);
+                        break;
+                }
+                if (isBuying) {                                     //ToDo
+                    game.isShopUntouched = false;
+                    game.shopRec = 0;
+                    game.removeFromShop(card);
+                } else {
+                    if (++game.shopRec == clients.size()) {               //ToDo; remove clients from equation
+                        game.isShopUntouched = true;
+                    }
+                }
+                //ToDo: Apply the effects
+                game.runUpgradePhase();
+                // game.runUpgradePhase();
+
+                break;
             case "SetStartingPoint":
                 JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
                 SetStartingPoint setStartingPoint = setStartingPointJsonAdapter.fromJson(message.getMessageBody());
-                game.initGameMap();
                 game.placeRobot(player, setStartingPoint.getX(), setStartingPoint.getY());
-                System.out.println(clientName + " val " + ++game.startingPositionsChosen + "nos clients " + clients.size());
 
-                if ( game.startingPositionsChosen == clients.size() && !game.isRunning()) {
-                    game.runStep();
+
+                if (++game.startingPositionsChosen == clients.size()) {
+                    System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    game.runUpgradePhase();
                 }
 
                 //ToDo one Robot one tile
@@ -276,9 +320,20 @@ public class ClientHandler implements Runnable {
                 closeAll(this.socket, this.in, this.out);
                 //problem with alive message as soon as socket gets closed; -> ToDo: disconnect client properly (multiple errors)
                 break;
+            case "ReturnCards":
+                JsonAdapter<ReturnCards> returnCardsJsonAdapter = moshi.adapter(ReturnCards.class);
+                ReturnCards returnCards = returnCardsJsonAdapter.fromJson(message.getMessageBody());
+                List<String> returnedCards = returnCards.getCards();
+
+                for (String returnedCard : returnedCards) {             //maybe iterate for 3 cards only??
+                    player.removeCardFromHand(returnedCard);
+                }
+
+                break;
+            default:
+                broadcastMessage(" ", "SERVER BRO");
         }
     }
-
 
 
     private void setPlayerValues(PlayerValues playerValues) {
@@ -300,9 +355,9 @@ public class ClientHandler implements Runnable {
     }
 
 
-    public void sendMessage(String type,String json) {
+    public void sendMessage(String type, String json) {
         try {
-            out.writeUTF(messageJsonAdapter.toJson(new Message(type,json)));
+            out.writeUTF(messageJsonAdapter.toJson(new Message(type, json)));
             out.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -310,12 +365,12 @@ public class ClientHandler implements Runnable {
     }
 
     // messageType: 0 = broadcast to all others, 1 = to everyone
-    public void broadcastMessage(String type,String json) {
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+clients);
+    public void broadcastMessage(String type, String json) {
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + clients);
         for (ClientHandler client : clients) {
-            client.sendMessage(type,json);
+            client.sendMessage(type, json);
         }
-        System.out.println(clientName+" BC "+json);
+        System.out.println(clientName + " BC " + json);
     }
 
 
@@ -375,7 +430,8 @@ public class ClientHandler implements Runnable {
     public DataOutputStream getOut() {
         return out;
     }
-    public void initializeMaps(){
+
+    public void initializeMaps() {
         maps.add("DizzyHighway");
         maps.add("ExtraCrispy");
         maps.add("LostBearings");

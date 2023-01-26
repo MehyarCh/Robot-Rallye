@@ -10,7 +10,7 @@ public class Player {
 
     private String name;
     private int ID;
-    private int next_checkpoint=1;
+    private int next_checkpoint = 1;
     private Robot robot;
     private List<Card> deck = new ArrayList<>(20);
     private boolean ready;
@@ -20,12 +20,13 @@ public class Player {
         return hand;
     }
 
-    private List<Card> hand = new ArrayList<>(9);
+    public int energyReserve = 5;
+    private List<Card> hand = new ArrayList<>();
     private Card[] registers = new Card[5];
-    private int registerTrack =0;
-    private List <Card> discarded = new ArrayList<>();
+    private int registerTrack = 0;
+    private List<Card> discarded = new ArrayList<>();
     private ArrayList<String> cardsYouGotNow = new ArrayList<>();
-
+    ArrayList<Card> upgrades = new ArrayList<>();
 
     public Player() {
 
@@ -50,11 +51,12 @@ public class Player {
     public Robot getRobot() {
         return robot;
     }
+
     public Player(Robot robot) {
         this.robot = robot;
     }
 
-    public Player(String name){
+    public Player(String name) {
         this.name = name;
     }
 
@@ -81,33 +83,34 @@ public class Player {
     /**
      * draws card from deck and disposes it from the deck
      */
-    public Card drawCardFromDeck(){
-        Card card = deck.get((deck.size()-1));
-        deck.remove(deck.size()-1);
+    public Card drawCardFromDeck() {
+        Card card = deck.get((deck.size() - 1));
+        deck.remove(deck.size() - 1);
         return card;
     }
 
     /**
      * draws the hand of the player during the programming phase
+     *
      * @return 1 if discarded pile wasn't needed, or 2 otherwise
      */
-    public int programmingPhase(){
+    public int programmingPhase() {
         DeckHelper.buildDeck(deck);
-        if(deck.size()>=9){
-            for(int i=0; i<9; i++){
+        if (deck.size() >= 9) {
+            for (int i = 0; i < 9; i++) {
                 hand.add(drawCardFromDeck());
             }
             return 1;
-        }else{
-            for(int i=0; i<deck.size(); i++){
+        } else {
+            for (int i = 0; i < deck.size(); i++) {
                 hand.add(drawCardFromDeck());
             }
             //discarded = CardUtils.shuffle(discarded);
-            for(int j=0; j<20; j++){
+            for (int j = 0; j < 20; j++) {
                 deck.add(takeCardFromDiscarded());
             }
             shuffleDeck();
-            while(hand.size()<= 9){
+            while (hand.size() <= 9) {
                 Card card = drawCardFromDeck();
                 hand.add(card);
                 cardsYouGotNow.add(card.toString());
@@ -121,24 +124,26 @@ public class Player {
         return cardsYouGotNow;
     }
 
-    private Card takeCardFromDiscarded(){
+    private Card takeCardFromDiscarded() {
         //assert size >0
-        Card card = discarded.get((discarded.size()-1));
-        discarded.remove(discarded.size()-1);
+        Card card = discarded.get((discarded.size() - 1));
+        discarded.remove(discarded.size() - 1);
         return card;
     }
 
-    void shuffleDeck(){
+    void shuffleDeck() {
         DeckHelper.shuffleCards(deck);
     }
 
-    public void buyCard (Card card){
+    public void buyCard(Card card) {
 
     }
-    public int getNextCheckPoint(){
+
+    public int getNextCheckPoint() {
         return next_checkpoint;
     }
-    public void setNextCheckPoint(){
+
+    public void setNextCheckPoint() {
         next_checkpoint++;
     }
 
@@ -150,25 +155,25 @@ public class Player {
     /**
      * sets a specified register slot with a card from the hand and deletes it from the hand
      * replacing it with an empty slot
-     * @param number the position of the card in the hand
+     *
+     * @param number   the position of the card in the hand
      * @param register the register to put the card in
      */
-    public void selectCard(int number, int register){
+    public void selectCard(int number, int register) {
         this.registers[register] = hand.get(number);
         hand.add(number, null);
-        hand.remove(number+1);
+        hand.remove(number + 1);
     }
 
     /**
-     *
      * @param register the slot of the register to reset. Must start by 0
      */
-    public void resetRegisterCard(int register){
-        int i=0;
-        while(i<hand.size()){
-            if(hand.get(i)== null){
+    public void resetRegisterCard(int register) {
+        int i = 0;
+        while (i < hand.size()) {
+            if (hand.get(i) == null) {
                 hand.add(i, registers[register]);
-                hand.remove(i+1);
+                hand.remove(i + 1);
             }
             i++;
         }
@@ -179,43 +184,44 @@ public class Player {
      * removes all remaining programming cards from hand and into the discarded pile
      */
     public void discardRestOfHand() {
-        for(int i=0; i<hand.size();i++){
+        for (int i = 0; i < hand.size(); i++) {
             Card card = hand.get(i);
-            if(card instanceof Programmingcard){
+            if (card instanceof Programmingcard) {
                 discarded.add(card);
                 hand.remove(i);
             }
         }
     }
+
     //also increments registerTrack
-    public void addToRegister(String cardString){
-        if(registerTrack == 5){
+    public void addToRegister(String cardString) {
+        if (registerTrack == 5) {
             System.out.println("register full for " + name);
             return;
         }
 
         Card card = getCardFromHand(cardString);
         registers[registerTrack++] = card;
-        if(registerTrack==4){
-            for(Card cardsae : registers){
+        if (registerTrack == 4) {
+            for (Card cardsae : registers) {
                 System.out.println(cardsae);
             }
         }
     }
-    public int getRegisterSize(){
+
+    public int getRegisterSize() {
         return registers.length;
     }
 
     /**
-     *
      * @param type the type of the card to look for within the hand
      * @return the first occurence of the card from that type to put into the register
      */
-    private Card getCardFromHand(String type){
+    private Card getCardFromHand(String type) {
         Card card = null;
-        int i=0;
-        while(i<hand.size()){
-            if(hand.get(i).toString().equals(type)){
+        int i = 0;
+        while (i < hand.size()) {
+            if (hand.get(i).toString().equals(type)) {
                 card = hand.get(i);
                 hand.remove(i);
             }
@@ -224,19 +230,58 @@ public class Player {
         return card;
     }
 
+    public void removeCardFromHand(String type) {
+
+        for (int i = 0; i < hand.size(); i++) {
+            if (hand.get(i).toString().equals(type)) {
+                hand.remove(i);
+                return;
+            }
+        }
+
+
+    }
+
     public ArrayList<String> getHandasStrings() {
         ArrayList<String> cards = new ArrayList<>();
 
-        for (Card card:
-                hand) {
+        for (Card card : hand) {
             cards.add(card.toString());
         }
         return cards;
     }
-    public void setReady(boolean status){
+
+    public void setReady(boolean status) {
         this.ready = status;
     }
+
     public boolean isReady() {
         return this.ready;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + name + "|" + ID + "]";
+    }
+
+    public void addUpgrade(Card upgrade) {
+        upgrades.add(upgrade);
+    }
+
+    public ArrayList<Card> getUpgrades() {
+        return upgrades;
+    }
+
+    public void removeUpgrade(String card) {
+        for (Card curr : upgrades) {
+            UpgradeCard upgradeCard = (UpgradeCard) curr;
+            if (upgradeCard.toString().equals(card)) {
+                upgrades.remove(curr);
+                return;
+            }
+        }
+
+        System.out.println("cannot remove upgrade card");
+
     }
 }
