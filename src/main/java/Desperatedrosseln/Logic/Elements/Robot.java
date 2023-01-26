@@ -31,7 +31,6 @@ public class Robot extends BoardElement {
     public void move(int steps){
         //TODO: check position is not out of board
         if (steps > 3 || steps < 1){
-            //System.out.println("Es geht nicht");
             return;
         }
         for(int i = 0; i < steps; i++){

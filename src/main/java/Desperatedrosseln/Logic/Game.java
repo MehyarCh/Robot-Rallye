@@ -84,19 +84,19 @@ public class Game {
         isRunning = true;
         switch (phase) {
             case 0:
-                System.out.println("Starting Phase");
+                logger.info("Current phase: Starting Phase");
                 setUpBoard();
                 break;
             case 1:
-                System.out.println("Upgrade Phase");
+                logger.info("Current phase: Upgrade Phase");
                 break;
             case 2:
-                System.out.println("Programming phase");
+                logger.info("Current phase: Programming phase");
                 //TODO: check players in reboot array and reposition their robots then take them out of reboot list
                 runProgrammingPhase();
                 break;
             case 3:
-                System.out.println("Activation phase");
+                logger.info("Current phase: Activation phase");
                 runActivationPhase();
                 break;
 
@@ -187,7 +187,7 @@ public class Game {
         for (Player player : players) {
             int shuffled = player.programmingPhase();
 
-            if (shuffled == 1) {
+            if (shuffled == 2) {
                 JsonAdapter<ShuffleCoding> shuffleCodingJsonAdapter = moshi.adapter(ShuffleCoding.class);
                 broadcastMessage("ShuffleCoding", shuffleCodingJsonAdapter.toJson(new ShuffleCoding(player.getID())));
 
@@ -244,10 +244,10 @@ public class Game {
      */
     private void runActivationPhase() throws ClassNotFoundException {
         phase = 3;
-        //send the current ActivePhase to all Clients
+        /*
         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
         ActivePhase activePhase3 = new ActivePhase(phase);
-        broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
+        broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));*/
         decideNextPlayer();
         //for each register
         for (int current_register = 0; current_register < 5; current_register++) {
@@ -436,7 +436,7 @@ public class Game {
             }
 
             default -> {
-                System.out.println("Invalid type of card");
+                logger.warn("Invalid type of card");
             }
         }
     }
@@ -755,7 +755,7 @@ public class Game {
                 broadcastMessage("CheckPointReached", checkPointReachedJsonAdapter.toJson(checkPointReached));
 
                 if (player.getNextCheckPoint() > checkpoints.size()) {
-                    System.out.println("Player " + player.getID() + "-" + player.getName() + " has won.");
+                    logger.info("Player " + player.getID() + "-" + player.getName() + " has won.");
                     //if it was the last checkpoint, the player has won the game and the protocoll message gets sent
                     JsonAdapter<GameFinished> gameFinishedJsonAdapter = moshi.adapter(GameFinished.class);
                     GameFinished gameFinished = new GameFinished(robot.getID());

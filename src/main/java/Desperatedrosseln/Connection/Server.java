@@ -5,6 +5,8 @@ import Desperatedrosseln.Local.Protocols.Message;
 import Desperatedrosseln.Logic.Game;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -19,6 +21,8 @@ public class Server {
     private int port = 3000;
     private String protocol = "Version 0.1";
     private Game game;
+
+    private static final Logger logger = LogManager.getLogger();
 
     public Server() throws IOException {
         serverSocket = new ServerSocket(port);
@@ -54,7 +58,7 @@ public class Server {
 
 
     public static void main(String[] args) throws IOException {
-        System.out.println("[SERVER]: Waiting for client connection");
+        logger.info("[SERVER]: Waiting for client connection");
         Server server = new Server();
         server.startServer();
 

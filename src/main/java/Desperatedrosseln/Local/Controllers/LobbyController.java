@@ -219,8 +219,6 @@ public class LobbyController {
         if (!chat_input_lobby.getText().isEmpty()) {
             String msg = chat_input_lobby.getText();
 
-            //System.out.println(client.getName()+ ": "+ msg);
-
             client.sendChatMessage(msg, -1);
 
             chat_input_lobby.setText("");
@@ -306,7 +304,6 @@ public class LobbyController {
 
         Platform.runLater(() -> {
             for(String mapName: maps){
-                System.out.println(mapName);
 
                 StackPane mapOption = createMapOption(mapName);
                 mapOptionWrapper.getChildren().add(mapOption);

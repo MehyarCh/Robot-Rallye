@@ -6,6 +6,8 @@ import Desperatedrosseln.Logic.Elements.BoardElement;
 import Desperatedrosseln.Logic.Elements.Robot;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -32,6 +34,8 @@ public class AIClient extends Thread {
     List<List<List<BoardElement>>> gameMap;
     private int robotID;
     private HashMap<Integer,Robot> players = new HashMap<>();
+
+    private static final Logger logger = LogManager.getLogger();
 
     public class Position {
         int x;
@@ -125,7 +129,6 @@ public class AIClient extends Thread {
             JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
             msg = messageJsonAdapter.fromJson(message);
         }
-        System.out.println("AI:" + message);
 
 
         switch (msg.getMessageType()) {
@@ -136,7 +139,6 @@ public class AIClient extends Thread {
                 break;
             case "Alive":
                 sendMessage(msg.getMessageType(), msg.getMessageBody());
-                //System.out.println("Alive check from server");
                 break;
             case "Welcome":
                 JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
@@ -252,7 +254,7 @@ public class AIClient extends Thread {
                     if(i<regCards.size()){
                         sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(regCards.get(i), i)));
                     }else {
-                        System.out.println("AIClient setting random cards");
+                        logger.info("AIClient setting random cards");
                         sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(ai.getRandomCard(), i)));
                     }
 

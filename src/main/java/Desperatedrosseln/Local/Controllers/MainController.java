@@ -334,8 +334,6 @@ public class MainController {
         if (!chat_input.getText().isEmpty()) {
             String msg = chat_input.getText();
 
-            //System.out.println(client.getName()+ ": "+ msg);
-
             client.sendChatMessage(msg, -1);
 
             chat_input.setText("");
@@ -377,7 +375,6 @@ public class MainController {
                 for (int firstFreeRegister = 0; firstFreeRegister < 5; firstFreeRegister++) {
                     if (registerValues.get(firstFreeRegister) == null) {
                         int index = (int) (Math.random() * handValues.size());
-                        //System.out.println("index=" + index + ", ffr=" + firstFreeRegister);
                         if (index == handValues.size()) {
                             --index;
                         }

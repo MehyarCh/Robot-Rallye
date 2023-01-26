@@ -220,7 +220,6 @@ public class Player {
         int cardsnotnull = 0;
 
         for (Card cardae: registers){
-            logger.debug("Karte: " + cardae);
             if(cardae != null){
                 cardsnotnull = cardsnotnull+1;
             }
@@ -243,10 +242,7 @@ public class Player {
         while(i<hand.size()){
             if(hand.get(i) != null && hand.get(i).toString().equals(type)){
                 card = hand.get(i);
-                logger.debug("Hand VOR remove: " + hand);
                 hand.set(i, null);
-                logger.debug("Hand nach remove: " + hand);
-                logger.debug("Karte an Index: " + i + " wurde genommen");
                 break;
             }
             else{

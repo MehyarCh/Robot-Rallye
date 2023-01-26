@@ -106,7 +106,6 @@ public class Client implements Runnable {
             //startStartPointSelectionTimer();
             return;
         }
-        System.out.println(message);
         Moshi moshi = new Moshi.Builder().build();
         Message msg;
         {
@@ -123,7 +122,6 @@ public class Client implements Runnable {
                 //TODO: disconnect if protocol isnt the same as client.
                 //sendHelloServer();
 
-                //System.out.println("helloClient");
 
                 break;
             case "Alive":
@@ -146,7 +144,6 @@ public class Client implements Runnable {
 
                     mapRobotToClient(playerAdded.getClientID(), playerAdded.getFigure());
                     //disable all other robot choice buttons in the GUI if it is already taken
-
                     //check if the message is about another client and disable the specific robot-icon that he chose in this GUI
                     if (lobbyControllerInitialized && playerAdded.getClientID() != this.clientID){
                         lobbyController.disableRobotIcon(playerAdded.getFigure());

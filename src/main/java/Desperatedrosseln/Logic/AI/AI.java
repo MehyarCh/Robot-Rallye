@@ -149,20 +149,14 @@ public class AI {
                 Node node = nodeMap[x][y];
                 if (node.walkable) {
                     if (node == checkPoint) {
-                        System.out.print("E");
                         continue;
                     }
                     if (node == startNode) {
-                        System.out.print("S");
                         continue;
                     }
-                    System.out.print(0);
                 } else {
-                    System.out.print("X");
                 }
-
             }
-            System.out.println();
         }
         */
         openSet.add(startNode);
@@ -221,18 +215,15 @@ public class AI {
         if (test.prev == null) {
             out += "->" + test.getPos();
         }
-        System.out.println(out);
         out = "";
         for (Node neighbour : getNeighbours(startNode, nodeMap)) {
             out += "|" + neighbour.getPos();
         }
-        System.out.println(out);
 
         out = "";
         for (Node neighbour : getNeighbours(checkPoint, nodeMap)) {
             out += "|" + neighbour.getPos();
         }
-        System.out.println(out);
 
         ArrayList<DIRECTION> pathAsDirections = new ArrayList<>();
 
@@ -253,17 +244,13 @@ public class AI {
             }
 
         }
-        System.out.println("00000000000");
         for (DIRECTION x :
                 pathAsDirections) {
-            System.out.print("->" + x.toString());
         }
-        System.out.println();
         ArrayList<String> finalReg = new ArrayList<>();
         createReg(finalReg, pathAsDirections, robot.getDirection());
         for (String x :
                 finalReg) {
-            System.out.println(x);
         }
         return finalReg;
     }
@@ -406,7 +393,6 @@ public class AI {
         }
         card = getRandomCard();
         reg.add(card);
-        System.out.println("adding random card " + card);
         switch (card) {
             case "LeftTurn":
                 createReg(reg, path, DIRECTION.valueOfDirection(curr.getAngle() + 90));
@@ -423,7 +409,6 @@ public class AI {
     }
 
     ArrayList<Node> retracePath(Node start, Node target) {
-        System.out.println("retrace Path func called!!!!!");
         Node curr = target;
         ArrayList<Node> path = new ArrayList<>();
         while (curr != start) {

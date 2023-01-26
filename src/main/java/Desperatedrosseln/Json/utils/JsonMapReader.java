@@ -2,6 +2,8 @@ package Desperatedrosseln.Json.utils;
 
 import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Logic.Elements.BoardElement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 import java.io.IOException;
@@ -16,6 +18,8 @@ public class JsonMapReader {
     private final String deathTrap;
     private final String lostBearings;
 
+    private static final Logger logger = LogManager.getLogger();
+
     public JsonMapReader(){
         jsonFileReader = new JsonFileReader();
         try {
@@ -25,7 +29,7 @@ public class JsonMapReader {
             deathTrap = jsonFileReader.readFile("src/main/resources/maps/deathTrap.json");
             lostBearings = jsonFileReader.readFile("src/main/resources/maps/lostBearings.json");;
         } catch (IOException e) {
-            System.out.println("error occurred at jsonMapReader()");
+            logger.warn("error occurred at jsonMapReader()");
             throw new RuntimeException(e);
         }
     }
@@ -41,9 +45,7 @@ public class JsonMapReader {
         } else if(Objects.equals(mapName, "dizzyHighway")) {
             gameStarted = deserializer.deserializeMessageBody(dizzyHighway);
             gameMap = gameStarted.getGameMap();
-            System.out.println(gameMap);
             BoardElement tile = gameMap.get(0).get(0).get(0);
-            System.out.println(tile instanceof Empty);
             return gameMap;
         } else {
             return null;

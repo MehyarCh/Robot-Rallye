@@ -92,9 +92,9 @@ public class ClientHandler implements Runnable {
 
         if (!message.getMessageType().equals("Alive")) {
             if (isAI) {
-                System.out.println("--------" + message.getMessageType() + ": " + message.getMessageBody());
+                logger.trace("--------" + message.getMessageType() + ": " + message.getMessageBody());
             } else {
-                System.out.println(message.getMessageType() + ": " + message.getMessageBody());
+                logger.info(message.getMessageType() + ": " + message.getMessageBody());
             }
 
         }
@@ -110,15 +110,14 @@ public class ClientHandler implements Runnable {
                     isAI = helloServer.isAI;
                     JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
                     sendMessage("Welcome", welcomeJsonAdapter.toJson(new Welcome(clientID)));
-                    System.out.println("client Connected");
+                    logger.info(clientID + " connected");
                 } else {
-                    System.out.println("invalid protocol");
+                    logger.debug("invalid protocol");
                     sendErrorMessage();
                 }
                 break;
 
             case "Alive":
-                //System.out.println("client is alive");
                 break;
 
             case "PlayerValues":
@@ -179,8 +178,6 @@ public class ClientHandler implements Runnable {
                 JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
                 Game.setCurrentMap(mapSelectedJsonAdapter.fromJson(message.getMessageBody()).getMap());
 
-                System.out.println(game.getCurrentMap());
-
                 //ToDO send GameStarted with Map
                 List<List<List<BoardElement>>> gameMap = new JsonMapReader().readMapFromJson(game.getCurrentMap());
 
@@ -233,7 +230,6 @@ public class ClientHandler implements Runnable {
                 SetStartingPoint setStartingPoint = setStartingPointJsonAdapter.fromJson(message.getMessageBody());
                 game.initGameMap();
                 game.placeRobot(player, setStartingPoint.getX(), setStartingPoint.getY());
-                System.out.println(clientName + " val " + ++game.startingPositionsChosen + "nos clients " + clients.size());
 
                 if ( game.startingPositionsChosen == clients.size() && !game.isRunning()) {
                     game.runStep();
@@ -350,8 +346,7 @@ public class ClientHandler implements Runnable {
             @Override
             public void run() {
                 JsonAdapter<Alive> aliveJsonAdapter = moshi.adapter(Alive.class);
-                sendMessage("Alive", aliveJsonAdapter.toJson(new Alive()));
-                System.out.println(Thread.currentThread().getName());//after 5s alive message gets sent to the client.
+                sendMessage("Alive", aliveJsonAdapter.toJson(new Alive())); //after 5s alive message gets sent to the client.
             }
         }, 5 * 1000, 5 * 1000); //5 seconds
 
