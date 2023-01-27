@@ -252,7 +252,7 @@ public class ClientHandler implements Runnable {
                 if (selectedCard.getCard().equals("null")) {
                     broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID, selectedCard.getRegister(), false)));
                     //replace the card through "null" in the register and replace the null spot in the hand with the card that got put back
-                    player.addToRegister(selectedCard.getCard(), selectedCard.getRegister());
+                    //player.addToRegister(selectedCard.getCard(), selectedCard.getRegister());
                 } else {
                     broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID, selectedCard.getRegister(), true)));
                     logger.trace(game.selectionFinished());

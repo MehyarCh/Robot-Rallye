@@ -7,8 +7,8 @@ public class Position {
 
     public Position(int x, int y) {
         //ToDO: fix switched x and y
-        this.x = y;
-        this.y = x;
+        this.x = x;
+        this.y = y;
     }
 
     public int getX() {

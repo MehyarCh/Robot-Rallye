@@ -11,7 +11,12 @@ public class BoardElement {
         this.isOnBoard = isOnBoard;
     }
     public void setPosition(int x, int y) {
-        position = new Position(x, y);
+        if(position!=null){
+            position.setX(x);
+            position.setY(y);
+        }else{
+            position = new Position(x,y);
+        }
     }
 
     public Position getPosition() {

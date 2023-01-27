@@ -221,7 +221,7 @@ public class Player {
 
         for (Card cardae: registers){
             if(cardae != null){
-                cardsnotnull = cardsnotnull+1;
+                cardsnotnull++;
             }
         }
         registerTrack = cardsnotnull;

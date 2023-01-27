@@ -306,7 +306,6 @@ public class MainController {
             case "Again" -> new Image(getClass().getResource("/images/Card/again.jpg").toString());
             case "PowerUp" -> new Image(getClass().getResource("/images/Card/powerup.jpg").toString());
             case "MoveBack" -> new Image(getClass().getResource("/images/Card/moveback.jpg").toString());
-            case "Move" -> new Image(getClass().getResource("/images/Card/move.jpg").toString());
             default -> new Image(getClass().getResource("/images/Card/no_such_card.png").toString());
         };
     }

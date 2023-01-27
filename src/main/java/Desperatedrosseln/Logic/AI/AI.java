@@ -97,7 +97,7 @@ public class AI {
 
         for (int x = 0; x < gameMap.size(); x++) {
             for (int y = 0; y < gameMap.get(x).size(); y++) {
-                Node curr = new Node(new Position(y, x));
+                Node curr = new Node(new Position(x, y));
                 nodeMap[y][x] = curr;
                 List<BoardElement> boardElements = gameMap.get(x).get(y);
                 if (boardElements.size() == 1) {                                                                              //ToDO

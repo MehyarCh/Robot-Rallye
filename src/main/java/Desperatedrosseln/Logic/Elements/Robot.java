@@ -1,6 +1,7 @@
 package Desperatedrosseln.Logic.Elements;
 
 import Desperatedrosseln.Logic.DIRECTION;
+import javafx.geometry.Pos;
 
 import java.util.*;
 
@@ -9,7 +10,7 @@ public class Robot extends BoardElement {
     public static ArrayList<Position> robotPositions;
     private DIRECTION direction;
     private final int ID;
-    private Position position = super.getPosition();
+    private Position position ;
 
 
     public Robot(int iD) {
@@ -17,7 +18,9 @@ public class Robot extends BoardElement {
         if(robotPositions == null){
             robotPositions = new ArrayList<>();
         }
+
         robotPositions.add(position);
+        direction = DIRECTION.RIGHT;
 
         this.ID = iD;
 
@@ -182,6 +185,20 @@ public class Robot extends BoardElement {
 
         // Compare the data members and return accordingly
         return this.getID() == r.getID();
+    }
+
+    @Override
+    public void setPosition(int x, int y){
+        if(position!=null){
+            position.setX(x);
+            position.setY(y);
+        }else{
+            position = new Position(x,y);
+        }
+    }
+    @Override
+    public Position getPosition(){
+        return this.position;
     }
 }
 

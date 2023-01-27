@@ -74,6 +74,7 @@ public class Game {
 
     public void placeRobot(Player player, int x, int y) {
         gameMap.addElement(player.getRobot(), x, y);
+        player.getRobot().setPosition(x,y);
     }
 
     public void runStep() throws ClassNotFoundException {
@@ -101,8 +102,6 @@ public class Game {
                 break;
 
         }
-
-
 
     }
 
@@ -235,7 +234,6 @@ public class Game {
                 clients) {
             client.sendMessage(type, json);
         }
-
     }
 
     /**
@@ -258,13 +256,11 @@ public class Game {
                 //find the current player and let them play
                 for (Player curr : players) {
                     logger.debug("Register " + current_register + "For Player: "+ curr.getID());
-                    //Isn't going into condition
                     if (curr.getID()==playing.getID() && !rebooted_players.contains(curr)) {
                         //Server sends currentPlayer message to every Client
                         JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
                         CurrentPlayer currentPlayer = new CurrentPlayer(playing.getID());
                         broadcastMessage("CurrentPlayer", currentPlayerJsonAdapter.toJson(currentPlayer));
-
                         //the active player plays their card in the current register
                         playCardByType(curr.getRegisterIndex(current_register), curr, current_register);
 
@@ -347,29 +343,14 @@ public class Game {
 
 
         } else {
-
-            if (curr.getRegisterIndex(register_number).toString().equals("Again")
-                    && register_number > 0) {
-                curr.getRegisterIndex(register_number - 1).playCard(curr.getRobot());
-                switch (curr.getRegisterIndex(register_number - 1).toString()) {
-                    case "Move1":
-                    case "Move2":
-                    case "Move3":
-                    case "MoveBack":
-                        robotMovedProtokoll(curr.getRobot());
+            if (curr.getRegisterIndex(register_number).toString().equals("Again")) {
+                if(register_number > 0){
+                    curr.getRegisterIndex(register_number - 1).playCard(curr.getRobot());
                 }
             } else {
                 curr.getRegisterIndex(register_number).playCard(curr.getRobot());
             }
-
-            switch (curr.getRegisterIndex(register_number).toString()) {
-                case "Move1":
-                case "Move2":
-                case "Move3":
-                case "MoveBack":
-                    robotMovedProtokoll(curr.getRobot());
-            }
-
+            //robotMovedProtokoll(curr.getRobot());
         }
     }
 

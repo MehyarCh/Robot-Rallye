@@ -82,7 +82,7 @@ public class MapController {
             return x == position.getX() && y == position.getY();
         }
 
-        public void changePosition(int x, int y) {
+        public void setPosition(int x, int y) {
             this.setX(x);
             this.setY(y);
         }
@@ -356,23 +356,24 @@ public class MapController {
     //private void moveRobot(robotId)
 
     public void move(int robotId, int newX, int newY) {
+        Platform.runLater(() -> {
+            Position position = idToPosition.get(robotId);
 
-        Position position = idToPosition.get(robotId);
+            int oldX = position.getX();
+            int oldY = position.getY();
 
-        int oldX = position.getX();
-        int oldY = position.getY();
+            int newMapIndex = getMapIndex(newX, newY);
 
-        int newMapIndex = getMapIndex(newX, newY);
+            ImageView robotImage = getRobotFromTile(oldX, oldY);
 
-        ImageView robotImage = getRobotFromTile(oldX, oldY);
+            // Removes the images from the old Tile and changes the robos position to the new one
+            removeRobot(oldX, oldY);
+            idToPosition.get(robotId).setPosition(newX, newY);
 
-        // Removes the images from the old Tile and changes the robos position to the new one
-        removeRobot(oldX, oldY);
-        position.changePosition(newX, newY);
-
-        // adds the new Image to the new Tile
-        StackPane newStackPane = (StackPane) mapGrid.getChildren().get(newMapIndex);
-        newStackPane.getChildren().add(robotImage);
+            // adds the new Image to the new Tile
+            StackPane newStackPane = (StackPane) mapGrid.getChildren().get(newMapIndex);
+            newStackPane.getChildren().add(robotImage);
+        });
     }
 
     public void rotateRobot(int id, String direction) {
@@ -390,12 +391,14 @@ public class MapController {
     }
 
     public void removeRobot(int x, int y) {
-        int mapIndex = getMapIndex(x, y);
-        StackPane cell = (StackPane) mapGrid.getChildren().get(mapIndex);
-        ImageView imageView = (ImageView) cell.getChildren().get(cell.getChildren().size() - 1);
-        if (robotImages.contains(imageView)) {
-            cell.getChildren().remove(imageView);
-        }
+        Platform.runLater(() -> {
+            int mapIndex = getMapIndex(x, y);
+            StackPane cell = (StackPane) mapGrid.getChildren().get(mapIndex);
+            ImageView imageView = (ImageView) cell.getChildren().get(cell.getChildren().size() - 1);
+            if (robotImages.contains(imageView)) {
+                cell.getChildren().remove(imageView);
+            }
+        });
     }
 
     public void removeRobotById(int id) {

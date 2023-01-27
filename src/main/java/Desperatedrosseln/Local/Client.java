@@ -187,6 +187,7 @@ public class Client implements Runnable {
                         lobbyController.addChatMessage(getPlayerName(receivedChat.getFrom()) + ": " + receivedChat.getMessage());
                     }
                 }
+                break;
             case "GameStarted":
                 //see above
                 break;
@@ -223,14 +224,18 @@ public class Client implements Runnable {
                 } else if (currentPlayer.getClientID() == this.clientID) {
                     isMyTurn = false;
                 }
+                break;
             case "Movement":
                 JsonAdapter<Movement> movementJsonAdapter = moshi.adapter(Movement.class);
                 Movement movement = movementJsonAdapter.fromJson(msg.getMessageBody());
-                mainController.getMapController().move(movement.getClientID(), movement.getX(), movement.getY());
+                mainController.getMapController().move(playersWithRobots.get(movement.getClientID()),
+                        movement.getX(), movement.getY());
+                break;
             case "PlayerTurning":
                 JsonAdapter<PlayerTurning> playerTurningJsonAdapter = moshi.adapter(PlayerTurning.class);
                 PlayerTurning playerTurning = playerTurningJsonAdapter.fromJson(msg.getMessageBody());
-                mainController.getMapController().rotateRobot(playerTurning.getClientID(), playerTurning.getRotation());
+                mainController.getMapController().rotateRobot(playersWithRobots.get(playerTurning.getClientID()), playerTurning.getRotation());
+                break;
         }
     }
 
