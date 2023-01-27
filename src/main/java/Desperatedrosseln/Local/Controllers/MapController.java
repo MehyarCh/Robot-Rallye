@@ -267,11 +267,6 @@ public class MapController {
                             new Image(getClass().getResource("/images/elements/pit/pit.png").toString());
                     stackElement = new ImageView(pitImage);
                 }
-                case "CheckPoint" -> {
-                    Image checkpointImage =
-                            new Image(getClass().getResource("/images/elements/checkpoint/checkpoint.png").toString());
-                    stackElement = new ImageView(checkpointImage);
-                }
                 case "RestartPoint" -> { stackElement = buildRestartPoint(boardElement);}
                 case "StartPoint" -> {
                     Image startpointImage =
@@ -280,6 +275,7 @@ public class MapController {
                     stackElement = new ImageView(startpointImage);
                     handleStartingPoint(stackElement, x, y, isTaken);
                 }
+                case "CheckPoint" ->stackElement = buildCheckpoint(boardElement);
                 case "Antenna" -> stackElement = buildAntenna(boardElement);
                 case "ConveyorBelt" -> stackElement = buildConveyorBelt(boardElement);
                 case "Energy-Space" -> stackElement = buildEnergySpace(boardElement);
@@ -298,7 +294,45 @@ public class MapController {
         }
         return cell;
     }
+    @FXML
+    private ImageView buildCheckpoint(BoardElement boardElement) throws IOException {
 
+        CheckPoint checkPoint = (CheckPoint) boardElement;
+        //ArrayList<String> orientations = checkPoint.getOrientations();
+
+        ImageView element = null;
+
+        // Green
+        if (checkPoint.getCount() == 1) {
+            // two orientations
+            Image checkPoint1 =
+                    new Image(getClass().getResource("/Images/elements/checkpoint/checkpoint1.png").toString());
+            element = new ImageView(checkPoint1);
+            // Blue
+        } else if (checkPoint.getCount() == 2) {
+            Image checkPoint2 =
+                    new Image(getClass().getResource("/Images/elements/checkpoint/checkpoint2.png").toString());
+            element = new ImageView(checkPoint2);
+
+        } else if (checkPoint.getCount() == 3) {
+            Image checkPoint3 =
+                    new Image(getClass().getResource("/Images/elements/checkpoint/checkpoint3.png").toString());
+            element = new ImageView(checkPoint3);
+
+        }else if (checkPoint.getCount() == 4) {
+            Image checkPoint4 =
+                    new Image(getClass().getResource("/Images/elements/checkpoint/checkpoint4.png").toString());
+            element = new ImageView(checkPoint4);
+
+        }else if (checkPoint.getCount() == 5) {
+            Image checkPoint5 =
+                    new Image(getClass().getResource("/Images/elements/checkpoint/checkpoint5.png").toString());
+            element = new ImageView(checkPoint5);
+        }else{
+            throw new IOException("Unknown");
+        }
+        return element;
+    }
     @FXML
     private ImageView buildRestartPoint(BoardElement boardElement) {
         Image restartPointImage =
@@ -836,27 +870,27 @@ public class MapController {
         ImageView robot;
         switch (robotID) {
             case 1 -> {
-                robotImage = new Image(getClass().getResource("/images/Robots/brown.jpg").toString());
+                robotImage = new Image(getClass().getResource("/Images/Robots/OnTiles/brownOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             case 2 -> {
-                robotImage = new Image(getClass().getResource("/images/Robots/yellow.jpg").toString());
+                robotImage = new Image(getClass().getResource("/Images/Robots/OnTiles/yellowOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             case 3 -> {
-                robotImage = new Image(getClass().getResource("/images/Robots/blue.jpg").toString());
+                robotImage = new Image(getClass().getResource("/Images/Robots/OnTiles/blueOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             case 4 -> {
-                robotImage = new Image(getClass().getResource("/images/Robots/green.jpg").toString());
+                robotImage = new Image(getClass().getResource("/Images/Robots/OnTiles/greenOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             case 5 -> {
-                robotImage = new Image(getClass().getResource("/images/Robots/orange.jpg").toString());
+                robotImage = new Image(getClass().getResource("/Images/Robots/OnTiles/orangeOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             case 6 -> {
-                robotImage = new Image(getClass().getResource("/images/Robots/red.jpg").toString());
+                robotImage = new Image(getClass().getResource("/Images/Robots/OnTiles/redOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             default -> {

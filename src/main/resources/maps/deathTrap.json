@@ -12,7 +12,8 @@
         [
           {
             "type": "CheckPoint",
-            "isOnBoard": "2A"
+            "isOnBoard": "2A",
+            "count": 5
           }
         ],
         [
@@ -377,7 +378,7 @@
           {
             "type": "CheckPoint",
             "isOnBoard": "2A",
-            "count": 1
+            "count": 2
           }
         ],
         [
@@ -635,17 +636,17 @@
             "isOnBoard": "2A",
             "orientations": ["right"]
           },          {
-            "type": "PushPanel",
-            "isOnBoard": "2A",
-            "orientations": ["right"],
-            "registers": [2, 4]
-          }
+          "type": "PushPanel",
+          "isOnBoard": "2A",
+          "orientations": ["right"],
+          "registers": [2, 4]
+        }
         ],
         [
           {
             "type": "CheckPoint",
             "isOnBoard": "2A",
-            "count": 1
+            "count": 3
           }
         ],
         [
@@ -684,7 +685,7 @@
           {
             "type": "CheckPoint",
             "isOnBoard": "2A",
-            "count": 1
+            "count": 4
           }
         ],
         [
