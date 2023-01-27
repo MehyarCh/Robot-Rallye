@@ -28,7 +28,7 @@ public class Game {
     private Map gameMap;
     private static String currentMap;
     private static ArrayList<Player> players = new ArrayList<>();
-    private ArrayList<BoardElement> boardElements = new ArrayList<>();
+    private List<BoardElement> boardElements = new ArrayList<>();
     private List<Player> rebooted_players = new ArrayList<>();
     Moshi moshi = new Moshi.Builder().build();
 
@@ -40,11 +40,11 @@ public class Game {
     private int current_register = 0;
     public static int mapSelectionPlayer = -1;
     //
-    private ArrayList<Card> spampile = new ArrayList<>(38);
-    private ArrayList<Card> viruspile = new ArrayList<>(18);
-    private ArrayList<Card> trojanpile = new ArrayList<>(12);
-    private ArrayList<Card> wormpile = new ArrayList<>(6);
-    private ArrayList<ClientHandler> clients;
+    private List<Card> spampile = new ArrayList<>(38);
+    private List<Card> viruspile = new ArrayList<>(18);
+    private List<Card> trojanpile = new ArrayList<>(12);
+    private List<Card> wormpile = new ArrayList<>(6);
+    private List<ClientHandler> clients;
 
     private static final Logger logger = LogManager.getLogger();
     private int distance;
@@ -350,7 +350,7 @@ public class Game {
             } else {
                 curr.getRegisterIndex(register_number).playCard(curr.getRobot());
             }
-            //robotMovedProtokoll(curr.getRobot());
+            robotMovedProtokoll(curr.getRobot());
         }
     }
 
@@ -362,7 +362,7 @@ public class Game {
      */
     private void drawSpamCard(Player player, int numberOfCards) {
 
-        ArrayList<String> cards = new ArrayList<>();
+        List<String> cards = new ArrayList<>();
 
         if (spampile.size() >= numberOfCards) {
             for (int i = 0; i < numberOfCards; i++) {
@@ -954,7 +954,7 @@ public class Game {
      */
     public void robotMovedProtokoll(Robot robot) {
         JsonAdapter<Movement> movementJsonAdapter = moshi.adapter(Movement.class);
-        Movement movement = new Movement(robot.getID(), robot.getPosition().getX(), robot.getPosition().getY());
+        Movement movement = new Movement(getPlayerByRobot(robot).getID(), robot.getPosition().getX(), robot.getPosition().getY());
         broadcastMessage("Movement", movementJsonAdapter.toJson(movement));
     }
 
@@ -974,7 +974,7 @@ public class Game {
      * @param cards this method is used every time a player/robot takes damage and has to draw a Damagecard
      *              if he takes multiple Damagecards, only one message is sent, containing a list of all the Damagecards
      */
-    public void drawDamageProtokoll(Robot robot, ArrayList<String> cards) {
+    public void drawDamageProtokoll(Robot robot, List<String> cards) {
         JsonAdapter<DrawDamage> drawDamageJsonAdapter = moshi.adapter(DrawDamage.class);
         DrawDamage drawDamage = new DrawDamage(robot.getID(), cards);
         broadcastMessage("DrawDamage", drawDamageJsonAdapter.toJson(drawDamage));

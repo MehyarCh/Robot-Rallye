@@ -89,7 +89,8 @@
                        fx:id="profileIcon"
                        styleClass="player-icon"/>
                 <VBox styleClass="profile-status">
-                    <Label text="PlayerName"
+                    <Label fx:id="playerName"
+                            text="PlayerName"
                            styleClass="profile-name, color--light"/>
                     <Label text="Energy: 50"
                            styleClass="profile-energy, color--primary"/>

@@ -115,6 +115,8 @@ public class MainController {
     @FXML
     private Label profileIcon;
     @FXML
+    private Label playerName;
+    @FXML
     private Label timeLabel;
 
     private static final Logger logger = LogManager.getLogger(MainController.class);
@@ -137,8 +139,11 @@ public class MainController {
             String modulesCss = this.getClass().getResource("/Css/modules.css").toExternalForm();
             scene.getStylesheets().add(modulesCss);
 
+
             String stateCss = this.getClass().getResource("/Css/state.css").toExternalForm();
             scene.getStylesheets().add(stateCss);
+
+            playerName.setText(client.getName());
 
             //TESTING THE MOVE CARDS FUNCTION
 

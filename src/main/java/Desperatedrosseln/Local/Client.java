@@ -24,8 +24,8 @@ public class Client implements Runnable {
     private int clientID;
 
     private List<String> cardsInHand;
-    HashMap<Integer, Integer> playersWithRobots = new HashMap<>();
-    HashMap<String, Integer> localPlayerList = new HashMap<>();
+    private HashMap<Integer, Integer> playersWithRobots = new HashMap<>();
+    private HashMap<String, Integer> localPlayerList = new HashMap<>();
     private MainController mainController;
     private String protocol = "Version 0.1";
     ArrayList<Integer> robotIDs = new ArrayList<>();
