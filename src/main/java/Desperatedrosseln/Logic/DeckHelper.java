@@ -11,6 +11,8 @@ public class DeckHelper {
     //shuffle the given list (deck)
     public static List<Card> shuffleCards(List<Card> cards) {
         Collections.shuffle(cards);
+        Collections.shuffle(cards);
+        Collections.shuffle(cards);
         return cards;
     }
 

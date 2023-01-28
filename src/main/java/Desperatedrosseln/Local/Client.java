@@ -8,6 +8,8 @@ import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Logic.Elements.Robot;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+
+
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,6 +39,7 @@ public class Client implements Runnable {
 
     public boolean lobbyControllerInitialized = false;
     private LobbyController lobbyController;
+    private List<String> upgrades = new ArrayList<>();
 
     public boolean isGotSentMaps() {
         return gotSentMaps;
@@ -236,15 +239,52 @@ public class Client implements Runnable {
                 PlayerTurning playerTurning = playerTurningJsonAdapter.fromJson(msg.getMessageBody());
                 mainController.getMapController().rotateRobot(playersWithRobots.get(playerTurning.getClientID()), playerTurning.getRotation());
                 break;
+                break;
+            case "ExchangeShop":
+                JsonAdapter<ExchangeShop> exchangeShopJsonAdapter = moshi.adapter(ExchangeShop.class);
+                ExchangeShop exchangeShop = exchangeShopJsonAdapter.fromJson(msg.getMessageBody());
+                List<String> shopCards = exchangeShop.getCards();
+                //ToDo: Card Selection
+                Collections.shuffle(shopCards);
+                JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter = moshi.adapter(BuyUpgrade.class);
+                sendMessage("BuyUpgrade",buyUpgradeJsonAdapter.toJson(new BuyUpgrade(true,shopCards.get(0))));
+                break;
+            case "RefillShop":
+                JsonAdapter<RefillShop> refillShopJsonAdapter = moshi.adapter(RefillShop.class);
+                RefillShop refillShop = refillShopJsonAdapter.fromJson(msg.getMessageBody());
+                List<String> refillShopCards = refillShop.getCards();
+                //ToDo: Card Selection
+                Collections.shuffle(refillShopCards);
+                JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter1 = moshi.adapter(BuyUpgrade.class);
+                sendMessage("BuyUpgrade",buyUpgradeJsonAdapter1.toJson(new BuyUpgrade(true,refillShopCards.get(0))));
+                break;
+            case "UpgradeBought":
+                JsonAdapter<UpgradeBought> upgradeBoughtJsonAdapter = moshi.adapter(UpgradeBought.class);
+                UpgradeBought upgradeBought = upgradeBoughtJsonAdapter.fromJson(msg.getMessageBody());
+
+                if(upgradeBought.getClientID() == clientID){
+                    String upgrade = upgradeBought.getCard();
+                    upgrades.add(upgrade);
+                }
+
+                break;
+            case "Energy":
+                break;
+            case "Error":
+                if (mainController != null) {
+                    mainController.addChatMessage("Error message from Server for ");
+                }
+                break;
         }
     }
+
 
     private void startStartPointSelectionTimer() {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(!mainController.getMapController().hasStartpoint){
+                if (!mainController.getMapController().hasStartpoint) {
                     mainController.getMapController().runAutoStartPointSelection();
                     sendChatMessage("start point selected", -1);
                 }
@@ -258,7 +298,7 @@ public class Client implements Runnable {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(!mainController.isProgrammingDone){
+                if (!mainController.isProgrammingDone) {
                     mainController.sendRandomCards();
                     sendChatMessage("random cards sent", -1);
                 }
@@ -378,8 +418,9 @@ public class Client implements Runnable {
     public void setLobbyController(LobbyController lobbyController) {
         this.lobbyController = lobbyController;
     }
-    public void mapRobotToClient(int clientID,int robotID){
-        playersWithRobots.put(clientID,robotID);
+
+    public void mapRobotToClient(int clientID, int robotID) {
+        playersWithRobots.put(clientID, robotID);
     }
 }
 
