@@ -381,5 +381,6 @@ public class ClientHandler implements Runnable {
         maps.add("ExtraCrispy");
         maps.add("LostBearings");
         maps.add("DeathTrap");
+        maps.add("Twister");
     }
 }

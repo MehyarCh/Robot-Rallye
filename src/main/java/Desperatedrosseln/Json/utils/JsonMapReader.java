@@ -17,6 +17,7 @@ public class JsonMapReader {
     private final String extraCrispy;
     private final String deathTrap;
     private final String lostBearings;
+    private final String twister;
 
     private static final Logger logger = LogManager.getLogger();
 
@@ -27,7 +28,8 @@ public class JsonMapReader {
             dizzyHighway = jsonFileReader.readFile("src/main/resources/maps/dizzyHighway.json");
             extraCrispy = jsonFileReader.readFile("src/main/resources/maps/extraCrispy.json");
             deathTrap = jsonFileReader.readFile("src/main/resources/maps/deathTrap.json");
-            lostBearings = jsonFileReader.readFile("src/main/resources/maps/lostBearings.json");;
+            lostBearings = jsonFileReader.readFile("src/main/resources/maps/lostBearings.json");
+            twister = jsonFileReader.readFile("src/main/resources/maps/twister.json");
         } catch (IOException e) {
             logger.warn("error occurred at jsonMapReader()");
             throw new RuntimeException(e);
@@ -66,6 +68,9 @@ public class JsonMapReader {
                 return message.getMessageBody().getGameMap();
             case "LostBearings":
                 message = deserializer.deserialize(lostBearings);
+                return message.getMessageBody().getGameMap();
+            case "Twister":
+                message = deserializer.deserialize(twister);
                 return message.getMessageBody().getGameMap();
             default:
                 return null;
