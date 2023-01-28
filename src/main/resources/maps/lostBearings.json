@@ -325,7 +325,7 @@
           {
             "type": "CheckPoint",
             "isOnBoard": "1A",
-            "count": 1
+            "count": 2
           }
         ],
         [
@@ -613,7 +613,7 @@
           {
             "type": "CheckPoint",
             "isOnBoard": "1A",
-            "count": 1
+            "count": 3
           }
         ],
         [
@@ -646,7 +646,7 @@
           {
             "type": "CheckPoint",
             "isOnBoard": "1A",
-            "count": 1
+            "count": 4
           }
         ],
         [
