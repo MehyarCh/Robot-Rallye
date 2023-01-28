@@ -245,7 +245,7 @@ public class Game {
         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
         ActivePhase activePhase3 = new ActivePhase(phase);
         broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));*/
-        decideNextPlayer();
+
         //for each register
         for (int current_register = 0; current_register < 5; current_register++) {
             logger.debug("Activating register: "+ current_register);
@@ -253,11 +253,12 @@ public class Game {
             //each player plays their register
             ArrayList<CurrentCards.ActiveCards> activeCardsArrayList = new ArrayList<>();
             for (int played = 1; played <= players.size(); played++) {
+                decideNextPlayer();
                 //find the current player and let them play
                 for (Player curr : players) {
-                    logger.debug("Register " + current_register + "For Player: "+ curr.getID());
                     if (curr.getID()==playing.getID() && !rebooted_players.contains(curr)) {
                         //Server sends currentPlayer message to every Client
+                        logger.debug("Register " + current_register + "For Player: "+ curr.getID());
                         JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
                         CurrentPlayer currentPlayer = new CurrentPlayer(playing.getID());
                         broadcastMessage("CurrentPlayer", currentPlayerJsonAdapter.toJson(currentPlayer));
@@ -268,6 +269,7 @@ public class Game {
 
                     }
                 }
+                current_player_index++;
             }
             JsonAdapter<CurrentCards> currentCardsJsonAdapter = moshi.adapter(CurrentCards.class);
             broadcastMessage("CurrentCards", currentCardsJsonAdapter.toJson(new CurrentCards(activeCardsArrayList)));
@@ -487,12 +489,12 @@ public class Game {
     }
 
     private void decideNextPlayer() {
-        current_player_index++;
+        //TODO: count distance to antenna
         //if the current player is the last player, start from the beginning
         if (current_player_index >= players.size()) {
             current_player_index = 0;
         }
-        playing = players.get(current_player_index++);
+        playing = players.get(current_player_index);
     }
 
     private int calculateDistance(Position pos1, Position pos2) {

@@ -36,23 +36,22 @@ public class Robot extends BoardElement {
         if (steps > 3 || steps < 1){
             return;
         }
-        for(int i = 0; i < steps; i++){
-            switch (direction){
-                case TOP -> {
-                    position.setY(position.getY() - steps);
-                }
-                case BOTTOM -> {
-                    position.setY(position.getY() + steps);
-                }
-                case LEFT -> {
-                    position.setX(position.getX() - steps);
-                }
-                case RIGHT -> {
-                    position.setX(position.getX() + steps);
-                }
-                default -> {
 
-                }
+        switch (direction){
+            case TOP -> {
+                position.setY(position.getY() - steps);
+            }
+            case BOTTOM -> {
+                position.setY(position.getY() + steps);
+            }
+            case LEFT -> {
+                position.setX(position.getX() - steps);
+            }
+            case RIGHT -> {
+                position.setX(position.getX() + steps);
+            }
+            default -> {
+
             }
         }
     }
