@@ -28,10 +28,7 @@ public class Player {
 
     private int registerTrack =0;
     private List <Card> discarded = new ArrayList<>();
-    private int registerTrack = 0;
-    private List<Card> discarded = new ArrayList<>();
     private ArrayList<String> cardsYouGotNow = new ArrayList<>();
-
     private static final Logger logger = LogManager.getLogger();
     ArrayList<Card> upgrades = new ArrayList<>();
 

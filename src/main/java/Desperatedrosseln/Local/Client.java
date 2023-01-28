@@ -194,11 +194,7 @@ public class Client implements Runnable {
             case "GameStarted":
                 //see above
                 break;
-            case "Error":
-                /*if (mainController != null) {
-                    mainController.addChatMessage("Error Occurred");
-                }
-                break;*/
+
             case "CardPlayed":
                 break;
             case "StartingPointTaken":
@@ -238,7 +234,6 @@ public class Client implements Runnable {
                 JsonAdapter<PlayerTurning> playerTurningJsonAdapter = moshi.adapter(PlayerTurning.class);
                 PlayerTurning playerTurning = playerTurningJsonAdapter.fromJson(msg.getMessageBody());
                 mainController.getMapController().rotateRobot(playersWithRobots.get(playerTurning.getClientID()), playerTurning.getRotation());
-                break;
                 break;
             case "ExchangeShop":
                 JsonAdapter<ExchangeShop> exchangeShopJsonAdapter = moshi.adapter(ExchangeShop.class);
