@@ -5,6 +5,7 @@ import Desperatedrosseln.Json.utils.JsonMapReader;
 import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Logic.AI.AIClient;
 import Desperatedrosseln.Logic.Cards.Card;
+import Desperatedrosseln.Logic.Cards.Damage.Spam;
 import Desperatedrosseln.Logic.Cards.Damagecard;
 import Desperatedrosseln.Logic.Cards.Upgrade.*;
 import Desperatedrosseln.Logic.Cards.UpgradeCard;
@@ -99,7 +100,7 @@ public class Game {
                 break;
             case 1:
                 logger.info("Current phase: Upgrade Phase");
-                //runUpgradePhase();
+                runUpgradePhase();
                 break;
             case 2:
                 logger.info("Current phase: Programming phase");
@@ -155,7 +156,7 @@ public class Game {
                 }
             }
 
-        phase = 2;
+        phase = 1;
         isRunning = false;
 
         //setting up boardelements
@@ -222,6 +223,7 @@ public class Game {
     public void runUpgradePhase() throws ClassNotFoundException {
         decideNextPlayer();
 
+        isRunning = false;
         if (!firstPlayerGotCards) {
             initDeckOfUpgradeCards();
             for (int i = 0; i < players.size(); i++) {
@@ -253,7 +255,7 @@ public class Game {
             findClient(playing.getID()).sendMessage("RefillShop", refillShopJsonAdapter.toJson(new RefillShop(cardsInShopToString())));
         }
 
-
+        ++current_player_index;
     }
 
 
@@ -305,7 +307,7 @@ public class Game {
                 JsonAdapter<NotYourCards> notYourCardsJsonAdapter = moshi.adapter(NotYourCards.class);
                 if (client.getClientID() == player.getID()) {
                     JsonAdapter<YourCards> yourCardsJsonAdapter = moshi.adapter(YourCards.class);
-                    client.sendMessage("YourCards", yourCardsJsonAdapter.toJson(new YourCards(player.getHandasStrings())));
+                    client.sendMessage("YourCards", yourCardsJsonAdapter.toJson(new YourCards(player.getHandAsStrings())));
                 } else {
                     client.sendMessage("NotYourCards", notYourCardsJsonAdapter.toJson(new NotYourCards(player.getID(), player.getHand().size())));
                 }
@@ -639,26 +641,30 @@ public class Game {
 
     private void shootBoardLaser(Laser laser) {
         Position pos = laser.getPosition();
-        boolean laserhit = false;
-        List<BoardElement> elemetsOnPos;
+        boolean laserHit = false;
+        List<BoardElement> elementsOnPos;
 
         //TODO: not sure about which (X or Y) is width and which is length
         while (pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
-                && !laserhit) {
+                && !laserHit) {
             //as long as within the board, and laser still didnt hit any element
             if (hasLaserBlock(pos)) {
                 //if cell has a robot or an antenna on it
-                elemetsOnPos = gameMap.getElementsOnPos(pos);
-                for (BoardElement element : elemetsOnPos) {
+                elementsOnPos = gameMap.getElementsOnPos(pos);
+                for (BoardElement element : elementsOnPos) {
                     //either robots on cell get damage, or laser stops
                     if (element instanceof Robot) {
                         laserHitRobot((Robot) element);
-                        laserhit = true;
+                        laserHit = true;
                     } else if (element instanceof Antenna) {
-                        laserhit = true;
-                    } else if (element instanceof Wall) {
-                        laserhit = true;
+                        laserHit = true;
                     }
+                    DIRECTION dir = laser.getDirection();
+                    DIRECTION opDir = DIRECTION.valueOfDirection(dir.getAngle() + 180);
+                    if(dir.toString().equals(((Wall) element).getOrientations().get(0)) || opDir.toString().equals(((Wall) element).getOrientations().get(0))){
+                        laserHit = true;
+                    }
+
                 }
             } else {
                 pos = getNextPos(pos, laser.getDirection());
@@ -767,12 +773,12 @@ public class Game {
      */
     private void shootRobotLaser(Robot robot) {
         Position pos = robot.getPosition();
-        boolean laserhit = false;
+        boolean laserHit = false;
         List<BoardElement> elemetsOnPos;
 
         //TODO: not sure about which (X or Y) is width and which is length
         while (pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
-                && !laserhit) {
+                && !laserHit && pos.getX()>=0 && pos.getY()>=0) {
             //as long as within the board, and laser still didnt hit any element
             if (hasLaserBlock(pos)) {
                 //if cell has a robot or an antenna on it
@@ -781,14 +787,42 @@ public class Game {
                     //robots on cell get damage, or laser stops
                     if (element instanceof Robot) {
                         laserHitRobot((Robot) element);
-                        laserhit = true;
+                        laserHit = true;
                     } else if (element instanceof Wall) {
                         //TODO: take direction of wall into consideration
-                        laserhit = true;
+                        DIRECTION dir = robot.getDirection();
+                        DIRECTION opDir = DIRECTION.valueOfDirection(dir.getAngle() + 180);
+                        if(dir.toString().equals(((Wall) element).getOrientations().get(0)) || opDir.toString().equals(((Wall) element).getOrientations().get(0))){
+                            laserHit = true;
+                        }
+
                     }
                 }
             } else {
                 pos = getNextPos(pos, robot.getDirection());
+            }
+        }
+
+        Player curr = getPlayerByRobot(robot);
+        laserHit = false;
+        while (curr.checkUpgrade("RearLaser") && pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
+                && !laserHit && pos.getX()>=0 && pos.getY()>=0) {
+            //as long as within the board, and laser still didnt hit any element
+            if (hasLaserBlock(pos)) {
+                //if cell has a robot or an antenna on it
+                elemetsOnPos = gameMap.getElementsOnPos(pos);
+                for (BoardElement element : elemetsOnPos) {
+                    //robots on cell get damage, or laser stops
+                    if (element instanceof Robot) {
+                        laserHitRobot((Robot) element);
+                        laserHit = true;
+                    } else if (element instanceof Wall) {
+                        //TODO: take direction of wall into consideration
+                        laserHit = true;
+                    }
+                }
+            } else {
+                pos = getNextPos(pos,DIRECTION.valueOfDirection(robot.getDirection().getAngle() + 180) );
             }
         }
     }
@@ -1217,6 +1251,17 @@ public class Game {
             case "RearLaser":
                 break;
             case "SpamBlocker":
+                List<Card> hand = player.getHand();
+                for (Card curr:
+                     hand) {
+                    if(curr instanceof Spam){
+                        hand.add(player.drawCardFromDeck());
+                        hand.remove(curr);
+                        spampile.add(curr);
+                    }
+                }
+                JsonAdapter<YourCards> yourCardsJsonAdapter = moshi.adapter(YourCards.class);
+                findClient(player.getID()).sendMessage("YourCards", yourCardsJsonAdapter.toJson(new YourCards(player.getHandAsStrings())));
                 player.removeUpgrade(card.toString());
                 break;
         }

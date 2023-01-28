@@ -265,7 +265,7 @@ public class ClientHandler implements Runnable {
                     }
                 }
                 //ToDo: Apply the effects
-                game.runUpgradePhase();
+                game.runStep();
                 // game.runUpgradePhase();
 
                 break;

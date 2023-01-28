@@ -271,7 +271,7 @@ public class Player {
 
     }
 
-    public ArrayList<String> getHandasStrings() {
+    public ArrayList<String> getHandAsStrings() {
         ArrayList<String> cards = new ArrayList<>();
 
         for (Card card:
@@ -313,5 +313,15 @@ public class Player {
 
         System.out.println("cannot remove upgrade card");
 
+    }
+
+    public boolean checkUpgrade(String upgrade){
+        for (Card curr : upgrades) {
+            UpgradeCard upgradeCard = (UpgradeCard) curr;
+            if (upgradeCard.toString().equals(upgrade)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
