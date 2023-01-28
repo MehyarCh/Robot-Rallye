@@ -40,7 +40,7 @@ public class Game {
     private int phase = 0;
     private Player playing;
     private int current_player_index = 0;
-    public int startingPositionsChosen=0;
+    public int startingPositionsChosen = 0;
     private int current_register = 0;
     public static int mapSelectionPlayer = -1;
     private ArrayList<Card> cardsInShop = new ArrayList<>();
@@ -84,12 +84,12 @@ public class Game {
 
     public void placeRobot(Player player, int x, int y) {
         gameMap.addElement(player.getRobot(), x, y);
-        player.getRobot().setPosition(x,y);
+        player.getRobot().setPosition(x, y);
     }
 
     public void runStep() throws ClassNotFoundException {
 
-        if(isRunning){
+        if (isRunning) {
             return;
         }
         isRunning = true;
@@ -125,7 +125,8 @@ public class Game {
             //TODO: set number of checkpoints dynamically from the gamemap info
         }
     }
-    public boolean selectionFinished(){
+
+    public boolean selectionFinished() {
         /*int i=0;
         while(i<players.size()){
             logger.warn(players.get(i).getRegisterTrack() + " ID: " + players.get(i).getID());
@@ -134,8 +135,8 @@ public class Game {
             }
             i++;
         }*/
-        for (Player player: players){
-            if(player.getRegisterTrack() < 5){
+        for (Player player : players) {
+            if (player.getRegisterTrack() < 5) {
                 return false;
             }
         }
@@ -150,24 +151,25 @@ public class Game {
         List<List<List<BoardElement>>> gameMapList = jsonMapReader.readMapFromJson(currentMap);
         gameMap = new Map(convertMap(gameMapList));
 
-            for (int x = 0; x < gameMapList.size(); x++) {
-                for (int y = 0; y < gameMapList.get(x).size(); y++) {
-                    gameMapList.get(x).get(y).get(0).setPosition(x, y);
-                }
+        for (int x = 0; x < gameMapList.size(); x++) {
+            for (int y = 0; y < gameMapList.get(x).size(); y++) {
+                gameMapList.get(x).get(y).get(0).setPosition(x, y);
             }
+        }
 
         phase = 1;
         isRunning = false;
 
         //setting up boardelements
-        for(int i=0; i<gameMap.getMapFields().size(); i++){
-            for(int j=0; j<gameMap.getMapFields().get(0).size(); j++){
-                for(BoardElement element : gameMap.getMapFields().get(0).get(0).getTypes()){
+        for (int i = 0; i < gameMap.getMapFields().size(); i++) {
+            for (int j = 0; j < gameMap.getMapFields().get(0).size(); j++) {
+                for (BoardElement element : gameMap.getMapFields().get(0).get(0).getTypes()) {
                     boardElements.add(element);
                 }
             }
         }
     }
+
     private List<String> cardsInShopToString() {
         List<String> stringList = new ArrayList<>();
         for (Card card :
@@ -351,7 +353,7 @@ public class Game {
 
         //for each register
         for (int current_register = 0; current_register < 5; current_register++) {
-            logger.debug("Activating register: "+ current_register);
+            logger.debug("Activating register: " + current_register);
             this.current_register = current_register;
             //each player plays their register
             ArrayList<CurrentCards.ActiveCards> activeCardsArrayList = new ArrayList<>();
@@ -359,9 +361,9 @@ public class Game {
                 decideNextPlayer();
                 //find the current player and let them play
                 for (Player curr : players) {
-                    if (curr.getID()==playing.getID() && !rebooted_players.contains(curr)) {
+                    if (curr.getID() == playing.getID() && !rebooted_players.contains(curr)) {
                         //Server sends currentPlayer message to every Client
-                        logger.debug("Register " + current_register + "For Player: "+ curr.getID());
+                        logger.debug("Register " + current_register + "For Player: " + curr.getID());
                         JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
                         CurrentPlayer currentPlayer = new CurrentPlayer(playing.getID());
                         broadcastMessage("CurrentPlayer", currentPlayerJsonAdapter.toJson(currentPlayer));
@@ -449,7 +451,7 @@ public class Game {
 
         } else {
             if (curr.getRegisterIndex(register_number).toString().equals("Again")) {
-                if(register_number > 0){
+                if (register_number > 0) {
                     curr.getRegisterIndex(register_number - 1).playCard(curr.getRobot());
                 }
             } else {
@@ -661,7 +663,7 @@ public class Game {
                     }
                     DIRECTION dir = laser.getDirection();
                     DIRECTION opDir = DIRECTION.valueOfDirection(dir.getAngle() + 180);
-                    if(dir.toString().equals(((Wall) element).getOrientations().get(0)) || opDir.toString().equals(((Wall) element).getOrientations().get(0))){
+                    if (dir.toString().equals(((Wall) element).getOrientations().get(0)) || opDir.toString().equals(((Wall) element).getOrientations().get(0))) {
                         laserHit = true;
                     }
 
@@ -778,7 +780,7 @@ public class Game {
 
         //TODO: not sure about which (X or Y) is width and which is length
         while (pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
-                && !laserHit && pos.getX()>=0 && pos.getY()>=0) {
+                && !laserHit && pos.getX() >= 0 && pos.getY() >= 0) {
             //as long as within the board, and laser still didnt hit any element
             if (hasLaserBlock(pos)) {
                 //if cell has a robot or an antenna on it
@@ -792,7 +794,7 @@ public class Game {
                         //TODO: take direction of wall into consideration
                         DIRECTION dir = robot.getDirection();
                         DIRECTION opDir = DIRECTION.valueOfDirection(dir.getAngle() + 180);
-                        if(dir.toString().equals(((Wall) element).getOrientations().get(0)) || opDir.toString().equals(((Wall) element).getOrientations().get(0))){
+                        if (dir.toString().equals(((Wall) element).getOrientations().get(0)) || opDir.toString().equals(((Wall) element).getOrientations().get(0))) {
                             laserHit = true;
                         }
 
@@ -806,7 +808,7 @@ public class Game {
         Player curr = getPlayerByRobot(robot);
         laserHit = false;
         while (curr.checkUpgrade("RearLaser") && pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
-                && !laserHit && pos.getX()>=0 && pos.getY()>=0) {
+                && !laserHit && pos.getX() >= 0 && pos.getY() >= 0) {
             //as long as within the board, and laser still didnt hit any element
             if (hasLaserBlock(pos)) {
                 //if cell has a robot or an antenna on it
@@ -822,7 +824,7 @@ public class Game {
                     }
                 }
             } else {
-                pos = getNextPos(pos,DIRECTION.valueOfDirection(robot.getDirection().getAngle() + 180) );
+                pos = getNextPos(pos, DIRECTION.valueOfDirection(robot.getDirection().getAngle() + 180));
             }
         }
     }
@@ -1200,9 +1202,9 @@ public class Game {
                 player.addUpgrade(upgradeCard);
                 player.energyReserve -= upgradeCard.getCost();
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
-                findClient(player.getID()).broadcastMessage("Energy",energyJsonAdapter.toJson(new Energy(player.getID(),player.energyReserve,"Shop")));
+                findClient(player.getID()).broadcastMessage("Energy", energyJsonAdapter.toJson(new Energy(player.getID(), player.energyReserve, "Shop")));
                 JsonAdapter<UpgradeBought> upgradeBoughtJsonAdapter = moshi.adapter(UpgradeBought.class);
-                findClient(player.getID()).broadcastMessage("UpgradeBought", upgradeBoughtJsonAdapter.toJson(new UpgradeBought(player.getID(),card.toString())));
+                findClient(player.getID()).broadcastMessage("UpgradeBought", upgradeBoughtJsonAdapter.toJson(new UpgradeBought(player.getID(), card.toString())));
             } else {
 
                 int ctr = 0;
@@ -1219,9 +1221,9 @@ public class Game {
                     player.addUpgrade(upgradeCard);
                     player.energyReserve -= upgradeCard.getCost();
                     JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
-                    findClient(player.getID()).broadcastMessage("Energy",energyJsonAdapter.toJson(new Energy(player.getID(),player.energyReserve,"Shop")));
+                    findClient(player.getID()).broadcastMessage("Energy", energyJsonAdapter.toJson(new Energy(player.getID(), player.energyReserve, "Shop")));
                     JsonAdapter<UpgradeBought> upgradeBoughtJsonAdapter = moshi.adapter(UpgradeBought.class);
-                    findClient(player.getID()).broadcastMessage("UpgradeBought", upgradeBoughtJsonAdapter.toJson(new UpgradeBought(player.getID(),card.toString())));
+                    findClient(player.getID()).broadcastMessage("UpgradeBought", upgradeBoughtJsonAdapter.toJson(new UpgradeBought(player.getID(), card.toString())));
                 } else {
                     //ToDo: give user the choice to discard one card
 
@@ -1237,11 +1239,11 @@ public class Game {
     }
 
     public void playCard(Player player, Card card) {
-        if(player != playing){
+        if (player != playing) {
             return;
         }
 
-        switch (card.toString()){
+        switch (card.toString()) {
             case "AdminPrivilege":
                 break;
             case "MemorySwap":
@@ -1252,11 +1254,10 @@ public class Game {
                 break;
             case "SpamBlocker":
                 List<Card> hand = player.getHand();
-                for (Card curr:
-                     hand) {
-                    if(curr instanceof Spam){
-                        hand.add(player.drawCardFromDeck());
-                        hand.remove(curr);
+                for (Card curr :
+                        hand) {
+                    if (curr instanceof Spam) {
+                        hand.set(hand.indexOf(curr), player.drawCardFromDeck());
                         spampile.add(curr);
                     }
                 }
