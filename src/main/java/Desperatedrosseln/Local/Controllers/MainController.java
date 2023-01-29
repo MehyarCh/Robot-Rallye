@@ -242,8 +242,8 @@ public class MainController {
     }
 
     @FXML
-    private void setProfileIcon(){
-        switch (selectedRobot){
+    private void setProfileIcon() {
+        switch (selectedRobot) {
             case 1:
                 profileIcon.setId("player-icon--1");
                 break;
@@ -265,7 +265,9 @@ public class MainController {
 
         }
     }
-    @FXML void showOverlay(String content) {
+
+    @FXML
+    void showOverlay(String content) {
         HBox overlay = new HBox();
         Label label = new Label(content);
 
@@ -302,6 +304,7 @@ public class MainController {
             }
         }, 0, 1000);
     }
+
     public void fillHand() {
         for (String text : client.getCardsInHand()) {
             handValues.add(text);
@@ -577,25 +580,30 @@ public class MainController {
     }
 
     public void exchangeShop(List<String> exchangeValues) {
-        upgradePositionToValue.clear();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                upgradePositionToValue.clear();
 
-        for (int i = 0; i < exchangeValues.size(); i++) {
-            String cardName = exchangeValues.get(i);
-            ImageView imageView = loadUpgradeCard(cardName);
-            imageView.setFitHeight(90);
-            imageView.setPreserveRatio(true);
-            upgradeCards.get(i).getChildren().add(imageView);
+                for (int i = 0; i < exchangeValues.size(); i++) {
+                    String cardName = exchangeValues.get(i);
+                    ImageView imageView = loadUpgradeCard(cardName);
+                    imageView.setFitHeight(90);
+                    imageView.setPreserveRatio(true);
+                    upgradeCards.get(i).getChildren().add(imageView);
 
-            upgradePositionToValue.put(i, cardName);
-        }
+                    upgradePositionToValue.put(i, cardName);
+                }
+            }
+        });
     }
 
     private ImageView loadUpgradeCard(String cardName) {
         Image image = switch (cardName) {
-            case "adminPrivilege" -> new Image(getClass().getResource("/images/Card/adminPrivilege.jpg").toString());
-            case "memoryBlocker" -> new Image(getClass().getResource("/images/Card/memoryBlocker.jpg").toString());
-            case "rearLaser" -> new Image(getClass().getResource("/images/Card/rearLaser.png").toString());
-            case "spamBlocker" -> new Image(getClass().getResource("/images/Card/spamBlocker.png").toString());
+            case "AdminPrivilege" -> new Image(getClass().getResource("/images/Card/adminPrivilege.jpg").toString());
+            case "MemoryBlocker" -> new Image(getClass().getResource("/images/Card/memorySwap.jpg").toString());
+            case "RearLaser" -> new Image(getClass().getResource("/images/Card/rearLaser.jpg").toString());
+            case "SpamBlocker" -> new Image(getClass().getResource("/images/Card/spamBlocker.jpg").toString());
             default -> new Image(getClass().getResource("/images/Card/no_such_card.png").toString());
         };
         return new ImageView(image);

@@ -242,13 +242,13 @@ public class Client implements Runnable {
                 mainController.exchangeShop(shopCards);
                 Collections.shuffle(shopCards);
                 JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter = moshi.adapter(BuyUpgrade.class);
-                sendMessage("BuyUpgrade",buyUpgradeJsonAdapter.toJson(new BuyUpgrade(true,shopCards.get(0))));
+                //sendMessage("BuyUpgrade",buyUpgradeJsonAdapter.toJson(new BuyUpgrade(true,shopCards.get(0))));
                 break;
             case "RefillShop":
                 JsonAdapter<RefillShop> refillShopJsonAdapter = moshi.adapter(RefillShop.class);
                 RefillShop refillShop = refillShopJsonAdapter.fromJson(msg.getMessageBody());
                 List<String> refillShopCards = refillShop.getCards();
-                mainController.refillShop(refillShopCards);
+                mainController.exchangeShop(refillShopCards);
                 Collections.shuffle(refillShopCards);
                 JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter1 = moshi.adapter(BuyUpgrade.class);
                 sendMessage("BuyUpgrade",buyUpgradeJsonAdapter1.toJson(new BuyUpgrade(true,refillShopCards.get(0))));
