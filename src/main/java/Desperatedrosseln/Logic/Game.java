@@ -235,6 +235,7 @@ public class Game {
             }
             JsonAdapter<RefillShop> refillShopJsonAdapter = moshi.adapter(RefillShop.class);
             findClient(playing.getID()).sendMessage("RefillShop", refillShopJsonAdapter.toJson(new RefillShop(cardsInShopToString())));
+            ++current_player_index;
             firstPlayerGotCards = true;
         } else {
             runShop();

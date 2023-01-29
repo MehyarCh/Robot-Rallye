@@ -248,6 +248,10 @@ public class Client implements Runnable {
                 JsonAdapter<RefillShop> refillShopJsonAdapter = moshi.adapter(RefillShop.class);
                 RefillShop refillShop = refillShopJsonAdapter.fromJson(msg.getMessageBody());
                 List<String> refillShopCards = refillShop.getCards();
+                for (String s:
+                     refillShopCards) {
+                    System.out.println(s);
+                }
                 //ToDo: Card Selection
                 Collections.shuffle(refillShopCards);
                 JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter1 = moshi.adapter(BuyUpgrade.class);
