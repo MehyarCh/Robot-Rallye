@@ -414,9 +414,9 @@ public class MapController {
         ImageView robotImage = getRobotById(id);
         List<String> orientations = new ArrayList<>();
 
-        if (direction == "clockwise") {
+        if (direction.equals("clockwise")) {
             orientations.add("right");
-        } else if (direction == "counterclockwise") {
+        } else if (direction.equals("counterclockwise")) {
             orientations.add("left");
         } else {
             logger.warn("Unknown PlayerTurning direction");

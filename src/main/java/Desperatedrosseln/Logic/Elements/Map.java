@@ -19,6 +19,7 @@ public class Map {
     }
 
     public List<Robot> getRobotsOnPos(Position pos){
+        //TODO: wrong
         List<Robot> robots = new ArrayList<>();
       //  List<BoardElement> elements = getElementsOnPos(pos);
         for(List<MapField> mapFieldsList: mapFields){

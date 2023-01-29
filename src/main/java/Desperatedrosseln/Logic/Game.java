@@ -6,6 +6,7 @@ import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Logic.AI.AIClient;
 import Desperatedrosseln.Logic.Cards.Card;
 import Desperatedrosseln.Logic.Cards.Damagecard;
+import Desperatedrosseln.Logic.Cards.Programming.PowerUp;
 import Desperatedrosseln.Logic.Cards.Upgrade.*;
 import Desperatedrosseln.Logic.Cards.UpgradeCard;
 import Desperatedrosseln.Logic.Elements.Position;
@@ -448,14 +449,29 @@ public class Game {
 
 
         } else {
-            if (curr.getRegisterIndex(register_number).toString().equals("Again")) {
+            String cardtype = curr.getRegisterIndex(register_number).toString();
+            if (cardtype.equals("Again")) {
                 if(register_number > 0){
                     curr.getRegisterIndex(register_number - 1).playCard(curr.getRobot());
+                    robotMovedProtokoll(curr.getRobot());
                 }
+            } else if(cardtype.equals("TurnLeft") || (cardtype.equals("TurnRight") || cardtype.equals("UTurn"))) {
+                curr.getRegisterIndex(register_number).playCard(curr.getRobot());
+                if(cardtype.equals("TurnLeft")){
+                    robotTurnedProtokoll(curr.getRobot(),"counterclockwise");
+                }else if(cardtype.equals("TurnRight")){
+                    robotTurnedProtokoll(curr.getRobot(),"clockweise");
+                }else{
+                    robotTurnedProtokoll(curr.getRobot(), "clockwise");
+                    robotTurnedProtokoll(curr.getRobot(), "clockwise");
+                }
+            } else if(cardtype.equals("PowerUp")){
+                //TODO: powerup protocol
+                curr.addToEnergyReserve(1);
             } else {
                 curr.getRegisterIndex(register_number).playCard(curr.getRobot());
+                robotMovedProtokoll(curr.getRobot());
             }
-            robotMovedProtokoll(curr.getRobot());
         }
     }
 
