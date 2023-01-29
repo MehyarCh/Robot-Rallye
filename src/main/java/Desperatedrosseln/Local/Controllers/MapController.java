@@ -481,10 +481,7 @@ public class MapController {
         for (Node imageNode : stackPane.getChildren()) {
             ImageView imageView = (ImageView) imageNode;
             if (robotImages.contains(imageView)) {
-                logger.debug("It has this image");
                 return imageView;
-            } else {
-                logger.debug(imageView.getImage().getUrl());
             }
         }
         return null;
