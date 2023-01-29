@@ -40,7 +40,7 @@ public class Client implements Runnable {
     public boolean lobbyControllerInitialized = false;
     private LobbyController lobbyController;
     private List<String> upgrades = new ArrayList<>();
-
+    public int energyReserve;
     public boolean isGotSentMaps() {
         return gotSentMaps;
     }
@@ -249,9 +249,13 @@ public class Client implements Runnable {
                 RefillShop refillShop = refillShopJsonAdapter.fromJson(msg.getMessageBody());
                 List<String> refillShopCards = refillShop.getCards();
                 mainController.exchangeShop(refillShopCards);
+                for (String c:
+                     refillShopCards) {
+                    System.out.print("_"+c);
+                }
                 Collections.shuffle(refillShopCards);
                 JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter1 = moshi.adapter(BuyUpgrade.class);
-                sendMessage("BuyUpgrade",buyUpgradeJsonAdapter1.toJson(new BuyUpgrade(true,refillShopCards.get(0))));
+                //sendMessage("BuyUpgrade",buyUpgradeJsonAdapter1.toJson(new BuyUpgrade(true,refillShopCards.get(0))));
                 break;
             case "UpgradeBought":
                 JsonAdapter<UpgradeBought> upgradeBoughtJsonAdapter = moshi.adapter(UpgradeBought.class);
@@ -264,6 +268,9 @@ public class Client implements Runnable {
 
                 break;
             case "Energy":
+                JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
+                Energy energy = energyJsonAdapter.fromJson(msg.getMessageBody());
+                energyReserve = energy.getCount();
                 break;
             case "Error":
                 if (mainController != null) {

@@ -11,7 +11,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
-public class Main extends Application {
+public class Main extends Application implements Runnable {
 
     // sceneNumber 0: mainScene, 1: loginScene, 2: lobbyScene
     @Override
@@ -35,6 +35,8 @@ public class Main extends Application {
             lobbyController.startLobbyScene(stage);
         }
     }
+    @Override
+    public void run(){launch();}
 
     public static void main(String[] args){
         launch(args);

@@ -540,6 +540,7 @@ public class MainController {
         JsonAdapter<BuyUpgrade> selectedCardJsonAdapter = moshi.adapter(BuyUpgrade.class);
         BuyUpgrade buyUpgrade = new BuyUpgrade(!Objects.equals(selectedUpgrade, "null"), selectedUpgrade);
         client.sendMessage("BuyUpgrade", selectedCardJsonAdapter.toJson(buyUpgrade));
+        //ToDo: empty shop, check Energy Reserve before buying
     }
 
     @FXML

@@ -40,6 +40,7 @@ public class AIClient extends Thread {
     private boolean memorySwapping;
 
     private static final Logger logger = LogManager.getLogger();
+    private int energyReserve;
 
     public class Position {
         int x;
@@ -299,6 +300,9 @@ public class AIClient extends Thread {
 
                 break;
             case "Energy":
+                JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
+                Energy energy = energyJsonAdapter.fromJson(msg.getMessageBody());
+                energyReserve = energy.getCount();
                 break;
             case "Logout":
 

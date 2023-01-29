@@ -15,7 +15,7 @@ public class Player {
     private int next_checkpoint = 1;
     private Robot robot;
     private List<Card> deck = new ArrayList<>(20);
-    private boolean ready;
+    private boolean ready = false;
     private boolean firstToReady = false;
 
     public List<Card> getHand() {
