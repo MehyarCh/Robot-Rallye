@@ -613,9 +613,9 @@ public class Game {
         activateRobotsLasers();
         activateEnergySpaces();
         activateCheckpoints();
-        for (Player player : players) {
+        /*for (Player player : players) {
             robotMovedProtokoll(player.getRobot());
-        }
+        }*/
 
     }
 
