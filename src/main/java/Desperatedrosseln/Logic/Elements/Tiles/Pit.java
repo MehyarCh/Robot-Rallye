@@ -9,6 +9,7 @@ import java.util.List;
 import static Desperatedrosseln.Logic.DIRECTION.TOP;
 
 public class Pit extends BoardElement {
+    private Position position;
 
 
     public Pit(String type, String isOnBoard) {
@@ -18,6 +19,14 @@ public class Pit extends BoardElement {
 
     public void execute(List<Desperatedrosseln.Logic.Elements.Robot> active_robots){
 
+    }
+    @Override
+    public String toString(){
+        return "Pit";
+    }
+    @Override
+    public Position getPosition() {
+        return position;
     }
 
 

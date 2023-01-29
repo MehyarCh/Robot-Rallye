@@ -6,4 +6,8 @@ public class Empty extends BoardElement {
     public Empty(String type, String isOnBoard) {
         super(type, isOnBoard);
     }
+    @Override
+    public String toString(){
+        return "Empty";
+    }
 }

@@ -22,7 +22,7 @@ public class Player {
         return hand;
     }
 
-    public int energyReserve = 5;
+    private int energyReserve = 5;
     private List<Card> hand = new ArrayList<>();
     private Card[] registers = new Card[5];
 
@@ -312,6 +312,16 @@ public class Player {
         }
 
         System.out.println("cannot remove upgrade card");
+    }
 
+    public int getEnergyReserve() {
+        return energyReserve;
+    }
+
+    public void setEnergyReserve(int energyReserve) {
+        this.energyReserve = energyReserve;
+    }
+    public void addToEnergyReserve(int i){
+        this.energyReserve += i;
     }
 }

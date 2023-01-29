@@ -29,6 +29,10 @@ public class Wall extends BoardElement {
     public String toString() {
         return "Wall";
     }
+    @Override
+    public Position getPosition() {
+        return position;
+    }
 }
 
 

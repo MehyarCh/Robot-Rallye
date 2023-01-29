@@ -18,4 +18,19 @@ public class EnergySpace extends BoardElement {
     public void setCount(int count) {
         this.count = count;
     }
+    @Override
+    public String toString(){
+        return "EnergySpace";
+    }
+    public boolean hasEnergySpace() {
+        if(count>0){
+            return true;
+        }
+        return false;
+    }
+    public void takeCube(){
+        if(count>0){
+            count--;
+        }
+    }
 }
