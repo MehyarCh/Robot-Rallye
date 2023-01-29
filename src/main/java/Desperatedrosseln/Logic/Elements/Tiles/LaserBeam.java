@@ -41,7 +41,16 @@ public class LaserBeam extends BoardElement {
         isFullWidth = fullWidth;
     }
     @Override
-    public Position getPosition() {
+    public Position getPosition(){
         return position;
+    }
+    @Override
+    public void setPosition(int x, int y){
+        if(position!=null){
+            position.setX(x);
+            position.setY(y);
+        }else{
+            position = new Position(x,y);
+        }
     }
 }

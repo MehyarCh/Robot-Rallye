@@ -163,6 +163,7 @@ public class Game {
         for(int i=0; i<gameMap.getMapFields().size(); i++){
             for(int j=0; j<gameMap.getMapFields().get(0).size(); j++){
                 for(BoardElement element : gameMap.getMapFields().get(i).get(j).getTypes()){
+                    element.setPosition(i,j);
                     boardElements.add(element);
                 }
             }
@@ -835,7 +836,7 @@ public class Game {
          * on your player mat to track your
          * progress in the race
          */
-        List<BoardElement> checkpoints = getListOf("Checkpoint");
+        List<BoardElement> checkpoints = getListOf("CheckPoint");
         for (BoardElement checkpoint : checkpoints) {
             //on each checkpoint, check robots on it
             CheckPoint cp = (CheckPoint) checkpoint;
@@ -1085,13 +1086,6 @@ public class Game {
         DrawDamage drawDamage = new DrawDamage(robot.getID(), cards);
         broadcastMessage("DrawDamage", drawDamageJsonAdapter.toJson(drawDamage));
     }
-
-    /*public void setPlayerValues() {
-        for (ClientHandler client :
-                ClientHandler.clients) {
-            players.add(new Player(new Robot(ClientHandler.clients.indexOf(client))));
-        }
-    }*/
 
     public String getCurrentMap() {
         return currentMap;

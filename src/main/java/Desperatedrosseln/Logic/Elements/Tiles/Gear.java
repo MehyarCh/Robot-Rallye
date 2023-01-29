@@ -1,14 +1,15 @@
 package Desperatedrosseln.Logic.Elements.Tiles;
 
 import Desperatedrosseln.Logic.Elements.BoardElement;
+import Desperatedrosseln.Logic.Elements.Position;
 import Desperatedrosseln.Logic.Elements.Robot;
 
 import java.util.ArrayList;
 
 public class Gear extends BoardElement {
 
-    ArrayList<String> orientations;
-
+    private ArrayList<String> orientations;
+    private Position position;
 
     public Gear(String type, String isOnBoard, ArrayList<String> orientations) {
         super(type, isOnBoard); //can either be clockwise or counterclockwise -> turning direction
@@ -36,5 +37,19 @@ public class Gear extends BoardElement {
     public String toString(){
         return "Gear";
     }
+    @Override
+    public Position getPosition(){
+        return position;
+    }
+    @Override
+    public void setPosition(int x, int y){
+        if(position!=null){
+            position.setX(x);
+            position.setY(y);
+        }else{
+            position = new Position(x,y);
+        }
+    }
+
 }
 

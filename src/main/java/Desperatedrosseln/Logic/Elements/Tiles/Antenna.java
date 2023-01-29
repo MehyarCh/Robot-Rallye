@@ -30,4 +30,13 @@ public class Antenna extends BoardElement {
     public Position getPosition() {
         return position;
     }
+    @Override
+    public void setPosition(int x, int y){
+        if(position!=null){
+            position.setX(x);
+            position.setY(y);
+        }else{
+            position = new Position(x,y);
+        }
+    }
 }
