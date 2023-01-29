@@ -304,13 +304,24 @@
     -fx-background-image: url("../images/card.png");
 }
 
+.card-area--sm {
+    -fx-pref-width: 62px;
+    -fx-pref-height: 90px;
+    -fx-border-radius: 10px;
+    -fx-alignment: center;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-image: url("../images/card-blue.png");
+}
+
 #card {
     -fx-pref-width: 76px;
     -fx-pref-height: 110px;
     -fx-border-radius: 10px;
     -fx-alignment: center;
     -fx-background-size: contain;
-
+    -fx-background-repeat: no-repeat;
     /*-fx-text-fill: #fff;
     -fx-font-weight: 300;
     -fx-font-size: 12px*/
@@ -322,6 +333,18 @@
     -fx-alignment: bottom-center;
     -fx-spacing: 40px;
     -fx-background-color: linear-gradient(to top right, rgba(2,0, 21, 0.9), rgba(25,0, 42, 0.9));
+}
+
+.upgradeBar {
+    -fx-alignment: center;
+    -fx-padding: 48px 16px;
+}
+
+.upgradeGrid {
+    -fx-alignment: center;
+    -fx-vgap: 16px;
+    -fx-hgap: 16px;
+    -fx-padding: 0 32px;
 }
 
 .chat-input-wrapper {
@@ -390,3 +413,4 @@
 
 .player-icon-1 {
 }
+

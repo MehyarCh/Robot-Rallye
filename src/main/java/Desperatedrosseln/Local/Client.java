@@ -100,8 +100,8 @@ public class Client implements Runnable {
 
 
     /**
-     * @param message = the incoming protocoll message
-     * this method checks the type of each received message and continues according to the protocoll
+     * @param message = the incoming protocol message
+     * this method checks the type of each received message and continues according to the protocol
      */
     private void checkProtocolMessage(String message) throws IOException {
         //TODO: Logs
@@ -239,7 +239,7 @@ public class Client implements Runnable {
                 JsonAdapter<ExchangeShop> exchangeShopJsonAdapter = moshi.adapter(ExchangeShop.class);
                 ExchangeShop exchangeShop = exchangeShopJsonAdapter.fromJson(msg.getMessageBody());
                 List<String> shopCards = exchangeShop.getCards();
-                //ToDo: Card Selection
+                mainController.exchangeShop(shopCards);
                 Collections.shuffle(shopCards);
                 JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter = moshi.adapter(BuyUpgrade.class);
                 sendMessage("BuyUpgrade",buyUpgradeJsonAdapter.toJson(new BuyUpgrade(true,shopCards.get(0))));
@@ -248,7 +248,7 @@ public class Client implements Runnable {
                 JsonAdapter<RefillShop> refillShopJsonAdapter = moshi.adapter(RefillShop.class);
                 RefillShop refillShop = refillShopJsonAdapter.fromJson(msg.getMessageBody());
                 List<String> refillShopCards = refillShop.getCards();
-                //ToDo: Card Selection
+                mainController.refillShop(refillShopCards);
                 Collections.shuffle(refillShopCards);
                 JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter1 = moshi.adapter(BuyUpgrade.class);
                 sendMessage("BuyUpgrade",buyUpgradeJsonAdapter1.toJson(new BuyUpgrade(true,refillShopCards.get(0))));

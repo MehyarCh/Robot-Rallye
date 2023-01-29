@@ -2,6 +2,7 @@ package Desperatedrosseln.Local.Controllers;
 
 //import Desperatedrosseln.Local.Client;
 
+import Desperatedrosseln.Local.Protocols.BuyUpgrade;
 import Desperatedrosseln.Local.Protocols.SelectedCard;
 import Desperatedrosseln.Local.CardLabels.*;
 import Desperatedrosseln.Logic.Cards.Programming.*;
@@ -46,6 +47,11 @@ public class MainController {
 
     private List<String> handValues = new ArrayList<>();
     private List<String> registerValues = new ArrayList<>();
+
+    private HashMap<Integer, String> upgradePositionToValue = new HashMap<>();
+
+    private String selectedUpgrade = "null";
+
     @FXML
     private GridPane mapGrid;
     @FXML
@@ -89,8 +95,31 @@ public class MainController {
     private StackPane handCardNine;
     @FXML
     private Button programdone;
-    private ArrayList<StackPane> registerCards = new ArrayList<>();
-    private ArrayList<StackPane> handCards = new ArrayList<>();
+
+    @FXML
+    private Button upgradeButton;
+
+    @FXML
+    private StackPane upgradeCard1;
+
+    @FXML
+    private StackPane upgradeCard2;
+
+    @FXML
+    private StackPane upgradeCard3;
+
+    @FXML
+    private StackPane upgradeCard4;
+
+    @FXML
+    private StackPane upgradeCard5;
+
+    @FXML
+    private StackPane upgradeCard6;
+
+    private List<StackPane> registerCards;
+    private List<StackPane> handCards;
+    private List<StackPane> upgradeCards;
     private int selectedRobot = 0;
 
     private MoveOneLabel moveOneLabel;
@@ -148,29 +177,43 @@ public class MainController {
             //TESTING THE MOVE CARDS FUNCTION
 
             //List of the StackPanes which represent the register
-            registerCards.add(registerCardOne);
-            registerCards.add(registerCardTwo);
-            registerCards.add(registerCardThree);
-            registerCards.add(registerCardFour);
-            registerCards.add(registerCardFive);
 
-            //List of the StackPanes which represent the handcards
-            handCards.add(handCardOne);
-            handCards.add(handCardTwo);
-            handCards.add(handCardThree);
-            handCards.add(handCardFour);
-            handCards.add(handCardFive);
-            handCards.add(handCardSix);
-            handCards.add(handCardSeven);
-            handCards.add(handCardEight);
-            handCards.add(handCardNine);
+            registerCards = new ArrayList<>(
+                    Arrays.asList(
+                            registerCardOne,
+                            registerCardTwo,
+                            registerCardThree,
+                            registerCardFour,
+                            registerCardFive)
+            );
 
+            handCards = new ArrayList<>(
+                    Arrays.asList(
+                            handCardOne,
+                            handCardTwo,
+                            handCardThree,
+                            handCardFour,
+                            handCardFive,
+                            handCardSix,
+                            handCardSeven,
+                            handCardEight,
+                            handCardNine
+                    )
+            );
 
+            upgradeCards = new ArrayList<>(
+                    Arrays.asList(
+                            upgradeCard1,
+                            upgradeCard2,
+                            upgradeCard3,
+                            upgradeCard4,
+                            upgradeCard5,
+                            upgradeCard6
+                    )
+            );
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public MapController getMapController() {
@@ -183,6 +226,7 @@ public class MainController {
         mapController = new MapController(mapGrid, selectedRobot, calcMaxMapHeight());
         mapController.setClient(client);
         setProfileIcon();
+        handleUpgradeClick();
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -416,7 +460,6 @@ public class MainController {
     }
 
     private void sendCards() {
-
         JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
 
         int i = 0;
@@ -429,7 +472,6 @@ public class MainController {
 
     @FXML
     int calcMaxMapHeight() {
-        logger.debug("Maximum map height = " + stage.getHeight() + " - " + scene.getRoot().getChildrenUnmodifiable().get(0).getScaleY() + "-" + cardWrapper.getHeight() + "-100");
         return (int) (stage.getHeight() - scene.getRoot().getChildrenUnmodifiable().get(0).getScaleY() - cardWrapper.getHeight() - 100);
     }
 
@@ -488,5 +530,74 @@ public class MainController {
                 }
             });
         }
+    }
+
+    @FXML
+    private void handleUpgradeButton() {
+        JsonAdapter<BuyUpgrade> selectedCardJsonAdapter = moshi.adapter(BuyUpgrade.class);
+        BuyUpgrade buyUpgrade = new BuyUpgrade(!Objects.equals(selectedUpgrade, "null"), selectedUpgrade);
+        client.sendMessage("BuyUpgrade", selectedCardJsonAdapter.toJson(buyUpgrade));
+    }
+
+    @FXML
+    private void handleUpgradeClick() {
+        for (StackPane card : upgradeCards) {
+            card.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+                if (card.getChildren().size() > 0) {
+                    int index = upgradeCards.indexOf(card);
+                    if (Objects.equals(selectedUpgrade, upgradePositionToValue.get(index))) {
+                        upgradePositionToValue.put(index, "null");
+                        upgradeButton.setDisable(true);
+                    } else {
+                        selectedUpgrade = upgradePositionToValue.get(index);
+                        if (upgradeButton.isDisabled()) {
+                            upgradeButton.setDisable(false);
+                        }
+                    }
+                    logger.debug(selectedUpgrade);
+                }
+            });
+        }
+    }
+
+    public void refillShop(List<String> refillCards) {
+        for (String card : refillCards) {
+            upgradePositionToValue.put(getFirstFreeUpgradeSlot(), card);
+        }
+    }
+
+    private int getFirstFreeUpgradeSlot() {
+        for (int i = 0; i < upgradePositionToValue.size(); i++) {
+            String value = upgradePositionToValue.get(i);
+            if (Objects.equals(value, "null")) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void exchangeShop(List<String> exchangeValues) {
+        upgradePositionToValue.clear();
+
+        for (int i = 0; i < exchangeValues.size(); i++) {
+            String cardName = exchangeValues.get(i);
+            ImageView imageView = loadUpgradeCard(cardName);
+            imageView.setFitHeight(90);
+            imageView.setPreserveRatio(true);
+            upgradeCards.get(i).getChildren().add(imageView);
+
+            upgradePositionToValue.put(i, cardName);
+        }
+    }
+
+    private ImageView loadUpgradeCard(String cardName) {
+        Image image = switch (cardName) {
+            case "adminPrivilege" -> new Image(getClass().getResource("/images/Card/adminPrivilege.jpg").toString());
+            case "memoryBlocker" -> new Image(getClass().getResource("/images/Card/memoryBlocker.jpg").toString());
+            case "rearLaser" -> new Image(getClass().getResource("/images/Card/rearLaser.png").toString());
+            case "spamBlocker" -> new Image(getClass().getResource("/images/Card/spamBlocker.png").toString());
+            default -> new Image(getClass().getResource("/images/Card/no_such_card.png").toString());
+        };
+        return new ImageView(image);
     }
 }
