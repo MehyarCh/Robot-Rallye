@@ -6,7 +6,6 @@ import Desperatedrosseln.Local.Protocols.SetStatus;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import javafx.application.Platform;
-import Desperatedrosseln.Local.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,9 +29,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import static Desperatedrosseln.Local.Controllers.LoginController.client;
 

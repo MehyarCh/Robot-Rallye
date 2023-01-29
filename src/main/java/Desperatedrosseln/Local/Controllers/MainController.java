@@ -155,21 +155,21 @@ public class MainController {
 
         setStreams();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/mainScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/mainScene.fxml"));
         loader.setController(this);
 
         try {
             root = loader.load();
             scene = new Scene(root);
 
-            String mainCss = this.getClass().getResource("/Css/main.css").toExternalForm();
+            String mainCss = this.getClass().getResource("/css/main.css").toExternalForm();
             scene.getStylesheets().add(mainCss);
 
-            String modulesCss = this.getClass().getResource("/Css/modules.css").toExternalForm();
+            String modulesCss = this.getClass().getResource("/css/modules.css").toExternalForm();
             scene.getStylesheets().add(modulesCss);
 
 
-            String stateCss = this.getClass().getResource("/Css/state.css").toExternalForm();
+            String stateCss = this.getClass().getResource("/css/state.css").toExternalForm();
             scene.getStylesheets().add(stateCss);
 
             playerName.setText(client.getName());
@@ -349,16 +349,16 @@ public class MainController {
 
     public Image showCardImage(String cardValue) {
         return switch (cardValue) {
-            case "MoveOne" -> new Image(getClass().getResource("/images/Card/move1.jpg").toString());
-            case "MoveTwo" -> new Image(getClass().getResource("/images/Card/move2.jpg").toString());
-            case "TurnLeft" -> new Image(getClass().getResource("/images/Card/leftTurn.jpg").toString());
-            case "MoveThree" -> new Image(getClass().getResource("/images/Card/move3.jpg").toString());
-            case "TurnRight" -> new Image(getClass().getResource("/images/Card/rightTurn.jpg").toString());
-            case "UTurn" -> new Image(getClass().getResource("/images/Card/u-turn.jpg").toString());
-            case "Again" -> new Image(getClass().getResource("/images/Card/again.jpg").toString());
-            case "PowerUp" -> new Image(getClass().getResource("/images/Card/powerup.jpg").toString());
-            case "MoveBack" -> new Image(getClass().getResource("/images/Card/moveback.jpg").toString());
-            default -> new Image(getClass().getResource("/images/Card/no_such_card.png").toString());
+            case "MoveOne" -> new Image(getClass().getResource("/images/card/move1.jpg").toString());
+            case "MoveTwo" -> new Image(getClass().getResource("/images/card/move2.jpg").toString());
+            case "TurnLeft" -> new Image(getClass().getResource("/images/card/leftTurn.jpg").toString());
+            case "MoveThree" -> new Image(getClass().getResource("/images/card/move3.jpg").toString());
+            case "TurnRight" -> new Image(getClass().getResource("/images/card/rightTurn.jpg").toString());
+            case "UTurn" -> new Image(getClass().getResource("/images/card/u-turn.jpg").toString());
+            case "Again" -> new Image(getClass().getResource("/images/card/again.jpg").toString());
+            case "PowerUp" -> new Image(getClass().getResource("/images/card/powerup.jpg").toString());
+            case "MoveBack" -> new Image(getClass().getResource("/images/card/moveback.jpg").toString());
+            default -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
         };
     }
 
@@ -601,11 +601,11 @@ public class MainController {
 
     private ImageView loadUpgradeCard(String cardName) {
         Image image = switch (cardName) {
-            case "AdminPrivilege" -> new Image(getClass().getResource("/images/Card/adminPrivilege.jpg").toString());
-            case "MemoryBlocker" -> new Image(getClass().getResource("/images/Card/memorySwap.jpg").toString());
-            case "RearLaser" -> new Image(getClass().getResource("/images/Card/rearLaser.jpg").toString());
-            case "SpamBlocker" -> new Image(getClass().getResource("/images/Card/spamBlocker.jpg").toString());
-            default -> new Image(getClass().getResource("/images/Card/no_such_card.png").toString());
+            case "AdminPrivilege" -> new Image(getClass().getResource("/images/card/adminPrivilege.jpg").toString());
+            case "MemorySwap" -> new Image(getClass().getResource("/images/card/memorySwap.jpg").toString());
+            case "RearLaser" -> new Image(getClass().getResource("/images/card/rearLaser.jpg").toString());
+            case "SpamBlocker" -> new Image(getClass().getResource("/images/card/spamBlocker.jpg").toString());
+            default -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
         };
         return new ImageView(image);
     }

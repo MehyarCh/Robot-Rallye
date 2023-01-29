@@ -306,27 +306,27 @@ public class MapController {
         if (checkPoint.getCount() == 1) {
             // two orientations
             Image checkPoint1 =
-                    new Image(getClass().getResource("/Images/elements/checkpoint/checkpoint1.png").toString());
+                    new Image(getClass().getResource("/images/elements/checkpoint/checkpoint1.png").toString());
             element = new ImageView(checkPoint1);
             // Blue
         } else if (checkPoint.getCount() == 2) {
             Image checkPoint2 =
-                    new Image(getClass().getResource("/Images/elements/checkpoint/checkpoint2.png").toString());
+                    new Image(getClass().getResource("/images/elements/checkpoint/checkpoint2.png").toString());
             element = new ImageView(checkPoint2);
 
         } else if (checkPoint.getCount() == 3) {
             Image checkPoint3 =
-                    new Image(getClass().getResource("/Images/elements/checkpoint/checkpoint3.png").toString());
+                    new Image(getClass().getResource("/images/elements/checkpoint/checkpoint3.png").toString());
             element = new ImageView(checkPoint3);
 
         }else if (checkPoint.getCount() == 4) {
             Image checkPoint4 =
-                    new Image(getClass().getResource("/Images/elements/checkpoint/checkpoint4.png").toString());
+                    new Image(getClass().getResource("/images/elements/checkpoint/checkpoint4.png").toString());
             element = new ImageView(checkPoint4);
 
         }else if (checkPoint.getCount() == 5) {
             Image checkPoint5 =
-                    new Image(getClass().getResource("/Images/elements/checkpoint/checkpoint5.png").toString());
+                    new Image(getClass().getResource("/images/elements/checkpoint/checkpoint5.png").toString());
             element = new ImageView(checkPoint5);
         }else{
             throw new IOException("Unknown");
@@ -867,27 +867,27 @@ public class MapController {
         ImageView robot;
         switch (robotID) {
             case 1 -> {
-                robotImage = new Image(getClass().getResource("/Images/Robots/OnTiles/brownOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getResource("/images/robots/ontiles/brownOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             case 2 -> {
-                robotImage = new Image(getClass().getResource("/Images/Robots/OnTiles/yellowOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getResource("/images/robots/ontiles/yellowOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             case 3 -> {
-                robotImage = new Image(getClass().getResource("/Images/Robots/OnTiles/blueOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getResource("/images/robots/ontiles/blueOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             case 4 -> {
-                robotImage = new Image(getClass().getResource("/Images/Robots/OnTiles/greenOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getResource("/images/robots/ontiles/greenOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             case 5 -> {
-                robotImage = new Image(getClass().getResource("/Images/Robots/OnTiles/orangeOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getResource("/images/robots/ontiles/orangeOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             case 6 -> {
-                robotImage = new Image(getClass().getResource("/Images/Robots/OnTiles/redOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getResource("/images/robots/ontiles/redOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             default -> {
