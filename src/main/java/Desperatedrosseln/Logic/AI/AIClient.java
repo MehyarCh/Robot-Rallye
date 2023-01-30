@@ -226,7 +226,16 @@ public class AIClient extends Thread {
                 //ToDo: Card Selection
                 Collections.shuffle(shopCards);
                 JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter = moshi.adapter(BuyUpgrade.class);
-                sendMessage("BuyUpgrade",buyUpgradeJsonAdapter.toJson(new BuyUpgrade(true,shopCards.get(0))));
+                for (String upgradeCard:
+                        shopCards) {
+                    int cost = getUpgradeCardCost(upgradeCard);
+                    if(cost<=energyReserve){
+                        energyReserve-=cost;
+                        sendMessage("BuyUpgrade",buyUpgradeJsonAdapter.toJson(new BuyUpgrade(true,upgradeCard)));
+                        break;
+                    }
+
+                }
                 break;
             case "RefillShop":
                 JsonAdapter<RefillShop> refillShopJsonAdapter = moshi.adapter(RefillShop.class);
@@ -235,7 +244,17 @@ public class AIClient extends Thread {
                 //ToDo: Card Selection
                 Collections.shuffle(refillShopCards);
                 JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter1 = moshi.adapter(BuyUpgrade.class);
-                sendMessage("BuyUpgrade",buyUpgradeJsonAdapter1.toJson(new BuyUpgrade(true,refillShopCards.get(0))));
+                for (String upgradeCard:
+                     refillShopCards) {
+                    int cost = getUpgradeCardCost(upgradeCard);
+                    if(cost<=energyReserve){
+                        energyReserve-=cost;
+                        sendMessage("BuyUpgrade",buyUpgradeJsonAdapter1.toJson(new BuyUpgrade(true,upgradeCard)));
+                        break;
+                    }
+
+                }
+
 
                 break;
             case "UpgradeBought":
@@ -312,6 +331,16 @@ public class AIClient extends Thread {
         }
 
 
+    }
+
+    private int getUpgradeCardCost(String upgradeCard) {
+        switch (upgradeCard){
+            case "SpamBlocker":
+            case "AdminPrivilege":return 3;
+            case "MemorySwap":return 1;
+            case "RearLaser":return 2;
+        }
+        return 9999;
     }
 
     private Position newStartPos() {
