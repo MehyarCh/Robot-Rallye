@@ -7,6 +7,7 @@ import Desperatedrosseln.Logic.Elements.Robot;
 import Desperatedrosseln.Logic.Elements.Tiles.CheckPoint;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class AI {
@@ -488,7 +489,7 @@ public class AI {
             size = path.size();
         }
 
-        for (int i = 1; i < size; i++) {
+        for (int i = 1; i < path.size(); i++) {
             res += "->" + path.get(i).pos;
         }
         return res;
@@ -507,31 +508,25 @@ public class AI {
     }
 
     public void updateRobotPosition(Robot rob, int x, int y) {
-        if(rob == robot){
-            for (BoardElement element:
-                 gameMap.get(x).get(y)) {
-                if(element instanceof CheckPoint){
+        if (rob == robot) {
+            for (BoardElement element :
+                    gameMap.get(x).get(y)) {
+                if (element instanceof CheckPoint) {
                     CheckPoint checkPoint = (CheckPoint) element;
-                    if(checkPoint.getCount() == currentGoal){
-                        currentGoal++;
+                    if (checkPoint.getCount() == currentGoal) {
+                        //currentGoal++;
                     }
                 }
             }
         }
 
-        for (List<List<BoardElement>> X:
-             gameMap) {
-            for (List<BoardElement> Y:
-                 X) {
-                for (BoardElement element:
-                     Y) {
-                    if(element instanceof Robot){
-                        Robot currRobot = (Robot) element;
-                        if(currRobot == rob){
-                            Y.remove(currRobot);
-                        }
-                    }
-                }
+        List<BoardElement> elementList = gameMap.get(rob.getPosition().getX()).get(rob.getPosition().getY());
+        Iterator<BoardElement> iter = elementList.iterator();
+
+        while (iter.hasNext()) {
+            BoardElement curr = iter.next();
+            if (curr == rob) {
+                iter.remove();
             }
         }
 

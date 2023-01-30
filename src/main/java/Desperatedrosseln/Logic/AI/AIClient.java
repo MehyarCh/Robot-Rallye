@@ -241,6 +241,12 @@ public class AIClient extends Thread {
                 JsonAdapter<RefillShop> refillShopJsonAdapter = moshi.adapter(RefillShop.class);
                 RefillShop refillShop = refillShopJsonAdapter.fromJson(msg.getMessageBody());
                 List<String> refillShopCards = refillShop.getCards();
+                System.out.print(AIName+":");
+                for (String card:
+                     refillShopCards) {
+                    System.out.print("--"+card);
+                }
+
                 //ToDo: Card Selection
                 Collections.shuffle(refillShopCards);
                 JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter1 = moshi.adapter(BuyUpgrade.class);
@@ -275,7 +281,7 @@ public class AIClient extends Thread {
 
                 unavailableStartingPoints.add(new AIClient.Position(startingPointTaken.getX(), startingPointTaken.getY()));
                 JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
-                if(startingPointTaken.getClientID() != AI_ID){
+                if(startingPointTaken.getClientID() == AI_ID-1){
                     if(!hasStartPoint){
                         Position startPos = newStartPos();
                         hasStartPoint = true;
@@ -321,14 +327,22 @@ public class AIClient extends Thread {
             case "Energy":
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
                 Energy energy = energyJsonAdapter.fromJson(msg.getMessageBody());
-                energyReserve = energy.getCount();
+                if(energy.getClientID() == AI_ID){
+                    energyReserve = energy.getCount();
+                }
                 break;
             case "Movement":
                 JsonAdapter<Movement> movementJsonAdapter = moshi.adapter(Movement.class);
                 Movement movement = movementJsonAdapter.fromJson(msg.getMessageBody());
-
-                //ai.updateRobotPosition(players.get(movement.getClientID()),movement.getX(),movement.getY());
-
+                ai.updateRobotPosition(players.get(movement.getClientID()),movement.getX(),movement.getY());
+                System.out.println(AIName+"----"+ai.getTinyPath());
+                break;
+            case "CheckPointReached":
+                JsonAdapter<CheckPointReached> checkPointReachedJsonAdapter = moshi.adapter(CheckPointReached.class);
+                CheckPointReached checkPointReached = checkPointReachedJsonAdapter.fromJson(msg.getMessageBody());
+                if(checkPointReached.getClientID() == AI_ID){
+                    ai.currentGoal = checkPointReached.getNumber()+1;
+                }
                 break;
             case "Error":
                 break;
