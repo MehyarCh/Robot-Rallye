@@ -40,7 +40,7 @@ public class AIClient extends Thread {
     private boolean memorySwapping;
 
     private static final Logger logger = LogManager.getLogger();
-    private int energyReserve;
+    private int energyReserve = 5;
 
     public class Position {
         int x;
