@@ -1,17 +1,21 @@
 package Desperatedrosseln.Logic.AI;
 
 import Desperatedrosseln.Json.utils.JsonDeserializer;
-import Desperatedrosseln.Local.Controllers.MapController;
 import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Logic.Elements.BoardElement;
+import Desperatedrosseln.Logic.Elements.Robot;
+import Desperatedrosseln.Logic.Game;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,15 +25,22 @@ public class AIClient extends Thread {
     private final DataOutputStream out;
     Socket clientSocket;
     HashMap<String, Integer> localPlayerList = new HashMap<>();
-
+    ArrayList<Integer> robotIDs = new ArrayList<>();
     AI ai;
     public static ArrayList<String> aiNames;
     private int AI_ID;
     private String AIName = "-not specified-";
-    private boolean hasStartpoint = false;
+    private boolean hasStartPoint = false;
     private ArrayList<AIClient.Position> unavailableStartingPoints = new ArrayList<>();
     private String protocol;
     List<List<List<BoardElement>>> gameMap;
+    private int robotID;
+    private HashMap<Integer,Robot> players = new HashMap<>();
+    List<String> upgrades = new ArrayList<>();
+    private boolean memorySwapping;
+
+    private static final Logger logger = LogManager.getLogger();
+    private int energyReserve = 5;
 
     public class Position {
         int x;
@@ -113,10 +124,7 @@ public class AIClient extends Thread {
             ProtocolMessage<GameStarted> gameStartedProtocolMessage = jsonDeserializer.deserialize(message);
             GameStarted gameStarted = gameStartedProtocolMessage.getMessageBody();
             gameMap = gameStarted.getGameMap();
-            JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
-            Position startPos = newStartPos();
-            sendMessage("SetStartingPoint", setStartingPointJsonAdapter.toJson(new SetStartingPoint(startPos.getX(), startPos.getY())));
-
+            ai.setGameMap(gameMap);
             return;
         }
 
@@ -126,7 +134,6 @@ public class AIClient extends Thread {
             JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
             msg = messageJsonAdapter.fromJson(message);
         }
-        System.out.println("AI:" + message);
 
 
         switch (msg.getMessageType()) {
@@ -137,7 +144,6 @@ public class AIClient extends Thread {
                 break;
             case "Alive":
                 sendMessage(msg.getMessageType(), msg.getMessageBody());
-                //System.out.println("Alive check from server");
                 break;
             case "Welcome":
                 JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
@@ -158,7 +164,24 @@ public class AIClient extends Thread {
                 }
                 aiNames.add(AIName);
                 JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);          //TODO:replace ClientID with player figure!!!!!
-                sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(AIName, AI_ID)));
+
+                if(robotIDs.size()==0){
+                    robotID = 1;
+                    robotIDs.add(robotID);
+                    sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(AIName, 1)));
+                }else {
+                    for (int i = 2; i <=5 ; i++) {
+                        if(!robotIDs.contains(i)){
+                            robotID = i;
+                            sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(AIName, robotID)));
+                            break;
+                        }
+                    }
+
+                }
+
+
+
                 break;
 
             case "PlayerAdded":
@@ -166,7 +189,8 @@ public class AIClient extends Thread {
                 PlayerAdded playerAdded = playerAddedJsonAdapter.fromJson(msg.getMessageBody());
 
                 localPlayerList.put(playerAdded.getName(), playerAdded.getClientID());
-
+                robotIDs.add(playerAdded.getFigure());
+                players.put(playerAdded.getClientID(),new Robot(playerAdded.getFigure()));
                 if (playerAdded.getClientID() == AI_ID) {                                      //TODO: Ready button?
                     sendChatMessage("Hello Everyone", -1);
                     JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
@@ -177,7 +201,10 @@ public class AIClient extends Thread {
             case "SelectMap":
                 JsonAdapter<SelectMap> selectMapJsonAdapter = moshi.adapter(SelectMap.class);
                 SelectMap selectMap = selectMapJsonAdapter.fromJson(msg.getMessageBody());
-                String map = selectMap.getMaps().get(0);
+
+                int index = (int) (Math.random()*selectMap.getMaps().size());
+
+                String map = selectMap.getMaps().get(index%selectMap.getMaps().size());
 
                 JsonAdapter<MapSelected> mapSelectedJsonAdapter = moshi.adapter(MapSelected.class);
                 sendMessage("MapSelected", mapSelectedJsonAdapter.toJson(new MapSelected(map)));
@@ -192,9 +219,52 @@ public class AIClient extends Thread {
                 JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
                 ai.setActivePhase(activePhaseJsonAdapter.fromJson(msg.getMessageBody()).getPhase());
                 break;
-            case "GameStarted":
+            case "ExchangeShop":
+                JsonAdapter<ExchangeShop> exchangeShopJsonAdapter = moshi.adapter(ExchangeShop.class);
+                ExchangeShop exchangeShop = exchangeShopJsonAdapter.fromJson(msg.getMessageBody());
+                List<String> shopCards = exchangeShop.getCards();
+                //ToDo: Card Selection
+                Collections.shuffle(shopCards);
+                JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter = moshi.adapter(BuyUpgrade.class);
+                for (String upgradeCard:
+                        shopCards) {
+                    int cost = getUpgradeCardCost(upgradeCard);
+                    if(cost<=energyReserve){
+                        energyReserve-=cost;
+                        sendMessage("BuyUpgrade",buyUpgradeJsonAdapter.toJson(new BuyUpgrade(true,upgradeCard)));
+                        break;
+                    }
+
+                }
+                break;
+            case "RefillShop":
+                JsonAdapter<RefillShop> refillShopJsonAdapter = moshi.adapter(RefillShop.class);
+                RefillShop refillShop = refillShopJsonAdapter.fromJson(msg.getMessageBody());
+                List<String> refillShopCards = refillShop.getCards();
+                //ToDo: Card Selection
+                Collections.shuffle(refillShopCards);
+                JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter1 = moshi.adapter(BuyUpgrade.class);
+                for (String upgradeCard:
+                     refillShopCards) {
+                    int cost = getUpgradeCardCost(upgradeCard);
+                    if(cost<=energyReserve){
+                        energyReserve-=cost;
+                        sendMessage("BuyUpgrade",buyUpgradeJsonAdapter1.toJson(new BuyUpgrade(true,upgradeCard)));
+                        break;
+                    }
+
+                }
 
 
+                break;
+            case "UpgradeBought":
+                JsonAdapter<UpgradeBought> upgradeBoughtJsonAdapter = moshi.adapter(UpgradeBought.class);
+                UpgradeBought upgradeBought = upgradeBoughtJsonAdapter.fromJson(msg.getMessageBody());
+
+                if(upgradeBought.getClientID() == AI_ID){
+                    String upgrade = upgradeBought.getCard();
+                    upgrades.add(upgrade);
+                }
                 break;
 
             case "StartingPointTaken":
@@ -204,6 +274,18 @@ public class AIClient extends Thread {
                 StartingPointTaken startingPointTaken = startingPointTakenJsonAdapter.fromJson(msg.getMessageBody());
 
                 unavailableStartingPoints.add(new AIClient.Position(startingPointTaken.getX(), startingPointTaken.getY()));
+                JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
+                if(startingPointTaken.getClientID() != AI_ID){
+                    if(!hasStartPoint){
+                        Position startPos = newStartPos();
+                        hasStartPoint = true;
+                        sendMessage("SetStartingPoint", setStartingPointJsonAdapter.toJson(new SetStartingPoint(startPos.getX(), startPos.getY())));
+                        ai.robot = players.get(AI_ID);
+                        ai.placeRobot(startPos, ai.robot);
+                    }
+                    ai.placeRobot(new Position(startingPointTaken.getX(),startingPointTaken.getY()),players.get(startingPointTaken.getClientID()));
+
+                }
 
                 break;
 
@@ -212,9 +294,40 @@ public class AIClient extends Thread {
                 ai.setCardsInHand(yourCardsJsonAdapter.fromJson(msg.getMessageBody()).getCardsInHand());
                 JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
 
-                for (int i = 0; i < 5; ++i) {
-                    sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(ai.getRandomCard(), i)));
+                ArrayList<String> regCards = ai.selectRegisterCards();
+
+                //sendChatMessage(ai.getTinyPath(),-1);
+
+                if(memorySwapping){
+
+                    for (int i = 0; i < 3; i++) {
+
+                    }
+
+                    memorySwapping = false;
                 }
+
+                for (int i = 0; i < 5; ++i) {
+                    if(i<regCards.size()){
+                        sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(regCards.get(i), i)));
+                    }else {
+                        logger.info("AIClient setting random cards");
+                        sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(ai.getRandomCard(), i)));
+                    }
+
+                }
+
+                break;
+            case "Energy":
+                JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
+                Energy energy = energyJsonAdapter.fromJson(msg.getMessageBody());
+                energyReserve = energy.getCount();
+                break;
+            case "Movement":
+                JsonAdapter<Movement> movementJsonAdapter = moshi.adapter(Movement.class);
+                Movement movement = movementJsonAdapter.fromJson(msg.getMessageBody());
+
+                //ai.updateRobotPosition(players.get(movement.getClientID()),movement.getX(),movement.getY());
 
                 break;
             case "Error":
@@ -222,6 +335,16 @@ public class AIClient extends Thread {
         }
 
 
+    }
+
+    private int getUpgradeCardCost(String upgradeCard) {
+        switch (upgradeCard){
+            case "SpamBlocker":
+            case "AdminPrivilege":return 3;
+            case "MemorySwap":return 1;
+            case "RearLaser":return 2;
+        }
+        return 9999;
     }
 
     private Position newStartPos() {
@@ -244,7 +367,6 @@ public class AIClient extends Thread {
                         }
 
                         if (!isPosTaken) {
-                            sendChatMessage("got my starting pos (" + i + "," + j + ").", -1);
                             return currPos;
                         }
 

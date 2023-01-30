@@ -1,6 +1,7 @@
 package Desperatedrosseln.Logic.Elements;
 
 import Desperatedrosseln.Logic.DIRECTION;
+import javafx.geometry.Pos;
 
 import java.util.*;
 
@@ -9,7 +10,7 @@ public class Robot extends BoardElement {
     public static ArrayList<Position> robotPositions;
     private DIRECTION direction;
     private final int ID;
-    private Position position = super.getPosition();
+    private Position position ;
 
 
     public Robot(int iD) {
@@ -17,8 +18,9 @@ public class Robot extends BoardElement {
         if(robotPositions == null){
             robotPositions = new ArrayList<>();
         }
+
         robotPositions.add(position);
-        this.direction = direction;
+        direction = DIRECTION.RIGHT;
 
         this.ID = iD;
 
@@ -32,26 +34,24 @@ public class Robot extends BoardElement {
     public void move(int steps){
         //TODO: check position is not out of board
         if (steps > 3 || steps < 1){
-            //System.out.println("Es geht nicht");
             return;
         }
-        for(int i = 0; i < steps; i++){
-            switch (direction){
-                case TOP -> {
-                    position.setY(position.getY() - steps);
-                }
-                case BOTTOM -> {
-                    position.setY(position.getY() + steps);
-                }
-                case LEFT -> {
-                    position.setX(position.getX() - steps);
-                }
-                case RIGHT -> {
-                    position.setX(position.getX() + steps);
-                }
-                default -> {
 
-                }
+        switch (direction){
+            case TOP -> {
+                position.setY(position.getY() - steps);
+            }
+            case BOTTOM -> {
+                position.setY(position.getY() + steps);
+            }
+            case LEFT -> {
+                position.setX(position.getX() - steps);
+            }
+            case RIGHT -> {
+                position.setX(position.getX() + steps);
+            }
+            default -> {
+
             }
         }
     }
@@ -157,7 +157,7 @@ public class Robot extends BoardElement {
         return direction;
     }
 
-    private void setDirection(DIRECTION direction) {
+    public void setDirection(DIRECTION direction) {
         this.direction= direction;
     }
 
@@ -184,6 +184,20 @@ public class Robot extends BoardElement {
 
         // Compare the data members and return accordingly
         return this.getID() == r.getID();
+    }
+
+    @Override
+    public void setPosition(int x, int y){
+        if(position!=null){
+            position.setX(x);
+            position.setY(y);
+        }else{
+            position = new Position(x,y);
+        }
+    }
+    @Override
+    public Position getPosition(){
+        return this.position;
     }
 }
 

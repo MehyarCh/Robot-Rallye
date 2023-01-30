@@ -1,0 +1,67 @@
+2023-01-17 15:01:02.528 [JavaFX Application Thread] DEBUG Desperatedrosseln.Local.Controllers.LoginController - We've just greeted the user!
+2023-01-17 15:01:02.529 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LoginController - We've just greeted the user!
+2023-01-17 15:01:02.530 [JavaFX Application Thread] WARN  Desperatedrosseln.Local.Controllers.LoginController - We've just greeted the user!
+2023-01-17 15:01:02.530 [JavaFX Application Thread] ERROR Desperatedrosseln.Local.Controllers.LoginController - We've just greeted the user!
+2023-01-17 15:01:02.530 [JavaFX Application Thread] FATAL Desperatedrosseln.Local.Controllers.LoginController - We've just greeted the user!
+2023-01-17 15:27:25.934 [JavaFX Application Thread] DEBUG Desperatedrosseln.Local.Controllers.LoginController - We've just greeted the user!
+2023-01-17 15:27:25.935 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LoginController - We've just greeted the user!
+2023-01-17 15:27:25.935 [JavaFX Application Thread] WARN  Desperatedrosseln.Local.Controllers.LoginController - We've just greeted the user!
+2023-01-17 15:27:25.935 [JavaFX Application Thread] ERROR Desperatedrosseln.Local.Controllers.LoginController - We've just greeted the user!
+2023-01-17 15:27:25.935 [JavaFX Application Thread] FATAL Desperatedrosseln.Local.Controllers.LoginController - We've just greeted the user!
+2023-01-17 15:36:20.754 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LoginController - Hello welcomehzhz
+2023-01-17 15:36:27.414 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Desperatedrosseln.Local.Client@61af9241chose Brown
+2023-01-17 15:36:52.317 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Desperatedrosseln.Local.Client@61af9241chose Brown
+2023-01-17 15:39:58.561 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LoginController - Hello welcome Luca
+2023-01-17 15:40:28.444 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose GREEN
+2023-01-17 15:40:37.020 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose GREEN
+2023-01-17 15:40:47.277 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose BLUE
+2023-01-17 15:41:04.589 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose BROWN
+2023-01-17 15:41:21.615 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose BROWN
+2023-01-17 15:41:23.802 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose BLUE
+2023-01-17 15:49:25.244 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LoginController - Luca joined the Lobby
+2023-01-17 15:49:27.470 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose RED
+2023-01-17 15:50:06.413 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LoginController - Simon joined the Lobby
+2023-01-17 15:50:07.360 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Simon chose GREEN
+2023-01-17 15:50:23.381 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Simon chose BROWN
+2023-01-17 15:50:39.506 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Simon chose ORANGE
+2023-01-17 15:50:40.169 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Simon chose BLUE
+2023-01-17 16:09:45.001 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LoginController - Luca joined the Lobby
+2023-01-17 16:09:48.135 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose YELLOW
+2023-01-17 16:10:13.784 [JavaFX Application Thread] DEBUG Desperatedrosseln.Local.Controllers.MainController - Maximum map height = NaN - 1.0-0.0-100
+2023-01-17 16:10:27.386 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.MainController - Luca is done programming
+2023-01-17 16:10:00.176 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LoginController - juju joined the Lobby
+2023-01-17 16:10:01.317 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - juju chose RED
+2023-01-17 16:10:13.784 [JavaFX Application Thread] DEBUG Desperatedrosseln.Local.Controllers.MainController - Maximum map height = NaN - 1.0-0.0-100
+2023-01-17 16:10:31.210 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.MainController - juju is done programming
+2023-01-17 16:33:17.564 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LoginController - Luca joined the Lobby
+2023-01-17 16:33:19.632 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose BROWN
+2023-01-17 16:34:07.587 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose BLUE
+2023-01-17 16:34:08.728 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose ORANGE
+2023-01-17 16:34:11.390 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose BROWN
+2023-01-17 16:34:12.432 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose RED
+2023-01-17 16:34:13.609 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose ORANGE
+2023-01-17 16:33:42.663 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LoginController - Simon joined the Lobby
+2023-01-17 16:33:48.072 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Simon chose BLUE
+2023-01-17 16:34:00.453 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Simon chose GREEN
+2023-01-17 16:34:01.213 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Simon chose ORANGE
+2023-01-17 16:34:01.939 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Simon chose RED
+2023-01-17 16:34:02.626 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Simon chose YELLOW
+2023-01-17 16:34:02.970 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Simon chose YELLOW
+2023-01-17 16:34:26.226 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Simon chose YELLOW
+2023-01-17 16:34:44.012 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LoginController - Luca joined the Lobby
+2023-01-17 16:35:08.408 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose BROWN
+2023-01-17 16:35:08.779 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose YELLOW
+2023-01-17 16:35:09.085 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose BLUE
+2023-01-17 16:35:09.385 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose ORANGE
+2023-01-17 16:35:09.658 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose RED
+2023-01-17 16:35:09.958 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose GREEN
+2023-01-17 16:35:18.738 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - Luca chose RED
+2023-01-17 16:35:02.388 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LoginController - skask joined the Lobby
+2023-01-17 16:35:03.437 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - skask chose RED
+2023-01-17 16:35:03.785 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - skask chose GREEN
+2023-01-17 16:35:04.186 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - skask chose BLUE
+2023-01-17 16:35:04.661 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - skask chose ORANGE
+2023-01-17 16:35:05.106 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - skask chose RED
+2023-01-17 16:35:05.504 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - skask chose BROWN
+2023-01-17 16:35:22.875 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - skask chose YELLOW
+2023-01-17 16:35:23.441 [JavaFX Application Thread] INFO  Desperatedrosseln.Local.Controllers.LobbyController - skask chose BLUE

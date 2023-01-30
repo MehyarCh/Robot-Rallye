@@ -86,10 +86,11 @@
                   GridPane.rowIndex="0"
                   styleClass="profile-wrapper">
                 <Label text="."
-                       id="player-icon--1"
+                       fx:id="profileIcon"
                        styleClass="player-icon"/>
                 <VBox styleClass="profile-status">
-                    <Label text="PlayerName"
+                    <Label fx:id="playerName"
+                            text="PlayerName"
                            styleClass="profile-name, color--light"/>
                     <Label text="Energy: 50"
                            styleClass="profile-energy, color--primary"/>
@@ -97,6 +98,65 @@
             </HBox>
         </GridPane>
     </top>
+
+    <left>
+        <VBox
+            fx:id="upgradeBar"
+            styleClass="sidebar, upgradeBar">
+            <Label
+                    fx:id="upgradeLabel"
+                    text="Upgrade Shop"
+                    styleClass="color--light, headline-1"/>
+            <GridPane
+                fx:id="upgradeGrid"
+                styleClass="upgradeGrid">
+                <StackPane fx:id="upgradeCard1"
+                           styleClass="card-area--sm"
+                           GridPane.rowIndex="0"
+                           GridPane.columnIndex="0"
+                           GridPane.halignment="CENTER">
+                </StackPane>
+                <StackPane fx:id="upgradeCard2"
+                           styleClass="card-area--sm"
+                           GridPane.rowIndex="0"
+                           GridPane.columnIndex="1"
+                           GridPane.halignment="CENTER">
+                </StackPane>
+
+                <StackPane fx:id="upgradeCard3"
+                           styleClass="card-area--sm"
+                           GridPane.rowIndex="1"
+                           GridPane.columnIndex="0"
+                           GridPane.halignment="CENTER">
+                </StackPane>
+                <StackPane fx:id="upgradeCard4"
+                           styleClass="card-area--sm"
+                           GridPane.rowIndex="1"
+                           GridPane.columnIndex="1"
+                           GridPane.hgrow="ALWAYS"
+                           GridPane.halignment="CENTER">
+                </StackPane>
+
+                <StackPane fx:id="upgradeCard5"
+                           styleClass="card-area--sm"
+                           GridPane.rowIndex="2"
+                           GridPane.columnIndex="0"
+                           GridPane.halignment="CENTER">
+                </StackPane>
+                <StackPane fx:id="upgradeCard6"
+                           styleClass="card-area--sm"
+                           GridPane.rowIndex="2"
+                           GridPane.columnIndex="1"
+                           GridPane.halignment="CENTER">
+                </StackPane>
+            </GridPane>
+            <Button
+                fx:id="upgradeButton"
+                onAction="#handleUpgradeButton"
+                styleClass="button, button--primary"
+                text="UPGRADE" />
+        </VBox>
+    </left>
 
     <center>
         <StackPane fx:id="centerStack" styleClass="main-overlay-container">
@@ -156,7 +216,8 @@
                         <Button fx:id="programdone"
                                 onAction="#onProgrammingDone"
                                 GridPane.columnIndex="8"
-                                styleClass="button, programdone-button, button--primary"/>
+                                styleClass="button, programdone-button, button--primary,"
+                                text="READY"/>
 
                     </GridPane>
                     <GridPane styleClass="card-row, lower-card-row"
@@ -243,18 +304,16 @@
                         fitToWidth="true"
                         fitToHeight="true"
                         styleClass="scroll-board">
-                <content>
-                    <VBox fx:id="" styleClass="message-board">
-                        <!--<TextArea fx:id="chatlog" editable="false"  prefHeight="600.0" style="-fx-background-color: red" />-->
-                        <TextFlow styleClass="textflow" fx:id="chatlog"/>
-                    </VBox>
-                </content>
+                <VBox fx:id="" styleClass="message-board">
+                    <Label text="RoboRally Chat" styleClass="chat-headline, headline-2, color--light" />
+                    <TextFlow styleClass="textflow" fx:id="chatlog"/>
+                </VBox>
             </ScrollPane>
             <HBox GridPane.columnIndex="0"
                   GridPane.rowIndex="1"
                   GridPane.hgrow="ALWAYS"
                   styleClass="chat-input-wrapper">
-                <TextField fx:id="chat_input" onKeyPressed="#onMessageSend" styleClass="text-input, text-input--primary"/>
+                <TextField HBox.hgrow="ALWAYS" fx:id="chat_input" onKeyPressed="#onMessageSend" styleClass="text-input, text-input--primary"/>
                 <Button fx:id="send_button"
                         onAction="#onClickSend"
                         styleClass="button, send-button"/>

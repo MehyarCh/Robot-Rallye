@@ -20,16 +20,13 @@ public class Map {
 
     public List<Robot> getRobotsOnPos(Position pos){
         List<Robot> robots = new ArrayList<>();
-      //  List<BoardElement> elements = getElementsOnPos(pos);
-        for(List<MapField> mapFieldsList: mapFields){
-            for (MapField listOfElements: mapFieldsList){
-                for(BoardElement boardElement : listOfElements.getTypes()){
-                    if(boardElement instanceof Robot) {
-                        robots.add((Robot) boardElement);
-                    }
-                }
-                }
+        List<BoardElement> elements = getElementsOnPos(pos);
 
+        for(BoardElement element : elements){
+            if( element.toString().equals("Robot")){
+                Robot robot = (Robot) element;
+                robots.add(robot);
+            }
         }
         return robots;
     }
@@ -38,10 +35,10 @@ public class Map {
     }
 
     public int getLength(){
-        return mapFields.size();
+        return mapFields.get(0).size();
     }
     public int getWidth(){
-        return mapFields.get(0).size();
+        return mapFields.size();
     }
 
     public List<BoardElement> getElementsOnPos(Position pos) {

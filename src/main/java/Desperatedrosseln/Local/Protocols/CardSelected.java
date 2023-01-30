@@ -11,6 +11,12 @@ public class CardSelected {
     private Integer clientID;
     private Integer register;
 
+    private boolean filled;
+    public CardSelected (int clientID, int register, boolean filled){
+        this.clientID = clientID;
+        this.register = register;
+        this.filled = filled;
+    }
 
     public Integer getClientID() {
         return clientID;
@@ -19,9 +25,8 @@ public class CardSelected {
     public Integer getRegister() {
         return register;
     }
-
-    public CardSelected (int clientID, int register){
-        this.clientID = clientID;
-        this.register = register;
+    public boolean isFilled() {
+        return filled;
     }
+
 }

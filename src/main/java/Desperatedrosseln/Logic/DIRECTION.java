@@ -16,6 +16,12 @@ public enum DIRECTION {
     }
 
     public static DIRECTION valueOfDirection(int angle) {
+        if(angle >= 360){
+            angle -= 360;
+        }
+        if(angle<0){
+            angle+=360;
+        }
         for (DIRECTION e : values()) {
             if (e.angle == angle) {
                 return e;

@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 public class LoginController {
 
@@ -31,8 +34,10 @@ public class LoginController {
     @FXML
     private Label loginwarning;
 
+    private static final Logger logger = LogManager.getLogger(LoginController.class);
 
-
+    @FXML
+    private Label loginWarning;
 
     public LoginController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginScene.fxml"));
@@ -68,15 +73,16 @@ public class LoginController {
     @FXML
     public void onLogin(ActionEvent event) throws IOException {
         if (loginTextField.getText().isBlank()){
-            loginTextField.setStyle(String.valueOf(loginwarning));
-            loginwarning.setText("Please write your name to continue");
+            //loginTextField.setStyle(String.valueOf(loginWarning));
+            loginWarning.setText("Your name cannot be empty!");
         }else {
 
             client = new Client();
             client.setClientName(loginTextField.getText());
             switchToLobbyScene();
 
-            System.out.println("Hello welcome " + loginTextField.getText());
+            logger.info(loginTextField.getText() + " joined the Lobby");
+
         }
 
     }

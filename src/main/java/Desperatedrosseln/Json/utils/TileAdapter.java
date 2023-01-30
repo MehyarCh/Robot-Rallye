@@ -24,17 +24,16 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
 
         // Write the "orientations" field
 
-
-
-        if(value instanceof Wall || value instanceof Laser || value instanceof LaserBeam Laser || value instanceof Antenna || value instanceof PushPanel || value instanceof ConveyorBelt || value instanceof Gear){
+        if(value instanceof RestartPoint || value instanceof Wall || value instanceof Laser || value instanceof LaserBeam
+                || value instanceof Antenna || value instanceof PushPanel || value instanceof ConveyorBelt || value instanceof Gear){
 
             out.name("orientations");
             out.beginArray();
             switch (value.getType()){
                 case "Wall": Wall wall = (Wall) value;
                     for (String orientation : wall.getOrientations()) {
-                    out.value(orientation);
-                }
+                        out.value(orientation);
+                    }
                     break;
                 case "Laser":Laser laser = (Laser) value;
                     for (String orientation : laser.getOrientations()) {
@@ -61,6 +60,11 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
                         out.value(orientation);
                     }
                     break;
+                case "RestartPoint": RestartPoint restartPoint = (RestartPoint) value;
+                    for (String orientation : restartPoint.getOrientations()) {
+                        out.value(orientation);
+                    }
+                    break;
                 case "Gear":Gear gear = (Gear) value;
                     for (String orientation : gear.getOrientations()) {
                         out.value(orientation);
@@ -69,7 +73,16 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
             }
             out.endArray();
         }
-
+        // Write the "registers" field for PushPanel tiles
+        if (value instanceof PushPanel) {
+            PushPanel pushPanel = (PushPanel) value;
+            out.name("registers");
+            out.beginArray();
+            for (Integer pushPanelRegisters : pushPanel.getRegisters()){
+                out.value(pushPanelRegisters);
+            }
+            out.endArray();
+        }
 
 
         // Write the "speed" field for ConveyorBelt tiles
@@ -80,7 +93,7 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
         }
 
         // Write the "count" field for Laser and Energy-Space tiles
-        if (value instanceof Laser || value instanceof EnergySpace) {
+        if (value instanceof Laser || value instanceof EnergySpace || value instanceof CheckPoint) {
             int count = 0;
             if (value instanceof Laser) {
                 Laser laser = (Laser) value;
@@ -88,6 +101,9 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
             } else if (value instanceof EnergySpace) {
                 EnergySpace energySpace = (EnergySpace) value;
                 count = energySpace.getCount();
+            }else if (value instanceof CheckPoint) {
+                CheckPoint checkPoint = (CheckPoint) value;
+                count = checkPoint.getCount();
             }
             out.name("count");
             out.value(count);
@@ -105,7 +121,6 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
         ArrayList<Integer> registers = new ArrayList<>();
         int speed = 0;
         int count = 0;
-        int number = 1;
 
         // Read the JSON object and determine the type of tile to create
         if (reader.peek() == JsonToken.NULL) {
@@ -148,7 +163,7 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
         assert type != null;
         return switch (type) {
             case "Empty" -> new Empty(type, isOnBoard);
-            case "Pit" -> new Empty(type, isOnBoard);
+            case "Pit" -> new Pit(type, isOnBoard);
             case "StartPoint" -> new StartPoint(type, isOnBoard);
             case "CheckPoint" -> new CheckPoint(type, isOnBoard, count);
             case "RestartPoint" -> new RestartPoint(type, isOnBoard, orientations);

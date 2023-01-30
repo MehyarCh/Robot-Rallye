@@ -1,11 +1,7 @@
 package Desperatedrosseln.Logic.Elements;
 
-import java.util.List;
 
 public class BoardElement {
-
-    public List<String> types;
-
     private String type;
     private String isOnBoard;
     private transient Position position;
@@ -15,7 +11,12 @@ public class BoardElement {
         this.isOnBoard = isOnBoard;
     }
     public void setPosition(int x, int y) {
-        position = new Position(x, y);
+        if(position!=null){
+            position.setX(x);
+            position.setY(y);
+        }else{
+            position = new Position(x,y);
+        }
     }
 
     public Position getPosition() {

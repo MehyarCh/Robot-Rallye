@@ -12,7 +12,7 @@ public class Card {
 
     public void playCard(Robot robot){
     }
-
+    @Override
     public String toString(){
         return "Card";
     }

@@ -5,7 +5,11 @@ import Desperatedrosseln.Json.utils.JsonMapReader;
 import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Logic.AI.AIClient;
 import Desperatedrosseln.Logic.Cards.Card;
+import Desperatedrosseln.Logic.Cards.Damage.Spam;
 import Desperatedrosseln.Logic.Cards.Damagecard;
+import Desperatedrosseln.Logic.Cards.Programming.PowerUp;
+import Desperatedrosseln.Logic.Cards.Upgrade.*;
+import Desperatedrosseln.Logic.Cards.UpgradeCard;
 import Desperatedrosseln.Logic.Elements.Position;
 import Desperatedrosseln.Logic.Elements.Robot;
 import Desperatedrosseln.Logic.Elements.*;
@@ -13,6 +17,8 @@ import Desperatedrosseln.Logic.Elements.BoardElement;
 import Desperatedrosseln.Logic.Elements.Tiles.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,37 +29,47 @@ import static Desperatedrosseln.Logic.DIRECTION.TOP;
  * @author Mehyar, Luca
  */
 public class Game {
-    private Map gameMap;
+    private Map gameMap = null;
     private static String currentMap;
     private static ArrayList<Player> players = new ArrayList<>();
-    private ArrayList<BoardElement> boardElements;
-    private List<Player> rebooted_players;
-    Moshi moshi = new Moshi.Builder().build();
+    private List<BoardElement> boardElements = new ArrayList<>();
+    private List<Player> rebooted_players = new ArrayList<>();
+    private List<Card> deckOfUpgradeCards = new ArrayList<>(40);
 
+    Moshi moshi = new Moshi.Builder().build();
     JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
+    private int checkpoints;
     private int phase = 0;
     private Player playing;
     private int current_player_index = 0;
-    public int startingPositionsChosen=0;
+    public int startingPositionsChosen = 0;
     private int current_register = 0;
     public static int mapSelectionPlayer = -1;
+    private ArrayList<Card> cardsInShop = new ArrayList<>();
+    public boolean isShopUntouched = false;
+    private int roundNumber = 1;
+    public int shopRec = 0;
     //
-    private ArrayList<Card> spampile = new ArrayList<>(38);
-    private ArrayList<Card> viruspile = new ArrayList<>(18);
-    private ArrayList<Card> trojanpile = new ArrayList<>(12);
-    private ArrayList<Card> wormpile = new ArrayList<>(6);
-    private ArrayList<ClientHandler> clients;
+    private List<Card> spampile = new ArrayList<>(38);
+    private List<Card> viruspile = new ArrayList<>(18);
+    private List<Card> trojanpile = new ArrayList<>(12);
+    private List<Card> wormpile = new ArrayList<>(6);
+    private List<ClientHandler> clients;
 
-
+    private static final Logger logger = LogManager.getLogger();
     private int distance;
     private final int port;
     private String protocol = "Version 1.0";
     private boolean isRunning = false;
+    private boolean firstPlayerGotCards = false;
+    private boolean isInitRounds = false;
+    private int energyBank=50;
 
     public Game(int port, String protocol, ArrayList<ClientHandler> clients) {
         this.protocol = protocol;
         this.port = port;
         this.clients = clients;
+        addAI();
     }
 
 
@@ -71,34 +87,35 @@ public class Game {
 
     public void placeRobot(Player player, int x, int y) {
         gameMap.addElement(player.getRobot(), x, y);
+        player.getRobot().setPosition(x, y);
     }
 
     public void runStep() throws ClassNotFoundException {
 
-        if(isRunning){
+        if (isRunning) {
             return;
         }
         isRunning = true;
         switch (phase) {
             case 0:
-                System.out.println("Starting Phase");
+                logger.info("Current phase: Starting Phase");
                 setUpBoard();
                 break;
             case 1:
-                System.out.println("Upgrade Phase");
+                logger.info("Current phase: Upgrade Phase");
+                runUpgradePhase();
                 break;
             case 2:
-                System.out.println("Programming phase");
+                logger.info("Current phase: Programming phase");
                 //TODO: check players in reboot array and reposition their robots then take them out of reboot list
                 runProgrammingPhase();
                 break;
             case 3:
-                System.out.println("Activation phase");
+                logger.info("Current phase: Activation phase");
                 runActivationPhase();
                 break;
 
         }
-
 
 
     }
@@ -111,13 +128,20 @@ public class Game {
             //TODO: set number of checkpoints dynamically from the gamemap info
         }
     }
-    public boolean selectionFinished(){
-        int i=0;
+
+    public boolean selectionFinished() {
+        /*int i=0;
         while(i<players.size()){
-            if(players.get(i).getRegisters()[4] == null ){
+            logger.warn(players.get(i).getRegisterTrack() + " ID: " + players.get(i).getID());
+            if(players.get(i).getRegisterTrack() < 5){
                 return false;
             }
             i++;
+        }*/
+        for (Player player : players) {
+            if (player.getRegisterTrack() < 5) {
+                return false;
+            }
         }
         return true;
     }
@@ -129,20 +153,61 @@ public class Game {
         JsonMapReader jsonMapReader = new JsonMapReader();
         List<List<List<BoardElement>>> gameMapList = jsonMapReader.readMapFromJson(currentMap);
         gameMap = new Map(convertMap(gameMapList));
-        if(gameMap == null){
-            System.out.println("Gamemap is null!!!");
-        }else {
-            System.out.println("Gamemap is not null");
-        }
 
         for (int x = 0; x < gameMapList.size(); x++) {
-            for (int y = 0; y < gameMapList.get(x).size(); y++) {
-                gameMapList.get(x).get(y).get(0).setPosition(x,y);
+            for (int y = 0; y < gameMapList.get(0).size(); y++) {
+                for(int z = 0; z < gameMapList.get(0).get(0).size(); z++){
+                    gameMapList.get(x).get(y).get(z).setPosition(x, y);
+                }
+            }
+        }
+        checkpoints = getListOf("CheckPoint").size();
+        phase = 1;
+        isRunning = false;
+
+        //setting up boardelements
+        for(int i=0; i<gameMap.getMapFields().size(); i++){
+            for(int j=0; j<gameMap.getMapFields().get(0).size(); j++){
+                for(BoardElement element : gameMap.getMapFields().get(i).get(j).getTypes()){
+                    element.setPosition(i,j);
+                    boardElements.add(element);
+                }
+            }
+        }
+    }
+
+    private List<String> cardsInShopToString() {
+        List<String> stringList = new ArrayList<>();
+        for (Card card :
+                cardsInShop) {
+            if (card != null) {
+                stringList.add(card.toString());
+            }
+
+        }
+
+        return stringList;
+    }
+
+    private ClientHandler findClient(int id) {
+
+        for (ClientHandler client :
+                clients) {
+            if (id == client.getClientID()) {
+                return client;
             }
         }
 
-        phase = 2;
-        isRunning = false;
+        return null;
+    }
+
+    private Card drawFromDeckOfUpgradeCards() {
+        Card card = null;
+        if (!deckOfUpgradeCards.isEmpty()) {
+            card = deckOfUpgradeCards.get(0);
+            deckOfUpgradeCards.remove(0);
+        }
+        return card;
     }
 
     private List<List<MapField>> convertMap(List<List<List<BoardElement>>> gameMapList) {
@@ -160,6 +225,65 @@ public class Game {
         return mapFields;
     }
 
+    /**
+     * this method initiates the upgradePhase
+     */
+    public void runUpgradePhase() throws ClassNotFoundException {
+        sortPlayersByDistance();
+        decideNextPlayer();
+        isRunning = false;
+        if (!firstPlayerGotCards) {
+            initDeckOfUpgradeCards();
+            for (int i = 0; i < players.size(); i++) {
+                cardsInShop.add(drawFromDeckOfUpgradeCards());
+                System.out.println("****************");
+                System.out.println(playing);
+            }
+            JsonAdapter<RefillShop> refillShopJsonAdapter = moshi.adapter(RefillShop.class);
+            findClient(playing.getID()).sendMessage("RefillShop", refillShopJsonAdapter.toJson(new RefillShop(cardsInShopToString())));
+            ++current_player_index;
+            firstPlayerGotCards = true;
+        } else {
+            runShop();
+        }
+    }
+
+    public void runShop() {
+        if (current_player_index == 0) {
+            phase = 2;
+            runProgrammingPhase();
+            return;
+        }
+
+
+        if (isShopUntouched) {
+            JsonAdapter<ExchangeShop> exchangeShopJsonAdapter = moshi.adapter(ExchangeShop.class);
+            findClient(playing.getID()).sendMessage("ExchangeShop", exchangeShopJsonAdapter.toJson(new ExchangeShop(cardsInShopToString())));
+        } else {
+            JsonAdapter<RefillShop> refillShopJsonAdapter = moshi.adapter(RefillShop.class);
+            findClient(playing.getID()).sendMessage("RefillShop", refillShopJsonAdapter.toJson(new RefillShop(cardsInShopToString())));
+        }
+
+        ++current_player_index;
+    }
+
+
+    private void initDeckOfUpgradeCards() {
+        for (int i = 0; i < 10; i++) {
+            deckOfUpgradeCards.add(new AdminPrivilege());
+        }
+        for (int i = 0; i < 10; i++) {
+            deckOfUpgradeCards.add(new MemorySwap());
+        }
+        for (int i = 0; i < 10; i++) {
+            deckOfUpgradeCards.add(new RearLaser());
+        }
+        for (int i = 0; i < 10; i++) {
+            deckOfUpgradeCards.add(new SpamBlocker());
+        }
+        DeckHelper.shuffleCards(deckOfUpgradeCards);
+    }
+
 
     /**
      * this method initiates the programmingphase
@@ -173,7 +297,7 @@ public class Game {
         for (Player player : players) {
             int shuffled = player.programmingPhase();
 
-            if (shuffled == 1) {
+            if (shuffled == 2) {
                 JsonAdapter<ShuffleCoding> shuffleCodingJsonAdapter = moshi.adapter(ShuffleCoding.class);
                 broadcastMessage("ShuffleCoding", shuffleCodingJsonAdapter.toJson(new ShuffleCoding(player.getID())));
 
@@ -192,7 +316,7 @@ public class Game {
                 JsonAdapter<NotYourCards> notYourCardsJsonAdapter = moshi.adapter(NotYourCards.class);
                 if (client.getClientID() == player.getID()) {
                     JsonAdapter<YourCards> yourCardsJsonAdapter = moshi.adapter(YourCards.class);
-                    client.sendMessage("YourCards", yourCardsJsonAdapter.toJson(new YourCards(player.getHandasStrings())));
+                    client.sendMessage("YourCards", yourCardsJsonAdapter.toJson(new YourCards(player.getHandAsStrings())));
                 } else {
                     client.sendMessage("NotYourCards", notYourCardsJsonAdapter.toJson(new NotYourCards(player.getID(), player.getHand().size())));
                 }
@@ -222,7 +346,6 @@ public class Game {
                 clients) {
             client.sendMessage(type, json);
         }
-
     }
 
     /**
@@ -230,42 +353,41 @@ public class Game {
      */
     private void runActivationPhase() throws ClassNotFoundException {
         phase = 3;
-        //send the current ActivePhase to all Clients
+        /*
         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
         ActivePhase activePhase3 = new ActivePhase(phase);
-        broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
+        broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));*/
 
         //for each register
         for (int current_register = 0; current_register < 5; current_register++) {
+            sortPlayersByDistance();
+            logger.debug("Activating register: " + current_register);
             this.current_register = current_register;
             //each player plays their register
             ArrayList<CurrentCards.ActiveCards> activeCardsArrayList = new ArrayList<>();
             for (int played = 1; played <= players.size(); played++) {
+                decideNextPlayer();
                 //find the current player and let them play
                 for (Player curr : players) {
-                    if (curr.equals(playing) && rebooted_players.indexOf(curr) == -1) {
+                    if (curr.getID() == playing.getID() && !rebooted_players.contains(curr)) {
                         //Server sends currentPlayer message to every Client
+                        logger.debug("Register " + current_register + "For Player: " + curr.getID());
                         JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
                         CurrentPlayer currentPlayer = new CurrentPlayer(playing.getID());
                         broadcastMessage("CurrentPlayer", currentPlayerJsonAdapter.toJson(currentPlayer));
-
                         //the active player plays their card in the current register
                         playCardByType(curr.getRegisterIndex(current_register), curr, current_register);
 
-
                         activeCardsArrayList.add(new CurrentCards.ActiveCards(curr.getID(), curr.getRegisterIndex(current_register)));
 
-
-                        decideNextPlayer();
                     }
                 }
-
+                current_player_index++;
             }
             JsonAdapter<CurrentCards> currentCardsJsonAdapter = moshi.adapter(CurrentCards.class);
             broadcastMessage("CurrentCards", currentCardsJsonAdapter.toJson(new CurrentCards(activeCardsArrayList)));
             activateElements();
         }
-
         isRunning = false;
     }
 
@@ -294,16 +416,16 @@ public class Game {
                 case "Worm" -> {
                     drawSpamCard(curr, 2);
                     List<BoardElement> respawns = getListOf("RestartPoint");
-                    Position newPos = new Position(0,0);
-                    for (BoardElement respawn:
+                    Position newPos = new Position(0, 0);
+                    for (BoardElement respawn :
                             respawns) {
 
-                            if(!gameMap.getMapFields().get(respawn.getPosition().getX()).get(respawn.getPosition().getY()).getTypes().contains(curr.getRobot())){
-                                newPos.copy(respawn.getPosition());
-                                curr.getRobot().reboot(TOP, newPos);
-                                rebootPlayer(curr);
-                                break;
-                            }
+                        if (!gameMap.getMapFields().get(respawn.getPosition().getX()).get(respawn.getPosition().getY()).getTypes().contains(curr.getRobot())) {
+                            newPos.copy(respawn.getPosition());
+                            curr.getRobot().reboot(TOP, newPos);
+                            rebootPlayer(curr);
+                            break;
+                        }
 
 
                     }
@@ -336,29 +458,29 @@ public class Game {
 
 
         } else {
-
-            if (curr.getRegisterIndex(register_number).toString().equals("Again")
-                    && register_number > 0) {
-                curr.getRegisterIndex(register_number - 1).playCard(curr.getRobot());
-                switch (curr.getRegisterIndex(register_number - 1).toString()) {
-                    case "Move1":
-                    case "Move2":
-                    case "Move3":
-                    case "MoveBack":
-                        robotMovedProtokoll(curr.getRobot());
+            String cardtype = curr.getRegisterIndex(register_number).toString();
+            if (cardtype.equals("Again")) {
+                if(register_number > 0){
+                    curr.getRegisterIndex(register_number - 1).playCard(curr.getRobot());
+                    robotMovedProtokoll(curr.getRobot());
                 }
+            } else if(cardtype.equals("TurnLeft") || (cardtype.equals("TurnRight") || cardtype.equals("UTurn"))) {
+                curr.getRegisterIndex(register_number).playCard(curr.getRobot());
+                if(cardtype.equals("TurnLeft")){
+                    robotTurnedProtokoll(curr.getRobot(),"counterclockwise");
+                }else if(cardtype.equals("TurnRight")){
+                    robotTurnedProtokoll(curr.getRobot(),"clockweise");
+                }else{
+                    robotTurnedProtokoll(curr.getRobot(), "clockwise");
+                    robotTurnedProtokoll(curr.getRobot(), "clockwise");
+                }
+            } else if(cardtype.equals("PowerUp")){
+                //TODO: powerup protocol
+                curr.addToEnergyReserve(1);
             } else {
                 curr.getRegisterIndex(register_number).playCard(curr.getRobot());
+                robotMovedProtokoll(curr.getRobot());
             }
-
-            switch (curr.getRegisterIndex(register_number).toString()) {
-                case "Move1":
-                case "Move2":
-                case "Move3":
-                case "MoveBack":
-                    robotMovedProtokoll(curr.getRobot());
-            }
-
         }
     }
 
@@ -370,7 +492,7 @@ public class Game {
      */
     private void drawSpamCard(Player player, int numberOfCards) {
 
-        ArrayList<String> cards = new ArrayList<>();
+        List<String> cards = new ArrayList<>();
 
         if (spampile.size() >= numberOfCards) {
             for (int i = 0; i < numberOfCards; i++) {
@@ -424,7 +546,7 @@ public class Game {
             }
 
             default -> {
-                System.out.println("Invalid type of card");
+                logger.warn("Invalid type of card");
             }
         }
     }
@@ -440,13 +562,13 @@ public class Game {
             if (client.getClientID() == player.getID()) {
                 //check all the DamageCard piles if they are empty or not - if not add them to availablePiles
                 List<String> availablePiles = new ArrayList<>();
-                if (viruspile.size()>0){
+                if (viruspile.size() > 0) {
                     availablePiles.add("Virus");
                 }
-                if (trojanpile.size()>0){
+                if (trojanpile.size() > 0) {
                     availablePiles.add("Trojan");
                 }
-                if (wormpile.size()>0){
+                if (wormpile.size() > 0) {
                     availablePiles.add("Worm");
                 }
                 //send the request to the client which damagecards he wants to pick
@@ -454,10 +576,10 @@ public class Game {
                 client.sendMessage("PickDamage", pickDamageJsonAdapter.toJson(new PickDamage(count, availablePiles)));
             }
         }
-            //Get client answer - receive "SelectedDamage"
-            Damagecard requestedcard = new Damagecard();
-            return requestedcard;
-        }
+        //Get client answer - receive "SelectedDamage"
+        Damagecard requestedcard = new Damagecard();
+        return requestedcard;
+    }
 
 
     /**
@@ -495,15 +617,25 @@ public class Game {
     }
 
     private void decideNextPlayer() {
-        current_player_index++;
+        //TODO: count distance to antenna
         //if the current player is the last player, start from the beginning
         if (current_player_index >= players.size()) {
             current_player_index = 0;
         }
-        playing = players.get(current_player_index++);
+        playing = players.get(current_player_index);
+    }
+    private void sortPlayersByDistance() {
+        List<BoardElement> antenna = getListOf("Antenna");
+        for (BoardElement element : antenna) {
+            Antenna antenna1 = (Antenna) element;
+            //sorts players by who is closest to the antenna, the closest player being the first one
+            players.sort((a, b) -> a.calculateDistance(antenna1.getPosition(), a.getRobot().getPosition())
+                    - b.calculateDistance(antenna1.getPosition(), b.getRobot().getPosition()));
+        }
     }
 
     private int calculateDistance(Position pos1, Position pos2) {
+        distance = Math.abs(pos1.getX() - pos2.getX()) + Math.abs(pos1.getY() - pos2.getY());
         return distance;
     }
 
@@ -516,22 +648,9 @@ public class Game {
         activateRobotsLasers();
         activateEnergySpaces();
         activateCheckpoints();
-        for(Player player: players){
-            robotMovedProtokoll(player.getRobot());
-        }
-
     }
 
     private void activateBoardLasers() {
-        List<BoardElement> lasers = getListOf("Laser");
-        //determine the range of each laser
-        //check if there is a robot within that range
-        //idee: recursive algorithm which keeps checking the next cell until it hits
-
-        for (BoardElement laser : lasers) {
-            //Assert laser instance of Laser
-            shootBoardLaser((Laser) laser);
-        }
         /**
          * Board lasers
          * cannot fire through walls, the priority
@@ -540,45 +659,16 @@ public class Game {
          * pointer. (Take a SPAM damage card for
          * each laser that hits you
          */
-    }
-
-    private void shootBoardLaser(Laser laser) {
-        Position pos = laser.getPosition();
-        boolean laserhit = false;
-        List<BoardElement> elemetsOnPos;
-
-        //TODO: not sure about which (X or Y) is width and which is length
-        while (pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
-                && !laserhit) {
-            //as long as within the board, and laser still didnt hit any element
-            if (hasLaserBlock(pos)) {
-                //if cell has a robot or an antenna on it
-                elemetsOnPos = gameMap.getElementsOnPos(pos);
-                for (BoardElement element : elemetsOnPos) {
-                    //either robots on cell get damage, or laser stops
-                    if (element instanceof Robot) {
-                        laserHitRobot((Robot) element);
-                        laserhit = true;
-                    } else if (element instanceof Antenna) {
-                        laserhit = true;
-                    } else if (element instanceof Wall) {
-                        laserhit = true;
-                    }
+        for(Player player : players){
+            List<BoardElement> elementsOnPos = gameMap.getElementsOnPos(player.getRobot().getPosition());
+            for(BoardElement element : elementsOnPos ){
+                if(element.toString().equals("Laser") || element.toString().equals("LaserBeam") ){
+                    drawSpamCard(player, 1);
+                    //TODO: laserhit protocol / draw spamcard protocol
                 }
-            } else {
-                pos = getNextPos(pos, laser.getDirection());
             }
         }
-    }
 
-    /**
-     * select player by robots id and make him draw a spam card
-     *
-     * @param robot the robot that was hit by the laser
-     */
-    private void laserHitRobot(Robot robot) {
-        Player player = getPlayerByRobot(robot);
-        drawSpamCard(player, 1);
     }
 
     /**
@@ -629,7 +719,7 @@ public class Game {
     }
 
     /**
-     * checks if there are robots an antenna or a wall on a position
+     * checks if there are robots, an antenna or a wall on a position
      *
      * @param pos the position of the board to check
      * @return true if there are robots or an antenna on pos
@@ -672,12 +762,11 @@ public class Game {
      */
     private void shootRobotLaser(Robot robot) {
         Position pos = robot.getPosition();
-        boolean laserhit = false;
+        boolean laserHit = false;
         List<BoardElement> elemetsOnPos;
 
-        //TODO: not sure about which (X or Y) is width and which is length
         while (pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
-                && !laserhit) {
+                && !laserHit && pos.getX() >= 0 && pos.getY() >= 0) {
             //as long as within the board, and laser still didnt hit any element
             if (hasLaserBlock(pos)) {
                 //if cell has a robot or an antenna on it
@@ -685,15 +774,45 @@ public class Game {
                 for (BoardElement element : elemetsOnPos) {
                     //robots on cell get damage, or laser stops
                     if (element instanceof Robot) {
-                        laserHitRobot((Robot) element);
-                        laserhit = true;
+                        drawSpamCard(getPlayerByRobot((Robot) element),1);
+                        //TODO: draw spamcard protocol
+                        laserHit = true;
                     } else if (element instanceof Wall) {
                         //TODO: take direction of wall into consideration
-                        laserhit = true;
+                        DIRECTION dir = robot.getDirection();
+                        DIRECTION opDir = DIRECTION.valueOfDirection(dir.getAngle() + 180);
+                        if (dir.toString().equals(((Wall) element).getOrientations().get(0)) || opDir.toString().equals(((Wall) element).getOrientations().get(0))) {
+                            laserHit = true;
+                        }
+
                     }
                 }
             } else {
                 pos = getNextPos(pos, robot.getDirection());
+            }
+        }
+
+        Player curr = getPlayerByRobot(robot);
+        laserHit = false;
+        while (curr.checkUpgrade("RearLaser") && pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
+                && !laserHit && pos.getX() >= 0 && pos.getY() >= 0) {
+            //as long as within the board, and laser still didnt hit any element
+            if (hasLaserBlock(pos)) {
+                //if cell has a robot or an antenna on it
+                elemetsOnPos = gameMap.getElementsOnPos(pos);
+                for (BoardElement element : elemetsOnPos) {
+                    //robots on cell get damage, or laser stops
+                    if (element instanceof Robot) {
+                        drawSpamCard(getPlayerByRobot((Robot) element),1);
+                        //TODO: draw spamcard protocol
+                        laserHit = true;
+                    } else if (element instanceof Wall) {
+                        //TODO: take direction of wall into consideration
+                        laserHit = true;
+                    }
+                }
+            } else {
+                pos = getNextPos(pos, DIRECTION.valueOfDirection(robot.getDirection().getAngle() + 180));
             }
         }
     }
@@ -707,7 +826,21 @@ public class Game {
          * take an energy cube from the
          * energy bank
          */
-
+        List<BoardElement> energyspaces = getListOf("EnergySpace");
+        for(BoardElement element : energyspaces) {
+            EnergySpace espace = (EnergySpace) element;
+            for(Robot robot : gameMap.getRobotsOnPos(espace.getPosition())){
+                if(espace.hasEnergySpace()){
+                    if(current_register == 5){
+                        getPlayerByRobot(robot).addToEnergyReserve(1);
+                        energyBank--;
+                    }else{
+                        getPlayerByRobot(robot).addToEnergyReserve(1);
+                        espace.takeCube();
+                    }
+                }
+            }
+        }
         /*
         JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
         Energy energy = new Energy(robot.getID(), count, source);
@@ -726,7 +859,7 @@ public class Game {
          * on your player mat to track your
          * progress in the race
          */
-        List<BoardElement> checkpoints = getListOf("Checkpoint");
+        List<BoardElement> checkpoints = getListOf("CheckPoint");
         for (BoardElement checkpoint : checkpoints) {
             //on each checkpoint, check robots on it
             CheckPoint cp = (CheckPoint) checkpoint;
@@ -743,7 +876,7 @@ public class Game {
                 broadcastMessage("CheckPointReached", checkPointReachedJsonAdapter.toJson(checkPointReached));
 
                 if (player.getNextCheckPoint() > checkpoints.size()) {
-                    System.out.println("Player " + player.getID() + "-" + player.getName() + " has won.");
+                    logger.info("Player " + player.getID() + "-" + player.getName() + " has won.");
                     //if it was the last checkpoint, the player has won the game and the protocoll message gets sent
                     JsonAdapter<GameFinished> gameFinishedJsonAdapter = moshi.adapter(GameFinished.class);
                     GameFinished gameFinished = new GameFinished(robot.getID());
@@ -769,14 +902,13 @@ public class Game {
                 //get robots on belts position (usually just one robot)
                 List<Robot> robotList = gameMap.getRobotsOnPos(belt.getPosition());
                 belt.execute(robotList);
-
             }
         }
         //activate green conveyor belts
         conveyorbelts = getListOfBelts(1);
         for (ConveyorBelt belt : conveyorbelts) {
             if (robotOnElement(belt)) {
-                //Assert that belt.getSpeed()== 1
+                assert belt.getSpeed() == 1;
                 //get robots on belts position (usually just one robot)
                 List<Robot> robotList = gameMap.getRobotsOnPos(belt.getPosition());
                 belt.execute(robotList);
@@ -798,6 +930,7 @@ public class Game {
             if (elementsOnPos.get(i).toString().equals("Robot")) {
                 return true;
             }
+            i++;
         }
         return false;
     }
@@ -807,10 +940,15 @@ public class Game {
      * @return a list of board elements of one specific type
      */
     private List<BoardElement> getListOf(String type) {
+        int i = 0;
         List<BoardElement> listofobj = new ArrayList<>();
         for (BoardElement boardelement : boardElements) {
             if (boardelement.toString().equals(type)) {
                 listofobj.add(boardelement);
+            }
+            if(boardelement.toString().equals("Empty")){
+                //debug zweck
+              i++;
             }
         }
         return listofobj;
@@ -825,9 +963,11 @@ public class Game {
     private List<ConveyorBelt> getListOfBelts(int speed) {
         List<ConveyorBelt> listofobj = new ArrayList<>();
         for (BoardElement boardelement : boardElements) {
-            if (boardelement instanceof ConveyorBelt &&
-                    ((ConveyorBelt) boardelement).getSpeed() == speed) {
-                listofobj.add((ConveyorBelt) boardelement);
+            if (boardelement.toString().equals("ConveyorBelt")) {
+                ConveyorBelt belt = (ConveyorBelt) boardelement;
+                if(belt.getSpeed() == speed ){
+                    listofobj.add(belt);
+                }
             }
         }
         return listofobj;
@@ -883,6 +1023,7 @@ public class Game {
                 //get a list of all robots targeted by this pushpanel
                 List<Robot> robotList = gameMap.getRobotsOnPos(p1.getPosition());
                 p1.execute(robotList);
+                //TODO: robot moved protocol
             }
         }
     }
@@ -891,68 +1032,30 @@ public class Game {
         List<BoardElement> pits = getListOf("Pit");
 
         List<BoardElement> respawns = getListOf("RestartPoint");
-        Position newPos = new Position(0,0);
+        Position newPos = new Position(0, 0);
 
 
-        for (BoardElement pit:
-                pits) {
-
-            for (Player player:
-                    players) {
-                if(!gameMap.getMapFields().get(pit.getPosition().getX()).get(pit.getPosition().getY()).getTypes().contains(player.getRobot())){
-
-                    for (BoardElement respawn:
-                           respawns) {
-
-                        for (Player curr:
-                                players) {
-                            if(!gameMap.getMapFields().get(respawn.getPosition().getX()).get(respawn.getPosition().getY()).getTypes().contains(curr.getRobot())){
+        for (BoardElement pit : pits) {
+            for (Player player : players) {
+                if (!gameMap.getMapFields().get(pit.getPosition().getX()).get(pit.getPosition().getY()).getTypes().contains(player.getRobot())) {
+                    for (BoardElement respawn : respawns) {
+                        for (Player curr : players) {
+                            if (!gameMap.getMapFields().get(respawn.getPosition().getX()).get(respawn.getPosition().getY()).getTypes().contains(curr.getRobot())) {
                                 newPos.copy(respawn.getPosition());
                                 break;
                             }
-
                         }
-
-
                     }
-
-
                     player.getRobot().reboot(TOP, newPos);
                     rebootPlayer(player);
                     break;
                 }
-
-            }
-
-
-        }
-
-        /*
-        for (BoardElement pit : pits) {
-            if (robotOnElement(pit)) {
-                Pit pit1 = (Pit) pit;
-                List<Robot> robotList = gameMap.getRobotsOnPos(pit1.getPosition());
-                for (Robot curr : robotList) {
-                    if (curr.getPosition().equals(pit1.getPosition())) {
-
-
-                    }
-                }
             }
         }
-
-         */
-
-
-
     }
 
     public Player getNextPlayer() {
         return playing; //ToDo: change to next player
-    }
-
-    public void start() {
-
     }
 
     /**
@@ -962,7 +1065,7 @@ public class Game {
      */
     public void robotMovedProtokoll(Robot robot) {
         JsonAdapter<Movement> movementJsonAdapter = moshi.adapter(Movement.class);
-        Movement movement = new Movement(robot.getID(), robot.getPosition().getX(), robot.getPosition().getY());
+        Movement movement = new Movement(getPlayerByRobot(robot).getID(), robot.getPosition().getX(), robot.getPosition().getY());
         broadcastMessage("Movement", movementJsonAdapter.toJson(movement));
     }
 
@@ -982,18 +1085,11 @@ public class Game {
      * @param cards this method is used every time a player/robot takes damage and has to draw a Damagecard
      *              if he takes multiple Damagecards, only one message is sent, containing a list of all the Damagecards
      */
-    public void drawDamageProtokoll(Robot robot, ArrayList<String> cards) {
+    public void drawDamageProtokoll(Robot robot, List<String> cards) {
         JsonAdapter<DrawDamage> drawDamageJsonAdapter = moshi.adapter(DrawDamage.class);
         DrawDamage drawDamage = new DrawDamage(robot.getID(), cards);
         broadcastMessage("DrawDamage", drawDamageJsonAdapter.toJson(drawDamage));
     }
-
-    /*public void setPlayerValues() {
-        for (ClientHandler client :
-                ClientHandler.clients) {
-            players.add(new Player(new Robot(ClientHandler.clients.indexOf(client))));
-        }
-    }*/
 
     public String getCurrentMap() {
         return currentMap;
@@ -1024,14 +1120,14 @@ public class Game {
     }
 
 
-    public void initGameMap() {
+    public void initGameMap() throws ClassNotFoundException {
         setUpBoard();
     }
 
     public boolean playersAreReady() {
-        int i=0;
-        while (i<players.size()){
-            if(!players.get(i).isReady()){
+        int i = 0;
+        while (i < players.size()) {
+            if (!players.get(i).isReady()) {
                 return false;
             }
             i++;
@@ -1039,8 +1135,110 @@ public class Game {
         return true;
     }
 
-    public boolean isRunning() {
-        return isRunning;
+
+    public void removeFromShop(Card card) {
+        for (Card curr :
+                cardsInShop) {
+            if (curr.toString().equals(card.toString())) {
+                cardsInShop.remove(curr);
+                return;
+            }
+        }
+    }
+
+    public void updateRound() {
+        roundNumber++;
+
+        if (cardsInShop.size() == players.size()) {                                                          //ToDo: update it somewhere someday
+            cardsInShop = new ArrayList<>();
+            isShopUntouched = true;
+            return;
+        }
+        while (cardsInShop.size() < players.size()) {
+            cardsInShop.add(drawFromDeckOfUpgradeCards());
+        }
+    }
+
+    public void addUpgrade(Player player, Card card) {              //Cards in shop and these Cards are different
+        UpgradeCard upgradeCard = (UpgradeCard) card;
+        if (upgradeCard.getCost() <= player.getEnergyReserve()) {
+            if (player.getUpgrades().isEmpty()) {
+                player.addUpgrade(upgradeCard);
+                player.setEnergyReserve(player.getEnergyReserve()-upgradeCard.getCost());
+                JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
+                findClient(player.getID()).broadcastMessage("Energy",energyJsonAdapter.toJson(
+                        new Energy(player.getID(),player.getEnergyReserve(),"Shop")));
+                JsonAdapter<UpgradeBought> upgradeBoughtJsonAdapter = moshi.adapter(UpgradeBought.class);
+                findClient(player.getID()).broadcastMessage("UpgradeBought", upgradeBoughtJsonAdapter.toJson(
+                        new UpgradeBought(player.getID(),card.toString())));
+            } else {
+                int ctr = 0;
+                for (Card curr :
+                        player.getUpgrades()) {
+                    UpgradeCard currUpgradeCard = (UpgradeCard) curr;
+
+                    if (currUpgradeCard.isPassive() == upgradeCard.isPassive()) {
+                        ctr++;
+                    }
+
+                }
+                if (ctr < 2) {
+                    player.addUpgrade(upgradeCard);
+                    player.setEnergyReserve(player.getEnergyReserve()-upgradeCard.getCost());
+                    JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
+                    findClient(player.getID()).broadcastMessage("Energy",energyJsonAdapter.toJson(
+                            new Energy(player.getID(),player.getEnergyReserve(),"Shop")));
+                    JsonAdapter<UpgradeBought> upgradeBoughtJsonAdapter = moshi.adapter(UpgradeBought.class);
+                    findClient(player.getID()).broadcastMessage("UpgradeBought", upgradeBoughtJsonAdapter.toJson(
+                            new UpgradeBought(player.getID(),card.toString())));
+                } else {
+                    //ToDo: give user the choice to discard one card
+
+                }
+            }
+
+        } else {
+            //ToDo: not enough energy
+        }
+
+
+    }
+
+    public void playCard(Player player, Card card) {
+        if (player != playing) {
+            return;
+        }
+
+        switch (card.toString()) {
+            case "AdminPrivilege":
+                break;
+            case "MemorySwap":
+                player.removeUpgrade(card.toString());
+                //playMemorySwap();
+                break;
+            case "RearLaser":
+                break;
+            case "SpamBlocker":
+                List<Card> hand = player.getHand();
+                for (Card curr :
+                        hand) {
+                    if (curr instanceof Spam) {
+                        hand.set(hand.indexOf(curr), player.drawCardFromDeck());
+                        spampile.add(curr);
+                    }
+                }
+                JsonAdapter<YourCards> yourCardsJsonAdapter = moshi.adapter(YourCards.class);
+                findClient(player.getID()).sendMessage("YourCards", yourCardsJsonAdapter.toJson(new YourCards(player.getHandAsStrings())));
+                player.removeUpgrade(card.toString());
+                break;
+        }
+
+    }
+
+    private void playMemorySwap() {
+        for (int i = 0; i < 3; i++) {
+            playing.getHand().add(playing.drawCardFromDeck());
+        }
     }
 }
 
