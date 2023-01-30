@@ -19,6 +19,7 @@ public class Map {
     }
 
     public List<Robot> getRobotsOnPos(Position pos){
+        //TODO: wrong
         List<Robot> robots = new ArrayList<>();
       //  List<BoardElement> elements = getElementsOnPos(pos);
         for(List<MapField> mapFieldsList: mapFields){
@@ -38,10 +39,10 @@ public class Map {
     }
 
     public int getLength(){
-        return mapFields.size();
+        return mapFields.get(0).size();
     }
     public int getWidth(){
-        return mapFields.get(0).size();
+        return mapFields.size();
     }
 
     public List<BoardElement> getElementsOnPos(Position pos) {

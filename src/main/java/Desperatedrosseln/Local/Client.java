@@ -233,7 +233,7 @@ public class Client implements Runnable {
             case "PlayerTurning":
                 JsonAdapter<PlayerTurning> playerTurningJsonAdapter = moshi.adapter(PlayerTurning.class);
                 PlayerTurning playerTurning = playerTurningJsonAdapter.fromJson(msg.getMessageBody());
-                mainController.getMapController().rotateRobot(playersWithRobots.get(playerTurning.getClientID()), playerTurning.getRotation());
+                mainController.getMapController().rotateRobot(playerTurning.getClientID(), playerTurning.getRotation());
                 break;
             case "ExchangeShop":
                 JsonAdapter<ExchangeShop> exchangeShopJsonAdapter = moshi.adapter(ExchangeShop.class);

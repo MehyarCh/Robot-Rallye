@@ -7,6 +7,7 @@ import Desperatedrosseln.Logic.AI.AIClient;
 import Desperatedrosseln.Logic.Cards.Card;
 import Desperatedrosseln.Logic.Cards.Damage.Spam;
 import Desperatedrosseln.Logic.Cards.Damagecard;
+import Desperatedrosseln.Logic.Cards.Programming.PowerUp;
 import Desperatedrosseln.Logic.Cards.Upgrade.*;
 import Desperatedrosseln.Logic.Cards.UpgradeCard;
 import Desperatedrosseln.Logic.Elements.Position;
@@ -61,6 +62,7 @@ public class Game {
     private boolean isRunning = false;
     private boolean firstPlayerGotCards = false;
     private boolean isInitRounds = false;
+    private int energyBank=50;
 
     public Game(int port, String protocol, ArrayList<ClientHandler> clients) {
         this.protocol = protocol;
@@ -161,9 +163,10 @@ public class Game {
         isRunning = false;
 
         //setting up boardelements
-        for (int i = 0; i < gameMap.getMapFields().size(); i++) {
-            for (int j = 0; j < gameMap.getMapFields().get(0).size(); j++) {
-                for (BoardElement element : gameMap.getMapFields().get(0).get(0).getTypes()) {
+        for(int i=0; i<gameMap.getMapFields().size(); i++){
+            for(int j=0; j<gameMap.getMapFields().get(0).size(); j++){
+                for(BoardElement element : gameMap.getMapFields().get(i).get(j).getTypes()){
+                    element.setPosition(i,j);
                     boardElements.add(element);
                 }
             }
@@ -451,14 +454,29 @@ public class Game {
 
 
         } else {
-            if (curr.getRegisterIndex(register_number).toString().equals("Again")) {
-                if (register_number > 0) {
+            String cardtype = curr.getRegisterIndex(register_number).toString();
+            if (cardtype.equals("Again")) {
+                if(register_number > 0){
                     curr.getRegisterIndex(register_number - 1).playCard(curr.getRobot());
+                    robotMovedProtokoll(curr.getRobot());
                 }
+            } else if(cardtype.equals("TurnLeft") || (cardtype.equals("TurnRight") || cardtype.equals("UTurn"))) {
+                curr.getRegisterIndex(register_number).playCard(curr.getRobot());
+                if(cardtype.equals("TurnLeft")){
+                    robotTurnedProtokoll(curr.getRobot(),"counterclockwise");
+                }else if(cardtype.equals("TurnRight")){
+                    robotTurnedProtokoll(curr.getRobot(),"clockweise");
+                }else{
+                    robotTurnedProtokoll(curr.getRobot(), "clockwise");
+                    robotTurnedProtokoll(curr.getRobot(), "clockwise");
+                }
+            } else if(cardtype.equals("PowerUp")){
+                //TODO: powerup protocol
+                curr.addToEnergyReserve(1);
             } else {
                 curr.getRegisterIndex(register_number).playCard(curr.getRobot());
+                robotMovedProtokoll(curr.getRobot());
             }
-            robotMovedProtokoll(curr.getRobot());
         }
     }
 
@@ -616,9 +634,9 @@ public class Game {
         activateRobotsLasers();
         activateEnergySpaces();
         activateCheckpoints();
-        for (Player player : players) {
+        /*for (Player player : players) {
             robotMovedProtokoll(player.getRobot());
-        }
+        }*/
 
     }
 
@@ -643,34 +661,35 @@ public class Game {
     }
 
     private void shootBoardLaser(Laser laser) {
-        Position pos = laser.getPosition();
-        boolean laserHit = false;
-        List<BoardElement> elementsOnPos;
-
-        //TODO: not sure about which (X or Y) is width and which is length
-        while (pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
-                && !laserHit) {
-            //as long as within the board, and laser still didnt hit any element
-            if (hasLaserBlock(pos)) {
-                //if cell has a robot or an antenna on it
-                elementsOnPos = gameMap.getElementsOnPos(pos);
-                for (BoardElement element : elementsOnPos) {
-                    //either robots on cell get damage, or laser stops
-                    if (element instanceof Robot) {
-                        laserHitRobot((Robot) element);
-                        laserHit = true;
-                    } else if (element instanceof Antenna) {
-                        laserHit = true;
-                    }
-                    DIRECTION dir = laser.getDirection();
-                    DIRECTION opDir = DIRECTION.valueOfDirection(dir.getAngle() + 180);
-                    if (dir.toString().equals(((Wall) element).getOrientations().get(0)) || opDir.toString().equals(((Wall) element).getOrientations().get(0))) {
-                        laserHit = true;
-                    }
-
-                }
-            } else {
-                pos = getNextPos(pos, laser.getDirection());
+//        Position pos = laser.getPosition();
+//        boolean laserhit = false;
+//        List<BoardElement> elemetsOnPos;
+//
+//        while (pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
+//                && !laserhit) {
+//            //as long as within the board, and laser still didnt hit any element
+//            if (hasLaserBlock(pos)) {
+//                //if cell has a robot/robot/antenna on it
+//                elemetsOnPos = gameMap.getElementsOnPos(pos);
+//                for (BoardElement element : elemetsOnPos) {
+//                    //either robots on cell get damage, or laser stops
+//                    if (element instanceof Robot) {
+//                        laserHitRobot((Robot) element);
+//                        laserhit = true;
+//                    } else if (element instanceof Antenna) {
+//                        laserhit = true;
+//                    } else if (element instanceof Wall) {
+//                        laserhit = true;
+//                    }
+//                }
+//            } else {
+//                pos = getNextPos(pos, laser.getDirection());
+//            }
+//        }
+        List<BoardElement> lasers = getListOf("Laser");
+        for(BoardElement laserr : lasers){
+            if(gameMap.getRobotsOnPos(laserr.getPosition()).size()>0){
+                //TODO: Mehyar macht das gerade
             }
         }
     }
@@ -733,7 +752,7 @@ public class Game {
     }
 
     /**
-     * checks if there are robots an antenna or a wall on a position
+     * checks if there are robots, an antenna or a wall on a position
      *
      * @param pos the position of the board to check
      * @return true if there are robots or an antenna on pos
@@ -779,7 +798,6 @@ public class Game {
         boolean laserHit = false;
         List<BoardElement> elemetsOnPos;
 
-        //TODO: not sure about which (X or Y) is width and which is length
         while (pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
                 && !laserHit && pos.getX() >= 0 && pos.getY() >= 0) {
             //as long as within the board, and laser still didnt hit any element
@@ -839,7 +857,21 @@ public class Game {
          * take an energy cube from the
          * energy bank
          */
-
+        List<BoardElement> energyspaces = getListOf("EnergySpace");
+        for(BoardElement element : energyspaces) {
+            EnergySpace espace = (EnergySpace) element;
+            for(Robot robot : gameMap.getRobotsOnPos(espace.getPosition())){
+                if(espace.hasEnergySpace()){
+                    if(current_register == 5){
+                        getPlayerByRobot(robot).addToEnergyReserve(1);
+                        energyBank--;
+                    }else{
+                        getPlayerByRobot(robot).addToEnergyReserve(1);
+                        espace.takeCube();
+                    }
+                }
+            }
+        }
         /*
         JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
         Energy energy = new Energy(robot.getID(), count, source);
@@ -858,7 +890,7 @@ public class Game {
          * on your player mat to track your
          * progress in the race
          */
-        List<BoardElement> checkpoints = getListOf("Checkpoint");
+        List<BoardElement> checkpoints = getListOf("CheckPoint");
         for (BoardElement checkpoint : checkpoints) {
             //on each checkpoint, check robots on it
             CheckPoint cp = (CheckPoint) checkpoint;
@@ -901,7 +933,6 @@ public class Game {
                 //get robots on belts position (usually just one robot)
                 List<Robot> robotList = gameMap.getRobotsOnPos(belt.getPosition());
                 belt.execute(robotList);
-
             }
         }
         //activate green conveyor belts
@@ -930,6 +961,7 @@ public class Game {
             if (elementsOnPos.get(i).toString().equals("Robot")) {
                 return true;
             }
+            i++;
         }
         return false;
     }
@@ -939,10 +971,15 @@ public class Game {
      * @return a list of board elements of one specific type
      */
     private List<BoardElement> getListOf(String type) {
+        int i = 0;
         List<BoardElement> listofobj = new ArrayList<>();
         for (BoardElement boardelement : boardElements) {
             if (boardelement.toString().equals(type)) {
                 listofobj.add(boardelement);
+            }
+            if(boardelement.toString().equals("Empty")){
+                //debug zweck
+              i++;
             }
         }
         return listofobj;
@@ -1026,37 +1063,22 @@ public class Game {
         Position newPos = new Position(0, 0);
 
 
-        for (BoardElement pit :
-                pits) {
-
-            for (Player player :
-                    players) {
+        for (BoardElement pit : pits) {
+            for (Player player : players) {
                 if (!gameMap.getMapFields().get(pit.getPosition().getX()).get(pit.getPosition().getY()).getTypes().contains(player.getRobot())) {
-
-                    for (BoardElement respawn :
-                            respawns) {
-
-                        for (Player curr :
-                                players) {
+                    for (BoardElement respawn : respawns) {
+                        for (Player curr : players) {
                             if (!gameMap.getMapFields().get(respawn.getPosition().getX()).get(respawn.getPosition().getY()).getTypes().contains(curr.getRobot())) {
                                 newPos.copy(respawn.getPosition());
                                 break;
                             }
-
                         }
-
-
                     }
-
-
                     player.getRobot().reboot(TOP, newPos);
                     rebootPlayer(player);
                     break;
                 }
-
             }
-
-
         }
 
         /*
@@ -1118,13 +1140,6 @@ public class Game {
         DrawDamage drawDamage = new DrawDamage(robot.getID(), cards);
         broadcastMessage("DrawDamage", drawDamageJsonAdapter.toJson(drawDamage));
     }
-
-    /*public void setPlayerValues() {
-        for (ClientHandler client :
-                ClientHandler.clients) {
-            players.add(new Player(new Robot(ClientHandler.clients.indexOf(client))));
-        }
-    }*/
 
     public String getCurrentMap() {
         return currentMap;
@@ -1196,18 +1211,17 @@ public class Game {
 
     public void addUpgrade(Player player, Card card) {              //Cards in shop and these Cards are different
         UpgradeCard upgradeCard = (UpgradeCard) card;
-        if (upgradeCard.getCost() <= player.energyReserve) {
-
-
+        if (upgradeCard.getCost() <= player.getEnergyReserve()) {
             if (player.getUpgrades().isEmpty()) {
                 player.addUpgrade(upgradeCard);
-                player.energyReserve -= upgradeCard.getCost();
+                player.setEnergyReserve(player.getEnergyReserve()-upgradeCard.getCost());
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
-                findClient(player.getID()).broadcastMessage("Energy", energyJsonAdapter.toJson(new Energy(player.getID(), player.energyReserve, "Shop")));
+                findClient(player.getID()).broadcastMessage("Energy",energyJsonAdapter.toJson(
+                        new Energy(player.getID(),player.getEnergyReserve(),"Shop")));
                 JsonAdapter<UpgradeBought> upgradeBoughtJsonAdapter = moshi.adapter(UpgradeBought.class);
-                findClient(player.getID()).broadcastMessage("UpgradeBought", upgradeBoughtJsonAdapter.toJson(new UpgradeBought(player.getID(), card.toString())));
+                findClient(player.getID()).broadcastMessage("UpgradeBought", upgradeBoughtJsonAdapter.toJson(
+                        new UpgradeBought(player.getID(),card.toString())));
             } else {
-
                 int ctr = 0;
                 for (Card curr :
                         player.getUpgrades()) {
@@ -1220,17 +1234,18 @@ public class Game {
                 }
                 if (ctr < 2) {
                     player.addUpgrade(upgradeCard);
-                    player.energyReserve -= upgradeCard.getCost();
+                    player.setEnergyReserve(player.getEnergyReserve()-upgradeCard.getCost());
                     JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
-                    findClient(player.getID()).broadcastMessage("Energy", energyJsonAdapter.toJson(new Energy(player.getID(), player.energyReserve, "Shop")));
+                    findClient(player.getID()).broadcastMessage("Energy",energyJsonAdapter.toJson(
+                            new Energy(player.getID(),player.getEnergyReserve(),"Shop")));
                     JsonAdapter<UpgradeBought> upgradeBoughtJsonAdapter = moshi.adapter(UpgradeBought.class);
-                    findClient(player.getID()).broadcastMessage("UpgradeBought", upgradeBoughtJsonAdapter.toJson(new UpgradeBought(player.getID(), card.toString())));
+                    findClient(player.getID()).broadcastMessage("UpgradeBought", upgradeBoughtJsonAdapter.toJson(
+                            new UpgradeBought(player.getID(),card.toString())));
                 } else {
                     //ToDo: give user the choice to discard one card
 
                 }
             }
-
 
         } else {
             //ToDo: not enough energy

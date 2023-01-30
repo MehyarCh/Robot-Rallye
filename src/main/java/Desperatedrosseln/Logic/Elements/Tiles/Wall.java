@@ -29,6 +29,19 @@ public class Wall extends BoardElement {
     public String toString() {
         return "Wall";
     }
+    @Override
+    public Position getPosition(){
+        return position;
+    }
+    @Override
+    public void setPosition(int x, int y){
+        if(position!=null){
+            position.setX(x);
+            position.setY(y);
+        }else{
+            position = new Position(x,y);
+        }
+    }
 }
 
 

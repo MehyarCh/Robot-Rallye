@@ -6,7 +6,6 @@ public class Position {
     private int y;
 
     public Position(int x, int y) {
-        //ToDO: fix switched x and y
         this.x = x;
         this.y = y;
     }

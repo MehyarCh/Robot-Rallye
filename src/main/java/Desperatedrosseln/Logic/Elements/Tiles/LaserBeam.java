@@ -1,13 +1,15 @@
 package Desperatedrosseln.Logic.Elements.Tiles;
 
 import Desperatedrosseln.Logic.Elements.BoardElement;
+import Desperatedrosseln.Logic.Elements.Position;
 
 import java.util.ArrayList;
 
 public class LaserBeam extends BoardElement {
-    ArrayList<String> orientations;
+    private ArrayList<String> orientations;
     private int count;
-    boolean isFullWidth;
+    private boolean isFullWidth;
+    private Position position;
     public LaserBeam(String type, String isOnBoard, ArrayList<String> orientations, int count, boolean isFullWidth) {
         super(type, isOnBoard);
         this.orientations = orientations;
@@ -37,5 +39,18 @@ public class LaserBeam extends BoardElement {
 
     public void setFullWidth(boolean fullWidth) {
         isFullWidth = fullWidth;
+    }
+    @Override
+    public Position getPosition(){
+        return position;
+    }
+    @Override
+    public void setPosition(int x, int y){
+        if(position!=null){
+            position.setX(x);
+            position.setY(y);
+        }else{
+            position = new Position(x,y);
+        }
     }
 }

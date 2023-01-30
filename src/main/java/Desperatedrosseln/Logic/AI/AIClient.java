@@ -327,7 +327,7 @@ public class AIClient extends Thread {
                 JsonAdapter<Movement> movementJsonAdapter = moshi.adapter(Movement.class);
                 Movement movement = movementJsonAdapter.fromJson(msg.getMessageBody());
 
-                ai.updateRobotPosition(players.get(movement.getClientID()),movement.getX(),movement.getY());
+                //ai.updateRobotPosition(players.get(movement.getClientID()),movement.getX(),movement.getY());
 
                 break;
             case "Error":
