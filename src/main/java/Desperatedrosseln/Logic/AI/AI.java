@@ -505,5 +505,39 @@ public class AI {
         robotList.add(rob);
         gameMap.get(startPos.x).get(startPos.y).add(rob);
     }
+
+    public void updateRobotPosition(Robot rob, int x, int y) {
+        if(rob == robot){
+            for (BoardElement element:
+                 gameMap.get(x).get(y)) {
+                if(element instanceof CheckPoint){
+                    CheckPoint checkPoint = (CheckPoint) element;
+                    if(checkPoint.getCount() == currentGoal){
+                        currentGoal++;
+                    }
+                }
+            }
+        }
+
+        for (List<List<BoardElement>> X:
+             gameMap) {
+            for (List<BoardElement> Y:
+                 X) {
+                for (BoardElement element:
+                     Y) {
+                    if(element instanceof Robot){
+                        Robot currRobot = (Robot) element;
+                        if(currRobot == rob){
+                            Y.remove(currRobot);
+                        }
+                    }
+                }
+            }
+        }
+
+        rob.setPosition(x, y);
+        gameMap.get(x).get(y).add(rob);
+
+    }
 }
 

@@ -323,7 +323,11 @@ public class AIClient extends Thread {
                 Energy energy = energyJsonAdapter.fromJson(msg.getMessageBody());
                 energyReserve = energy.getCount();
                 break;
-            case "Logout":
+            case "Movement":
+                JsonAdapter<Movement> movementJsonAdapter = moshi.adapter(Movement.class);
+                Movement movement = movementJsonAdapter.fromJson(msg.getMessageBody());
+
+                ai.updateRobotPosition(players.get(movement.getClientID()),movement.getX(),movement.getY());
 
                 break;
             case "Error":
