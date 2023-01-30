@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -341,6 +342,14 @@ public class LobbyController {
 
         mapOption.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             selectedMap = mapName;
+
+            for (Node node : mapOptionWrapper.getChildren()) {
+                node.setStyle("-fx-border-width: 0px");
+            }
+
+            StackPane source = (StackPane) mouseEvent.getSource();
+            source.setStyle("-fx-border-width: 2px");
+
         });
         return mapOption;
     }
