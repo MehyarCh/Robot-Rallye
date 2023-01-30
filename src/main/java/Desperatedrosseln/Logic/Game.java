@@ -386,7 +386,7 @@ public class Game {
             }
             JsonAdapter<CurrentCards> currentCardsJsonAdapter = moshi.adapter(CurrentCards.class);
             broadcastMessage("CurrentCards", currentCardsJsonAdapter.toJson(new CurrentCards(activeCardsArrayList)));
-            activateElements();
+            //activateElements();
         }
         isRunning = false;
     }
@@ -469,7 +469,7 @@ public class Game {
                 if(cardtype.equals("TurnLeft")){
                     robotTurnedProtokoll(curr.getRobot(),"counterclockwise");
                 }else if(cardtype.equals("TurnRight")){
-                    robotTurnedProtokoll(curr.getRobot(),"clockweise");
+                    robotTurnedProtokoll(curr.getRobot(),"clockwise");
                 }else{
                     robotTurnedProtokoll(curr.getRobot(), "clockwise");
                     robotTurnedProtokoll(curr.getRobot(), "clockwise");
