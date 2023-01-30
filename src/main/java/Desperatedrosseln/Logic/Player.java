@@ -1,7 +1,7 @@
 package Desperatedrosseln.Logic;
 
 import Desperatedrosseln.Logic.Cards.*;
-import Desperatedrosseln.Logic.Elements.Robot;
+import Desperatedrosseln.Logic.Elements.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,6 +35,7 @@ public class Player {
     public Player() {
 
     }
+    private int distance;
 
     public Card[] getRegisters() {
         return registers;
@@ -333,5 +334,10 @@ public class Player {
             }
         }
         return false;
+    }
+
+    public int calculateDistance(Position pos1, Position pos2) {
+        distance = Math.abs(pos1.getX() - pos2.getX()) + Math.abs(pos1.getY() - pos2.getY());
+        return distance;
     }
 }
