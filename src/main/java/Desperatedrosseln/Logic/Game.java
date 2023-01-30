@@ -656,30 +656,35 @@ public class Game {
     }
 
     private void shootBoardLaser(Laser laser) {
-        Position pos = laser.getPosition();
-        boolean laserhit = false;
-        List<BoardElement> elemetsOnPos;
-
-        //TODO: not sure about which (X or Y) is width and which is length
-        while (pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
-                && !laserhit) {
-            //as long as within the board, and laser still didnt hit any element
-            if (hasLaserBlock(pos)) {
-                //if cell has a robot or an antenna on it
-                elemetsOnPos = gameMap.getElementsOnPos(pos);
-                for (BoardElement element : elemetsOnPos) {
-                    //either robots on cell get damage, or laser stops
-                    if (element instanceof Robot) {
-                        laserHitRobot((Robot) element);
-                        laserhit = true;
-                    } else if (element instanceof Antenna) {
-                        laserhit = true;
-                    } else if (element instanceof Wall) {
-                        laserhit = true;
-                    }
-                }
-            } else {
-                pos = getNextPos(pos, laser.getDirection());
+//        Position pos = laser.getPosition();
+//        boolean laserhit = false;
+//        List<BoardElement> elemetsOnPos;
+//
+//        while (pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
+//                && !laserhit) {
+//            //as long as within the board, and laser still didnt hit any element
+//            if (hasLaserBlock(pos)) {
+//                //if cell has a robot/robot/antenna on it
+//                elemetsOnPos = gameMap.getElementsOnPos(pos);
+//                for (BoardElement element : elemetsOnPos) {
+//                    //either robots on cell get damage, or laser stops
+//                    if (element instanceof Robot) {
+//                        laserHitRobot((Robot) element);
+//                        laserhit = true;
+//                    } else if (element instanceof Antenna) {
+//                        laserhit = true;
+//                    } else if (element instanceof Wall) {
+//                        laserhit = true;
+//                    }
+//                }
+//            } else {
+//                pos = getNextPos(pos, laser.getDirection());
+//            }
+//        }
+        List<BoardElement> lasers = getListOf("Laser");
+        for(BoardElement laserr : lasers){
+            if(gameMap.getRobotsOnPos(laserr.getPosition()).size()>0){
+                //TODO: Mehyar macht das gerade
             }
         }
     }
