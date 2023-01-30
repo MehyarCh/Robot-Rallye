@@ -242,19 +242,18 @@ public class Game {
 
             firstPlayerGotCards = true;
         } else {
+            current_player_index++;
+            decideNextPlayer();
+            if (current_player_index == 0) {
+                phase = 2;
+                runProgrammingPhase();
+                return;
+            }
             runShop();
         }
     }
 
     public void runShop() {
-        current_player_index++;
-        decideNextPlayer();
-        if (current_player_index == 0) {
-            phase = 2;
-            runProgrammingPhase();
-            return;
-        }
-
 
         if (isShopUntouched) {
             JsonAdapter<ExchangeShop> exchangeShopJsonAdapter = moshi.adapter(ExchangeShop.class);
@@ -1213,8 +1212,10 @@ public class Game {
         while (cardsInShop.size() < players.size()) {
             cardsInShop.add(drawFromDeckOfUpgradeCards());
         }
+        current_player_index++;
+        decideNextPlayer();
         phase = 1;
-        runStep();
+        runShop();
     }
 
     public void addUpgrade(Player player, Card card) {              //Cards in shop and these Cards are different
