@@ -53,4 +53,8 @@ public class LaserBeam extends BoardElement {
             position = new Position(x,y);
         }
     }
+    @Override
+    public String toString(){
+        return "LaserBeam";
+    }
 }

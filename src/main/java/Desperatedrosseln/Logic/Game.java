@@ -154,8 +154,10 @@ public class Game {
         gameMap = new Map(convertMap(gameMapList));
 
         for (int x = 0; x < gameMapList.size(); x++) {
-            for (int y = 0; y < gameMapList.get(x).size(); y++) {
-                gameMapList.get(x).get(y).get(0).setPosition(x, y);
+            for (int y = 0; y < gameMapList.get(0).size(); y++) {
+                for(int z = 0; z < gameMapList.get(0).get(0).size(); z++){
+                    gameMapList.get(x).get(y).get(z).setPosition(x, y);
+                }
             }
         }
 
@@ -219,6 +221,7 @@ public class Game {
             }
             mapFields.add(column);
         }
+
         return mapFields;
     }
 
@@ -634,22 +637,9 @@ public class Game {
         activateRobotsLasers();
         activateEnergySpaces();
         activateCheckpoints();
-        /*for (Player player : players) {
-            robotMovedProtokoll(player.getRobot());
-        }*/
-
     }
 
     private void activateBoardLasers() {
-        List<BoardElement> lasers = getListOf("Laser");
-        //determine the range of each laser
-        //check if there is a robot within that range
-        //idee: recursive algorithm which keeps checking the next cell until it hits
-
-        for (BoardElement laser : lasers) {
-            //Assert laser instance of Laser
-            shootBoardLaser((Laser) laser);
-        }
         /**
          * Board lasers
          * cannot fire through walls, the priority
@@ -658,51 +648,18 @@ public class Game {
          * pointer. (Take a SPAM damage card for
          * each laser that hits you
          */
-    }
-
-    private void shootBoardLaser(Laser laser) {
-//        Position pos = laser.getPosition();
-//        boolean laserhit = false;
-//        List<BoardElement> elemetsOnPos;
-//
-//        while (pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
-//                && !laserhit) {
-//            //as long as within the board, and laser still didnt hit any element
-//            if (hasLaserBlock(pos)) {
-//                //if cell has a robot/robot/antenna on it
-//                elemetsOnPos = gameMap.getElementsOnPos(pos);
-//                for (BoardElement element : elemetsOnPos) {
-//                    //either robots on cell get damage, or laser stops
-//                    if (element instanceof Robot) {
-//                        laserHitRobot((Robot) element);
-//                        laserhit = true;
-//                    } else if (element instanceof Antenna) {
-//                        laserhit = true;
-//                    } else if (element instanceof Wall) {
-//                        laserhit = true;
-//                    }
-//                }
-//            } else {
-//                pos = getNextPos(pos, laser.getDirection());
-//            }
-//        }
-        List<BoardElement> lasers = getListOf("Laser");
-        for(BoardElement laserr : lasers){
-            if(gameMap.getRobotsOnPos(laserr.getPosition()).size()>0){
-                //TODO: Mehyar macht das gerade
+        for(Player player : players){
+            List<BoardElement> elementsOnPos = gameMap.getElementsOnPos(player.getRobot().getPosition());
+            for(BoardElement element : elementsOnPos ){
+                if(element.toString().equals("Laser") || element.toString().equals("LaserBeam") ){
+                    drawSpamCard(player, 1);
+                    //TODO: laserhit protocol / draw spamcard protocol
+                }
             }
         }
+
     }
 
-    /**
-     * select player by robots id and make him draw a spam card
-     *
-     * @param robot the robot that was hit by the laser
-     */
-    private void laserHitRobot(Robot robot) {
-        Player player = getPlayerByRobot(robot);
-        drawSpamCard(player, 1);
-    }
 
     /**
      * @param robot the robot whose player is being looked for
@@ -807,7 +764,8 @@ public class Game {
                 for (BoardElement element : elemetsOnPos) {
                     //robots on cell get damage, or laser stops
                     if (element instanceof Robot) {
-                        laserHitRobot((Robot) element);
+                        drawSpamCard(getPlayerByRobot((Robot) element),1);
+                        //TODO: draw spamcard protocol
                         laserHit = true;
                     } else if (element instanceof Wall) {
                         //TODO: take direction of wall into consideration
@@ -835,7 +793,8 @@ public class Game {
                 for (BoardElement element : elemetsOnPos) {
                     //robots on cell get damage, or laser stops
                     if (element instanceof Robot) {
-                        laserHitRobot((Robot) element);
+                        drawSpamCard(getPlayerByRobot((Robot) element),1);
+                        //TODO: draw spamcard protocol
                         laserHit = true;
                     } else if (element instanceof Wall) {
                         //TODO: take direction of wall into consideration
@@ -939,7 +898,7 @@ public class Game {
         conveyorbelts = getListOfBelts(1);
         for (ConveyorBelt belt : conveyorbelts) {
             if (robotOnElement(belt)) {
-                //Assert that belt.getSpeed()== 1
+                assert belt.getSpeed() == 1;
                 //get robots on belts position (usually just one robot)
                 List<Robot> robotList = gameMap.getRobotsOnPos(belt.getPosition());
                 belt.execute(robotList);
@@ -994,9 +953,11 @@ public class Game {
     private List<ConveyorBelt> getListOfBelts(int speed) {
         List<ConveyorBelt> listofobj = new ArrayList<>();
         for (BoardElement boardelement : boardElements) {
-            if (boardelement instanceof ConveyorBelt &&
-                    ((ConveyorBelt) boardelement).getSpeed() == speed) {
-                listofobj.add((ConveyorBelt) boardelement);
+            if (boardelement.toString().equals("ConveyorBelt")) {
+                ConveyorBelt belt = (ConveyorBelt) boardelement;
+                if(belt.getSpeed() == speed ){
+                    listofobj.add(belt);
+                }
             }
         }
         return listofobj;
@@ -1052,6 +1013,7 @@ public class Game {
                 //get a list of all robots targeted by this pushpanel
                 List<Robot> robotList = gameMap.getRobotsOnPos(p1.getPosition());
                 p1.execute(robotList);
+                //TODO: robot moved protocol
             }
         }
     }
@@ -1080,32 +1042,10 @@ public class Game {
                 }
             }
         }
-
-        /*
-        for (BoardElement pit : pits) {
-            if (robotOnElement(pit)) {
-                Pit pit1 = (Pit) pit;
-                List<Robot> robotList = gameMap.getRobotsOnPos(pit1.getPosition());
-                for (Robot curr : robotList) {
-                    if (curr.getPosition().equals(pit1.getPosition())) {
-
-
-                    }
-                }
-            }
-        }
-
-         */
-
-
     }
 
     public Player getNextPlayer() {
         return playing; //ToDo: change to next player
-    }
-
-    public void start() {
-
     }
 
     /**

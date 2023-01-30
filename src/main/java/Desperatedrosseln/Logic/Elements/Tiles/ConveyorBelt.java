@@ -20,7 +20,6 @@ public class ConveyorBelt extends BoardElement {
         super(type, isOnBoard);
         this.speed = speed;
         this.orientations = orientations;
-
     }
 
     public void execute(List<Desperatedrosseln.Logic.Elements.Robot> active_robots) {

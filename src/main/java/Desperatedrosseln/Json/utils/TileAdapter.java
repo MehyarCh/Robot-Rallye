@@ -26,15 +26,16 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
 
 
 
-        if(value instanceof RestartPoint || value instanceof Wall || value instanceof Laser || value instanceof LaserBeam Laser || value instanceof Antenna || value instanceof PushPanel || value instanceof ConveyorBelt || value instanceof Gear){
+        if(value instanceof RestartPoint || value instanceof Wall || value instanceof Laser || value instanceof LaserBeam
+                || value instanceof Antenna || value instanceof PushPanel || value instanceof ConveyorBelt || value instanceof Gear){
 
             out.name("orientations");
             out.beginArray();
             switch (value.getType()){
                 case "Wall": Wall wall = (Wall) value;
                     for (String orientation : wall.getOrientations()) {
-                    out.value(orientation);
-                }
+                        out.value(orientation);
+                    }
                     break;
                 case "Laser":Laser laser = (Laser) value;
                     for (String orientation : laser.getOrientations()) {
@@ -164,7 +165,7 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
         assert type != null;
         return switch (type) {
             case "Empty" -> new Empty(type, isOnBoard);
-            case "Pit" -> new Empty(type, isOnBoard);
+            case "Pit" -> new Pit(type, isOnBoard);
             case "StartPoint" -> new StartPoint(type, isOnBoard);
             case "CheckPoint" -> new CheckPoint(type, isOnBoard, count);
             case "RestartPoint" -> new RestartPoint(type, isOnBoard, orientations);
