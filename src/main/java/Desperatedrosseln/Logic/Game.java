@@ -38,6 +38,7 @@ public class Game {
 
     Moshi moshi = new Moshi.Builder().build();
     JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
+    private int checkpoints;
     private int phase = 0;
     private Player playing;
     private int current_player_index = 0;
@@ -160,7 +161,7 @@ public class Game {
                 }
             }
         }
-
+        checkpoints = getListOf("CheckPoint").size();
         phase = 1;
         isRunning = false;
 
