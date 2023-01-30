@@ -24,8 +24,6 @@ public class TileAdapter extends TypeAdapter<BoardElement> {
 
         // Write the "orientations" field
 
-
-
         if(value instanceof RestartPoint || value instanceof Wall || value instanceof Laser || value instanceof LaserBeam
                 || value instanceof Antenna || value instanceof PushPanel || value instanceof ConveyorBelt || value instanceof Gear){
 

@@ -19,18 +19,14 @@ public class Map {
     }
 
     public List<Robot> getRobotsOnPos(Position pos){
-        //TODO: wrong
         List<Robot> robots = new ArrayList<>();
-      //  List<BoardElement> elements = getElementsOnPos(pos);
-        for(List<MapField> mapFieldsList: mapFields){
-            for (MapField listOfElements: mapFieldsList){
-                for(BoardElement boardElement : listOfElements.getTypes()){
-                    if(boardElement instanceof Robot) {
-                        robots.add((Robot) boardElement);
-                    }
-                }
-            }
+        List<BoardElement> elements = getElementsOnPos(pos);
 
+        for(BoardElement element : elements){
+            if( element.toString().equals("Robot")){
+                Robot robot = (Robot) element;
+                robots.add(robot);
+            }
         }
         return robots;
     }
