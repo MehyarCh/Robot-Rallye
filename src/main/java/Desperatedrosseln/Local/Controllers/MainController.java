@@ -114,20 +114,20 @@ public class MainController {
 
         setStreams();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/mainScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/mainScene.fxml"));
         loader.setController(this);
 
         try {
             root = loader.load();
             scene = new Scene(root);
 
-            String mainCss = this.getClass().getResource("/Css/main.css").toExternalForm();
+            String mainCss = this.getClass().getResource("/css/main.css").toExternalForm();
             scene.getStylesheets().add(mainCss);
 
-            String modulesCss = this.getClass().getResource("/Css/modules.css").toExternalForm();
+            String modulesCss = this.getClass().getResource("/css/modules.css").toExternalForm();
             scene.getStylesheets().add(modulesCss);
 
-            String stateCss = this.getClass().getResource("/Css/state.css").toExternalForm();
+            String stateCss = this.getClass().getResource("/css/state.css").toExternalForm();
             scene.getStylesheets().add(stateCss);
 
             //TESTING THE MOVE CARDS FUNCTION
@@ -247,17 +247,17 @@ public class MainController {
 
     public Image showCardImage(String cardValue) {
         return switch (cardValue) {
-            case "MoveOne" -> new Image(getClass().getResource("/images/Card/move1.jpg").toString());
-            case "MoveTwo" -> new Image(getClass().getResource("/images/Card/move2.jpg").toString());
-            case "TurnLeft" -> new Image(getClass().getResource("/images/Card/leftTurn.jpg").toString());
-            case "MoveThree" -> new Image(getClass().getResource("/images/Card/move3.jpg").toString());
-            case "TurnRight" -> new Image(getClass().getResource("/images/Card/rightTurn.jpg").toString());
-            case "UTurn" -> new Image(getClass().getResource("/images/Card/u-turn.jpg").toString());
-            case "Again" -> new Image(getClass().getResource("/images/Card/again.jpg").toString());
-            case "PowerUp" -> new Image(getClass().getResource("/images/Card/powerup.jpg").toString());
-            case "MoveBack" -> new Image(getClass().getResource("/images/Card/moveback.jpg").toString());
-            case "Move" -> new Image(getClass().getResource("/images/Card/move.jpg").toString());
-            default -> new Image(getClass().getResource("/images/Card/no_such_card.png").toString());
+            case "MoveOne" -> new Image(getClass().getResource("/images/card/move1.jpg").toString());
+            case "MoveTwo" -> new Image(getClass().getResource("/images/card/move2.jpg").toString());
+            case "TurnLeft" -> new Image(getClass().getResource("/images/card/leftTurn.jpg").toString());
+            case "MoveThree" -> new Image(getClass().getResource("/images/card/move3.jpg").toString());
+            case "TurnRight" -> new Image(getClass().getResource("/images/card/rightTurn.jpg").toString());
+            case "UTurn" -> new Image(getClass().getResource("/images/card/u-turn.jpg").toString());
+            case "Again" -> new Image(getClass().getResource("/images/card/again.jpg").toString());
+            case "PowerUp" -> new Image(getClass().getResource("/images/card/powerup.jpg").toString());
+            case "MoveBack" -> new Image(getClass().getResource("/images/card/moveback.jpg").toString());
+            case "Move" -> new Image(getClass().getResource("/images/card/move.jpg").toString());
+            default -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
         };
     }
 

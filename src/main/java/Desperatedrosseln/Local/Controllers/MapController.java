@@ -310,27 +310,27 @@ public class MapController {
         if (!hasStartpoint && !isStartingPointTaken) {
             switch (selectedRobot) {
                 case 1 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/brown.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/robots/OnTiles/brown.png").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 2 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/yellow.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/robots/OnTiles/yellow.png").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 3 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/blue.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/robots/OnTiles/blue.png").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 4 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/green.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/robots/OnTiles/green.png").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 5 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/orange.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/robots/OnTiles/orange.png").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 6 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/red.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/robots/OnTiles/red.png").toString());
                     robot = new ImageView(robotImage);
                 }
                 default -> {
@@ -389,12 +389,12 @@ public class MapController {
         StackPane stackPane = (StackPane) mapGrid.getChildren().get(mapIndex);
         ImageView imageView = (ImageView) stackPane.getChildren().get(stackPane.getChildren().size()-1);
         if (
-                imageView.getImage().getUrl().equals("/images/Robots/OnTiles/red.png") ||
-                        imageView.getImage().getUrl().equals("/images/Robots/OnTiles/blue.png") ||
-                        imageView.getImage().getUrl().equals("/images/Robots/OnTiles/orange.png") ||
-                        imageView.getImage().getUrl().equals("/images/Robots/OnTiles/green.png") ||
-                        imageView.getImage().getUrl().equals("/images/Robots/OnTiles/yellow.png") ||
-                        imageView.getImage().getUrl().equals("/images/Robots/OnTiles/brown.png")
+                imageView.getImage().getUrl().equals("/images/robots/OnTiles/red.png") ||
+                        imageView.getImage().getUrl().equals("/images/robots/OnTiles/blue.png") ||
+                        imageView.getImage().getUrl().equals("/images/robots/OnTiles/orange.png") ||
+                        imageView.getImage().getUrl().equals("/images/robots/OnTiles/green.png") ||
+                        imageView.getImage().getUrl().equals("/images/robots/OnTiles/yellow.png") ||
+                        imageView.getImage().getUrl().equals("/images/robots/OnTiles/brown.png")
         ) {
             return imageView;
         } else {
@@ -787,27 +787,27 @@ public class MapController {
 
             switch (robotID) {
                 case 1 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/brown.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/robots/OnTiles/brown.png").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 2 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/yellow.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/robots/OnTiles/yellow.png").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 3 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/blue.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/robots/OnTiles/blue.png").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 4 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/green.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/robots/OnTiles/green.png").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 5 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/orange.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/robots/OnTiles/orange.png").toString());
                     robot = new ImageView(robotImage);
                 }
                 case 6 -> {
-                    robotImage = new Image(getClass().getResource("/images/Robots/OnTiles/red.png").toString());
+                    robotImage = new Image(getClass().getResource("/images/robots/OnTiles/red.png").toString());
                     robot = new ImageView(robotImage);
                 }
                 default -> {

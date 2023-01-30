@@ -6,7 +6,6 @@ import Desperatedrosseln.Local.Protocols.SetStatus;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import javafx.application.Platform;
-import Desperatedrosseln.Local.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

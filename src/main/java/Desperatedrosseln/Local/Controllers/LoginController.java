@@ -9,14 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
 
 
 public class LoginController {
@@ -40,20 +35,20 @@ public class LoginController {
 
 
     public LoginController() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/loginScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/loginScene.fxml"));
         loader.setController(this);
 
         try {
             root = loader.load();
             scene = new Scene(root);
 
-            String mainCss = this.getClass().getResource("/Css/main.css").toExternalForm();
+            String mainCss = this.getClass().getResource("/css/main.css").toExternalForm();
             scene.getStylesheets().add(mainCss);
 
-            String modulesCss = this.getClass().getResource("/Css/modules.css").toExternalForm();
+            String modulesCss = this.getClass().getResource("/css/modules.css").toExternalForm();
             scene.getStylesheets().add(modulesCss);
 
-            String stateCss = this.getClass().getResource("/Css/state.css").toExternalForm();
+            String stateCss = this.getClass().getResource("/css/state.css").toExternalForm();
             scene.getStylesheets().add(stateCss);;
 
         } catch (IOException e) {
