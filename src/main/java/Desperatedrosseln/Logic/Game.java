@@ -221,7 +221,6 @@ public class Game {
             }
             mapFields.add(column);
         }
-
         return mapFields;
     }
 
@@ -229,8 +228,8 @@ public class Game {
      * this method initiates the upgradePhase
      */
     public void runUpgradePhase() throws ClassNotFoundException {
+        sortPlayersByDistance();
         decideNextPlayer();
-
         isRunning = false;
         if (!firstPlayerGotCards) {
             initDeckOfUpgradeCards();
@@ -360,6 +359,7 @@ public class Game {
 
         //for each register
         for (int current_register = 0; current_register < 5; current_register++) {
+            sortPlayersByDistance();
             logger.debug("Activating register: " + current_register);
             this.current_register = current_register;
             //each player plays their register
@@ -623,8 +623,18 @@ public class Game {
         }
         playing = players.get(current_player_index);
     }
+    private void sortPlayersByDistance() {
+        List<BoardElement> antenna = getListOf("Antenna");
+        for (BoardElement element : antenna) {
+            Antenna antenna1 = (Antenna) element;
+            //sorts players by who is closest to the antenna, the closest player being the first one
+            players.sort((a, b) -> a.calculateDistance(antenna1.getPosition(), a.getRobot().getPosition())
+                    - b.calculateDistance(antenna1.getPosition(), b.getRobot().getPosition()));
+        }
+    }
 
     private int calculateDistance(Position pos1, Position pos2) {
+        distance = Math.abs(pos1.getX() - pos2.getX()) + Math.abs(pos1.getY() - pos2.getY());
         return distance;
     }
 
@@ -659,7 +669,6 @@ public class Game {
         }
 
     }
-
 
     /**
      * @param robot the robot whose player is being looked for
