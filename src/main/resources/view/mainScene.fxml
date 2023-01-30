@@ -304,18 +304,16 @@
                         fitToWidth="true"
                         fitToHeight="true"
                         styleClass="scroll-board">
-                <content>
-                    <VBox fx:id="" styleClass="message-board">
-                        <!--<TextArea fx:id="chatlog" editable="false"  prefHeight="600.0" style="-fx-background-color: red" />-->
-                        <TextFlow styleClass="textflow" fx:id="chatlog"/>
-                    </VBox>
-                </content>
+                <VBox fx:id="" styleClass="message-board">
+                    <Label text="RoboRally Chat" styleClass="chat-headline, headline-2, color--light" />
+                    <TextFlow styleClass="textflow" fx:id="chatlog"/>
+                </VBox>
             </ScrollPane>
             <HBox GridPane.columnIndex="0"
                   GridPane.rowIndex="1"
                   GridPane.hgrow="ALWAYS"
                   styleClass="chat-input-wrapper">
-                <TextField fx:id="chat_input" onKeyPressed="#onMessageSend" styleClass="text-input, text-input--primary"/>
+                <TextField HBox.hgrow="ALWAYS" fx:id="chat_input" onKeyPressed="#onMessageSend" styleClass="text-input, text-input--primary"/>
                 <Button fx:id="send_button"
                         onAction="#onClickSend"
                         styleClass="button, send-button"/>

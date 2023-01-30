@@ -540,22 +540,37 @@ public class MainController {
         JsonAdapter<BuyUpgrade> selectedCardJsonAdapter = moshi.adapter(BuyUpgrade.class);
         BuyUpgrade buyUpgrade = new BuyUpgrade(!Objects.equals(selectedUpgrade, "null"), selectedUpgrade);
         client.sendMessage("BuyUpgrade", selectedCardJsonAdapter.toJson(buyUpgrade));
+        clearUpgradeCards();
         //ToDo: empty shop, check Energy Reserve before buying
+    }
+
+    @FXML
+    private void clearUpgradeCards() {
+        upgradePositionToValue.clear();
+        for (StackPane card : upgradeCards) {
+            card.getChildren().clear();
+        }
     }
 
     @FXML
     private void handleUpgradeClick() {
         for (StackPane card : upgradeCards) {
             card.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-                if (card.getChildren().size() > 0) {
-                    int index = upgradeCards.indexOf(card);
-                    if (Objects.equals(selectedUpgrade, upgradePositionToValue.get(index))) {
-                        upgradePositionToValue.put(index, "null");
-                    } else {
-                        selectedUpgrade = upgradePositionToValue.get(index);
-                    }
-                    logger.debug(selectedUpgrade);
+                for(StackPane upgradeCard : upgradeCards) {
+                    upgradeCard.setStyle("-fx-border-width: 0px");
                 }
+
+                int index = upgradeCards.indexOf(card);
+                if (Objects.equals(selectedUpgrade, "null")) {
+                    selectedUpgrade = upgradePositionToValue.get(index);
+                    card.setStyle("-fx-border-width: 2px");
+                    logger.debug(upgradePositionToValue.get(index));
+                } else {
+                    upgradePositionToValue.put(index, "null");
+                    card.setStyle("-fx-border-width: 2px");
+                    logger.debug(upgradePositionToValue.get(index));
+                }
+                logger.debug(selectedUpgrade);
             });
         }
     }
@@ -580,13 +595,14 @@ public class MainController {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                upgradePositionToValue.clear();
+                clearUpgradeCards();
 
                 for (int i = 0; i < exchangeValues.size(); i++) {
                     String cardName = exchangeValues.get(i);
                     ImageView imageView = loadUpgradeCard(cardName);
                     imageView.setFitHeight(90);
                     imageView.setPreserveRatio(true);
+                    imageView.setOpacity(0.8);
                     upgradeCards.get(i).getChildren().add(imageView);
 
                     upgradePositionToValue.put(i, cardName);
