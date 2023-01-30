@@ -22,6 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -374,7 +375,7 @@ public class MapController {
         });
     }
 
-    public ImageView initRobot(int robotId, int x, int y){
+    public ImageView initRobot(int robotId, int x, int y) throws IOException {
         ImageView robot = diffRobotImage(robotId);
         robot.setPreserveRatio(true);
         robot.setFitHeight(tileSize - 10);
@@ -854,7 +855,11 @@ public class MapController {
     public void addRobotToUI(int robotId, int x, int y){
         CompletableFuture.runAsync(() -> {
             Platform.runLater(() -> {
-                initRobot(robotId, x, y);
+                try {
+                    initRobot(robotId, x, y);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
             });
         }).thenRun(() -> {
@@ -867,15 +872,15 @@ public class MapController {
         ImageView robot;
         switch (robotID) {
             case 1 -> {
-                robotImage = new Image(getClass().getResource("/images/robots/ontiles/brownOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getClassLoader().getResource("/images/robots/ontiles/brownOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             case 2 -> {
-                robotImage = new Image(getClass().getResource("/images/robots/ontiles/yellowOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getClassLoader().getResource("/images/robots/ontiles/yellowOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             case 3 -> {
-                robotImage = new Image(getClass().getResource("/images/robots/ontiles/blueOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getClassLoader().getResource("/images/robots/ontiles/blueOnTiles.PNG").toString());
                 robot = new ImageView(robotImage);
             }
             case 4 -> {

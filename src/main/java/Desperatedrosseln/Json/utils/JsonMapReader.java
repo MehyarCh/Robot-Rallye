@@ -6,7 +6,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class JsonMapReader {
@@ -24,12 +27,28 @@ public class JsonMapReader {
     public JsonMapReader(){
         jsonFileReader = new JsonFileReader();
         try {
+
+            InputStream dH = JsonMapReader.class.getResourceAsStream("/maps/dizzyHighway.json");
+            dizzyHighway = jsonFileReader.readFile(dH);
+
+            InputStream eC = JsonMapReader.class.getResourceAsStream("/maps/extraCrispy.json");
+            extraCrispy = jsonFileReader.readFile(eC);
+
+            InputStream dT = JsonMapReader.class.getResourceAsStream("/maps/deathTrap.json");
+            deathTrap = jsonFileReader.readFile(dT);
+
+            InputStream lB = JsonMapReader.class.getResourceAsStream("/maps/lostBearings.json");
+            lostBearings = jsonFileReader.readFile(lB);
+
+            InputStream tw = JsonMapReader.class.getResourceAsStream("/maps/twister.json");
+            twister = jsonFileReader.readFile(tw);
+
             deserializer = new JsonDeserializer();
-            dizzyHighway = jsonFileReader.readFile("src/main/resources/maps/dizzyHighway.json");
-            extraCrispy = jsonFileReader.readFile("src/main/resources/maps/extraCrispy.json");
-            deathTrap = jsonFileReader.readFile("src/main/resources/maps/deathTrap.json");
-            lostBearings = jsonFileReader.readFile("src/main/resources/maps/lostBearings.json");
-            twister = jsonFileReader.readFile("src/main/resources/maps/twister.json");
+            //dizzyHighway = jsonFileReader.readFile("src/main/resources/maps/dizzyHighway.json");
+            //extraCrispy = jsonFileReader.readFile("src/main/resources/maps/extraCrispy.json");
+            //deathTrap = jsonFileReader.readFile("src/main/resources/maps/deathTrap.json");
+            //lostBearings = jsonFileReader.readFile("src/main/resources/maps/lostBearings.json");
+            //twister = jsonFileReader.readFile("src/main/resources/maps/twister.json");
         } catch (IOException e) {
             logger.warn("error occurred at jsonMapReader()");
             throw new RuntimeException(e);
