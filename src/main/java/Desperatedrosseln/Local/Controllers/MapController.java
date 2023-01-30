@@ -872,27 +872,27 @@ public class MapController {
         ImageView robot;
         switch (robotID) {
             case 1 -> {
-                robotImage = new Image(getClass().getResource("/images/robots/ontiles/brownOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getResource("/images/robots/ontiles/brownOnTiles.png").toString());
                 robot = new ImageView(robotImage);
             }
             case 2 -> {
-                robotImage = new Image(getClass().getResource("/images/robots/ontiles/yellowOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getResource("/images/robots/ontiles/yellowOnTiles.png").toString());
                 robot = new ImageView(robotImage);
             }
             case 3 -> {
-                robotImage = new Image(getClass().getResource("/images/robots/ontiles/blueOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getResource("/images/robots/ontiles/blueOnTiles.png").toString());
                 robot = new ImageView(robotImage);
             }
             case 4 -> {
-                robotImage = new Image(getClass().getResource("/images/robots/ontiles/greenOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getResource("/images/robots/ontiles/greenOnTiles.png").toString());
                 robot = new ImageView(robotImage);
             }
             case 5 -> {
-                robotImage = new Image(getClass().getResource("/images/robots/ontiles/orangeOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getResource("/images/robots/ontiles/orangeOnTiles.png").toString());
                 robot = new ImageView(robotImage);
             }
             case 6 -> {
-                robotImage = new Image(getClass().getResource("/images/robots/ontiles/redOnTiles.PNG").toString());
+                robotImage = new Image(getClass().getResource("/images/robots/ontiles/redOnTiles.png").toString());
                 robot = new ImageView(robotImage);
             }
             default -> {

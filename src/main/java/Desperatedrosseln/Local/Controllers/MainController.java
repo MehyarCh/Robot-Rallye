@@ -551,12 +551,8 @@ public class MainController {
                     int index = upgradeCards.indexOf(card);
                     if (Objects.equals(selectedUpgrade, upgradePositionToValue.get(index))) {
                         upgradePositionToValue.put(index, "null");
-                        upgradeButton.setDisable(true);
                     } else {
                         selectedUpgrade = upgradePositionToValue.get(index);
-                        if (upgradeButton.isDisabled()) {
-                            upgradeButton.setDisable(false);
-                        }
                     }
                     logger.debug(selectedUpgrade);
                 }
