@@ -99,7 +99,7 @@ public class Game {
         switch (phase) {
             case 0:
                 logger.info("Current phase: Starting Phase");
-                setUpBoard();
+                //setUpBoard();
                 break;
             case 1:
                 logger.info("Current phase: Upgrade Phase");
@@ -164,7 +164,6 @@ public class Game {
         checkpoints = getListOf("CheckPoint").size();
         phase = 1;
         isRunning = false;
-
         //setting up boardelements
         for(int i=0; i<gameMap.getMapFields().size(); i++){
             for(int j=0; j<gameMap.getMapFields().get(0).size(); j++){
@@ -386,7 +385,7 @@ public class Game {
             }
             JsonAdapter<CurrentCards> currentCardsJsonAdapter = moshi.adapter(CurrentCards.class);
             broadcastMessage("CurrentCards", currentCardsJsonAdapter.toJson(new CurrentCards(activeCardsArrayList)));
-            //activateElements();
+            activateElements();
         }
         isRunning = false;
     }

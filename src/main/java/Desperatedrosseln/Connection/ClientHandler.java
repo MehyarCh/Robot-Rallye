@@ -201,7 +201,7 @@ public class ClientHandler implements Runnable {
                         }
                     }
 
-
+                    game.initGameMap();
                 }
                 break;
             case "SendChat":
@@ -272,7 +272,6 @@ public class ClientHandler implements Runnable {
             case "SetStartingPoint":
                 JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
                 SetStartingPoint setStartingPoint = setStartingPointJsonAdapter.fromJson(message.getMessageBody());
-                game.initGameMap();
                 game.placeRobot(player, setStartingPoint.getX(), setStartingPoint.getY());
 
 
