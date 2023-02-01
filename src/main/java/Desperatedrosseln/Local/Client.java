@@ -50,7 +50,7 @@ public class Client implements Runnable {
     public void setGotSentMaps(boolean gotSentMaps) {
         this.gotSentMaps = gotSentMaps;
     }
-
+    public boolean AIchoice = false;
     private boolean gotSentMaps = false;
 
     public boolean getIsMyTurn() {
@@ -145,6 +145,9 @@ public class Client implements Runnable {
             case "Welcome":
                 JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
                 this.clientID = welcomeJsonAdapter.fromJson(msg.getMessageBody()).getClientID();
+                if(clientID == 1){
+                    AIchoice = true;
+                }
                 //sendPlayerValues(clientID);
                 break;
 
@@ -272,7 +275,9 @@ public class Client implements Runnable {
             case "Energy":
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
                 Energy energy = energyJsonAdapter.fromJson(msg.getMessageBody());
-                energyReserve = energy.getCount();
+                if(energy.getClientID() == clientID){
+                    energyReserve = energy.getCount();
+                }
                 break;
             case "ActivePhase":
                 JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);

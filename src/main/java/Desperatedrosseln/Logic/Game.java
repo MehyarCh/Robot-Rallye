@@ -68,7 +68,7 @@ public class Game {
         this.protocol = protocol;
         this.port = port;
         this.clients = clients;
-        addAI();
+        //addAI();
     }
 
 
@@ -233,33 +233,35 @@ public class Game {
     /**
      * this method initiates the upgradePhase
      */
-    public void runUpgradePhase() throws ClassNotFoundException {
-        sortPlayersByDistance();
-        decideNextPlayer();
+    public synchronized void runUpgradePhase() throws ClassNotFoundException {
+
         isRunning = false;
         if (!firstPlayerGotCards) {
+            decideNextPlayer();
             initDeckOfUpgradeCards();
             for (int i = 0; i < players.size(); i++) {
                 cardsInShop.add(drawFromDeckOfUpgradeCards());
-                System.out.println("****************");
-                System.out.println(playing);
             }
+            System.out.println("****************");
+            System.out.println(playing);
             JsonAdapter<RefillShop> refillShopJsonAdapter = moshi.adapter(RefillShop.class);
             findClient(playing.getID()).sendMessage("RefillShop", refillShopJsonAdapter.toJson(new RefillShop(cardsInShopToString())));
-            ++current_player_index;
+
+
             firstPlayerGotCards = true;
         } else {
+            current_player_index++;
+            decideNextPlayer();
+            if (current_player_index == 0) {
+                phase = 2;
+                runProgrammingPhase();
+                return;
+            }
             runShop();
         }
     }
 
     public void runShop() {
-        if (current_player_index == 0) {
-            phase = 2;
-            runProgrammingPhase();
-            return;
-        }
-
 
         if (isShopUntouched) {
             JsonAdapter<ExchangeShop> exchangeShopJsonAdapter = moshi.adapter(ExchangeShop.class);
@@ -269,7 +271,7 @@ public class Game {
             findClient(playing.getID()).sendMessage("RefillShop", refillShopJsonAdapter.toJson(new RefillShop(cardsInShopToString())));
         }
 
-        ++current_player_index;
+
     }
 
 
@@ -392,6 +394,9 @@ public class Game {
             JsonAdapter<CurrentCards> currentCardsJsonAdapter = moshi.adapter(CurrentCards.class);
             broadcastMessage("CurrentCards", currentCardsJsonAdapter.toJson(new CurrentCards(activeCardsArrayList)));
             activateElements();
+        }
+        if(current_register >=5){
+            updateRound();
         }
         isRunning = false;
     }
@@ -1189,8 +1194,10 @@ public class Game {
         while (cardsInShop.size() < players.size()) {
             cardsInShop.add(drawFromDeckOfUpgradeCards());
         }
+        current_player_index++;
+        decideNextPlayer();
         phase = 1;
-        runStep();
+        runShop();
     }
 
     public void addUpgrade(Player player, Card card) {              //Cards in shop and these Cards are different
