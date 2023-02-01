@@ -371,7 +371,15 @@ public class MainController {
 
     @FXML
     public void onProgrammingDone() {
-        if (registerValues.size() == 5) {
+        int ctr = 0;
+
+        for (int i=0; i<5;++i){
+            if(registerValues.get(i) != null){
+                ++ctr;
+            }
+        }
+
+        if (ctr == 5) {
             //sendCards();
             isProgrammingDone = true;
             programdone.setDisable(true);
@@ -488,7 +496,7 @@ public class MainController {
                 int firstFreeRegister = registerValues.indexOf(null);
                 int index = handCards.indexOf(mouseEvent.getSource());
 
-                if (handValues.get(index) != null) {
+                if (handValues.get(index) != null && !isProgrammingDone) {
                     if (firstFreeRegister != -1) {
                         // adding to register
                         registerValues.set(firstFreeRegister, handValues.get(index));
@@ -503,6 +511,7 @@ public class MainController {
                         // Removing handImage
                         handCards.get(index).getChildren().remove(0);
                         client.sendMessage("SelectedCard", selectedCardJsonAdapter.toJson(new SelectedCard(registerValues.get(firstFreeRegister), firstFreeRegister)));
+                        onProgrammingDone();
                     } else {
                         logger.trace("Already 5 cards in the registers!");
                     }
@@ -516,7 +525,7 @@ public class MainController {
 
                 int index = registerCards.indexOf(mouseEvent.getSource());
 
-                if (registerValues.get(index) != null) {
+                if (registerValues.get(index) != null && !isProgrammingDone) {
                     handValues.set(firstFreeHand, registerValues.get(index));
                     logger.trace("adding to hand");
                     // adding hand image
@@ -620,5 +629,9 @@ public class MainController {
             default -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
         };
         return new ImageView(image);
+    }
+
+    public List<String> getRegisterValues() {
+        return registerValues;
     }
 }

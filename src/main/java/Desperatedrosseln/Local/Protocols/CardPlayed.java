@@ -10,9 +10,9 @@ public class CardPlayed {
         "card": "MoveI"
      */
     private Integer clientID;
-    private Card card;
+    private String card;
 
-    public CardPlayed(Integer clientID, Card card) {
+    public CardPlayed(Integer clientID, String card) {
         this.clientID = clientID;
         this.card = card;
     }
@@ -21,7 +21,7 @@ public class CardPlayed {
         return clientID;
     }
 
-    public Card getCard() {
+    public String getCard() {
         return card;
 
     }

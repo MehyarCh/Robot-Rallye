@@ -41,6 +41,7 @@ public class AIClient extends Thread {
 
     private static final Logger logger = LogManager.getLogger();
     private int energyReserve = 5;
+    private ArrayList<String> regCards;
 
     public class Position {
         int x;
@@ -213,7 +214,17 @@ public class AIClient extends Thread {
 
             case "CurrentPlayer":
                 JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
-                ai.setCurrentPlayer(currentPlayerJsonAdapter.fromJson(msg.getMessageBody()).getClientID());
+                CurrentPlayer currentPlayer = currentPlayerJsonAdapter.fromJson(msg.getMessageBody());
+                System.out.println("Current player's ID: " + currentPlayer.getClientID());
+
+                ai.setCurrentPlayer(currentPlayer.getClientID());
+
+                if(AI_ID == ai.getCurrentPlayer()){
+                    JsonAdapter<PlayCard> playCardJsonAdapter = moshi.adapter(PlayCard.class);
+                    PlayCard playCard = new PlayCard(regCards.get(0));
+                    regCards.remove(0);
+                    sendMessage("PlayCard",playCardJsonAdapter.toJson(playCard));
+                }
                 break;
             case "ActivePhase":
                 JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
@@ -294,7 +305,7 @@ public class AIClient extends Thread {
                 ai.setCardsInHand(yourCardsJsonAdapter.fromJson(msg.getMessageBody()).getCardsInHand());
                 JsonAdapter<SelectedCard> selectedCardJsonAdapter = moshi.adapter(SelectedCard.class);
 
-                ArrayList<String> regCards = ai.selectRegisterCards();
+                regCards = ai.selectRegisterCards();
 
                 //sendChatMessage(ai.getTinyPath(),-1);
 

@@ -55,7 +55,6 @@ public class Game {
     private List<Card> trojanpile = new ArrayList<>(12);
     private List<Card> wormpile = new ArrayList<>(6);
     private List<ClientHandler> clients;
-
     private static final Logger logger = LogManager.getLogger();
     private int distance;
     private final int port;
@@ -112,7 +111,14 @@ public class Game {
                 break;
             case 3:
                 logger.info("Current phase: Activation phase");
-                runActivationPhase();
+                if(current_register == 0){
+                    sortPlayersByDistance();
+                    current_player_index = 0;
+                    decideNextPlayer();
+                    JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
+                    broadcastMessage("CurrentPlayer",currentPlayerJsonAdapter.toJson(new CurrentPlayer(playing.getID())));
+                }
+                //runActivationPhase();
                 break;
 
         }
@@ -388,6 +394,33 @@ public class Game {
             activateElements();
         }
         isRunning = false;
+    }
+    public void walkActivationPhase(Player user, String cardString) throws ClassNotFoundException {
+        phase = 3;
+        if(user != playing){
+            //ToDo handle this
+            return;
+        }
+
+        playCard(user,cardString);
+
+        if(players.get(players.size()-1) == playing){                   //ToDo: sort for init reg
+            current_register++;
+            sortPlayersByDistance();
+        }
+
+        current_player_index++;
+        decideNextPlayer();
+
+
+        if(current_register<4){
+            JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
+            broadcastMessage("CurrentPlayer",currentPlayerJsonAdapter.toJson(new CurrentPlayer(playing.getID())));
+        }else {
+            updateRound();
+        }
+
+
     }
 
     /**
@@ -1145,9 +1178,9 @@ public class Game {
         }
     }
 
-    public void updateRound() {
+    public void updateRound() throws ClassNotFoundException {
         roundNumber++;
-
+        current_register = -1;
         if (cardsInShop.size() == players.size()) {                                                          //ToDo: update it somewhere someday
             cardsInShop = new ArrayList<>();
             isShopUntouched = true;
@@ -1156,6 +1189,8 @@ public class Game {
         while (cardsInShop.size() < players.size()) {
             cardsInShop.add(drawFromDeckOfUpgradeCards());
         }
+        phase = 1;
+        runStep();
     }
 
     public void addUpgrade(Player player, Card card) {              //Cards in shop and these Cards are different
@@ -1164,6 +1199,8 @@ public class Game {
             if (player.getUpgrades().isEmpty()) {
                 player.addUpgrade(upgradeCard);
                 player.setEnergyReserve(player.getEnergyReserve()-upgradeCard.getCost());
+                removeFromShop(card);
+
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
                 findClient(player.getID()).broadcastMessage("Energy",energyJsonAdapter.toJson(
                         new Energy(player.getID(),player.getEnergyReserve(),"Shop")));
@@ -1184,6 +1221,8 @@ public class Game {
                 if (ctr < 2) {
                     player.addUpgrade(upgradeCard);
                     player.setEnergyReserve(player.getEnergyReserve()-upgradeCard.getCost());
+                    removeFromShop(card);
+
                     JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
                     findClient(player.getID()).broadcastMessage("Energy",energyJsonAdapter.toJson(
                             new Energy(player.getID(),player.getEnergyReserve(),"Shop")));
@@ -1203,16 +1242,16 @@ public class Game {
 
     }
 
-    public void playCard(Player player, Card card) {
+    public void playCard(Player player, String card) {
         if (player != playing) {
             return;
         }
 
-        switch (card.toString()) {
+        switch (card) {
             case "AdminPrivilege":
                 break;
             case "MemorySwap":
-                player.removeUpgrade(card.toString());
+                player.removeUpgrade(card);
                 //playMemorySwap();
                 break;
             case "RearLaser":
@@ -1228,8 +1267,10 @@ public class Game {
                 }
                 JsonAdapter<YourCards> yourCardsJsonAdapter = moshi.adapter(YourCards.class);
                 findClient(player.getID()).sendMessage("YourCards", yourCardsJsonAdapter.toJson(new YourCards(player.getHandAsStrings())));
-                player.removeUpgrade(card.toString());
+                player.removeUpgrade(card);
                 break;
+            default:
+                //activateElements();
         }
 
     }

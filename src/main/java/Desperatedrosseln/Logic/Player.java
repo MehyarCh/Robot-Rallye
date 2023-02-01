@@ -25,9 +25,8 @@ public class Player {
     private int energyReserve = 5;
     private List<Card> hand = new ArrayList<>();
     private Card[] registers = new Card[5];
-
-    private int registerTrack =0;
-    private List <Card> discarded = new ArrayList<>();
+    private int registerTrack = 0;
+    private List<Card> discarded = new ArrayList<>();
     private ArrayList<String> cardsYouGotNow = new ArrayList<>();
     private static final Logger logger = LogManager.getLogger();
     ArrayList<Card> upgrades = new ArrayList<>();
@@ -35,6 +34,7 @@ public class Player {
     public Player() {
 
     }
+
     private int distance;
 
     public Card[] getRegisters() {
@@ -177,19 +177,18 @@ public class Player {
     /**
      * @param register the slot of the register to reset. Must start by 0
      */
-    public void resetRegisterCard(int register){
-        int i=0;
-        logger.warn("The Hand before the Card was put back: "+ hand);
-        while(i<hand.size()){
-            if(hand.get(i) == null){
+    public void resetRegisterCard(int register) {
+        int i = 0;
+        logger.warn("The Hand before the Card was put back: " + hand);
+        while (i < hand.size()) {
+            if (hand.get(i) == null) {
                 hand.set(i, registers[register]);
                 break;
-            }
-            else{
+            } else {
                 i++;
             }
         }
-        logger.warn("The Hand after the Card was put back: "+ hand);
+        logger.warn("The Hand after the Card was put back: " + hand);
     }
 
     /**
@@ -207,26 +206,25 @@ public class Player {
 
     /**
      * @param cardString (can be null or any other cardtype): is the type of card to be added to the ...
-     * @param register <-
-     * also increments registerTrack
+     * @param register   <-
+     *                   also increments registerTrack
      */
 
-    public void addToRegister(String cardString, int register){
+    public void addToRegister(String cardString, int register) {
         Card card;
 
-        if(cardString.equals("null")){
+        if (cardString.equals("null")) {
             card = null;
             //new
             resetRegisterCard(register);
-        }
-        else {
+        } else {
             card = getCardFromHand(cardString);
         }
         registers[register] = card;
         int cardsnotnull = 0;
 
-        for (Card cardae: registers){
-            if(cardae != null){
+        for (Card cardae : registers) {
+            if (cardae != null) {
                 cardsnotnull++;
             }
         }
@@ -239,20 +237,18 @@ public class Player {
     }
 
     /**
-     *
      * @param type the type of the card to look for within the hand
      * @return the first occurence of the card from that type to put into the register
      */
     private Card getCardFromHand(String type) {
         Card card = null;
-        int i=0;
-        while(i<hand.size()){
-            if(hand.get(i) != null && hand.get(i).toString().equals(type)){
+        int i = 0;
+        while (i < hand.size()) {
+            if (hand.get(i) != null && hand.get(i).toString().equals(type)) {
                 card = hand.get(i);
                 hand.set(i, null);
                 break;
-            }
-            else{
+            } else {
                 i++;
             }
         }
@@ -275,11 +271,35 @@ public class Player {
     public ArrayList<String> getHandAsStrings() {
         ArrayList<String> cards = new ArrayList<>();
 
-        for (Card card:
+        for (Card card :
                 hand) {
             cards.add(card.toString());
         }
         return cards;
+    }
+
+    public boolean checkHandContainsCard(String cardString) {
+        for (Card card :
+                hand) {
+            if(card != null){
+                if (card.toString().equals(cardString)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean checkRegisterContainsCard(String cardString) {
+        for (Card card :
+                registers) {
+            if(card != null){
+                if (card.toString().equals(cardString)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void setReady(boolean status) {
@@ -322,11 +342,12 @@ public class Player {
     public void setEnergyReserve(int energyReserve) {
         this.energyReserve = energyReserve;
     }
-    public void addToEnergyReserve(int i){
+
+    public void addToEnergyReserve(int i) {
         this.energyReserve += i;
     }
 
-    public boolean checkUpgrade(String upgrade){
+    public boolean checkUpgrade(String upgrade) {
         for (Card curr : upgrades) {
             UpgradeCard upgradeCard = (UpgradeCard) curr;
             if (upgradeCard.toString().equals(upgrade)) {

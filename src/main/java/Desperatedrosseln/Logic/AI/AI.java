@@ -539,5 +539,9 @@ public class AI {
         gameMap.get(x).get(y).add(rob);
 
     }
+
+    public int getCurrentPlayer() {
+        return currentPlayer;
+    }
 }
 

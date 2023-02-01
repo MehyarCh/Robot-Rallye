@@ -38,7 +38,4 @@ public class Main extends Application implements Runnable {
     @Override
     public void run(){launch();}
 
-    public static void main(String[] args){
-        launch(args);
-    }
 }

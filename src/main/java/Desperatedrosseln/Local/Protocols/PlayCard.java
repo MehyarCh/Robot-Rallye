@@ -5,13 +5,13 @@ import Desperatedrosseln.Logic.Cards.Card;
 public class PlayCard {
 
     //Body: "card": "MoveI"
-    private Card card;
+    private String card;
 
-    public Card getCard() {
+    public String getCard() {
         return card;
     }
 
-    public PlayCard (Card card){
+    public PlayCard (String card){
         this.card = card;
     }
 }

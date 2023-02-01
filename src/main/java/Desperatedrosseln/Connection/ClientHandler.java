@@ -221,12 +221,19 @@ public class ClientHandler implements Runnable {
                 }
                 break;
             case "PlayCard":
-                JsonAdapter<CardPlayed> cardPlayedJsonAdapter = moshi.adapter(CardPlayed.class);
-                CardPlayed cardPlayed = new CardPlayed(player.getID(), cardPlayedJsonAdapter.fromJson(message.getMessageBody()).getCard()); //add clientID and the card that was played
-                game.playCard(player, cardPlayed.getCard());
-                broadcastMessage("CardPlayed", cardPlayedJsonAdapter.toJson(cardPlayed)); //send CardPlayed message to every client
 
+                JsonAdapter<PlayCard> playCardJsonAdapter = moshi.adapter(PlayCard.class);
+                PlayCard playCard =playCardJsonAdapter.fromJson(message.getMessageBody());
+                if(player.checkUpgrade(playCard.getCard()) || player.checkRegisterContainsCard(playCard.getCard())){
+                    JsonAdapter<CardPlayed> cardPlayedJsonAdapter = moshi.adapter(CardPlayed.class);
+                    broadcastMessage("CardPlayed",cardPlayedJsonAdapter.toJson(new CardPlayed(clientID, playCard.getCard())));
+                    game.walkActivationPhase(player, playCard.getCard());
+                }else {
+                    //ToDO
+                    sendErrorMessage();
+                }
 
+                break;
             case "addAI":
                 game.addAI();
                 break;
@@ -258,7 +265,6 @@ public class ClientHandler implements Runnable {
                 if (isBuying) {                                     //ToDo
                     game.isShopUntouched = false;
                     game.shopRec = 0;
-                    game.removeFromShop(card);
                 } else {
                     if (++game.shopRec == clients.size()) {               //ToDo; remove clients from equation
                         game.isShopUntouched = true;

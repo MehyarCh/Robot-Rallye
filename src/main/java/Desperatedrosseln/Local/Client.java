@@ -41,6 +41,8 @@ public class Client implements Runnable {
     private LobbyController lobbyController;
     private List<String> upgrades = new ArrayList<>();
     public int energyReserve;
+    private int regIndex = -1;
+
     public boolean isGotSentMaps() {
         return gotSentMaps;
     }
@@ -101,7 +103,7 @@ public class Client implements Runnable {
 
     /**
      * @param message = the incoming protocol message
-     * this method checks the type of each received message and continues according to the protocol
+     *                this method checks the type of each received message and continues according to the protocol
      */
     private void checkProtocolMessage(String message) throws IOException {
         //TODO: Logs
@@ -158,7 +160,7 @@ public class Client implements Runnable {
                     mapRobotToClient(playerAdded.getClientID(), playerAdded.getFigure());
                     //disable all other robot choice buttons in the GUI if it is already taken
                     //check if the message is about another client and disable the specific robot-icon that he chose in this GUI
-                    if (lobbyControllerInitialized && playerAdded.getClientID() != this.clientID){
+                    if (lobbyControllerInitialized && playerAdded.getClientID() != this.clientID) {
                         lobbyController.disableRobotIcon(playerAdded.getFigure());
                     }
                 }
@@ -217,12 +219,10 @@ public class Client implements Runnable {
             case "CurrentPlayer":
                 JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
                 CurrentPlayer currentPlayer = currentPlayerJsonAdapter.fromJson(msg.getMessageBody());
-                if (currentPlayer.getClientID() == this.clientID) {
-                    isMyTurn = true;
-                    //ToDo: maybe add here PlayCard protocoll -> get the card in the current register and send it to the server via PlayCard
-                } else if (currentPlayer.getClientID() == this.clientID) {
-                    isMyTurn = false;
-                }
+
+                isMyTurn = currentPlayer.getClientID() == this.clientID;
+
+                System.out.println("Current player's ID: " + currentPlayer.getClientID());
                 break;
             case "Movement":
                 JsonAdapter<Movement> movementJsonAdapter = moshi.adapter(Movement.class);
@@ -249,9 +249,9 @@ public class Client implements Runnable {
                 RefillShop refillShop = refillShopJsonAdapter.fromJson(msg.getMessageBody());
                 List<String> refillShopCards = refillShop.getCards();
                 mainController.exchangeShop(refillShopCards);
-                for (String c:
-                     refillShopCards) {
-                    System.out.print("_"+c);
+                for (String c :
+                        refillShopCards) {
+                    System.out.print("_" + c);
                 }
                 Collections.shuffle(refillShopCards);
                 JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter1 = moshi.adapter(BuyUpgrade.class);
@@ -261,16 +261,22 @@ public class Client implements Runnable {
                 JsonAdapter<UpgradeBought> upgradeBoughtJsonAdapter = moshi.adapter(UpgradeBought.class);
                 UpgradeBought upgradeBought = upgradeBoughtJsonAdapter.fromJson(msg.getMessageBody());
 
-                if(upgradeBought.getClientID() == clientID){
+                if (upgradeBought.getClientID() == clientID) {
                     String upgrade = upgradeBought.getCard();
                     upgrades.add(upgrade);
                 }
 
                 break;
+            case "SelectionFinished":
+                break;
             case "Energy":
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
                 Energy energy = energyJsonAdapter.fromJson(msg.getMessageBody());
                 energyReserve = energy.getCount();
+                break;
+            case "ActivePhase":
+                JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
+                ActivePhase activePhase = activePhaseJsonAdapter.fromJson(msg.getMessageBody());
                 break;
             case "Error":
                 if (mainController != null) {
@@ -397,6 +403,13 @@ public class Client implements Runnable {
                 }
             } else if (message.startsWith("/addAI")) {
                 sendMessage("addAI", "");
+            } else if (message.startsWith("/playCard")) {
+                if (isMyTurn) {
+                    playCard();
+                } else {
+                    mainController.addChatMessage("not your Turn.");
+                }
+
             } else if (message.startsWith("/dc")) {
                 //disconnect the client from the server ->  closeAll in Clienthandler ToDo: fix this
                 this.logOut();
@@ -407,6 +420,14 @@ public class Client implements Runnable {
         } else {
             sendMessage("SendChat", sendChatJsonAdapter.toJson(new SendChat(message, -1)));
         }
+    }
+
+    private void playCard() {
+        Moshi moshi = new Moshi.Builder().build();
+        JsonAdapter<PlayCard> playCardJsonAdapter = moshi.adapter(PlayCard.class);
+        PlayCard playCard = new PlayCard(mainController.getRegisterValues().get(++regIndex));
+        sendMessage("PlayCard", playCardJsonAdapter.toJson(playCard));
+        mainController.addChatMessage(playCard.getCard() + " played.");
     }
 
     public List<String> getCardsInHand() {
