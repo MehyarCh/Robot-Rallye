@@ -361,4 +361,8 @@ public class Player {
         distance = Math.abs(pos1.getX() - pos2.getX()) + Math.abs(pos1.getY() - pos2.getY());
         return distance;
     }
+
+    public void resetRound() {
+
+    }
 }

@@ -6,17 +6,17 @@ public class Damagecard extends Card {
         super(info);
     }*/
 
-    public void playCard(){
+    public void playCard() {
 
     }
 
     @Override
-    public String toString(){
-
+    public String toString() {
         return "DamageCard";
     }
+
     @Override
-    public boolean isDamageCard(){
+    public boolean isDamageCard() {
         return true;
     }
 }

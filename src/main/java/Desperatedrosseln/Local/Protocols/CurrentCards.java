@@ -32,17 +32,17 @@ public class CurrentCards {
 
     public static class ActiveCards {
         private int clientID;
-        private Card card;
+        private String card;
 
         public int getClientID() {
             return clientID;
         }
 
-        public Card getCard() {
+        public String getCard() {
             return card;
         }
 
-        public ActiveCards (int clientID, Card card){
+        public ActiveCards (int clientID, String card){
             this.clientID = clientID;
             this.card = card;
         }

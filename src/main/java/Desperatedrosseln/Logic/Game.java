@@ -117,6 +117,7 @@ public class Game {
                     decideNextPlayer();
                     JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
                     broadcastMessage("CurrentPlayer",currentPlayerJsonAdapter.toJson(new CurrentPlayer(playing.getID())));
+                    sendActiveCards();
                 }
                 //runActivationPhase();
                 break;
@@ -242,8 +243,7 @@ public class Game {
             for (int i = 0; i < players.size(); i++) {
                 cardsInShop.add(drawFromDeckOfUpgradeCards());
             }
-            System.out.println("****************");
-            System.out.println(playing);
+
             JsonAdapter<RefillShop> refillShopJsonAdapter = moshi.adapter(RefillShop.class);
             findClient(playing.getID()).sendMessage("RefillShop", refillShopJsonAdapter.toJson(new RefillShop(cardsInShopToString())));
 
@@ -264,6 +264,9 @@ public class Game {
     public void runShop() {
 
         if (isShopUntouched) {
+            for (int i = 0; i < players.size(); i++) {
+                cardsInShop.add(drawFromDeckOfUpgradeCards());
+            }
             JsonAdapter<ExchangeShop> exchangeShopJsonAdapter = moshi.adapter(ExchangeShop.class);
             findClient(playing.getID()).sendMessage("ExchangeShop", exchangeShopJsonAdapter.toJson(new ExchangeShop(cardsInShopToString())));
         } else {
@@ -379,13 +382,14 @@ public class Game {
                     if (curr.getID() == playing.getID() && !rebooted_players.contains(curr)) {
                         //Server sends currentPlayer message to every Client
                         logger.debug("Register " + current_register + "For Player: " + curr.getID());
+
                         JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
                         CurrentPlayer currentPlayer = new CurrentPlayer(playing.getID());
                         broadcastMessage("CurrentPlayer", currentPlayerJsonAdapter.toJson(currentPlayer));
                         //the active player plays their card in the current register
                         playCardByType(curr.getRegisterIndex(current_register), curr, current_register);
 
-                        activeCardsArrayList.add(new CurrentCards.ActiveCards(curr.getID(), curr.getRegisterIndex(current_register)));
+                        activeCardsArrayList.add(new CurrentCards.ActiveCards(curr.getID(), curr.getRegisterIndex(current_register).toString()));
 
                     }
                 }
@@ -402,23 +406,30 @@ public class Game {
     }
     public void walkActivationPhase(Player user, String cardString) throws ClassNotFoundException {
         phase = 3;
-        if(user != playing){
+        if(user != playing || rebooted_players.contains(user)){
             //ToDo handle this
             return;
         }
+        logger.debug("Register " + current_register + "For Player: " + user.getID());
 
-        playCard(user,cardString);
+        Card cardPlayed = user.getRegisterIndex(current_register);
+        if(cardPlayed.toString().equals(cardString)){
+            playCardByType(cardPlayed,user,current_register);
+        }
 
         if(players.get(players.size()-1) == playing){                   //ToDo: sort for init reg
             current_register++;
+            //activateElements();
             sortPlayersByDistance();
         }
-
+        if(players.get(0) == playing && roundNumber != 1){
+            sendActiveCards();
+        }
         current_player_index++;
         decideNextPlayer();
 
 
-        if(current_register<4){
+        if(current_register<5){
             JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
             broadcastMessage("CurrentPlayer",currentPlayerJsonAdapter.toJson(new CurrentPlayer(playing.getID())));
         }else {
@@ -426,6 +437,19 @@ public class Game {
         }
 
 
+    }
+
+    private void sendActiveCards() {
+        ArrayList<CurrentCards.ActiveCards> activeCardsArrayList = new ArrayList<>();
+        for (Player player:
+             players) {
+            Card card = player.getRegisterIndex(current_register);
+            activeCardsArrayList.add(new CurrentCards.ActiveCards(player.getID(),card.toString()));
+        }
+        JsonAdapter<CurrentCards> currentCardsJsonAdapter = moshi.adapter(CurrentCards.class);
+        String json = currentCardsJsonAdapter.toJson(new CurrentCards(activeCardsArrayList));
+        broadcastMessage("CurrentCards",json);
+        logger.debug(json);
     }
 
     /**
@@ -436,7 +460,38 @@ public class Game {
      * @param register_number
      */
     private void playCardByType(Card card, Player curr, int register_number) {
-        //TODO: if player is not rebooting
+
+        if (curr != playing && rebooted_players.contains(curr)) {
+            return;
+        }
+        JsonAdapter<CardPlayed> cardPlayedJsonAdapter = moshi.adapter(CardPlayed.class);
+        broadcastMessage("CardPlayed",cardPlayedJsonAdapter.toJson(new CardPlayed(curr.getID(),card.toString())));
+
+        switch (card.toString()) {
+            case "AdminPrivilege":
+                return;
+            case "MemorySwap":
+                curr.removeUpgrade(card.toString());
+                //playMemorySwap();
+                return;
+            case "RearLaser":
+                return;
+            case "SpamBlocker":
+                List<Card> hand = curr.getHand();
+                for (Card curr1 :
+                        hand) {
+                    if (curr1 instanceof Spam) {
+                        hand.set(hand.indexOf(curr1), curr.drawCardFromDeck());
+                        spampile.add(curr1);
+                    }
+                }
+                JsonAdapter<YourCards> yourCardsJsonAdapter = moshi.adapter(YourCards.class);
+                findClient(curr.getID()).sendMessage("YourCards", yourCardsJsonAdapter.toJson(new YourCards(curr.getHandAsStrings())));
+                curr.removeUpgrade(card.toString());
+                return;
+            default:
+        }
+
         if (card.isDamageCard()) {
             JsonAdapter<ReplaceCard> replaceCardJsonAdapter = moshi.adapter(ReplaceCard.class);
             switch (card.toString()) {
@@ -512,13 +567,17 @@ public class Game {
                     robotTurnedProtokoll(curr.getRobot(), "clockwise");
                 }
             } else if(cardtype.equals("PowerUp")){
-                //TODO: powerup protocol
                 curr.addToEnergyReserve(1);
+                JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
+                broadcastMessage("Energy",energyJsonAdapter.toJson(new Energy(curr.getID(),curr.getEnergyReserve(),"PowerUp")));
             } else {
                 curr.getRegisterIndex(register_number).playCard(curr.getRobot());
                 robotMovedProtokoll(curr.getRobot());
             }
         }
+
+
+
     }
 
     /**
@@ -1184,18 +1243,25 @@ public class Game {
     }
 
     public void updateRound() throws ClassNotFoundException {
+
+        for (Player player:
+             players) {
+            player.resetRound();
+        }
+
         roundNumber++;
-        current_register = -1;
+        current_register = 0;
         if (cardsInShop.size() == players.size()) {                                                          //ToDo: update it somewhere someday
             cardsInShop = new ArrayList<>();
             isShopUntouched = true;
+            phase = 1;
+            runShop();
             return;
         }
         while (cardsInShop.size() < players.size()) {
             cardsInShop.add(drawFromDeckOfUpgradeCards());
         }
-        current_player_index++;
-        decideNextPlayer();
+
         phase = 1;
         runShop();
     }
@@ -1249,38 +1315,7 @@ public class Game {
 
     }
 
-    public void playCard(Player player, String card) {
-        if (player != playing) {
-            return;
-        }
 
-        switch (card) {
-            case "AdminPrivilege":
-                break;
-            case "MemorySwap":
-                player.removeUpgrade(card);
-                //playMemorySwap();
-                break;
-            case "RearLaser":
-                break;
-            case "SpamBlocker":
-                List<Card> hand = player.getHand();
-                for (Card curr :
-                        hand) {
-                    if (curr instanceof Spam) {
-                        hand.set(hand.indexOf(curr), player.drawCardFromDeck());
-                        spampile.add(curr);
-                    }
-                }
-                JsonAdapter<YourCards> yourCardsJsonAdapter = moshi.adapter(YourCards.class);
-                findClient(player.getID()).sendMessage("YourCards", yourCardsJsonAdapter.toJson(new YourCards(player.getHandAsStrings())));
-                player.removeUpgrade(card);
-                break;
-            default:
-                //activateElements();
-        }
-
-    }
 
     private void playMemorySwap() {
         for (int i = 0; i < 3; i++) {

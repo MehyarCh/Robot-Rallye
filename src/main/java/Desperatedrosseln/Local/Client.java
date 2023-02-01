@@ -252,10 +252,13 @@ public class Client implements Runnable {
                 RefillShop refillShop = refillShopJsonAdapter.fromJson(msg.getMessageBody());
                 List<String> refillShopCards = refillShop.getCards();
                 mainController.exchangeShop(refillShopCards);
+                String log = "";
                 for (String c :
                         refillShopCards) {
-                    System.out.print("_" + c);
+                    log = log + "_" + c;
+
                 }
+                logger.debug(clientName + "refill shop: "+log);
                 Collections.shuffle(refillShopCards);
                 JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter1 = moshi.adapter(BuyUpgrade.class);
                 //sendMessage("BuyUpgrade",buyUpgradeJsonAdapter1.toJson(new BuyUpgrade(true,refillShopCards.get(0))));
