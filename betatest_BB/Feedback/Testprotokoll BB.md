@@ -5,7 +5,7 @@
 
 # Ablauf des Spiels
 ## Korrektheit
-* Die größte Mehrheit der Funktionalitäten ist integriert und läuft reibungslos.
+* Die große Mehrheit der Funktionalitäten ist integriert und läuft reibungslos.
 * Die Wahl der Map bzw des Roboters ändern zu können ist von Vorteil.
 * @ als Präfix für eine direkte Nachricht ist eine schlaue Idee.
 * Man kann die Aktivierung der Elementen gut sehen. Die Zeit in der sich jede Bewegung statfindet ist angenehm für den Nutzer.
@@ -21,8 +21,9 @@
 
 ## Zuverlässigkeit
 * Das Programm scheint insgesamt robust zu sein. Fehlermeldungen werden im größten Teil behandelt.
-* Wenn die eine Spamkarte im 4. Register gespielt wird, stürzt das Programm ab, denn es geht weiter zur Programmingphase obwohl der eine Spieler noch die letzte Karte zu spielen hat.
-* Dieser Spieler bekommt dann keine Karten in seine Hand, und wird ausgeloggt.
+* Das Programm ist sehr selten abgestürzt was sagt dass die Fehlerhandlung zuverlässig ist.
+* Der Spieler wird über Entwicklungen des Spiels benachrichtigt und hat durch Deaktivierung von Buttons wenig Raum um was falsch zu machen.
+* Der Upgradeshop scheint nicht korrekt implementiert worden zu sein, verursachtt aber keine Abstürze.
 
 ## Benutzerfreundlichkeit
 * Insgesamt hat man eine ziemlich positive Erfahrung beim Spielen.
