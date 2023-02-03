@@ -6,27 +6,31 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.image.Image?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      styleClass="scene--small, login-scene">
+      styleClass="login-scene">
+    <VBox fx:id="overlay"
+          VBox.vgrow="ALWAYS"
+          styleClass="overlay, login-overlay">
 
-    <VBox styleClass="overlay, border-radius, border-radius--xs">
-        <VBox styleClass="logo-wrapper">
+        <VBox styleClass="logo-wrapper--login">
             <Label text="" styleClass="logo, logo--login"/>
             <ImageView styleClass="logo, logo--login"/>
         </VBox>
         <VBox styleClass="login-form-wrapper">
             <VBox styleClass="login-form-item">
                 <Label text="Name" styleClass="login-form-label"/>
-                <TextField fx:id="loginTextField" styleClass="text-input, text-input--primary, login-form-text-input"/>
+                <TextField fx:id="loginTextField" styleClass="text-input, text-input--tertiary, login-form-text-input"/>
             </VBox>
-            <Label fx:id="loginWarning" styleClass="login-warning" />
+            <Label fx:id="loginWarning" styleClass="login-warning, login-warning--primary" />
         </VBox>
         <VBox styleClass="login-button-wrapper">
             <Button text="JOIN LOBBY"
                     fx:id="joinButton"
                     onAction="#onLogin"
-                    styleClass="button, login-button, button--primary"/>
+                    styleClass="button, login-button, button--secondary"/>
             <Button text="CREATE LOBBY"
                     styleClass="button, login-button, button--disabled"/>
         </VBox>

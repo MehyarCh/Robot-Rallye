@@ -2,12 +2,12 @@
     -fx-background-color: #F6019D;
 }
 
-.send-button:hover {
-    -fx-background-image: url("../images/sendButton_green.png");
+.button--secondary:hover {
+    -fx-border-color: #2d46e6;
 }
 
-.tile:hover {
-    -fx-background-color: #ddd;
+.send-button:hover {
+    -fx-background-image: url("../images/sendButton_green.png");
 }
 
 .map-option-overlay:hover{

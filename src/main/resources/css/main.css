@@ -136,15 +136,25 @@
 .text-input {
     -fx-pref-width: 100%;
     -fx-pref-height: 36px;
-    -fx-border-style: hidden none solid none;
+    -fx-border-style: hidden hidden solid hidden;
     -fx-background-color: transparent;
-    -fx-border-width: 1px;
+    -fx-border-width: 2px;
     -fx-font-size: 14px;
     -fx-font-weight: 300;
 }
 
 .text-input--primary {
     -fx-border-color: rgb(246, 1, 157);
+    -fx-text-fill: #ffffff;
+}
+
+.text-input--secondary {
+    -fx-border-color: #2de2e6;
+    -fx-text-fill: #ffffff;
+}
+
+.text-input--tertiary {
+    -fx-border-color: #2d46e6;
     -fx-text-fill: #ffffff;
 }
 
@@ -175,10 +185,19 @@
     -fx-background-insets: 0 0 0 8px;
 }
 
+
+
+
+
+
+
 .button {
     -fx-border-style: none;
     -fx-font-size: 12px;
     -fx-font-weight: 700;
+    -fx-border-radius: 0px;
+    -fx-background-color: transparent;
+    -fx-border-width: 2px;
 }
 
 .login-button {
@@ -215,14 +234,18 @@
 
 .button--primary {
     -fx-border-color: #F6019D;
-    -fx-border-radius: 4px;
-    -fx-background-color: transparent;
     -fx-text-fill: #fff;
+}
+
+.button--secondary {
+    -fx-border-color: #2de2e6;
+    -fx-text-fill: #fff;
+    -fx-focus-color: #2de2e6;
 }
 
 .button--disabled {
     -fx-border-color: #333;
-    -fx-border-radius: 4px;
-    -fx-background-color: transparent;
     -fx-text-fill: #333;
+    -fx-background-color: transparent;
+
 }

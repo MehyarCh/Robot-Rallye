@@ -294,6 +294,7 @@ public class LobbyController {
 
     @FXML
     public void onReady() {
+        logger.debug("onReady");
         JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
         client.sendMessage("SetStatus", setStatusJsonAdapter.toJson(new SetStatus(readyButton.isSelected())));
     }
