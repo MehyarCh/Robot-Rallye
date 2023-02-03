@@ -1,0 +1,2140 @@
+Feb. 03, 2023 2:17:15 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server exportLog
+INFORMATION: Log will be exported as: serverlog.txt
+Feb. 03, 2023 2:17:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server startServerThread
+INFORMATION: I did serverSoccet.accept
+Feb. 03, 2023 2:17:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server generateId
+SCHWERWIEGEND: generateIDcalled
+Feb. 03, 2023 2:17:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server generateId
+INFORMATION: ---false
+Feb. 03, 2023 2:17:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addClient
+INFORMATION: I accepted a new player and gave him the PlayerID: 1
+Feb. 03, 2023 2:17:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addClient
+INFORMATION: Before Welcome: false for id: 1
+Feb. 03, 2023 2:17:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addPlayerToGame
+INFORMATION: current playerlist: [1]
+Feb. 03, 2023 2:17:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:17:40 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayerValues","messageBody":{"figure":0,"name":"123"}}
+Feb. 03, 2023 2:17:40 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFORMATION: processPlayerValues called
+Feb. 03, 2023 2:17:40 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFORMATION: playerProfileList: 
+Feb. 03, 2023 2:17:40 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFORMATION: 1
+Feb. 03, 2023 2:17:40 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFORMATION: 10000
+Feb. 03, 2023 2:17:40 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFORMATION: Player is AI: false
+Feb. 03, 2023 2:17:40 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerAdded","messageBody":{"figure":0,"clientID":1,"name":"123"}}
+Feb. 03, 2023 2:17:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server startServerThread
+INFORMATION: I did serverSoccet.accept
+Feb. 03, 2023 2:17:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server generateId
+SCHWERWIEGEND: generateIDcalled
+Feb. 03, 2023 2:17:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server generateId
+INFORMATION: ---false
+Feb. 03, 2023 2:17:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addClient
+INFORMATION: I accepted a new player and gave him the PlayerID: 2
+Feb. 03, 2023 2:17:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addClient
+INFORMATION: Before Welcome: false for id: 2
+Feb. 03, 2023 2:17:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addPlayerToGame
+INFORMATION: current playerlist: [123, 2]
+Feb. 03, 2023 2:17:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToSingleClient
+INFORMATION: Sending to 2 {"messageType":"PlayerAdded","messageBody":{"figure":0,"clientID":1,"name":"123"}}
+Feb. 03, 2023 2:17:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:17:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:17:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayerValues","messageBody":{"figure":1,"name":"456"}}
+Feb. 03, 2023 2:17:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFORMATION: processPlayerValues called
+Feb. 03, 2023 2:17:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFORMATION: playerProfileList: 
+Feb. 03, 2023 2:17:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFORMATION: 1
+Feb. 03, 2023 2:17:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFORMATION: 0
+Feb. 03, 2023 2:17:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFORMATION: 2
+Feb. 03, 2023 2:17:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFORMATION: 10000
+Feb. 03, 2023 2:17:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFORMATION: Player is AI: false
+Feb. 03, 2023 2:17:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerAdded","messageBody":{"figure":1,"clientID":2,"name":"456"}}
+Feb. 03, 2023 2:17:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToSingleClient
+INFORMATION: Sending to 456 {"messageType":"PlayerAdded","messageBody":{"figure":0,"clientID":1,"name":"123"}}
+Feb. 03, 2023 2:17:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:17:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SetStatus","messageBody":{"ready":true}}
+Feb. 03, 2023 2:17:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processSetStatus
+INFORMATION: processSetStatus called
+Feb. 03, 2023 2:17:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerStatus","messageBody":{"clientID":1,"ready":true}}
+Feb. 03, 2023 2:17:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFORMATION: called addMapSelectionQueue
+Feb. 03, 2023 2:17:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFORMATION: Client is AI false
+Feb. 03, 2023 2:17:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFORMATION: Added a non-AI Client
+Feb. 03, 2023 2:17:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFORMATION: map selection queue size: 1
+Feb. 03, 2023 2:17:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFORMATION: minPlayers: 2
+Feb. 03, 2023 2:17:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server makePlayerSelectMap
+INFORMATION: called makePlayerSelectMap
+Feb. 03, 2023 2:17:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToSingleClient
+INFORMATION: Sending to 123 {"messageType":"SelectMap","messageBody":{"availableMaps":["DizzyHighway","LostBearings","DeathTrap","ExtraCrispy"]}}
+Feb. 03, 2023 2:17:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:17:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"MapSelected","messageBody":{"map":"ExtraCrispy"}}
+Feb. 03, 2023 2:17:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"MapSelected","messageBody":{"map":"ExtraCrispy"}}
+Feb. 03, 2023 2:17:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SetStatus","messageBody":{"ready":true}}
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processSetStatus
+INFORMATION: processSetStatus called
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerStatus","messageBody":{"clientID":2,"ready":true}}
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFORMATION: called addMapSelectionQueue
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFORMATION: Client is AI false
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFORMATION: Added a non-AI Client
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFORMATION: map selection queue size: 2
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFORMATION: minPlayers: 2
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server startGame
+INFORMATION: game started
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: ExtraCrispy
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"GameStarted","messageBody":{"gameMap":[[[{"type":"RestartPoint","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"StartPoint","isOnBoard":"A"}],[{"orientations":["top"],"type":"Antenna","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"StartPoint","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}]],[[{"type":"Empty","isOnBoard":"A"}],[{"type":"StartPoint","isOnBoard":"A"}],[{"orientations":["top"],"type":"Wall","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"StartPoint","isOnBoard":"A"}],[{"type":"StartPoint","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"orientations":["bottom"],"type":"Wall","isOnBoard":"A"}],[{"type":"StartPoint","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}]],[[{"orientations":["right","left"],"type":"ConveyorBelt","isOnBoard":"A","speed":1}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"orientations":["right"],"type":"Wall","isOnBoard":"A"}],[{"orientations":["right"],"type":"Wall","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"},{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"A"}],[{"orientations":["right","left"],"type":"ConveyorBelt","isOnBoard":"A","speed":1}]],[[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"orientations":["top"],"type":"Wall","isOnBoard":"4A"},{"count":1,"type":"EnergySpace","isOnBoard":"4A"}],[{"orientations":["bottom"],"type":"Wall","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"count":2,"type":"EnergySpace","isOnBoard":"4A"}]],[[{"orientations":["bottom","top"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2}],[{"orientations":["bottom","top"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2}],[{"orientations":["bottom","top"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2}],[{"orientations":["right","top"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"orientations":["right","bottom"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2}],[{"orientations":["top","bottom"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2}],[{"orientations":["top","bottom"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2}],[{"orientations":["left"],"type":"Wall","isOnBoard":"4A"},{"orientations":["right"],"count":1,"type":"Laser","isOnBoard":"4A"}]],[[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"count":4,"type":"CheckPoint","isOnBoard":"4A"},{"orientations":["bottom"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"orientations":["right","left"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2},{"orientations":["bottom","top"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"orientations":["bottom","top"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"orientations":["bottom","top"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"orientations":["right","left"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2},{"orientations":["bottom","top"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"count":2,"type":"CheckPoint","isOnBoard":"4A"},{"orientations":["top"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"orientations":["right","left"],"count":1,"type":"Laser","isOnBoard":"4A"}]],[[{"type":"Empty","isOnBoard":"4A"}],[{"orientations":["bottom","right"],"type":"ConveyorBelt","isOnBoard":"4A","speed":1}],[{"type":"Pit","isOnBoard":"4A"}],[{"type":"Pit","isOnBoard":"4A"}],[{"orientations":["right"],"type":"Gear","isOnBoard":"4A"}],[{"orientations":["left"],"type":"Wall","isOnBoard":"4A"}],[{"type":"Pit","isOnBoard":"4A"}],[{"type":"Pit","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"orientations":["right"],"type":"Wall","isOnBoard":"4A"},{"orientations":["left"],"count":1,"type":"Laser","isOnBoard":"4A"}]],[[{"type":"Empty","isOnBoard":"4A"}],[{"orientations":["left","right"],"type":"ConveyorBelt","isOnBoard":"4A","speed":1}],[],[{"orientations":["left"],"type":"Wall","isOnBoard":"4A"},{"orientations":["right"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"count":2,"type":"EnergySpace","isOnBoard":"4A"}],[{"orientations":["left"],"type":"Wall","isOnBoard":"4A"},{"orientations":["right"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}]],[[{"count":2,"type":"EnergySpace","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"orientations":["right"],"type":"Wall","isOnBoard":"4A"},{"orientations":["left"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"orientations":["right"],"type":"Wall","isOnBoard":"4A"},{"orientations":["left"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"orientations":["right","left"],"type":"ConveyorBelt","isOnBoard":"4A","speed":1}],[{"type":"Empty","isOnBoard":"4A"}]],[[{"orientations":["left"],"type":"Wall","isOnBoard":"4A"},{"orientations":["right"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Pit","isOnBoard":"4A"}],[{"type":"Pit","isOnBoard":"4A"}],[{"orientations":["right"],"type":"Wall","isOnBoard":"4A"}],[{"orientations":["left"],"type":"Gear","isOnBoard":"4A"}],[{"type":"Pit","isOnBoard":"4A"}],[{"type":"Pit","isOnBoard":"4A"}],[{"orientations":["top","left"],"type":"ConveyorBelt","isOnBoard":"4A","speed":1}],[{"type":"Empty","isOnBoard":"4A"}]],[[{"orientations":["right","left"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"count":1,"type":"CheckPoint","isOnBoard":"4A"},{"orientations":["bottom"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"orientations":["left","right"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2},{"orientations":["bottom","top"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"orientations":["bottom","top"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"orientations":["bottom","top"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"orientations":["left","right"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2},{"orientations":["bottom","top"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"count":3,"type":"CheckPoint","isOnBoard":"4A"},{"orientations":["top"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}]],[[{"orientations":["right"],"type":"Wall","isOnBoard":"4A"},{"orientations":["left"],"count":1,"type":"Laser","isOnBoard":"4A"}],[{"orientations":["bottom","top"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2}],[{"orientations":["bottom","top"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2}],[{"orientations":["left","top"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2}],[{"count":2,"type":"EnergySpace","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"orientations":["left","bottom"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2}],[{"orientations":["top","bottom"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2}],[{"orientations":["top","bottom"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2}],[{"orientations":["top","bottom"],"type":"ConveyorBelt","isOnBoard":"4A","speed":2}]],[[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"orientations":["top"],"type":"Wall","isOnBoard":"4A"}],[{"orientations":["bottom"],"type":"Wall","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}],[{"type":"Empty","isOnBoard":"4A"}]]]}}
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Aufbauphase.
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"RefillShop","messageBody":{"cards":["RearLaser","MemorySwap"]}}
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendRefillShop
+INFORMATION: (Re)filled the shop with: [RearLaser, MemorySwap]
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":0}}
+Feb. 03, 2023 2:17:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:17:56 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:17:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:23 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:26 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:28 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:33 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:56 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:18:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:15 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SetStartingPoint","messageBody":{"x":1,"y":4}}
+Feb. 03, 2023 2:19:15 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: case set starting point in Server called from sender: 2
+Feb. 03, 2023 2:19:15 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"StartingPointTaken","messageBody":{"clientID":2,"x":1,"y":4}}
+Feb. 03, 2023 2:19:15 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendStartingPointTaken
+INFORMATION: 456 set the starting position x: 1y: 4
+Feb. 03, 2023 2:19:15 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 tried to choose the starting position x: 1, y: 4
+Feb. 03, 2023 2:19:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SetStartingPoint","messageBody":{"x":0,"y":6}}
+Feb. 03, 2023 2:19:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: case set starting point in Server called from sender: 1
+Feb. 03, 2023 2:19:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"StartingPointTaken","messageBody":{"clientID":1,"x":0,"y":6}}
+Feb. 03, 2023 2:19:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendStartingPointTaken
+INFORMATION: 123 set the starting position x: 0y: 6
+Feb. 03, 2023 2:19:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: All players have set their starting positions.
+Feb. 03, 2023 2:19:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Upgradephase.
+Feb. 03, 2023 2:19:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":1}}
+Feb. 03, 2023 2:19:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:19:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 tried to choose the starting position x: 0, y: 6
+Feb. 03, 2023 2:19:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:22 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"BuyUpgrade","messageBody":{"isBuying":false}}
+Feb. 03, 2023 2:19:22 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 bought no card this round.
+Feb. 03, 2023 2:19:22 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:19:23 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:25 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"BuyUpgrade","messageBody":{"isBuying":true,"card":"RearLaser"}}
+Feb. 03, 2023 2:19:25 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 tried to buy the card RearLaser.
+Feb. 03, 2023 2:19:25 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"UpgradeBought","messageBody":{"clientID":2,"card":"RearLaser"}}
+Feb. 03, 2023 2:19:25 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":2}}
+Feb. 03, 2023 2:19:25 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Programming Phase
+Feb. 03, 2023 2:19:25 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Handcards drawn for 456 (id 2).
+Feb. 03, 2023 2:19:25 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Handcards drawn for 123 (id 1).
+Feb. 03, 2023 2:19:26 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:28 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"Move3","register":1}}
+Feb. 03, 2023 2:19:28 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":1}}
+Feb. 03, 2023 2:19:28 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["Move3", null, null, null, null]
+Feb. 03, 2023 2:19:28 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 1 with the card Move3
+Feb. 03, 2023 2:19:28 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"Again","register":2}}
+Feb. 03, 2023 2:19:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":2}}
+Feb. 03, 2023 2:19:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["Move3", "Again", null, null, null]
+Feb. 03, 2023 2:19:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 2 with the card Again
+Feb. 03, 2023 2:19:33 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"PowerUp","register":3}}
+Feb. 03, 2023 2:19:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":3}}
+Feb. 03, 2023 2:19:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["Move3", "Again", "PowerUp", null, null]
+Feb. 03, 2023 2:19:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 3 with the card PowerUp
+Feb. 03, 2023 2:19:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"RightTurn","register":4}}
+Feb. 03, 2023 2:19:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":4}}
+Feb. 03, 2023 2:19:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["Move3", "Again", "PowerUp", "RightTurn", null]
+Feb. 03, 2023 2:19:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 4 with the card RightTurn
+Feb. 03, 2023 2:19:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:39 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"Again","register":5}}
+Feb. 03, 2023 2:19:39 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":5}}
+Feb. 03, 2023 2:19:39 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["Move3", "Again", "PowerUp", "RightTurn", "Again"]
+Feb. 03, 2023 2:19:39 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"SelectionFinished","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:19:39 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 5 with the card Again
+Feb. 03, 2023 2:19:39 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 30 second timer started.
+Feb. 03, 2023 2:19:39 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"TimerStarted","messageBody":{}}
+Feb. 03, 2023 2:19:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:49 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"LeftTurn","register":1}}
+Feb. 03, 2023 2:19:49 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":1}}
+Feb. 03, 2023 2:19:49 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["LeftTurn", null, null, null, null]
+Feb. 03, 2023 2:19:49 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 1 with the card LeftTurn
+Feb. 03, 2023 2:19:49 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"Move2","register":2}}
+Feb. 03, 2023 2:19:49 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":2}}
+Feb. 03, 2023 2:19:49 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["LeftTurn", "Move2", null, null, null]
+Feb. 03, 2023 2:19:49 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 2 with the card Move2
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"Again","register":3}}
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":3}}
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["LeftTurn", "Move2", "Again", null, null]
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 3 with the card Again
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"PowerUp","register":4}}
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":4}}
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["LeftTurn", "Move2", "Again", "PowerUp", null]
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 4 with the card PowerUp
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"MoveBack","register":5}}
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":5}}
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["LeftTurn", "Move2", "Again", "PowerUp", "MoveBack"]
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"SelectionFinished","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: initiated to stop the Timer because all players finished their selection
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 5 with the card MoveBack
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 30 second timer ended.
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"TimerEnded","messageBody":{"clientIDs":[]}}
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers are now ["LeftTurn", "Move2", "Again", "PowerUp", "MoveBack"]
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers are now ["Move3", "Again", "PowerUp", "RightTurn", "Again"]
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Programming Phase finished.
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":3}}
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Activation Phase.
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:19:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:19:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:55 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"LeftTurn"}}
+Feb. 03, 2023 2:19:55 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"LeftTurn"}}
+Feb. 03, 2023 2:19:55 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 0
+Feb. 03, 2023 2:19:55 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"counterclockwise"}}
+Feb. 03, 2023 2:19:55 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":1,"y":4}}
+Feb. 03, 2023 2:19:55 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 1 y: 4
+Feb. 03, 2023 2:19:55 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:19:55 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:19:55 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:19:56 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:19:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"Move3"}}
+Feb. 03, 2023 2:19:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Move3"}}
+Feb. 03, 2023 2:19:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 0
+Feb. 03, 2023 2:19:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":3,"y":6}}
+Feb. 03, 2023 2:19:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 3 y: 6
+Feb. 03, 2023 2:19:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":2,"card":"LeftTurn"},{"clientID":1,"card":"Move3"}]}}
+Feb. 03, 2023 2:19:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 1
+Feb. 03, 2023 2:19:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:19:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:19:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:20:00 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"Move2"}}
+Feb. 03, 2023 2:20:00 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"Move2"}}
+Feb. 03, 2023 2:20:00 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 1
+Feb. 03, 2023 2:20:00 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":1,"y":2}}
+Feb. 03, 2023 2:20:00 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 1 y: 2
+Feb. 03, 2023 2:20:00 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:20:00 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:20:00 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"Again"}}
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Again"}}
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 1
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Move3"}}
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 0
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Reboot","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":0}}
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"DrawDamage","messageBody":{"clientID":1,"cards":["Spam","Spam"]}}
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 0
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: The again card triggered a Move3
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 0
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":2,"card":"Move2"},{"clientID":1,"card":"Again"}]}}
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 2
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:20:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:20:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:05 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"RebootDirection","messageBody":{"direction":"bottom"}}
+Feb. 03, 2023 2:20:05 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":1,"rotation":"clockwise"}}
+Feb. 03, 2023 2:20:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"Again"}}
+Feb. 03, 2023 2:20:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"Again"}}
+Feb. 03, 2023 2:20:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 2
+Feb. 03, 2023 2:20:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"Move2"}}
+Feb. 03, 2023 2:20:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 1
+Feb. 03, 2023 2:20:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":1,"y":2}}
+Feb. 03, 2023 2:20:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 1 y: 2
+Feb. 03, 2023 2:20:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: The again card triggered a Move2
+Feb. 03, 2023 2:20:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 1 y: 2
+Feb. 03, 2023 2:20:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:20:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:20:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:20:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"PowerUp"}}
+Feb. 03, 2023 2:20:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"PowerUp"}}
+Feb. 03, 2023 2:20:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 2
+Feb. 03, 2023 2:20:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Energy","messageBody":{"clientID":1,"count":1,"source":"PowerUpCard"}}
+Feb. 03, 2023 2:20:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":0}}
+Feb. 03, 2023 2:20:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 0
+Feb. 03, 2023 2:20:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":2,"card":"Again"},{"clientID":1,"card":"PowerUp"}]}}
+Feb. 03, 2023 2:20:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 3
+Feb. 03, 2023 2:20:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:20:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:20:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:20:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"PowerUp"}}
+Feb. 03, 2023 2:20:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"PowerUp"}}
+Feb. 03, 2023 2:20:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 3
+Feb. 03, 2023 2:20:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Energy","messageBody":{"clientID":2,"count":1,"source":"PowerUpCard"}}
+Feb. 03, 2023 2:20:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":1,"y":2}}
+Feb. 03, 2023 2:20:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 1 y: 2
+Feb. 03, 2023 2:20:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:20:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:20:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:20:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"RightTurn"}}
+Feb. 03, 2023 2:20:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"RightTurn"}}
+Feb. 03, 2023 2:20:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 3
+Feb. 03, 2023 2:20:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":1,"rotation":"clockwise"}}
+Feb. 03, 2023 2:20:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":0}}
+Feb. 03, 2023 2:20:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 0
+Feb. 03, 2023 2:20:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":2,"card":"PowerUp"},{"clientID":1,"card":"RightTurn"}]}}
+Feb. 03, 2023 2:20:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 4
+Feb. 03, 2023 2:20:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:20:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:20:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:20:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"MoveBack"}}
+Feb. 03, 2023 2:20:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"MoveBack"}}
+Feb. 03, 2023 2:20:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 4
+Feb. 03, 2023 2:20:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":1,"y":3}}
+Feb. 03, 2023 2:20:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 1 y: 3
+Feb. 03, 2023 2:20:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:20:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:20:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:20:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"Again"}}
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Again"}}
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 4
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"RightTurn"}}
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 3
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":1,"rotation":"clockwise"}}
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":0}}
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 0
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: The again card triggered a RightTurn
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 0
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":2,"card":"MoveBack"},{"clientID":1,"card":"Again"}]}}
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 5
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Activation Phase finished.
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Upgradephase.
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":1}}
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ExchangeShop","messageBody":{"cards":["RearLaser","AdminPrivilege"]}}
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendExchangeShop
+INFORMATION: No upgrade cards were bought, so changed the cards to: [RearLaser, AdminPrivilege]
+Feb. 03, 2023 2:20:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:20:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:23 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:26 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:28 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:33 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:33 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"BuyUpgrade","messageBody":{"isBuying":true,"card":"AdminPrivilege"}}
+Feb. 03, 2023 2:20:33 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 tried to buy the card AdminPrivilege.
+Feb. 03, 2023 2:20:33 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"UpgradeBought","messageBody":{"clientID":2,"card":"AdminPrivilege"}}
+Feb. 03, 2023 2:20:33 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:20:35 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"BuyUpgrade","messageBody":{"isBuying":true,"card":"MemorySwap"}}
+Feb. 03, 2023 2:20:35 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 tried to buy the card MemorySwap.
+Feb. 03, 2023 2:20:35 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"UpgradeBought","messageBody":{"clientID":1,"card":"MemorySwap"}}
+Feb. 03, 2023 2:20:35 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":2}}
+Feb. 03, 2023 2:20:35 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Programming Phase
+Feb. 03, 2023 2:20:35 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Handcards drawn for 456 (id 2).
+Feb. 03, 2023 2:20:35 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Handcards drawn for 123 (id 1).
+Feb. 03, 2023 2:20:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:56 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:20:59 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"Move2","register":1}}
+Feb. 03, 2023 2:20:59 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":1}}
+Feb. 03, 2023 2:20:59 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["Move2", null, null, null, null]
+Feb. 03, 2023 2:20:59 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 1 with the card Move2
+Feb. 03, 2023 2:20:59 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"Move1","register":2}}
+Feb. 03, 2023 2:20:59 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":2}}
+Feb. 03, 2023 2:20:59 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["Move2", "Move1", null, null, null]
+Feb. 03, 2023 2:20:59 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 2 with the card Move1
+Feb. 03, 2023 2:21:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"RightTurn","register":3}}
+Feb. 03, 2023 2:21:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":3}}
+Feb. 03, 2023 2:21:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["Move2", "Move1", "RightTurn", null, null]
+Feb. 03, 2023 2:21:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 3 with the card RightTurn
+Feb. 03, 2023 2:21:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:02 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"UTurn","register":4}}
+Feb. 03, 2023 2:21:02 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":4}}
+Feb. 03, 2023 2:21:02 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["Move2", "Move1", "RightTurn", "UTurn", null]
+Feb. 03, 2023 2:21:02 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 4 with the card UTurn
+Feb. 03, 2023 2:21:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"MoveBack","register":5}}
+Feb. 03, 2023 2:21:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":5}}
+Feb. 03, 2023 2:21:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["Move2", "Move1", "RightTurn", "UTurn", "MoveBack"]
+Feb. 03, 2023 2:21:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"SelectionFinished","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:21:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 5 with the card MoveBack
+Feb. 03, 2023 2:21:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 30 second timer started.
+Feb. 03, 2023 2:21:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"TimerStarted","messageBody":{}}
+Feb. 03, 2023 2:21:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:23 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:26 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:28 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:33 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 30 second timer ended.
+Feb. 03, 2023 2:21:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123was too slow and some registers were filled randomly!
+Feb. 03, 2023 2:21:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"TimerEnded","messageBody":{"clientIDs":[1]}}
+Feb. 03, 2023 2:21:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers are now ["Move2", "Move1", "RightTurn", "UTurn", "MoveBack"]
+Feb. 03, 2023 2:21:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers are now ["UTurn", "Move2", "LeftTurn", "Move1", "MoveBack"]
+Feb. 03, 2023 2:21:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Programming Phase finished.
+Feb. 03, 2023 2:21:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":3}}
+Feb. 03, 2023 2:21:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Activation Phase.
+Feb. 03, 2023 2:21:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:21:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:21:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:21:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:56 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:21:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"Move2"}}
+Feb. 03, 2023 2:22:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"Move2"}}
+Feb. 03, 2023 2:22:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 0
+Feb. 03, 2023 2:22:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":1,"y":2}}
+Feb. 03, 2023 2:22:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 1 y: 2
+Feb. 03, 2023 2:22:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:22:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"UTurn"}}
+Feb. 03, 2023 2:22:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"UTurn"}}
+Feb. 03, 2023 2:22:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 0
+Feb. 03, 2023 2:22:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":1,"rotation":"clockwise"}}
+Feb. 03, 2023 2:22:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":1,"rotation":"clockwise"}}
+Feb. 03, 2023 2:22:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":0}}
+Feb. 03, 2023 2:22:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 0
+Feb. 03, 2023 2:22:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":2,"card":"Move2"},{"clientID":1,"card":"UTurn"}]}}
+Feb. 03, 2023 2:22:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 1
+Feb. 03, 2023 2:22:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:22:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"Move1"}}
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"Move1"}}
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 1
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":1,"y":2}}
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 1 y: 2
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"Move2"}}
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Move2"}}
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 1
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":2}}
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 2
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":1,"card":"Move2"},{"clientID":2,"card":"Move1"}]}}
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 2
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:22:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"LeftTurn"}}
+Feb. 03, 2023 2:22:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"LeftTurn"}}
+Feb. 03, 2023 2:22:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 2
+Feb. 03, 2023 2:22:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":1,"rotation":"counterclockwise"}}
+Feb. 03, 2023 2:22:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":2}}
+Feb. 03, 2023 2:22:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 2
+Feb. 03, 2023 2:22:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:22:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"RightTurn"}}
+Feb. 03, 2023 2:22:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"RightTurn"}}
+Feb. 03, 2023 2:22:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 2
+Feb. 03, 2023 2:22:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:22:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":1,"y":2}}
+Feb. 03, 2023 2:22:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 1 y: 2
+Feb. 03, 2023 2:22:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"DrawDamage","messageBody":{"clientID":2,"cards":["Spam"]}}
+Feb. 03, 2023 2:22:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":1,"card":"LeftTurn"},{"clientID":2,"card":"RightTurn"}]}}
+Feb. 03, 2023 2:22:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 3
+Feb. 03, 2023 2:22:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"Move1"}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Move1"}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 3
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":2,"y":2}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":1,"y":2}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 1 y: 2
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"UTurn"}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"UTurn"}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 3
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":2,"y":2}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 2 y: 2
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"DrawDamage","messageBody":{"clientID":2,"cards":["Spam"]}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"DrawDamage","messageBody":{"clientID":1,"cards":["Spam"]}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":1,"card":"Move1"},{"clientID":2,"card":"UTurn"}]}}
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 4
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:22:09 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"MoveBack"}}
+Feb. 03, 2023 2:22:09 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"MoveBack"}}
+Feb. 03, 2023 2:22:09 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 4
+Feb. 03, 2023 2:22:09 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":2}}
+Feb. 03, 2023 2:22:09 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 2
+Feb. 03, 2023 2:22:09 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:09 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:09 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"MoveBack"}}
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"MoveBack"}}
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 4
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":3,"y":2}}
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 3 y: 2
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"DrawDamage","messageBody":{"clientID":2,"cards":["Spam"]}}
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"DrawDamage","messageBody":{"clientID":1,"cards":["Spam"]}}
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":1,"card":"MoveBack"},{"clientID":2,"card":"MoveBack"}]}}
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 5
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Activation Phase finished.
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Upgradephase.
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":1}}
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ExchangeShop","messageBody":{"cards":["AdminPrivilege","SpamBlocker"]}}
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendExchangeShop
+INFORMATION: No upgrade cards were bought, so changed the cards to: [AdminPrivilege, SpamBlocker]
+Feb. 03, 2023 2:22:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:22:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"BuyUpgrade","messageBody":{"isBuying":false}}
+Feb. 03, 2023 2:22:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 bought no card this round.
+Feb. 03, 2023 2:22:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:22:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"BuyUpgrade","messageBody":{"isBuying":false}}
+Feb. 03, 2023 2:22:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 bought no card this round.
+Feb. 03, 2023 2:22:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":2}}
+Feb. 03, 2023 2:22:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Programming Phase
+Feb. 03, 2023 2:22:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Handcards drawn for 123 (id 1).
+Feb. 03, 2023 2:22:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Handcards drawn for 456 (id 2).
+Feb. 03, 2023 2:22:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:23 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:26 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"MoveBack","register":1}}
+Feb. 03, 2023 2:22:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":1}}
+Feb. 03, 2023 2:22:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["MoveBack", null, null, null, null]
+Feb. 03, 2023 2:22:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 1 with the card MoveBack
+Feb. 03, 2023 2:22:28 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:30 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"RightTurn","register":2}}
+Feb. 03, 2023 2:22:30 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":2}}
+Feb. 03, 2023 2:22:30 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["MoveBack", "RightTurn", null, null, null]
+Feb. 03, 2023 2:22:30 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 2 with the card RightTurn
+Feb. 03, 2023 2:22:30 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"Move1","register":3}}
+Feb. 03, 2023 2:22:30 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":3}}
+Feb. 03, 2023 2:22:30 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["MoveBack", "RightTurn", "Move1", null, null]
+Feb. 03, 2023 2:22:30 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 3 with the card Move1
+Feb. 03, 2023 2:22:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"UTurn","register":4}}
+Feb. 03, 2023 2:22:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":4}}
+Feb. 03, 2023 2:22:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["MoveBack", "RightTurn", "Move1", "UTurn", null]
+Feb. 03, 2023 2:22:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 4 with the card UTurn
+Feb. 03, 2023 2:22:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"Move2","register":5}}
+Feb. 03, 2023 2:22:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":5}}
+Feb. 03, 2023 2:22:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["MoveBack", "RightTurn", "Move1", "UTurn", "Move2"]
+Feb. 03, 2023 2:22:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"SelectionFinished","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:22:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 5 with the card Move2
+Feb. 03, 2023 2:22:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 30 second timer started.
+Feb. 03, 2023 2:22:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"TimerStarted","messageBody":{}}
+Feb. 03, 2023 2:22:33 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:35 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"RightTurn","register":1}}
+Feb. 03, 2023 2:22:35 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":1}}
+Feb. 03, 2023 2:22:35 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["RightTurn", null, null, null, null]
+Feb. 03, 2023 2:22:35 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 1 with the card RightTurn
+Feb. 03, 2023 2:22:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"Again","register":2}}
+Feb. 03, 2023 2:22:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":2}}
+Feb. 03, 2023 2:22:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["RightTurn", "Again", null, null, null]
+Feb. 03, 2023 2:22:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 2 with the card Again
+Feb. 03, 2023 2:22:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"LeftTurn","register":3}}
+Feb. 03, 2023 2:22:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":3}}
+Feb. 03, 2023 2:22:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["RightTurn", "Again", "LeftTurn", null, null]
+Feb. 03, 2023 2:22:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 3 with the card LeftTurn
+Feb. 03, 2023 2:22:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"Move2","register":4}}
+Feb. 03, 2023 2:22:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":4}}
+Feb. 03, 2023 2:22:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["RightTurn", "Again", "LeftTurn", "Move2", null]
+Feb. 03, 2023 2:22:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 4 with the card Move2
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"Spam","register":5}}
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":5}}
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["RightTurn", "Again", "LeftTurn", "Move2", "Spam"]
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"SelectionFinished","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: initiated to stop the Timer because all players finished their selection
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 5 with the card Spam
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 30 second timer ended.
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"TimerEnded","messageBody":{"clientIDs":[]}}
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers are now ["RightTurn", "Again", "LeftTurn", "Move2", "Spam"]
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers are now ["MoveBack", "RightTurn", "Move1", "UTurn", "Move2"]
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Programming Phase finished.
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":3}}
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Activation Phase.
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:22:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"RightTurn"}}
+Feb. 03, 2023 2:22:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"RightTurn"}}
+Feb. 03, 2023 2:22:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 0
+Feb. 03, 2023 2:22:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":1,"rotation":"clockwise"}}
+Feb. 03, 2023 2:22:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":2}}
+Feb. 03, 2023 2:22:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 2
+Feb. 03, 2023 2:22:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:22:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"MoveBack"}}
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"MoveBack"}}
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 0
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":4,"y":2}}
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"counterclockwise"}}
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":5,"y":3}}
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 5 y: 3
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":1,"card":"RightTurn"},{"clientID":2,"card":"MoveBack"}]}}
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 1
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"Again"}}
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Again"}}
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 1
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"RightTurn"}}
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 0
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":1,"rotation":"clockwise"}}
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":2}}
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 2
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: The again card triggered a RightTurn
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 2
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:22:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"RightTurn"}}
+Feb. 03, 2023 2:22:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"RightTurn"}}
+Feb. 03, 2023 2:22:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 1
+Feb. 03, 2023 2:22:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:22:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":5,"y":3}}
+Feb. 03, 2023 2:22:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":6,"y":3}}
+Feb. 03, 2023 2:22:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 6 y: 3
+Feb. 03, 2023 2:22:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":1,"card":"Again"},{"clientID":2,"card":"RightTurn"}]}}
+Feb. 03, 2023 2:22:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 2
+Feb. 03, 2023 2:22:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:22:44 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"LeftTurn"}}
+Feb. 03, 2023 2:22:44 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"LeftTurn"}}
+Feb. 03, 2023 2:22:44 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 2
+Feb. 03, 2023 2:22:44 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":1,"rotation":"counterclockwise"}}
+Feb. 03, 2023 2:22:44 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":2}}
+Feb. 03, 2023 2:22:44 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 2
+Feb. 03, 2023 2:22:44 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:44 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:44 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:22:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"Move1"}}
+Feb. 03, 2023 2:22:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"Move1"}}
+Feb. 03, 2023 2:22:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 2
+Feb. 03, 2023 2:22:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Reboot","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:22:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":0,"y":0}}
+Feb. 03, 2023 2:22:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:22:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:22:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"DrawDamage","messageBody":{"clientID":2,"cards":["Spam","Spam"]}}
+Feb. 03, 2023 2:22:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 0 y: 0
+Feb. 03, 2023 2:22:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":1,"card":"LeftTurn"},{"clientID":2,"card":"Move1"}]}}
+Feb. 03, 2023 2:22:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 3
+Feb. 03, 2023 2:22:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:22:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"RebootDirection","messageBody":{"direction":"right"}}
+Feb. 03, 2023 2:22:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"Move2"}}
+Feb. 03, 2023 2:22:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Move2"}}
+Feb. 03, 2023 2:22:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 3
+Feb. 03, 2023 2:22:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":4}}
+Feb. 03, 2023 2:22:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 4
+Feb. 03, 2023 2:22:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:22:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:22:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:22:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:56 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:22:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"UTurn"}}
+Feb. 03, 2023 2:23:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"UTurn"}}
+Feb. 03, 2023 2:23:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 3
+Feb. 03, 2023 2:23:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:23:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:23:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":0,"y":0}}
+Feb. 03, 2023 2:23:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 0 y: 0
+Feb. 03, 2023 2:23:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":1,"card":"Move2"},{"clientID":2,"card":"UTurn"}]}}
+Feb. 03, 2023 2:23:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 4
+Feb. 03, 2023 2:23:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:23:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:23:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:23:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"Spam"}}
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Spam"}}
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 4
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Again"}}
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 4
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Move2"}}
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 3
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":6}}
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 6
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: The again card triggered a Move2
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 6
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 6
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":1,"card":"Again"},{"clientID":2,"card":"Move2"}]}}
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 5
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Activation Phase finished.
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Upgradephase.
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":1}}
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ExchangeShop","messageBody":{"cards":["MemorySwap","MemorySwap"]}}
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendExchangeShop
+INFORMATION: No upgrade cards were bought, so changed the cards to: [MemorySwap, MemorySwap]
+Feb. 03, 2023 2:23:14 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:23:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"BuyUpgrade","messageBody":{"isBuying":false}}
+Feb. 03, 2023 2:23:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 bought no card this round.
+Feb. 03, 2023 2:23:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:23:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"BuyUpgrade","messageBody":{"isBuying":false}}
+Feb. 03, 2023 2:23:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 bought no card this round.
+Feb. 03, 2023 2:23:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":2}}
+Feb. 03, 2023 2:23:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Programming Phase
+Feb. 03, 2023 2:23:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Handcards drawn for 123 (id 1).
+Feb. 03, 2023 2:23:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Handcards drawn for 456 (id 2).
+Feb. 03, 2023 2:23:19 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"Move2"}}
+Feb. 03, 2023 2:23:19 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"Move2"}}
+Feb. 03, 2023 2:23:19 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 0
+Feb. 03, 2023 2:23:19 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Reboot","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:23:19 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":0,"y":0}}
+Feb. 03, 2023 2:23:19 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:23:19 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:23:19 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"DrawDamage","messageBody":{"clientID":2,"cards":["Spam","Spam"]}}
+Feb. 03, 2023 2:23:19 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 0 y: 0
+Feb. 03, 2023 2:23:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:22 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"RebootDirection","messageBody":{"direction":"bottom"}}
+Feb. 03, 2023 2:23:22 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:23:23 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:26 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:28 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:30 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"Move2","register":1}}
+Feb. 03, 2023 2:23:30 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":1}}
+Feb. 03, 2023 2:23:30 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["Move2", null, null, null, null]
+Feb. 03, 2023 2:23:30 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 1 with the card Move2
+Feb. 03, 2023 2:23:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"Move2","register":2}}
+Feb. 03, 2023 2:23:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":2}}
+Feb. 03, 2023 2:23:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["Move2", "Move2", null, null, null]
+Feb. 03, 2023 2:23:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 2 with the card Move2
+Feb. 03, 2023 2:23:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:33 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"Null","register":2}}
+Feb. 03, 2023 2:23:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":false,"register":2}}
+Feb. 03, 2023 2:23:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 emptied register 2
+Feb. 03, 2023 2:23:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"LeftTurn","register":2}}
+Feb. 03, 2023 2:23:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":2}}
+Feb. 03, 2023 2:23:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["Move2", "LeftTurn", null, null, null]
+Feb. 03, 2023 2:23:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 2 with the card LeftTurn
+Feb. 03, 2023 2:23:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:44 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"Null","register":2}}
+Feb. 03, 2023 2:23:44 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":false,"register":2}}
+Feb. 03, 2023 2:23:44 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 emptied register 2
+Feb. 03, 2023 2:23:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"RightTurn","register":2}}
+Feb. 03, 2023 2:23:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":2}}
+Feb. 03, 2023 2:23:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["Move2", "RightTurn", null, null, null]
+Feb. 03, 2023 2:23:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 2 with the card RightTurn
+Feb. 03, 2023 2:23:48 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:49 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"Move2","register":3}}
+Feb. 03, 2023 2:23:49 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":3}}
+Feb. 03, 2023 2:23:49 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["Move2", "RightTurn", "Move2", null, null]
+Feb. 03, 2023 2:23:49 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 3 with the card Move2
+Feb. 03, 2023 2:23:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"Spam","register":4}}
+Feb. 03, 2023 2:23:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":4}}
+Feb. 03, 2023 2:23:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["Move2", "RightTurn", "Move2", "Spam", null]
+Feb. 03, 2023 2:23:53 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 4 with the card Spam
+Feb. 03, 2023 2:23:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"SelectedCard","messageBody":{"card":"Again","register":5}}
+Feb. 03, 2023 2:23:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":1,"filled":true,"register":5}}
+Feb. 03, 2023 2:23:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers: ["Move2", "RightTurn", "Move2", "Spam", "Again"]
+Feb. 03, 2023 2:23:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"SelectionFinished","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:23:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 filled register 5 with the card Again
+Feb. 03, 2023 2:23:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 30 second timer started.
+Feb. 03, 2023 2:23:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"TimerStarted","messageBody":{}}
+Feb. 03, 2023 2:23:56 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:58 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:23:59 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"UTurn","register":1}}
+Feb. 03, 2023 2:23:59 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":1}}
+Feb. 03, 2023 2:23:59 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["UTurn", null, null, null, null]
+Feb. 03, 2023 2:23:59 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 1 with the card UTurn
+Feb. 03, 2023 2:24:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"Move1","register":2}}
+Feb. 03, 2023 2:24:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":2}}
+Feb. 03, 2023 2:24:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["UTurn", "Move1", null, null, null]
+Feb. 03, 2023 2:24:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 2 with the card Move1
+Feb. 03, 2023 2:24:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"RightTurn","register":3}}
+Feb. 03, 2023 2:24:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":3}}
+Feb. 03, 2023 2:24:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["UTurn", "Move1", "RightTurn", null, null]
+Feb. 03, 2023 2:24:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 3 with the card RightTurn
+Feb. 03, 2023 2:24:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:02 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"Move2","register":4}}
+Feb. 03, 2023 2:24:02 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":4}}
+Feb. 03, 2023 2:24:02 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["UTurn", "Move1", "RightTurn", "Move2", null]
+Feb. 03, 2023 2:24:02 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 4 with the card Move2
+Feb. 03, 2023 2:24:03 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"SelectedCard","messageBody":{"card":"Again","register":5}}
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardSelected","messageBody":{"clientID":2,"filled":true,"register":5}}
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers: ["UTurn", "Move1", "RightTurn", "Move2", "Again"]
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"SelectionFinished","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: initiated to stop the Timer because all players finished their selection
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 filled register 5 with the card Again
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 30 second timer ended.
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"TimerEnded","messageBody":{"clientIDs":[]}}
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's registers are now ["Move2", "RightTurn", "Move2", "Spam", "Again"]
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's registers are now ["UTurn", "Move1", "RightTurn", "Move2", "Again"]
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Programming Phase finished.
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":3}}
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Activation Phase.
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:24:04 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:24:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"Move2"}}
+Feb. 03, 2023 2:24:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Move2"}}
+Feb. 03, 2023 2:24:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 0
+Feb. 03, 2023 2:24:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":8}}
+Feb. 03, 2023 2:24:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 8
+Feb. 03, 2023 2:24:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:24:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 0 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:24:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:24:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"UTurn"}}
+Feb. 03, 2023 2:24:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"UTurn"}}
+Feb. 03, 2023 2:24:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 0
+Feb. 03, 2023 2:24:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:24:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:24:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":0,"y":0}}
+Feb. 03, 2023 2:24:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 0 y: 0
+Feb. 03, 2023 2:24:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":1,"card":"Move2"},{"clientID":2,"card":"UTurn"}]}}
+Feb. 03, 2023 2:24:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 1
+Feb. 03, 2023 2:24:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:24:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:24:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"RightTurn"}}
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"RightTurn"}}
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 1
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":1,"rotation":"clockwise"}}
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":8}}
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 8
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 1 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"Move1"}}
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"Move1"}}
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 1
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Reboot","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":0,"y":0}}
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"DrawDamage","messageBody":{"clientID":2,"cards":["Spam","Spam"]}}
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 0 y: 0
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":1,"card":"RightTurn"},{"clientID":2,"card":"Move1"}]}}
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 2
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:24:08 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:24:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"RebootDirection","messageBody":{"direction":"right"}}
+Feb. 03, 2023 2:24:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"Move2"}}
+Feb. 03, 2023 2:24:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Move2"}}
+Feb. 03, 2023 2:24:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 2
+Feb. 03, 2023 2:24:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":0,"y":1}}
+Feb. 03, 2023 2:24:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Reboot","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:24:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":0}}
+Feb. 03, 2023 2:24:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":1,"rotation":"clockwise"}}
+Feb. 03, 2023 2:24:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":1,"rotation":"clockwise"}}
+Feb. 03, 2023 2:24:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"DrawDamage","messageBody":{"clientID":1,"cards":["Spam","Spam"]}}
+Feb. 03, 2023 2:24:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 0
+Feb. 03, 2023 2:24:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:24:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 2 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:24:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:24:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"RebootDirection","messageBody":{"direction":"bottom"}}
+Feb. 03, 2023 2:24:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":1,"rotation":"clockwise"}}
+Feb. 03, 2023 2:24:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"RightTurn"}}
+Feb. 03, 2023 2:24:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"RightTurn"}}
+Feb. 03, 2023 2:24:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 2
+Feb. 03, 2023 2:24:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"PlayerTurning","messageBody":{"clientID":2,"rotation":"clockwise"}}
+Feb. 03, 2023 2:24:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":0,"y":1}}
+Feb. 03, 2023 2:24:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 0 y: 1
+Feb. 03, 2023 2:24:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"DrawDamage","messageBody":{"clientID":2,"cards":["Spam"]}}
+Feb. 03, 2023 2:24:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":2,"card":"RightTurn"},{"clientID":1,"card":"Move2"}]}}
+Feb. 03, 2023 2:24:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 3
+Feb. 03, 2023 2:24:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:24:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:24:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:24:13 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:15 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"Move2"}}
+Feb. 03, 2023 2:24:15 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"Move2"}}
+Feb. 03, 2023 2:24:15 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 3
+Feb. 03, 2023 2:24:15 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":0,"y":3}}
+Feb. 03, 2023 2:24:15 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 0 y: 3
+Feb. 03, 2023 2:24:15 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:24:15 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 3 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:24:15 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"Spam"}}
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Spam"}}
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 3
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Again"}}
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 3
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Move2"}}
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 2
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":1,"x":0,"y":2}}
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 2
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: The again card triggered a Move2
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 2
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"DrawDamage","messageBody":{"clientID":2,"cards":["Spam"]}}
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":2,"card":"Move2"},{"clientID":1,"card":"Again"}]}}
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 4
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 123's new position is x: 0 y: 2
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  456 chose priority register -1
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 4 rounds played,  123 chose priority register -1
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:24:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"PlayCard","messageBody":{"card":"Again"}}
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"Again"}}
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 4
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":2,"card":"Move2"}}
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 456: 3
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"Movement","messageBody":{"clientID":2,"x":0,"y":5}}
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 0 y: 5
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: The again card triggered a Move2
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: 456's new position is x: 0 y: 5
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentCards","messageBody":{"activeCards":[{"clientID":2,"card":"Again"},{"clientID":1,"card":"Again"}]}}
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current round: 5
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Activation Phase finished.
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Upgradephase.
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":1}}
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ExchangeShop","messageBody":{"cards":["AdminPrivilege","AdminPrivilege"]}}
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendExchangeShop
+INFORMATION: No upgrade cards were bought, so changed the cards to: [AdminPrivilege, AdminPrivilege]
+Feb. 03, 2023 2:24:18 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb. 03, 2023 2:24:19 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"BuyUpgrade","messageBody":{"isBuying":false}}
+Feb. 03, 2023 2:24:19 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 456 bought no card this round.
+Feb. 03, 2023 2:24:19 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb. 03, 2023 2:24:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"BuyUpgrade","messageBody":{"isBuying":false}}
+Feb. 03, 2023 2:24:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: 123 bought no card this round.
+Feb. 03, 2023 2:24:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":2}}
+Feb. 03, 2023 2:24:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Active phase set to Programming Phase
+Feb. 03, 2023 2:24:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Handcards drawn for 456 (id 2).
+Feb. 03, 2023 2:24:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Handcards drawn for 123 (id 1).
+Feb. 03, 2023 2:24:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 1 :{"messageType":"PlayCard","messageBody":{"card":"Again"}}
+Feb. 03, 2023 2:24:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"CardPlayed","messageBody":{"clientID":1,"card":"Again"}}
+Feb. 03, 2023 2:24:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: Current Card Register from playCard from 123: 0
+Feb. 03, 2023 2:24:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:26 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:33 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFORMATION: Sending to all clients: {"messageType":"ConnectionUpdate","messageBody":{"clientID":1,"isConnected":false,"action":"Remove"}}
+Feb. 03, 2023 2:24:33 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server removePlayer
+INFORMATION: Lost Connection to:123
+Feb. 03, 2023 2:24:33 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFORMATION: timestamps:1675387468436|1675387458435|10001
+Feb. 03, 2023 2:24:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:24:56 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:25:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:25:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:25:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:25:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:25:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:25:26 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:25:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:25:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:25:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:25:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:25:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:25:56 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:26:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:26:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:26:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:26:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:26:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:26:26 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:26:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:26:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:26:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:26:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:26:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:26:56 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:27:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:27:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:27:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:27:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:27:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:27:26 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:27:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:27:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:27:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:27:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:27:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:27:56 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:28:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:28:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:28:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:28:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:28:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:28:26 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:28:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:28:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:28:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:28:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:28:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:28:56 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:29:01 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:29:06 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:29:11 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:29:16 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:29:21 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:29:26 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:29:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:29:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:29:41 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:29:46 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:29:51 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:29:57 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:30:02 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:30:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:30:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:30:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:30:22 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:30:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:30:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:30:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:30:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:30:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:30:52 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:30:57 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:31:02 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:31:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:31:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:31:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:31:22 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:31:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:31:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:31:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:31:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:31:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:31:52 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:31:57 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:32:02 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:32:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:32:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:32:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:32:22 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:32:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:32:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:32:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:32:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:32:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:32:52 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:32:57 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:33:02 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:33:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:33:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:33:17 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:33:22 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:33:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb. 03, 2023 2:33:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFORMATION: Client: 2 :{"messageType":"Alive","messageBody":{}}
