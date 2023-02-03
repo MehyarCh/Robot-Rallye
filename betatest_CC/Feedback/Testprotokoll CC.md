@@ -1,40 +1,65 @@
 # Installation und Ausführbarkeit
-*Die Installation und Ausführbarkeit hat bei Mac Usern gar nicht funktioniert
-*Bei Windows Laptops lief es problemlos
-*Die Read Me ist sehr gut und ausführlich geschrieben, sodass man alles gut starten kann
-*Man kann dem Spiel nicht mehr beitreten, wenn es schon gestartet hat
-*Die Mindestanzahl an Spieler zu bestimmen ist von Vorteil zu haben.
+* Die Installation und Ausführbarkeit hat bei Mac Usern gar nicht funktioniert
+
+* Bei Windows Laptops lief es problemlos
+
+* Die Read Me ist sehr gut und ausführlich geschrieben, sodass man alles gut starten kann
+
+* Man kann dem Spiel nicht mehr beitreten, wenn es schon gestartet hat
+
+* Die Mindestanzahl an Spieler zu bestimmen ist von Vorteil zu haben.
 # Ablauf des Spiels
 ## Korrektheit
-*Dizzy Highway funktioniert nicht
-*Man kann die Aktivierung der Elemente nicht gut sehen. Die Zeit in der sich jede Bewegung stattfindet ist unangenehm für den Nutzer, denn es bewegt sich viel zu schnell.
-*Nachdem man von der Map rausgekickt wird, wird man geragt in welche Richtung man rebooten will. Leider wird die Richtung beim anderen Client falsch  geupdated.
-*Wenn man auf einen Roboter oder Map einmal clickt, kann man die Auswahl nicht mehr ändern.
+
+* Dizzy Highway funktioniert nicht
+
+* Man kann die Aktivierung der Elemente nicht gut sehen. Die Zeit in der sich jede Bewegung stattfindet ist unangenehm für den Nutzer, denn es bewegt sich viel zu schnell.
+
+* Nachdem man von der Map rausgekickt wird, wird man geragt in welche Richtung man rebooten will. Leider wird die Richtung beim anderen Client falsch  geupdated.
+
+* Wenn man auf einen Roboter oder Map einmal clickt, kann man die Auswahl nicht mehr ändern.
 ## Zuverlässigkeit
-*Es gibt noch einige Fehlermeldungen, wo das Spiel crashed.
-*Der Chat ist nicht zuverlässig, und crashed noch in vielen Fällen.
-*Manchmal verschwindet einfach der Client.
-*Probleme manchmal bei der Map Auswahl.
-*Wenn man die Meinung ändert, ob man KI's will oder nicht funktioniert das Programm nicht mehr.
-*Die Handkarten werden strategisch immer richtig angezeigt, zum Beispiel kein "Again" möglich im ersten Register, keine Karte wo man dann durch eine Wand muss. Außer im Fall wo der Timer
+
+* Es gibt noch einige Fehlermeldungen, wo das Spiel crashed.
+
+* Der Chat ist nicht zuverlässig, und crashed noch in vielen Fällen.
+
+* Manchmal verschwindet einfach der Client.
+
+* Probleme manchmal bei der Map Auswahl.
+
+* Wenn man die Meinung ändert, ob man KI's will oder nicht funktioniert das Programm nicht mehr.
+
+* ie Handkarten werden strategisch immer richtig angezeigt, zum Beispiel kein "Again" möglich im ersten Register, keine Karte wo man dann durch eine Wand muss. Außer im Fall wo der Timer
 abläuft und man random Karten bekommt, kann die Again Karte ins erste Register gelegt werden.
 
 ## Benutzerfreundlichkeit
-*Es wird alles gründlich erklärt mit vielen Info Buttons und extra Erklärungen, was sehr angenehm für den User ist.
-*Es gibt eine Option für Dark Mode, was sehr benutzerfreundlich wäre, leider funktioniert sie noch nicht.
-*Es gibt kein Ready Button nachdem man einen Roboter auswählt, was den User verwirren könnte.
-*Die Starting Point Auswahl ist verwirrend, Starting Point wird über die Koordinaten gewählt. (Mausklick auf das Feld selbst wäre besser.)
-*Fehlendes Feedback bei Buttonclicks und Buttonhovers (kleiner Effekt)
-*Viele unnötige Fenster und Popups, bei vielen kleinen Aktionen die man auf das selbe Fenster bringen könnte (z.B. Timer, evtl. Shop)
-*Wenn ein Spieler dran ist, steht bei ihm "It's your turn", was gut ist.
+
+* Es wird alles gründlich erklärt mit vielen Info Buttons und extra Erklärungen, was sehr angenehm für den User ist.
+
+* Es gibt eine Option für Dark Mode, was sehr benutzerfreundlich wäre, leider funktioniert sie noch nicht.
+
+* Es gibt kein Ready Button nachdem man einen Roboter auswählt, was den User verwirren könnte.
+
+* Die Starting Point Auswahl ist verwirrend, Starting Point wird über die Koordinaten gewählt. (Mausklick auf das Feld selbst wäre besser.)
+
+* Fehlendes Feedback bei Buttonclicks und Buttonhovers (kleiner Effekt)
+
+* Viele unnötige Fenster und Popups, bei vielen kleinen Aktionen die man auf das selbe Fenster bringen könnte (z.B. Timer, evtl. Shop)
+
+* Wenn ein Spieler dran ist, steht bei ihm "It's your turn", was gut ist.
 ## Fehlermeldung
 *Bei Fehlermeldungen crashed das ganze Spiel und nichts funktioniert.
 
 # Sonstiges
-*Die Option mit der Menu mit Musik, Dark Mode und Info ist sehr cool, hoffentlich werden diese Optionen noch funktionieren.
-*Es gibt ein Undo button, dieser sollte ausgegraut werden, wenn er gerade keine Funktion hat.
-*Wenn 2 KI's gegeneinander spielen, suchen sie immer Dizzy Highway aus, was nicht funktioniert.
-*Die UI beim Server und Client kombinieren wäre gut, da man sonst sehr viele Fenster offen hat beim Spiel, vor allem da sich das Serverfenster nicht schließt nach Start.
+
+* Die Option mit der Menu mit Musik, Dark Mode und Info ist sehr cool, hoffentlich werden diese Optionen noch funktionieren.
+
+* Es gibt ein Undo button, dieser sollte ausgegraut werden, wenn er gerade keine Funktion hat.
+
+* Wenn 2 KI's gegeneinander spielen, suchen sie immer Dizzy Highway aus, was nicht funktioniert.
+
+* Die UI beim Server und Client kombinieren wäre gut, da man sonst sehr viele Fenster offen hat beim Spiel, vor allem da sich das Serverfenster nicht schließt nach Start.
 
 # Protokolfragen
 ## Eröffnungsphase
@@ -45,7 +70,7 @@ abläuft und man random Karten bekommt, kann die Again Karte ins erste Register 
   Aber nachdem man den gleichen Roboter auswählt, bekommt man eine Fehlermeldung. Wäre besser, wenn man den von Anfang an nicht clicken könnte.
 
 * Ist eine Verbindung zu einem bereits laufenden Spiel unterbunden? Nein, die Möglichkeit besteht nicht.
-*
+
 * Ist Chatten in der Lobby möglich? Ja aber wenn man in der Lobby chatten will, öffnet sich ein extra Pop-up. Aber Zum Beispiel wenn ein Client im Chat ist und etwas schreibt
   und der andere Client, noch nicht drin ist und später reinkommt, crashed dann sein Server, wenn er den Chat betritt und er kann die Nachrichten nicht sehen.
 
