@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.jar.Attributes;
 
 public class AIClient extends Thread {
 
@@ -135,8 +136,10 @@ public class AIClient extends Thread {
             JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
             msg = messageJsonAdapter.fromJson(message);
         }
-
-
+        if (msg.getMessageType().equals("Alive")) {
+            return;
+        }
+        System.out.println(AIName + "(AI)" + msg.getMessageType() + ": " + msg.getMessageBody());
         switch (msg.getMessageType()) {
             case "HelloClient":
                 //TODO: disconnect if protocol isnt the same as client.
@@ -166,19 +169,13 @@ public class AIClient extends Thread {
                 aiNames.add(AIName);
                 JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);          //TODO:replace ClientID with player figure!!!!!
 
-                if (robotIDs.size() == 0) {
-                    robotID = 1;
-                    robotIDs.add(robotID);
-                    sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(AIName, 1)));
-                } else {
-                    for (int i = 2; i <= 5; i++) {
-                        if (!robotIDs.contains(i)) {
-                            robotID = i;
-                            sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(AIName, robotID)));
-                            break;
-                        }
-                    }
 
+                for (int i = 1; i <= 6; i++) {
+                    if (!robotIDs.contains(i)) {
+                        robotID = i;
+                        sendMessage("PlayerValues", playerValuesJsonAdapter.toJson(new PlayerValues(AIName, robotID)));
+                        break;
+                    }
                 }
 
 
@@ -266,11 +263,11 @@ public class AIClient extends Thread {
                     if (cost <= energyReserve) {
                         energyReserve -= cost;
                         sendMessage("BuyUpgrade", buyUpgradeJsonAdapter1.toJson(new BuyUpgrade(true, upgradeCard)));
-                        break;
+                        return;
                     }
 
                 }
-
+                sendMessage("BuyUpgrade", buyUpgradeJsonAdapter1.toJson(new BuyUpgrade(false, "")));
 
                 break;
             case "UpgradeBought":

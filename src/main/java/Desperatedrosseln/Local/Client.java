@@ -42,6 +42,7 @@ public class Client implements Runnable {
     private List<String> upgrades = new ArrayList<>();
     public int energyReserve;
     private int regIndex = -1;
+    private int phase;
 
     public boolean isGotSentMaps() {
         return gotSentMaps;
@@ -128,10 +129,11 @@ public class Client implements Runnable {
             msg = messageJsonAdapter.fromJson(message);
         }
 
-        if (!msg.getMessageType().equals("Alive")) {
-            logger.trace(msg.getMessageType() + ": " + msg.getMessageBody());
+        if (msg.getMessageType().equals("Alive")) {
+            return;
         }
-
+        logger.trace(msg.getMessageType() + ": " + msg.getMessageBody());
+        System.out.println(msg.getMessageType() + ": " + msg.getMessageBody());
         switch (msg.getMessageType()) {
             case "HelloClient":
                 //TODO: disconnect if protocol isnt the same as client.
@@ -285,6 +287,19 @@ public class Client implements Runnable {
             case "ActivePhase":
                 JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
                 ActivePhase activePhase = activePhaseJsonAdapter.fromJson(msg.getMessageBody());
+                phase = activePhase.getPhase();
+                switch (phase){
+                    case 1:
+                        regIndex = -1;
+                        mainController.startUpgradePhase();
+                        break;
+                    case 2:
+                        mainController.startProgrammingPhase();
+                        break;
+                    case 3:
+                        break;
+                    default:
+                }
                 break;
             case "Error":
                 if (mainController != null) {
@@ -433,9 +448,14 @@ public class Client implements Runnable {
     private void playCard() {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<PlayCard> playCardJsonAdapter = moshi.adapter(PlayCard.class);
-        PlayCard playCard = new PlayCard(mainController.getRegisterValues().get(++regIndex));
-        sendMessage("PlayCard", playCardJsonAdapter.toJson(playCard));
-        mainController.addChatMessage(playCard.getCard() + " played.");
+        if(phase == 3){
+            PlayCard playCard = new PlayCard(mainController.getRegisterValues().get(++regIndex));
+            sendMessage("PlayCard", playCardJsonAdapter.toJson(playCard));
+            mainController.addChatMessage(playCard.getCard() + " played.");
+        }else{
+            mainController.addChatMessage("Cards can only be played in activation phase.");
+        }
+
     }
 
     public List<String> getCardsInHand() {

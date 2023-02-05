@@ -16,7 +16,6 @@ public class Player {
     private Robot robot;
     private List<Card> deck = new ArrayList<>(20);
     private boolean ready = false;
-    private boolean firstToReady = false;
 
     public List<Card> getHand() {
         return hand;
@@ -24,7 +23,7 @@ public class Player {
 
     private int energyReserve = 5;
     private List<Card> hand = new ArrayList<>();
-    private Card[] registers = new Card[5];
+    private Card[] register = new Card[5];
     private int registerTrack = 0;
     private List<Card> discarded = new ArrayList<>();
     private ArrayList<String> cardsYouGotNow = new ArrayList<>();
@@ -37,8 +36,8 @@ public class Player {
 
     private int distance;
 
-    public Card[] getRegisters() {
-        return registers;
+    public Card[] getRegister() {
+        return register;
     }
 
     public int getRegisterTrack() {
@@ -50,7 +49,7 @@ public class Player {
     }
 
     public Card getRegisterIndex(int index) {
-        return registers[index];
+        return register[index];
     }
 
     public List<Card> getDiscarded() {
@@ -158,7 +157,7 @@ public class Player {
 
     public void chooseProgrammingCards(Card[] cards) {
         //assert cards size == 5
-        registers = cards;
+        register = cards;
     }
 
     /**
@@ -169,7 +168,7 @@ public class Player {
      * @param register the register to put the card in
      */
     public void selectCard(int number, int register) {
-        this.registers[register] = hand.get(number);
+        this.register[register] = hand.get(number);
         hand.add(number, null);
         hand.remove(number + 1);
     }
@@ -182,7 +181,7 @@ public class Player {
         logger.warn("The Hand before the Card was put back: " + hand);
         while (i < hand.size()) {
             if (hand.get(i) == null) {
-                hand.set(i, registers[register]);
+                hand.set(i, this.register[register]);
                 break;
             } else {
                 i++;
@@ -220,10 +219,10 @@ public class Player {
         } else {
             card = getCardFromHand(cardString);
         }
-        registers[register] = card;
+        this.register[register] = card;
         int cardsnotnull = 0;
 
-        for (Card cardae : registers) {
+        for (Card cardae : this.register) {
             if (cardae != null) {
                 cardsnotnull++;
             }
@@ -233,7 +232,7 @@ public class Player {
     }
 
     public int getRegisterSize() {
-        return registers.length;
+        return register.length;
     }
 
     /**
@@ -273,7 +272,9 @@ public class Player {
 
         for (Card card :
                 hand) {
-            cards.add(card.toString());
+            if(card != null){
+                cards.add(card.toString());
+            }
         }
         return cards;
     }
@@ -292,7 +293,7 @@ public class Player {
 
     public boolean checkRegisterContainsCard(String cardString) {
         for (Card card :
-                registers) {
+                register) {
             if(card != null){
                 if (card.toString().equals(cardString)) {
                     return true;
@@ -363,6 +364,20 @@ public class Player {
     }
 
     public void resetRound() {
+
+        for (int i = 0; i < hand.size(); i++) {
+            if(hand.get(i) != null){
+                discarded.add(hand.get(i));
+                hand.set(i,null);
+            }
+        }
+        registerTrack = 0;
+        for (int i = 0; i < register.length; i++) {
+            if(register[i] != null){
+                discarded.add(register[i]);
+                register[i] = null;
+            }
+        }
 
     }
 }

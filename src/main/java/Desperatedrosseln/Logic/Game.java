@@ -7,7 +7,6 @@ import Desperatedrosseln.Logic.AI.AIClient;
 import Desperatedrosseln.Logic.Cards.Card;
 import Desperatedrosseln.Logic.Cards.Damage.Spam;
 import Desperatedrosseln.Logic.Cards.Damagecard;
-import Desperatedrosseln.Logic.Cards.Programming.PowerUp;
 import Desperatedrosseln.Logic.Cards.Upgrade.*;
 import Desperatedrosseln.Logic.Cards.UpgradeCard;
 import Desperatedrosseln.Logic.Elements.Position;
@@ -238,6 +237,7 @@ public class Game {
 
         isRunning = false;
         if (!firstPlayerGotCards) {
+            sortPlayersByDistance();
             decideNextPlayer();
             initDeckOfUpgradeCards();
             for (int i = 0; i < players.size(); i++) {
@@ -498,7 +498,7 @@ public class Game {
                 case "Spam" -> {
                     Card top_of_deck = curr.drawCardFromDeck();
                     //draw first card from deck and play it in register, then put back spam card in spampile
-                    curr.getRegisters()[register_number] = top_of_deck;
+                    curr.getRegister()[register_number] = top_of_deck;
                     top_of_deck.playCard(curr.getRobot());
                     spampile.add(card);
 
@@ -529,7 +529,7 @@ public class Game {
                     Card top_of_deck = curr.drawCardFromDeck();
                     //draw first card from deck and play it in register, draw 2 spam cards add them to deck,
                     //then put back trojan card in trojanpile
-                    curr.getRegisters()[register_number] = top_of_deck;
+                    curr.getRegister()[register_number] = top_of_deck;
                     top_of_deck.playCard(curr.getRobot());
                     trojanpile.add(card);
                     drawSpamCard(curr, 2);
@@ -538,7 +538,7 @@ public class Game {
                 case "Virus" -> {
                     Card top_of_deck = curr.drawCardFromDeck();
                     //draw first card from deck and play it in register, then put back virus card in viruspile
-                    curr.getRegisters()[register_number] = top_of_deck;
+                    curr.getRegister()[register_number] = top_of_deck;
                     top_of_deck.playCard(curr.getRobot());
                     viruspile.add(card);
                     for (Player player : sixFieldRadius(curr.getID(), curr.getRobot().getPosition())) {
@@ -702,7 +702,7 @@ public class Game {
         //add the current player to the list of rebooting players
         rebooted_players.add(curr);
         //put all cards that are left in the register of mentioned player onto his discardpile without activating them
-        for (Card card : curr.getRegisters()) {
+        for (Card card : curr.getRegister()) {
             curr.getDiscarded().add(card);
         }
         //send reboot protocoll message to all clients
@@ -1251,18 +1251,25 @@ public class Game {
 
         roundNumber++;
         current_register = 0;
+        sortPlayersByDistance();
+        current_player_index = 0;
+        decideNextPlayer();
+
+        JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
+        phase = 1;
+        String json = activePhaseJsonAdapter.toJson(new ActivePhase(phase));
         if (cardsInShop.size() == players.size()) {                                                          //ToDo: update it somewhere someday
             cardsInShop = new ArrayList<>();
             isShopUntouched = true;
-            phase = 1;
+
+            broadcastMessage("ActivePhase",json);
             runShop();
             return;
         }
         while (cardsInShop.size() < players.size()) {
             cardsInShop.add(drawFromDeckOfUpgradeCards());
         }
-
-        phase = 1;
+        broadcastMessage("ActivePhase",json);
         runShop();
     }
 

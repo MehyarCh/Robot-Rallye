@@ -227,6 +227,7 @@ public class MainController {
         mapController.setClient(client);
         setProfileIcon();
         handleUpgradeClick();
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -492,7 +493,6 @@ public class MainController {
 
         for (StackPane card : handCards) {
             card.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-
                 int firstFreeRegister = registerValues.indexOf(null);
                 int index = handCards.indexOf(mouseEvent.getSource());
 
@@ -550,6 +550,7 @@ public class MainController {
         BuyUpgrade buyUpgrade = new BuyUpgrade(!Objects.equals(selectedUpgrade, "null"), selectedUpgrade);
         client.sendMessage("BuyUpgrade", selectedCardJsonAdapter.toJson(buyUpgrade));
         clearUpgradeCards();
+        upgradeButton.setDisable(true);
         //ToDo: empty shop, check Energy Reserve before buying
     }
 
@@ -604,8 +605,6 @@ public class MainController {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                clearUpgradeCards();
-
                 for (int i = 0; i < exchangeValues.size(); i++) {
                     String cardName = exchangeValues.get(i);
                     ImageView imageView = loadUpgradeCard(cardName);
@@ -634,4 +633,35 @@ public class MainController {
     public List<String> getRegisterValues() {
         return registerValues;
     }
+
+    public void startProgrammingPhase(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                isProgrammingDone = false;
+                registerValues.clear();
+                handValues.clear();
+
+                for (StackPane card:
+                        registerCards) {
+                    card.getChildren().clear();
+                }
+                for (StackPane card:
+                        handCards) {
+                    card.getChildren().clear();
+                }
+            }
+        });
+
+    }
+
+    public void startUpgradePhase(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                upgradeButton.setDisable(false);
+            }
+        });
+    }
+
 }

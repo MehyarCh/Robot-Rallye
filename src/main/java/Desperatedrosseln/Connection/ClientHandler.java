@@ -44,6 +44,7 @@ public class ClientHandler implements Runnable {
     public Player getPlayer() {
         return player;
     }
+
     private List<String> maps = new ArrayList<>();
 
     private static final Logger logger = LogManager.getLogger();
@@ -95,14 +96,12 @@ public class ClientHandler implements Runnable {
 
         Message message = messageJsonAdapter.fromJson(msg);
 
-        if (!message.getMessageType().equals("Alive")) {
-            if (isAI) {
-                logger.info("AI-message" + message.getMessageType() + ": " + message.getMessageBody());
-            } else {
-                logger.info(message.getMessageType() + ": " + message.getMessageBody());
-            }
-
+        if (message.getMessageType().equals("Alive")) {
+            return;
         }
+
+        logger.trace(message.getMessageType() + ": " + message.getMessageBody());
+        System.out.println(clientName + ": " + message.getMessageType() + " --- " + message.getMessageBody());
 
         switch (message.getMessageType()) {
 
@@ -223,12 +222,10 @@ public class ClientHandler implements Runnable {
             case "PlayCard":
 
                 JsonAdapter<PlayCard> playCardJsonAdapter = moshi.adapter(PlayCard.class);
-                PlayCard playCard =playCardJsonAdapter.fromJson(message.getMessageBody());
-                if(player.checkUpgrade(playCard.getCard()) || player.checkRegisterContainsCard(playCard.getCard())){
-                    JsonAdapter<CardPlayed> cardPlayedJsonAdapter = moshi.adapter(CardPlayed.class);
-                    broadcastMessage("CardPlayed",cardPlayedJsonAdapter.toJson(new CardPlayed(clientID, playCard.getCard())));
+                PlayCard playCard = playCardJsonAdapter.fromJson(message.getMessageBody());
+                if (player.checkUpgrade(playCard.getCard()) || player.checkRegisterContainsCard(playCard.getCard())) {
                     game.walkActivationPhase(player, playCard.getCard());
-                }else {
+                } else {
                     //ToDO
                     sendErrorMessage();
                 }
@@ -243,26 +240,28 @@ public class ClientHandler implements Runnable {
                 boolean isBuying = buyUpgradeJsonAdapter.fromJson(message.getMessageBody()).isBuying();
 
 
-                Card card = null;
-                switch (cardString) {
-                    case "AdminPrivilege":
-                        card = new AdminPrivilege();
-                        game.addUpgrade(player, card);
-                        break;
-                    case "MemorySwap":
-                        card = new MemorySwap();
-                        game.addUpgrade(player, card);
-                        break;
-                    case "RearLaser":
-                        card = new RearLaser();
-                        game.addUpgrade(player, card);
-                        break;
-                    case "SpamBlocker":
-                        card = new SpamBlocker();
-                        game.addUpgrade(player, card);
-                        break;
-                }
+
+
                 if (isBuying) {                                     //ToDo
+                    Card card = null;
+                    switch (cardString) {
+                        case "AdminPrivilege":
+                            card = new AdminPrivilege();
+                            game.addUpgrade(player, card);
+                            break;
+                        case "MemorySwap":
+                            card = new MemorySwap();
+                            game.addUpgrade(player, card);
+                            break;
+                        case "RearLaser":
+                            card = new RearLaser();
+                            game.addUpgrade(player, card);
+                            break;
+                        case "SpamBlocker":
+                            card = new SpamBlocker();
+                            game.addUpgrade(player, card);
+                            break;
+                    }
                     game.isShopUntouched = false;
                     game.shopRec = 0;
                 } else {
@@ -271,7 +270,7 @@ public class ClientHandler implements Runnable {
                     }
                 }
                 //ToDo: Apply the effects
-                game.runStep();
+                game.runUpgradePhase();
                 // game.runUpgradePhase();
 
                 break;
@@ -282,7 +281,7 @@ public class ClientHandler implements Runnable {
 
 
                 if (++game.startingPositionsChosen == clients.size()) {
-                   // game.runUpgradePhase();
+                    // game.runUpgradePhase();
                     game.runStep();
                 }
 
@@ -306,16 +305,16 @@ public class ClientHandler implements Runnable {
                 } else {
                     broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID, selectedCard.getRegister(), true)));
                     logger.trace(game.selectionFinished());
-                    if(game.selectionFinished()) {
+                    if (game.selectionFinished()) {
                         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
                         ActivePhase activePhase3 = new ActivePhase(3);
                         broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
                         game.runStep();
                         String hand = "{";
-                        for(ClientHandler client: clients){
+                        for (ClientHandler client : clients) {
                             hand += client.getClientID();
-                            for(int i = 0; i<5; i++) {
-                                hand = hand + " " + client.getPlayer().getRegisters()[i] + ",";
+                            for (int i = 0; i < 5; i++) {
+                                hand = hand + " " + client.getPlayer().getRegister()[i] + ",";
                             }
                             hand = hand + "}";
                             logger.warn(hand);
