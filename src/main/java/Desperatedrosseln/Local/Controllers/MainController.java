@@ -394,7 +394,7 @@ public class MainController {
             @Override
             public void run() {
 
-                logger.info(message);
+                logger.info("sssssssssssss" + message);
 
                 String myName = client.getName();
                 logger.info(myName);
@@ -415,7 +415,10 @@ public class MainController {
                 messageBox.getStyleClass().add("message");
                 if (Objects.equals(myName, messageName)) {
                     messageBox.getStyleClass().add("message--secondary");
-                } else {
+                } else if (Objects.equals("Info", messageName) || Objects.equals("ERROR", messageName)) {
+                    messageBox.getStyleClass().add("message--server");
+                }
+                else {
                     messageBox.getStyleClass().add("message--primary");
                 }
                 messageWrapper.getChildren().add(messageLabel);

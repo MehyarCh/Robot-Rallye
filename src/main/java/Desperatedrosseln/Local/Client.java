@@ -430,7 +430,7 @@ public class Client implements Runnable {
                 if (isMyTurn) {
                     playCard();
                 } else {
-                    mainController.addChatMessage("not your Turn.");
+                    mainController.addChatMessage("ERROR" + ":" + "not your Turn.");
                 }
 
             } else if (message.startsWith("/dc")) {
@@ -451,9 +451,9 @@ public class Client implements Runnable {
         if(phase == 3){
             PlayCard playCard = new PlayCard(mainController.getRegisterValues().get(++regIndex));
             sendMessage("PlayCard", playCardJsonAdapter.toJson(playCard));
-            mainController.addChatMessage(playCard.getCard() + " played.");
+            mainController.addChatMessage("Info" + ":" + playCard.getCard() + " played.");
         }else{
-            mainController.addChatMessage("Cards can only be played in activation phase.");
+            mainController.addChatMessage("ERROR" + ":" + "Cards can only be played in activation phase.");
         }
 
     }
