@@ -2,8 +2,6 @@
 
 .root {
     -fx-font-family: 'Comfortaa', cursive;
-    -fx-pref-height: 360;
-    -fx-pref-width: 720;
 }
 
 .scroll-pane > .viewport {
@@ -13,6 +11,8 @@
 .scroll-pane {
     -fx-background-color: transparent;
 }
+
+
 
 .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track{
@@ -68,6 +68,10 @@
 
 }
 
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
 .border-radius {
     -fx-border-style: solid;
     -fx-border-width: 1px;
@@ -110,6 +114,10 @@
     -fx-text-fill: #F6019D;
 }
 
+.color--secondary {
+    -fx-text-fill: #2de2e6;
+}
+
 .headline-1 {
     -fx-font-size: 16px;
     -fx-font-weight: 300;
@@ -136,9 +144,9 @@
 .text-input {
     -fx-pref-width: 100%;
     -fx-pref-height: 36px;
-    -fx-border-style: hidden none solid none;
+    -fx-border-style: hidden hidden solid hidden;
     -fx-background-color: transparent;
-    -fx-border-width: 1px;
+    -fx-border-width: 2px;
     -fx-font-size: 14px;
     -fx-font-weight: 300;
 }
@@ -146,6 +154,21 @@
 .text-input--primary {
     -fx-border-color: rgb(246, 1, 157);
     -fx-text-fill: #ffffff;
+}
+
+.text-input--secondary {
+    -fx-border-color: #2de2e6;
+    -fx-text-fill: #ffffff;
+}
+
+.text-input--tertiary {
+    -fx-border-color: #2d46e6;
+    -fx-text-fill: #ffffff;
+}
+
+.text-input--primary--inverse {
+    -fx-border-color: #ffffff;;
+    -fx-text-fill: rgb(246, 1, 157);
 }
 
 .textflow > Text {
@@ -175,10 +198,19 @@
     -fx-background-insets: 0 0 0 8px;
 }
 
+
+
+
+
+
+
 .button {
     -fx-border-style: none;
     -fx-font-size: 12px;
     -fx-font-weight: 700;
+    -fx-border-radius: 0px;
+    -fx-background-color: transparent;
+    -fx-border-width: 2px;
 }
 
 .login-button {
@@ -215,14 +247,48 @@
 
 .button--primary {
     -fx-border-color: #F6019D;
-    -fx-border-radius: 4px;
-    -fx-background-color: transparent;
+    -fx-text-fill: #fff;
+}
+
+.button--secondary {
+    -fx-border-color: #2de2e6;
     -fx-text-fill: #fff;
 }
 
 .button--disabled {
     -fx-border-color: #333;
-    -fx-border-radius: 4px;
-    -fx-background-color: transparent;
     -fx-text-fill: #333;
+    -fx-background-color: transparent;
+
 }
+
+.border-effect--full {
+    -fx-border-style: solid;
+    -fx-border-width: 2px;
+}
+
+.border-effect {
+    -fx-border-style: hidden solid;
+    -fx-border-width: 2px;
+}
+
+.border-effect--primary {
+    -fx-border-color: rgb(246, 1, 157);
+}
+
+.border-effect--secondary {
+    -fx-border-color: #2de2e6;
+}
+
+.alignment--center {
+    -fx-alignment: center !important;
+}
+
+.alignment--bottom-center {
+    -fx-alignment: bottom-center !important;
+}
+
+.alignment--bottom-left {
+    -fx-alignment: bottom-left !important;
+}
+

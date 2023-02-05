@@ -13,13 +13,17 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,6 +35,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static Desperatedrosseln.Local.Controllers.LoginController.client;
 
@@ -46,7 +51,7 @@ public class LobbyController {
     private boolean hasSelectedMap = false;
 
     @FXML
-    private VBox center;
+    private VBox overlay;
 
     @FXML
     private Button playerIcon1;
@@ -64,10 +69,18 @@ public class LobbyController {
     private ToggleButton readyButton;
     @FXML
     private TextField chat_input_lobby;
+
+    @FXML
+    private VBox messageBoard;
+
+    @FXML
+    private Button chatButton;
     @FXML
     private TextFlow chatlog_lobby;
     @FXML
-    private ChoiceBox<String> mapSelection;
+    private HBox mapSelection;
+    @FXML
+    private GridPane sidebar;
     @FXML
     private HBox mapOptionWrapper;
     @FXML
@@ -121,14 +134,15 @@ public class LobbyController {
         client.setLobbyController(this);
         client.setLobbyControllerInitialized(true);
         client.sendHelloServer();
+
         this.stage = stage;
         stage.setScene(scene);
-        stage.setResizable(false);
-        stage.setScene(scene);
+        stage.setMaximized(false);
+        stage.setMaximized(true);
+        glow();
+        overlay.requestFocus();
         //playersonline.setText("Players currently in lobby: " );
         initRobotIconsList();
-        center.requestFocus();
-        stage.show();
         disableTakenRobots(client.getRobotIDs());
     }
 
@@ -153,6 +167,8 @@ public class LobbyController {
     @FXML
     public void onButtonClicked(ActionEvent event) throws IOException {
         Button clickedButton = (Button) event.getSource();
+
+        clickedButton.setStyle("-fx-border-width: 3px;");
 
         int selectedRobot = 0;
         switch (clickedButton.getId()) {
@@ -281,7 +297,34 @@ public class LobbyController {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                chatlog_lobby.getChildren().add(new Text(message + "\n"));
+
+                logger.info(message);
+
+                String myName = client.getName();
+                logger.info(myName);
+
+                String messageName = message.split(":")[0].trim();
+                String messageContent = message.split(":")[1].trim();
+                logger.info(messageName);
+
+                VBox messageWrapper = new VBox();
+                messageWrapper.getStyleClass().add("message-wrapper");
+
+                Label messageLabel = new Label(messageName);
+                messageLabel.getStyleClass().add("message-label");
+                Label messageText = new Label(messageContent);
+                messageText.getStyleClass().add("message-text");
+                HBox messageBox = new HBox(messageText);
+                addGlow(messageBox, 0.2);
+                messageBox.getStyleClass().add("message");
+                if (Objects.equals(myName, messageName)) {
+                    messageBox.getStyleClass().add("message--secondary");
+                } else {
+                    messageBox.getStyleClass().add("message--primary");
+                }
+                messageWrapper.getChildren().add(messageLabel);
+                messageWrapper.getChildren().add(messageBox);
+                messageBoard.getChildren().add(messageWrapper);
             }
         });
     }
@@ -294,6 +337,7 @@ public class LobbyController {
 
     @FXML
     public void onReady() {
+        logger.debug("onReady");
         JsonAdapter<SetStatus> setStatusJsonAdapter = moshi.adapter(SetStatus.class);
         client.sendMessage("SetStatus", setStatusJsonAdapter.toJson(new SetStatus(readyButton.isSelected())));
     }
@@ -332,13 +376,9 @@ public class LobbyController {
         mapOptionImage.setPreserveRatio(true);
         mapOptionImage.setFitHeight(62);
         mapOptionImage.getStyleClass().add("map-option-image");
-        mapOptionImage.getStyleClass().add("border-radius");
-        mapOptionImage.getStyleClass().add("border-radius--sm");
 
         StackPane mapOption = new StackPane(mapOptionImage, mapOptionOverlay);
         mapOption.getStyleClass().add("map-option");
-        mapOption.getStyleClass().add("border-radius");
-        mapOption.getStyleClass().add("border-radius--sm");
 
         mapOption.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             selectedMap = mapName;
@@ -362,7 +402,53 @@ public class LobbyController {
         return this.selectedRobot;
     }
 
+    @FXML
+    public void glow(){
+        addBgGlow();
+        addElementGlow();
+    }
 
+    @FXML
+    private void addBgGlow() {
+        DropShadow pinkGlow = new DropShadow();
+        pinkGlow.setOffsetY(0f);
+        pinkGlow.setOffsetX(0f);
+        pinkGlow.setColor(Color.rgb(246, 1, 157));
+        pinkGlow.setWidth(45);
+        pinkGlow.setHeight(2);
 
+        overlay.setEffect(pinkGlow);
+        mapSelection.setEffect(pinkGlow);
+
+        DropShadow blueGlow = new DropShadow();
+        blueGlow.setOffsetY(0f);
+        blueGlow.setOffsetX(0f);
+        blueGlow.setColor(Color.rgb(45, 226, 230));
+        blueGlow.setWidth(45);
+        blueGlow.setHeight(2);
+        sidebar.setEffect(blueGlow);
+    }
+
+    @FXML
+    private void addElementGlow() {
+        addGlow(readyButton, 0.8);
+        addGlow(chat_input_lobby, 0.6);
+        addGlow(chatButton, 0.8);
+
+        for (Button button : robotIcons) {
+            addGlow(button, 0.5);
+        }
+
+    }
+
+    private void addGlow(Node node, double level) {
+        if (level >= 0 && level <= 1) {
+            Glow glow = new Glow();
+            glow.setLevel(level);
+            node.setEffect(glow);
+        } else {
+            throw new RuntimeException("Value of level has to be a double between 0 and 1");
+        }
+    }
 }
 

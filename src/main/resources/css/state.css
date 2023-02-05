@@ -2,12 +2,13 @@
     -fx-background-color: #F6019D;
 }
 
-.send-button:hover {
-    -fx-background-image: url("../images/sendButton_green.png");
+.button--secondary:hover, .button--secondary:selected {
+    -fx-border-color: #fff;
+    -fx-text-fill: #fff;
 }
 
-.tile:hover {
-    -fx-background-color: #ddd;
+.send-button:hover {
+    -fx-background-image: url("../images/sendButton_green.png");
 }
 
 .map-option-overlay:hover{
@@ -20,10 +21,6 @@
 
 .player-icon:hover, .player-icon:focused, .player-icon:selected {
     -fx-border-width: 3px;
-}
-
-.player-icon:focused {
-
 }
 
 #player-icon--1:disabled{
@@ -50,9 +47,7 @@
     -fx-background-image: url("../images/robots/redDisabled.jpg");
 }
 
-#readyButton:selected{
-    -fx-background-color: #F6019D;
-}
+
 
 #player-icon--1:focused{
     -fx-background-image: url("../images/robots/brown.jpg");

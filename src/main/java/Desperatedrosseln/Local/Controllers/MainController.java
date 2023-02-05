@@ -64,6 +64,8 @@ public class MainController {
     @FXML
     private TextField chat_input;
     @FXML
+    private VBox messageBoard;
+    @FXML
     private TextFlow chatlog;
     @FXML
     private StackPane registerCardOne;
@@ -232,11 +234,8 @@ public class MainController {
             @Override
             public void run() {
                 stage.setScene(scene);
-                stage.setMinHeight(720);
-                stage.setMinWidth(1280);
+                stage.setMaximized(false);
                 stage.setMaximized(true);
-                stage.setResizable(true);
-                stage.show();
                 startTimer();
             }
         });
@@ -245,25 +244,12 @@ public class MainController {
     @FXML
     private void setProfileIcon() {
         switch (selectedRobot) {
-            case 1:
-                profileIcon.setId("player-icon--1");
-                break;
-            case 2:
-                profileIcon.setId("player-icon--2");
-                break;
-            case 3:
-                profileIcon.setId("player-icon--3");
-                break;
-            case 4:
-                profileIcon.setId("player-icon--4");
-                break;
-            case 5:
-                profileIcon.setId("player-icon--5");
-                break;
-            case 6:
-                profileIcon.setId("player-icon--6");
-                break;
-
+            case 1 -> profileIcon.setId("player-icon--1");
+            case 2 -> profileIcon.setId("player-icon--2");
+            case 3 -> profileIcon.setId("player-icon--3");
+            case 4 -> profileIcon.setId("player-icon--4");
+            case 5 -> profileIcon.setId("player-icon--5");
+            case 6 -> profileIcon.setId("player-icon--6");
         }
     }
 
@@ -407,7 +393,34 @@ public class MainController {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                chatlog.getChildren().add(new Text(message + "\n"));
+
+                logger.info(message);
+
+                String myName = client.getName();
+                logger.info(myName);
+
+                String messageName = message.split(":")[0].trim();
+                String messageContent = message.split(":")[1].trim();
+                logger.info(messageName);
+
+                VBox messageWrapper = new VBox();
+                messageWrapper.getStyleClass().add("message-wrapper");
+
+                Label messageLabel = new Label(messageName);
+                messageLabel.getStyleClass().add("message-label");
+                Label messageText = new Label(messageContent);
+                messageText.getStyleClass().add("message-text");
+                HBox messageBox = new HBox(messageText);
+                //addGlow(messageBox, 0.8);
+                messageBox.getStyleClass().add("message");
+                if (Objects.equals(myName, messageName)) {
+                    messageBox.getStyleClass().add("message--secondary");
+                } else {
+                    messageBox.getStyleClass().add("message--primary");
+                }
+                messageWrapper.getChildren().add(messageLabel);
+                messageWrapper.getChildren().add(messageBox);
+                messageBoard.getChildren().add(messageWrapper);
             }
         });
     }
