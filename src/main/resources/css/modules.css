@@ -3,8 +3,6 @@
 
 
 .scene--small {
-    -fx-pref-height: 500px;
-    -fx-pref-width: 960px;
     -fx-padding: 48px;
     -fx-alignment: center;
     -fx-background-repeat: stretch;
@@ -13,6 +11,7 @@
 
 .logo-wrapper {
     -fx-alignment: center;
+    -fx-padding: 0 !important;
 }
 
 .logo {
@@ -20,13 +19,15 @@
     -fx-background-repeat: no-repeat;
     -fx-background-size: contain;
     -fx-background-position: center center;
+    -fx-pref-height: 90px;
+    -fx-pref-width: 288px;
 }
 
 .overlay {
     -fx-spacing: 8px;
     -fx-alignment: center;
     -fx-background-color: rgba(0, 0, 0, 0.8);
-    -fx-padding: 64px 48px;
+    -fx-padding: 48px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 4, 0, 0, 0);
 }
 
@@ -107,10 +108,9 @@
 /* login specific modules */
 
 .login-scene {
-    -fx-background-color: radial-gradient(center 50% 50% ,radius 60% , #c52946, #11182b);
-    /*-fx-background-image: url("../images/login-bg.jpg");*/
+    -fx-background-color: radial-gradient(center 50% 50% ,radius 60% , #2e021e, #0b0d1a);
     -fx-alignment: center;
-    -fx-padding: 96px;
+    -fx-padding: 96px 48px;
 }
 
 .login-container {
@@ -129,11 +129,7 @@
     -fx-background-size: stretch;
     -fx-max-width: 1024px;
     -fx-max-height: 632px;
-    -fx-border-style: hidden solid;
-    -fx-border-width: 2px;
-    -fx-border-color: rgb(246, 1, 157);
-    -fx-border-radius: 2px;
-    -fx-alignment: bottom-left !important;
+    -fx-spacing: 16px;
 }
 
 .logo-wrapper--login {
@@ -143,9 +139,8 @@
 }
 
 .logo--login {
-    -fx-pref-height: 90px;
-    -fx-pref-width: 288px;
-    -fx-background-position: top left;
+    -fx-background-position: top left !important;
+    -fx-alignment: top-center !important;
 }
 
 .login-form-text-input {
@@ -171,16 +166,25 @@
 /* lobby specific modules */
 
 .lobby-scene {
-    -fx-background-image: url("../images/lobby-bg.jpg");
-    -fx-padding: 16px 32px;
+    -fx-alignment: center;
+    -fx-hgap: 8px;
+    -fx-vgap: 8px;
+    -fx-max-width: 1262px;
+    -fx-max-height: 690px;
 }
 
 .lobby-overlay {
-    -fx-padding: 0 32px;
+    -fx-spacing: 32px !important;
 }
 
 .lobby-center-wrapper {
+    -fx-max-width: 1024px;
     -fx-spacing: 8px;
+}
+
+.lobby-form-wrapper {
+    -fx-alignment: center !important;
+    -fx-spacing: 16px !important;
 }
 
 
@@ -196,6 +200,7 @@
     -fx-padding: 0 32px;
     -fx-spacing: 32px;
     -fx-pref-height: 90px;
+    -fx-max-width: 1024px;
 }
 
 .map-option-wrapper {
@@ -211,8 +216,6 @@
     -fx-pref-width: 80px;
     -fx-border-color: rgb(246, 1, 157);
     -fx-border-style: solid;
-    -fx-border-radius: 2px;
-    -fx-background-radius: 2px;
     -fx-border-width: 0px;
     -fx-border-insets: -2px;
 }
@@ -229,8 +232,6 @@
     -fx-pref-width: 80px;
     -fx-background-color: rgba(0, 0, 0, 0.8);
     -fx-alignment: center;
-    -fx-border-radius: 2px;
-    -fx-background-radius: 2px;
 }
 
 .map-option-title {
@@ -373,6 +374,7 @@
     -fx-alignment: bottom-center;
     -fx-spacing: 40px;
     -fx-background-color: linear-gradient(to top right, rgba(2,0, 21, 0.9), rgba(25,0, 42, 0.9));
+    -fx-padding: 32px 0 0 0;
 }
 
 .upgradeBar {
@@ -400,40 +402,47 @@
 }
 
 .message-board {
-    -fx-spacing: 8px;
+    -fx-spacing: 16px;
     -fx-pref-height: 100%;
     -fx-fill-width: true;
-    -fx-padding: 32px 16px;
+    -fx-padding: 0px;
 }
 
 .chat-headline {
-    -fx-text-alignment: center;
+    -fx-text-alignment: center !important;
 }
 
 .message-wrapper {
     -fx-padding: 8;
     -fx-fill-width: true;
+    -fx-spacing: 4px;
 }
 
 .message-label {
-    -fx-text-fill: #cccccc;
+    -fx-text-fill: #ddd;
     -fx-font-weight: 300;
 }
 
 .message {
     -fx-min-height: 40px;
-    -fx-padding: 4px 8px;
+    -fx-padding: 8px;
     -fx-font-size: 12;
     -fx-font-weight: 500;
     -fx-border-style: solid;
-    -fx-border-width: 1px;
-    -fx-border-radius: 4;
-    -fx-text-fill: #ffffff;
+    -fx-border-width: 2px;
+}
+
+.message-text {
     -fx-wrap-text: true;
+    -fx-text-fill: #ffffff;
 }
 
 .message--primary {
     -fx-border-color: rgb(246, 1, 157);
+}
+
+.message--secondary {
+    -fx-border-color: #2de2e6;
 }
 
 .message--server {
@@ -454,3 +463,13 @@
 .player-icon-1 {
 }
 
+/* errorScene specific modules */
+
+.error-overlay {
+    -fx-spacing: 32px;
+}
+
+.error-message {
+    -fx-max-width: 280px;
+    -fx-wrap-text: true;
+}

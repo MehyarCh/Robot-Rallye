@@ -13,7 +13,7 @@
       styleClass="login-scene">
     <VBox fx:id="overlay"
           VBox.vgrow="ALWAYS"
-          styleClass="overlay, login-overlay">
+          styleClass="overlay, login-overlay, border-effect, border-effect--primary, alignment--bottom-left">
 
         <VBox styleClass="logo-wrapper--login">
             <Label text="" styleClass="logo, logo--login"/>
@@ -21,10 +21,10 @@
         </VBox>
         <VBox styleClass="login-form-wrapper">
             <VBox styleClass="login-form-item">
-                <Label text="Name" styleClass="login-form-label"/>
-                <TextField fx:id="loginTextField" styleClass="text-input, text-input--tertiary, login-form-text-input"/>
+                <Label fx:id="loginFormLabel" text="Name" styleClass="login-form-label"/>
+                <TextField fx:id="loginTextField" styleClass="text-input, text-input--secondary, login-form-text-input"/>
             </VBox>
-            <Label fx:id="loginWarning" styleClass="login-warning, login-warning--primary" />
+            <Label fx:id="loginWarning" styleClass="login-warning" />
         </VBox>
         <VBox styleClass="login-button-wrapper">
             <Button text="JOIN LOBBY"

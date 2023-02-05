@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      styleClass="login-scene">
+    <VBox fx:id="overlay"
+          VBox.vgrow="ALWAYS"
+          styleClass="overlay, login-overlay, error-overlay, border-effect, border-effect--primary">
+
+        <VBox styleClass="logo-wrapper--login">
+            <Label text="" styleClass="logo, logo--login"/>
+        </VBox>
+        <Label text="Sorry, this game does not support screen sizes below 1024px x 768px"
+               fx:id="errorMessage"
+        styleClass="error-message, headline-1, color--light"/>
+        <VBox styleClass="login-button-wrapper">
+            <Button text="CLOSE GAME"
+                    fx:id="closeButton"
+                    onAction="#onClose"
+                    styleClass="button, login-button, button--secondary"/>
+        </VBox>
+    </VBox>
+</VBox>
