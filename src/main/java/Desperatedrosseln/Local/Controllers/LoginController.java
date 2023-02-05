@@ -9,8 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.*;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
@@ -26,6 +26,7 @@ public class LoginController {
     private Parent root;
     public LobbyController lobbyController;
 
+    public Image applicationImage;
     @FXML
     public Button joinButton;
 
@@ -64,10 +65,10 @@ public class LoginController {
     public void startLoginScene(Stage stage) {
         this.stage = stage;
         stage.setScene(scene);
+        //stage.getIcons().add(new Image(getClass().getResource("images/robots/orange.jpg").toString()));
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
-
     }
 
     @FXML

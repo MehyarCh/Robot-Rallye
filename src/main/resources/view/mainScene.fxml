@@ -31,6 +31,7 @@
                   styleClass="player-bar">
                 <VBox styleClass="player-wrapper">
                     <Label text=""
+                           fx:id="playericon"
                            id="player-icon--1"
                            styleClass="player-icon"/>
                     <Label text="Brown"
@@ -72,17 +73,19 @@
                            styleClass="headline-4, color--light"/>
                 </VBox>
             </HBox>
-
             <HBox id="profile-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="profile-wrapper">
                 <VBox styleClass="timer-box">
                     <Label text="TIMER" styleClass="timer-label, color--light"/>
                     <Label fx:id="timeLabel" text="0" styleClass="profile-name, color--light"/>
                 </VBox>
             </HBox>
+            <HBox GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="player-bar">
+                <Label fx:id="phaseLabel"  styleClass="headline-5, color--light"/>
+            </HBox>
 
 
             <HBox id="profile-wrapper"
-                  GridPane.columnIndex="2"
+                  GridPane.columnIndex="3"
                   GridPane.rowIndex="0"
                   styleClass="profile-wrapper">
                 <Label text="."
@@ -92,7 +95,7 @@
                     <Label fx:id="playerName"
                             text="PlayerName"
                            styleClass="profile-name, color--light"/>
-                    <Label text="Energy: 50"
+                    <Label fx:id="energyLabel" text="Energy: 5"
                            styleClass="profile-energy, color--primary"/>
                 </VBox>
             </HBox>
@@ -122,7 +125,6 @@
                            GridPane.columnIndex="1"
                            GridPane.halignment="CENTER">
                 </StackPane>
-
                 <StackPane fx:id="upgradeCard3"
                            styleClass="card-area--sm"
                            GridPane.rowIndex="1"
@@ -155,23 +157,30 @@
                 onAction="#handleUpgradeButton"
                 styleClass="button, button--primary"
                 text="UPGRADE" />
+            <Label fx:id="labelShop" text="Player 1 is using the Shop..." styleClass="text-upgradeShop" ></Label>
         </VBox>
     </left>
 
     <center>
         <StackPane fx:id="centerStack" styleClass="main-overlay-container">
             <GridPane styleClass="center" fx:id="center">
+                <GridPane styleClass="map"
+                          GridPane.columnIndex="0"
+                          GridPane.rowIndex="0"
+                          >
+                    <Label fx:id="instructionLabel" styleClass="text-instruction"></Label>
+                </GridPane>
                 <GridPane fx:id="mapGrid"
                           styleClass="map"
                           GridPane.columnIndex="0"
-                          GridPane.rowIndex="0"
+                          GridPane.rowIndex="1"
                           GridPane.hgrow="ALWAYS"
                           GridPane.vgrow="ALWAYS">
                 </GridPane>
                 <GridPane styleClass="card-wrapper"
                           fx:id="cardWrapper"
                           GridPane.columnIndex="0"
-                          GridPane.rowIndex="1"
+                          GridPane.rowIndex="2"
                           GridPane.hgrow="ALWAYS">
                     <GridPane styleClass="card-row, upper-card-row"
                               GridPane.columnIndex="0"

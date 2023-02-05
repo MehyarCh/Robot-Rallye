@@ -63,7 +63,7 @@ public class Game {
     private boolean isRunning = false;
     private boolean firstPlayerGotCards = false;
     private boolean isInitRounds = false;
-    private int energyBank=50;
+    private int energyBank=5;
 
     public Game(int port, String protocol, ArrayList<ClientHandler> clients) {
         this.protocol = protocol;
@@ -1163,7 +1163,7 @@ public class Game {
         if (upgradeCard.getCost() <= player.getEnergyReserve()) {
             if (player.getUpgrades().isEmpty()) {
                 player.addUpgrade(upgradeCard);
-                player.setEnergyReserve(player.getEnergyReserve()-upgradeCard.getCost());
+                player.setEnergyReserve(player.getEnergyReserve() - upgradeCard.getCost());
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
                 findClient(player.getID()).broadcastMessage("Energy",energyJsonAdapter.toJson(
                         new Energy(player.getID(),player.getEnergyReserve(),"Shop")));

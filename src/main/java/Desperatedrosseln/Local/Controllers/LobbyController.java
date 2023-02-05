@@ -77,7 +77,7 @@ public class LobbyController {
     @FXML
     private Button playerIconPink;
     @FXML
-    private Label playersonline;
+    private Label playersOnline;
     private int selectedRobot;
 
     private static final Logger logger = LogManager.getLogger(LobbyController.class);
@@ -302,7 +302,6 @@ public class LobbyController {
         if (!client.isGotSentMaps()) {
             Platform.runLater(() -> {
                 for (String mapName : maps) {
-
                     StackPane mapOption = createMapOption(mapName);
                     mapOptionWrapper.getChildren().add(mapOption);
                 }

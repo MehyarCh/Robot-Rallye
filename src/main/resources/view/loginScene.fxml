@@ -27,8 +27,8 @@
                     fx:id="joinButton"
                     onAction="#onLogin"
                     styleClass="button, login-button, button--primary"/>
-            <Button text="CREATE LOBBY"
-                    styleClass="button, login-button, button--disabled"/>
+            <!--<Button text="CREATE LOBBY"
+                    styleClass="button, login-button, button-disabled"/> -->
         </VBox>
     </VBox>
 </VBox>

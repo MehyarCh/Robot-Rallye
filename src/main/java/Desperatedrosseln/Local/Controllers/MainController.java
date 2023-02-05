@@ -1,7 +1,8 @@
 package Desperatedrosseln.Local.Controllers;
 
-//import Desperatedrosseln.Local.Client;
+import Desperatedrosseln.Local.Client;
 
+import Desperatedrosseln.Local.*;
 import Desperatedrosseln.Local.Protocols.BuyUpgrade;
 import Desperatedrosseln.Local.Protocols.SelectedCard;
 import Desperatedrosseln.Local.CardLabels.*;
@@ -147,7 +148,14 @@ public class MainController {
     private Label playerName;
     @FXML
     private Label timeLabel;
-
+    @FXML
+    private Label energyLabel;
+    @FXML
+    private Label phaseLabel;
+    @FXML
+    private Label instructionLabel;
+    @FXML
+    private Label shopLabel;
     private static final Logger logger = LogManager.getLogger(MainController.class);
 
 
@@ -173,6 +181,10 @@ public class MainController {
             scene.getStylesheets().add(stateCss);
 
             playerName.setText(client.getName());
+            energyLabel.setText("Energy: 5");
+            phaseLabel.setText("Setup Phase");
+            instructionLabel.setText("Choose your Starting Point!");
+
 
             //TESTING THE MOVE CARDS FUNCTION
 
@@ -241,6 +253,16 @@ public class MainController {
         });
     }
 
+    public void setPhaseLabel(String label){
+        Platform.runLater(() -> {
+            phaseLabel.setText(label);
+        });
+    }
+    public void setInstructionLabel(String label){
+        Platform.runLater(() -> {
+            instructionLabel.setText(label);
+        });
+    }
     @FXML
     private void setProfileIcon() {
         switch (selectedRobot) {

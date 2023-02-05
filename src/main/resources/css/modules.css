@@ -260,6 +260,7 @@
 .profile-name {
     -fx-font-size: 12px;
     -fx-font-weight: 300;
+    -fx-alignment: center-right;
 }
 
 .profile-energy {

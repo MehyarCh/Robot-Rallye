@@ -85,7 +85,7 @@
                               disable="true"
                               styleClass="button, login-button, button--primary"/>
                 <Label text= "Players currently in lobby: "
-                       fx:id="playersonline"
+                       fx:id="playersOnline"
                        styleClass="headline-3, color--light"/>
             </VBox>
             <HBox styleClass="overlay, lobby-overlay, map-selection-overlay, border-radius, border-radius--xs">
