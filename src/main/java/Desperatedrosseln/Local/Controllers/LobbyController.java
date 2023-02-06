@@ -67,6 +67,8 @@ public class LobbyController {
     private Button playerIcon6;
     @FXML
     private ToggleButton readyButton;
+
+    @FXML private Button addAIButton;
     @FXML
     private TextField chat_input_lobby;
 
@@ -449,6 +451,11 @@ public class LobbyController {
         } else {
             throw new RuntimeException("Value of level has to be a double between 0 and 1");
         }
+    }
+
+    @FXML
+    private void handleAddAI() {
+        client.sendMessage("addAI", "");
     }
 }
 

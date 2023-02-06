@@ -89,6 +89,10 @@
                           text="READY"
                           disable="true"
                           styleClass="button, login-button, button--secondary, alignment--center"/>
+            <Button fx:id="addAIButton"
+                    onAction="#handleAddAI"
+                    text="ADD AI"
+            styleClass="button, login-button, button--secondary, alignment--center"/>
             <Label text="Players currently in lobby: "
                    fx:id="playersonline"
                    styleClass="headline-3, color--light"/>
@@ -109,7 +113,7 @@
                   GridPane.rowIndex="0"
                   GridPane.rowSpan="2"
                   GridPane.vgrow="ALWAYS"
-                  styleClass="sidebar, lobby-sidebar, border-effect, border-effect--secondary">
+                  styleClass="sidebar, lobby-sidebar, gradient--primary, border-effect, border-effect--secondary">
             <ScrollPane GridPane.columnIndex="0"
                         GridPane.rowIndex="0"
                         GridPane.hgrow="ALWAYS"

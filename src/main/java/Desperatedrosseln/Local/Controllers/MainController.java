@@ -11,16 +11,20 @@ import com.squareup.moshi.Moshi;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -150,6 +154,12 @@ public class MainController {
     @FXML
     private Label timeLabel;
 
+    @FXML
+    private VBox upgradeBar;
+
+    @FXML
+    private GridPane sidebar;
+
     private static final Logger logger = LogManager.getLogger(MainController.class);
 
 
@@ -225,7 +235,7 @@ public class MainController {
     public void startMainScene(Stage stage, int selectedRobot) throws IOException {
         client.isMainSceneStarted = true;
         this.stage = stage;
-        mapController = new MapController(mapGrid, selectedRobot, calcMaxMapHeight());
+        mapController = new MapController(mapGrid, selectedRobot);
         mapController.setClient(client);
         setProfileIcon();
         handleUpgradeClick();
@@ -236,10 +246,16 @@ public class MainController {
                 stage.setScene(scene);
                 stage.setMaximized(false);
                 stage.setMaximized(true);
+                stage.setResizable(false);
                 startTimer();
+                mapController.setTileSize(calcMaxMapHeight() / 12);
+                glow();
             }
         });
+
     }
+
+
 
     @FXML
     private void setProfileIcon() {
@@ -508,7 +524,11 @@ public class MainController {
 
     @FXML
     int calcMaxMapHeight() {
-        return (int) (stage.getHeight() - scene.getRoot().getChildrenUnmodifiable().get(0).getScaleY() - cardWrapper.getHeight() - 100);
+        double centerHeight = centerStack.getHeight();
+        double cardWrapperHeight = cardWrapper.getHeight();
+        double maxHeight = centerHeight - cardWrapperHeight;
+        logger.info(centerHeight + " minus " + cardWrapperHeight + " is " + maxHeight);
+        return (int) maxHeight;
     }
 
     public void cardClick() {
@@ -695,5 +715,41 @@ public class MainController {
                 programdone.setDisable(!b);
             }
         });
+    }
+
+    @FXML
+    public void glow(){
+        addBgGlow();
+        addElementGlow();
+    }
+
+    @FXML
+    private void addElementGlow() {
+        addGlow(send_button, 0.8);
+        addGlow(chat_input, 0.6);
+        addGlow(upgradeButton, 0.8);
+        addGlow(programdone, 0.8);
+    }
+
+    @FXML
+    private void addBgGlow() {
+        DropShadow pinkGlow = new DropShadow();
+        pinkGlow.setOffsetY(0f);
+        pinkGlow.setOffsetX(0f);
+        pinkGlow.setColor(Color.rgb(246, 1, 157));
+        pinkGlow.setWidth(25);
+        pinkGlow.setHeight(0);
+        sidebar.setEffect(pinkGlow);
+        upgradeBar.setEffect(pinkGlow);
+    }
+
+    private void addGlow(Node node, double level) {
+        if (level >= 0 && level <= 1) {
+            Glow glow = new Glow();
+            glow.setLevel(level);
+            node.setEffect(glow);
+        } else {
+            throw new RuntimeException("Value of level has to be a double between 0 and 1");
+        }
     }
 }

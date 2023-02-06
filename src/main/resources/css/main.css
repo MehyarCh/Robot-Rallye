@@ -23,15 +23,14 @@
 }
 
 .timer-box{
-    -fx-background-color: #4B0082;
-    -fx-padding: 20px;
-    -fx-border-radius: 5px;
+    -fx-background-color: #5a0079;
+    -fx-padding: 0 21px;
+    -fx-alignment: center;
 }
 .timer-label{
     -fx-font-size: 13px;
     -fx-font-weight: bold;
-    -fx-text-fill: #000000;
-    -fx-alignment:center;
+    -fx-alignment: center;
 }
 
 .scroll-bar:horizontal .increment-button ,
@@ -106,6 +105,9 @@
 
 
 
+
+
+
 .color--light {
     -fx-text-fill: #dddddd;
 }
@@ -116,6 +118,18 @@
 
 .color--secondary {
     -fx-text-fill: #2de2e6;
+}
+
+.transparent--black {
+    -fx-background-color: rgba(0,0,0,0.2);
+}
+
+.transparent--black {
+
+}
+
+.gradient--primary {
+    -fx-background-color: linear-gradient(to top right, #020015,#19002a);
 }
 
 .headline-1 {
@@ -267,9 +281,23 @@
     -fx-border-width: 2px;
 }
 
+
+
 .border-effect {
     -fx-border-style: hidden solid;
     -fx-border-width: 2px;
+}
+
+.border-effect--top {
+    -fx-border-style: solid hidden hidden hidden;
+}
+
+.border-effect--left {
+    -fx-border-style: hidden hidden hidden solid;
+}
+
+.border-effect--right {
+    -fx-border-style: hidden solid hidden hidden;
 }
 
 .border-effect--primary {

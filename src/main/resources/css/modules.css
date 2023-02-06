@@ -247,13 +247,16 @@
 /* main scene specific modules */
 
 .main-scene {
-    -fx-pref-height: 720px;
-    -fx-pref-width: 1280px;
+    -fx-background-color: radial-gradient(center 50% 50% ,radius 60% , #2e021e, #0b0d1a);
+    -fx-alignment: center;
+    -fx-padding: 0;
 }
 
+
+
 .navbar {
-    -fx-background-color: #0D0221;
-    -fx-pref-height: 55px;
+    -fx-background-color: #000512;
+    -fx-pref-height: 60px;
     -fx-alignment: center-right;
     -fx-padding: 0 0 0 32px;
 }
@@ -303,7 +306,6 @@
 
 .map {
     -fx-alignment: center;
-    -fx-background-color: linear-gradient(to top right, #020015,#19002a);
 }
 
 .tile {
@@ -313,13 +315,10 @@
 }
 
 .card-wrapper {
-    -fx-background-color: #04010c;
     -fx-alignment: center;
-    -fx-padding: 8 4px 16px 4px;
+    -fx-padding: 16px 48px;
     -fx-vgap: 4px;
-    -fx-background-image: url("../images/login-bg2-dark.jpg");
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center center;
+    -fx-background-color: #000512;
 }
 
 .card-row {
@@ -340,19 +339,15 @@
     -fx-background-image: url("../images/card.png");
 }
 
+.card-area--pink {
+    -fx-background-image: url("../images/card-pink.png");
+}
+
 .card-area--sm {
-    -fx-pref-width: 62px;
-    -fx-pref-height: 90px;
-    -fx-alignment: center;
-    -fx-background-size: contain;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
     -fx-background-image: url("../images/card-blue.png");
     -fx-border-color: #2de2e6;
     -fx-border-width: 0px;
     -fx-border-style: solid;
-    -fx-border-radius: 2px;
-    -fx-background-radius: 2px;
     -fx-border-insets: -2px;
 }
 
@@ -368,6 +363,17 @@
     -fx-font-size: 12px*/
 }
 
+.card {
+    -fx-pref-width: 76px;
+    -fx-pref-height: 110px;
+    -fx-max-width: 76px;
+    -fx-max-height: 110px;
+    -fx-alignment: center;
+    -fx-background-size: contain;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
 .sidebar {
     -fx-fill-height: true;
     -fx-pref-width: 230px;
@@ -378,6 +384,7 @@
 }
 
 .upgradeBar {
+    -fx-background-color: linear-gradient(to top right, rgba(2,0, 21, 0.9), rgba(25,0, 42, 0.9));
     -fx-alignment: center;
     -fx-padding: 48px 16px;
 }
@@ -402,18 +409,18 @@
 }
 
 .message-board {
-    -fx-spacing: 16px;
+    -fx-spacing: 8px;
     -fx-pref-height: 100%;
     -fx-fill-width: true;
-    -fx-padding: 0px;
 }
 
 .chat-headline {
     -fx-text-alignment: center !important;
+    -fx-padding: 32px 16px;
 }
 
 .message-wrapper {
-    -fx-padding: 8;
+    -fx-padding: 0 8px;
     -fx-fill-width: true;
     -fx-spacing: 4px;
 }
