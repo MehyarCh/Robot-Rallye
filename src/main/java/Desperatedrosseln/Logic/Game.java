@@ -54,6 +54,7 @@ public class Game {
     private List<Card> trojanpile = new ArrayList<>(12);
     private List<Card> wormpile = new ArrayList<>(6);
     private List<ClientHandler> clients;
+
     private static final Logger logger = LogManager.getLogger();
     private int distance;
     private final int port;
@@ -575,9 +576,6 @@ public class Game {
                 robotMovedProtokoll(curr.getRobot());
             }
         }
-
-
-
     }
 
     /**
@@ -755,16 +753,15 @@ public class Game {
          * pointer. (Take a SPAM damage card for
          * each laser that hits you
          */
-        for(Player player : players){
-            List<BoardElement> elementsOnPos = gameMap.getElementsOnPos(player.getRobot().getPosition());
-            for(BoardElement element : elementsOnPos ){
-                if(element.toString().equals("Laser") || element.toString().equals("LaserBeam") ){
+        //iterate players
+        List<BoardElement> lasers = getListOfLasers();
+        for(BoardElement laser : lasers){
+            for(Player player : players){
+                if(laser.getPosition().equals(player.getRobot().getPosition())){
                     drawSpamCard(player, 1);
-                    //TODO: laserhit protocol / draw spamcard protocol
                 }
             }
         }
-
     }
 
     /**
@@ -795,20 +792,20 @@ public class Game {
         int y = pos.getY();
         switch (direction) {
             case TOP -> {
+                x = pos.getX();
+                y = pos.getY() -1;
+            }
+            case BOTTOM -> {
+                x = pos.getX();
+                y = pos.getY() + 1;
+            }
+            case LEFT -> {
                 x = pos.getX() - 1;
                 y = pos.getY();
             }
-            case BOTTOM -> {
+            case RIGHT -> {
                 x = pos.getX() + 1;
                 y = pos.getY();
-            }
-            case LEFT -> {
-                x = pos.getX();
-                y = pos.getY() - 1;
-            }
-            case RIGHT -> {
-                x = pos.getX();
-                y = pos.getY() + 1;
             }
         }
         return new Position(x, y);
@@ -861,6 +858,7 @@ public class Game {
         boolean laserHit = false;
         List<BoardElement> elemetsOnPos;
 
+        pos = getNextPos(pos, robot.getDirection());
         while (pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
                 && !laserHit && pos.getX() >= 0 && pos.getY() >= 0) {
             //as long as within the board, and laser still didnt hit any element
@@ -871,16 +869,17 @@ public class Game {
                     //robots on cell get damage, or laser stops
                     if (element instanceof Robot) {
                         drawSpamCard(getPlayerByRobot((Robot) element),1);
-                        //TODO: draw spamcard protocol
                         laserHit = true;
+                        break;
                     } else if (element instanceof Wall) {
-                        //TODO: take direction of wall into consideration
                         DIRECTION dir = robot.getDirection();
                         DIRECTION opDir = DIRECTION.valueOfDirection(dir.getAngle() + 180);
                         if (dir.toString().equals(((Wall) element).getOrientations().get(0)) || opDir.toString().equals(((Wall) element).getOrientations().get(0))) {
                             laserHit = true;
+                            break;
+                        } else {
+                            pos = getNextPos(pos, robot.getDirection());
                         }
-
                     }
                 }
             } else {
@@ -900,11 +899,13 @@ public class Game {
                     //robots on cell get damage, or laser stops
                     if (element instanceof Robot) {
                         drawSpamCard(getPlayerByRobot((Robot) element),1);
-                        //TODO: draw spamcard protocol
                         laserHit = true;
                     } else if (element instanceof Wall) {
-                        //TODO: take direction of wall into consideration
-                        laserHit = true;
+                        DIRECTION dir = robot.getDirection();
+                        DIRECTION opDir = DIRECTION.valueOfDirection(dir.getAngle() + 180);
+                        if (dir.toString().equals(((Wall) element).getOrientations().get(0)) || opDir.toString().equals(((Wall) element).getOrientations().get(0))) {
+                            laserHit = true;
+                        }
                     }
                 }
             } else {
@@ -1068,6 +1069,15 @@ public class Game {
         }
         return listofobj;
     }
+    private List<BoardElement> getListOfLasers(){
+        List<BoardElement> listofobj = new ArrayList<>();
+        for (BoardElement boardelement : boardElements) {
+            if (boardelement.toString().equals("Laser") || boardelement.toString().equals("LaserBeam")){
+                listofobj.add(boardelement);
+            }
+        }
+        return listofobj;
+    }
 
     /**
      * @return a list of robots that are still playing (not rebooting/disconnected)
@@ -1115,11 +1125,13 @@ public class Game {
         for (BoardElement pp : pushpanels) {
             //activate the PushPanels only in their assigned registers
             PushPanel p1 = (PushPanel) pp;
-            if (p1.getRegisters().contains(current_register)) {
+            if (gameMap.getRobotsOnPos(p1.getPosition()).size()>0 && p1.getRegisters().contains(current_register)) {
                 //get a list of all robots targeted by this pushpanel
                 List<Robot> robotList = gameMap.getRobotsOnPos(p1.getPosition());
                 p1.execute(robotList);
-                //TODO: robot moved protocol
+                for(Robot robot : robotList){
+                    robotMovedProtokoll(robot);
+                }
             }
         }
     }

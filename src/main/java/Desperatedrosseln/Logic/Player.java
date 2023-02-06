@@ -256,7 +256,6 @@ public class Player {
     }
 
     public void removeCardFromHand(String type) {
-        ///ToDo: set card to null
         for (int i = 0; i < hand.size(); i++) {
             if (hand.get(i).toString().equals(type)) {
                 discarded.add(hand.get(i));
@@ -264,8 +263,6 @@ public class Player {
                 return;
             }
         }
-
-
     }
 
     public ArrayList<String> getHandAsStrings() {
