@@ -214,10 +214,10 @@
                                    GridPane.vgrow="ALWAYS">
                         </StackPane>
                         <Button fx:id="programdone"
-                                onAction="#onProgrammingDone"
+                                onAction="#onPlayCard"
                                 GridPane.columnIndex="8"
                                 styleClass="button, programdone-button, button--primary,"
-                                text="READY"/>
+                                text="Play Card"/>
 
                     </GridPane>
                     <GridPane styleClass="card-row, lower-card-row"

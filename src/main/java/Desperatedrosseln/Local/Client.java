@@ -227,6 +227,12 @@ public class Client implements Runnable {
 
                 isMyTurn = currentPlayer.getClientID() == this.clientID;
 
+                if(isMyTurn && phase == 3){
+                    mainController.setProgramDone(true);
+                }else{
+                    mainController.setProgramDone(false);
+                }
+
                 System.out.println("Current player's ID: " + currentPlayer.getClientID());
                 break;
             case "Movement":
@@ -332,6 +338,7 @@ public class Client implements Runnable {
                 if (!mainController.isProgrammingDone) {
                     mainController.sendRandomCards();
                     sendChatMessage("random cards sent", -1);
+                    timer.cancel();
                 }
             }
         }, 30 * 1000);
@@ -445,7 +452,7 @@ public class Client implements Runnable {
         }
     }
 
-    private void playCard() {
+    public void playCard() {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<PlayCard> playCardJsonAdapter = moshi.adapter(PlayCard.class);
         if(phase == 3){

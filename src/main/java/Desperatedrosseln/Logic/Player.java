@@ -259,7 +259,8 @@ public class Player {
         ///ToDo: set card to null
         for (int i = 0; i < hand.size(); i++) {
             if (hand.get(i).toString().equals(type)) {
-                hand.remove(i);
+                discarded.add(hand.get(i));
+                hand.set(i,null);
                 return;
             }
         }

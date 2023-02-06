@@ -229,7 +229,7 @@ public class MainController {
         mapController.setClient(client);
         setProfileIcon();
         handleUpgradeClick();
-
+        programdone.setDisable(true);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -356,7 +356,6 @@ public class MainController {
         }
     }
 
-    @FXML
     public void onProgrammingDone() {
         int ctr = 0;
 
@@ -369,8 +368,17 @@ public class MainController {
         if (ctr == 5) {
             //sendCards();
             isProgrammingDone = true;
-            programdone.setDisable(true);
             logger.info(client.getName() + " is done programming");
+        }
+    }
+
+    @FXML
+    public void onPlayCard() {
+        if (client.getIsMyTurn()) {
+            client.playCard();
+            programdone.setDisable(true);
+        } else {
+            addChatMessage("ERROR" + ":" + "not your Turn.");
         }
     }
 
@@ -480,7 +488,7 @@ public class MainController {
                 }
                 isProgrammingDone = true;
                 //sendCards();
-                programdone.setDisable(true);
+
 
             }
         });
@@ -680,4 +688,12 @@ public class MainController {
         });
     }
 
+    public void setProgramDone(boolean b) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                programdone.setDisable(!b);
+            }
+        });
+    }
 }
