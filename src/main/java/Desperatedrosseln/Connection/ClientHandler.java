@@ -86,7 +86,7 @@ public class ClientHandler implements Runnable {
         sendMessage("Error", errorJsonAdapter.toJson(new Error()));
     }
 
-    public void checkCommands(String msg) throws IOException, ClassNotFoundException {
+    public void checkCommands(String msg) throws IOException, ClassNotFoundException, InterruptedException {
 
 
         if (msg == null) {
@@ -415,6 +415,8 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
