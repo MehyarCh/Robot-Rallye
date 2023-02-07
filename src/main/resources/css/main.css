@@ -121,10 +121,6 @@
 }
 
 .transparent--black {
-    -fx-background-color: rgba(0,0,0,0.2);
-}
-
-.transparent--black {
 
 }
 
@@ -158,6 +154,7 @@
 .text-input {
     -fx-pref-width: 100%;
     -fx-pref-height: 36px;
+    -fx-max-width: 220px;
     -fx-border-style: hidden hidden solid hidden;
     -fx-background-color: transparent;
     -fx-border-width: 2px;

@@ -1,7 +1,9 @@
 package Desperatedrosseln.Local.Controllers;
 
 import Desperatedrosseln.Local.Client;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -9,13 +11,25 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.security.Key;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import static javafx.scene.input.KeyCode.*;
 
 public class ScreenSizeErrorController {
 
@@ -31,6 +45,14 @@ public class ScreenSizeErrorController {
 
     @FXML
     private Label errorMessage;
+
+    @FXML private TextField input;
+
+    @FXML private Button send_button;
+
+    @FXML private HBox inputContainer;
+
+    private final String dev = "DNSTPWA";
 
     public ScreenSizeErrorController() {
 
@@ -63,12 +85,43 @@ public class ScreenSizeErrorController {
         stage.setMaximized(true);
         stage.setResizable(true);
         stage.show();
+        handleDevCombination();
         glow();
+    }
+
+    @FXML
+    private void handleDevCombination() {
+        KeyCombination keyCombination = new KeyCodeCombination(KeyCode.F10, KeyCombination.SHORTCUT_DOWN);
+        Runnable runnable = ()-> {
+            openDevTool();
+        };
+        scene.getAccelerators().put(keyCombination, runnable);
+    }
+
+    @FXML
+    private void openDevTool() {
+        DropShadow glow = new DropShadow();
+        glow.setColor(Color.rgb(45,226,230));
+        glow.setWidth(45);
+        glow.setHeight(2);
+        overlay.setStyle("-fx-border-color: rgb(45,226,230)");
+        overlay.setEffect(glow);
+        inputContainer.setOpacity(1);
     }
 
     @FXML
     public void onClose(ActionEvent event) {
         stage.close();
+    }
+
+    @FXML
+    public void checkDevPassword(ActionEvent event) {
+        String value = input.getText();
+
+        if (Objects.equals(value, dev)) {
+            LoginController loginController = new LoginController();
+            loginController.startLoginScene(stage);
+        }
     }
 
     @FXML

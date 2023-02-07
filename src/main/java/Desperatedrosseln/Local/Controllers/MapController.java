@@ -122,9 +122,7 @@ public class MapController {
         glow();
     }
 
-    public void setTileSize(int computedTileSize) {
-        tileSize = computedTileSize;
-    }
+
 
     private void addLaserBeam(List<List<MapField>> fieldList) {
 
@@ -300,6 +298,14 @@ public class MapController {
         }
         return cell;
     }
+
+    public void setTileSize(int computedTileSize) {
+        tileSize = computedTileSize;
+    }
+
+
+
+
     @FXML
     private ImageView buildCheckpoint(BoardElement boardElement) throws IOException {
 
@@ -975,8 +981,8 @@ public class MapController {
         pinkGlow.setOffsetY(0f);
         pinkGlow.setOffsetX(0f);
         pinkGlow.setColor(Color.rgb(246, 1, 157));
-        pinkGlow.setWidth(45);
-        pinkGlow.setHeight(45);
+        pinkGlow.setWidth(60);
+        pinkGlow.setHeight(60);
         mapGrid.setEffect(pinkGlow);
     }
 }

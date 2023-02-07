@@ -9,6 +9,7 @@ import Desperatedrosseln.Logic.Cards.Programming.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -155,10 +156,12 @@ public class MainController {
     private Label timeLabel;
 
     @FXML
-    private VBox upgradeBar;
+    private HBox upgradeBar;
 
     @FXML
     private GridPane sidebar;
+
+    @FXML private GridPane navbar;
 
     private static final Logger logger = LogManager.getLogger(MainController.class);
 
@@ -240,20 +243,39 @@ public class MainController {
         setProfileIcon();
         handleUpgradeClick();
         programdone.setDisable(true);
+
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
+            changeTileSize();
+        };
+        stage.heightProperty().addListener(stageSizeListener);
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 stage.setScene(scene);
                 stage.setMaximized(false);
                 stage.setMaximized(true);
-                stage.setResizable(false);
-                startTimer();
                 mapController.setTileSize(calcMaxMapHeight() / 12);
                 glow();
+                startTimer();
             }
         });
-
     }
+
+    private void changeTileSize() {
+        int maxSize = calcMaxMapHeight();
+        int tileSize = maxSize / 15;
+
+        for (Node tile : mapGrid.getChildren()) {
+            StackPane stackPane = (StackPane) tile;
+            for (Node boardElement : stackPane.getChildren()) {
+                ImageView imageView = (ImageView) boardElement;
+                imageView.setFitWidth(tileSize);
+            }
+        }
+    }
+
+
 
 
 
@@ -523,12 +545,17 @@ public class MainController {
     }
 
     @FXML
-    int calcMaxMapHeight() {
+    public int calcMaxMapHeight() {
         double centerHeight = centerStack.getHeight();
         double cardWrapperHeight = cardWrapper.getHeight();
         double maxHeight = centerHeight - cardWrapperHeight;
-        logger.info(centerHeight + " minus " + cardWrapperHeight + " is " + maxHeight);
         return (int) maxHeight;
+    }
+
+    public int calcMaxMapWidth() {
+        double centerWidth = centerStack.getWidth();
+        logger.info(centerWidth);
+        return (int) centerWidth;
     }
 
     public void cardClick() {
@@ -734,11 +761,13 @@ public class MainController {
     @FXML
     private void addBgGlow() {
         DropShadow pinkGlow = new DropShadow();
+
         pinkGlow.setOffsetY(0f);
         pinkGlow.setOffsetX(0f);
         pinkGlow.setColor(Color.rgb(246, 1, 157));
         pinkGlow.setWidth(25);
         pinkGlow.setHeight(0);
+
         sidebar.setEffect(pinkGlow);
         upgradeBar.setEffect(pinkGlow);
     }

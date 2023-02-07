@@ -250,6 +250,8 @@
     -fx-background-color: radial-gradient(center 50% 50% ,radius 60% , #2e021e, #0b0d1a);
     -fx-alignment: center;
     -fx-padding: 0;
+    -fx-max-width: 100%;
+    -fx-max-height: 100%;
 }
 
 
@@ -280,7 +282,7 @@
 
 .profile-wrapper {
     -fx-pref-width: 230px;
-    -fx-padding: 0 32px 0 16px;
+    -fx-padding: 0 0 0 16px;
     -fx-spacing: 8px;
     -fx-alignment: center-left;
     -fx-text-fill: #ffffff;
@@ -316,15 +318,19 @@
 
 .card-wrapper {
     -fx-alignment: center;
-    -fx-padding: 16px 48px;
+    -fx-padding: 16px 0;
     -fx-vgap: 4px;
-    -fx-background-color: #000512;
+    -fx-hgap: 8px;
+}
+
+.card-group {
+    -fx-alignment: center;
+    -fx-hgap: 16px;
+    -fx-padding: 8px;
 }
 
 .card-row {
     -fx-alignment: center;
-    -fx-hgap: 16px;
-    -fx-padding: 0;
 }
 
 .upper-card-row {
@@ -341,6 +347,14 @@
 
 .card-area--pink {
     -fx-background-image: url("../images/card-pink.png");
+}
+
+.card-area--temporary {
+    -fx-background-image: url("../images/card-temporary.png");
+}
+
+.card-area--permanent {
+    -fx-background-image: url("../images/card-permanent.png");
 }
 
 .card-area--sm {
@@ -385,8 +399,12 @@
 
 .upgradeBar {
     -fx-background-color: linear-gradient(to top right, rgba(2,0, 21, 0.9), rgba(25,0, 42, 0.9));
-    -fx-alignment: center;
+    -fx-alignment: top-center;
     -fx-padding: 48px 16px;
+}
+
+.upgrade-shop-wrapper {
+    -fx-spacing: 32px;
 }
 
 .upgradeGrid {
@@ -474,9 +492,11 @@
 
 .error-overlay {
     -fx-spacing: 32px;
+    -fx-alignment: bottom-left;
 }
 
 .error-message {
     -fx-max-width: 280px;
     -fx-wrap-text: true;
+    -fx-alignment: bottom-left;
 }

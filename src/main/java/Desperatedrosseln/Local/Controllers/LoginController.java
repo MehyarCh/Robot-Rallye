@@ -14,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -24,6 +23,7 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -85,7 +85,7 @@ public class LoginController {
             scene.getStylesheets().add(modulesCss);
 
             String stateCss = this.getClass().getResource("/Css/state.css").toExternalForm();
-            scene.getStylesheets().add(stateCss);;
+            scene.getStylesheets().add(stateCss);
 
         } catch (IOException e) {
             e.printStackTrace();
