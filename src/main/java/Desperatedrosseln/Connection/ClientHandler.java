@@ -334,13 +334,6 @@ public class ClientHandler implements Runnable {
                     }
                 }
                 break;
-            case "Logout":
-                if (player.getID() == Game.mapSelectionPlayer) {
-                    Game.mapSelectionPlayer = -1;
-                }
-                closeAll(this.socket, this.in, this.out);
-                //problem with alive message as soon as socket gets closed; -> ToDo: disconnect client properly (multiple errors)
-                break;
             case "ReturnCards":
                 JsonAdapter<ReturnCards> returnCardsJsonAdapter = moshi.adapter(ReturnCards.class);
                 ReturnCards returnCards = returnCardsJsonAdapter.fromJson(message.getMessageBody());
@@ -427,7 +420,7 @@ public class ClientHandler implements Runnable {
             @Override
             public void run() {
                 JsonAdapter<Alive> aliveJsonAdapter = moshi.adapter(Alive.class);
-                sendMessage("Alive", aliveJsonAdapter.toJson(new Alive())); //after 5s alive message gets sent to the client.
+                sendMessage("Alive", aliveJsonAdapter.toJson(new Alive()));//after 5s alive message gets sent to the client.
             }
         }, 5 * 1000, 5 * 1000); //5 seconds
 

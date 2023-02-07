@@ -356,11 +356,11 @@ public class Client implements Runnable {
 
     public void logOut() {
         try {
-            if (in != null) in.close();
-            if (out != null) out.close();
+            //if (in != null) in.close();
+            //if (out != null) out.close();
             if (clientSocket != null) clientSocket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn("tried to close already closed client socket");
         }
     }
 
@@ -409,7 +409,7 @@ public class Client implements Runnable {
     public void sendChatMessage(String message, int to) {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
-        if (message.startsWith("/")) {          //TODO
+        if (message.startsWith("/")) {
 
             String[] messageParts = message.split(" ", 3);
 
@@ -439,12 +439,7 @@ public class Client implements Runnable {
                 } else {
                     mainController.addChatMessage("ERROR" + ":" + "not your Turn.");
                 }
-
-            } else if (message.startsWith("/dc")) {
-                this.logOut();
-                sendMessage("Logout", "");
             }
-
 
         } else {
             sendMessage("SendChat", sendChatJsonAdapter.toJson(new SendChat(message, -1)));

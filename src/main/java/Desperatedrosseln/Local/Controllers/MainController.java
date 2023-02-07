@@ -239,6 +239,11 @@ public class MainController {
                 startTimer();
             }
         });
+
+        stage.setOnCloseRequest(event -> {
+            client.logOut();
+            logger.info("client closed his lobby screen");
+        });
     }
 
     @FXML
@@ -407,6 +412,7 @@ public class MainController {
                 String myName = client.getName();
                 logger.info(myName);
 
+                try{
                 String messageName = message.split(":")[0].trim();
                 String messageContent = message.split(":")[1].trim();
                 logger.info(messageName);
@@ -431,7 +437,11 @@ public class MainController {
                 }
                 messageWrapper.getChildren().add(messageLabel);
                 messageWrapper.getChildren().add(messageBox);
-                messageBoard.getChildren().add(messageWrapper);
+                messageBoard.getChildren().add(messageWrapper);}
+                catch(ArrayIndexOutOfBoundsException e){
+                    logger.warn("You already chose this robot!");
+                }
+
             }
         });
     }

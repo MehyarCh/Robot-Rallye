@@ -157,6 +157,10 @@ public class LobbyController {
         //playersonline.setText("Players currently in lobby: " );
         initRobotIconsList();
         disableTakenRobots(client.getRobotIDs());
+        stage.setOnCloseRequest(event -> {
+            client.logOut();
+            logger.warn("client closed his lobby screen");
+        });
     }
 
     /**
@@ -290,36 +294,42 @@ public class LobbyController {
                 playerIcon1.setDisable(true);
                 Platform.runLater(() -> {
                     playerIcon1Label.setText(name);
+                    addGlow(playerIcon1Label, 0.8);
                 });
                 break;
             case 2:
                 playerIcon2.setDisable(true);
                 Platform.runLater(() -> {
                     playerIcon2Label.setText(name);
+                    addGlow(playerIcon2Label, 0.8);
                 });
                 break;
             case 3:
                 playerIcon3.setDisable(true);
                 Platform.runLater(() -> {
                     playerIcon3Label.setText(name);
+                    addGlow(playerIcon3Label, 0.8);
                 });
                 break;
             case 4:
                 playerIcon4.setDisable(true);
                 Platform.runLater(() -> {
                     playerIcon4Label.setText(name);
+                    addGlow(playerIcon4Label, 0.8);
                 });
                 break;
             case 5:
                 playerIcon5.setDisable(true);
                 Platform.runLater(() -> {
                     playerIcon5Label.setText(name);
+                    addGlow(playerIcon5Label, 0.8);
                 });
                 break;
             case 6:
                 playerIcon6.setDisable(true);
                 Platform.runLater(() -> {
                     playerIcon6Label.setText(name);
+                    addGlow(playerIcon6Label, 0.8);
                 });
                 break;
         }
