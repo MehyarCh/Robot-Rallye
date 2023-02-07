@@ -337,7 +337,7 @@ public class Client implements Runnable {
             public void run() {
                 if (!mainController.isProgrammingDone) {
                     mainController.sendRandomCards();
-                    sendChatMessage("random cards sent", -1);
+                    sendChatMessage("got sent random cards", -1);
                     timer.cancel();
                 }
             }
