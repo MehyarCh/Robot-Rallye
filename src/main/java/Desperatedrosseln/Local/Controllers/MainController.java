@@ -239,7 +239,7 @@ public class MainController {
                 stage.setScene(scene);
                 stage.setMaximized(false);
                 stage.setMaximized(true);
-                startTimer();
+                //startTimer();
             }
         });
 

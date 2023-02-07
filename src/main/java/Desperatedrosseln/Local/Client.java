@@ -25,6 +25,10 @@ public class Client implements Runnable {
     private DataOutputStream out;
     private int clientID;
 
+
+
+    public int playersDoneProgramming = 0;
+
     private List<String> cardsInHand;
     private HashMap<Integer, Integer> playersWithRobots = new HashMap<>();
     private HashMap<String, Integer> localPlayerList = new HashMap<>();
@@ -66,6 +70,10 @@ public class Client implements Runnable {
 
     public void setLobbyControllerInitialized(boolean lobbyControllerInitialized) {
         this.lobbyControllerInitialized = lobbyControllerInitialized;
+    }
+
+    public void setPlayersDoneProgramming(int playersDoneProgramming) {
+        this.playersDoneProgramming = playersDoneProgramming;
     }
 
     public Client() {
@@ -225,7 +233,7 @@ public class Client implements Runnable {
                 mainController.updateCardImages();
                 mainController.initRegisterValues();
                 mainController.cardClick();
-                startCardSelectionTimer();
+                //startCardSelectionTimer();
                 break;
             case "CurrentPlayer":
                 JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
@@ -288,6 +296,14 @@ public class Client implements Runnable {
 
                 break;
             case "SelectionFinished":
+                JsonAdapter<SelectionFinished> selectionFinishedJsonAdapter = moshi.adapter(SelectionFinished.class);
+                SelectionFinished selectionFinished  = selectionFinishedJsonAdapter.fromJson(msg.getMessageBody());
+
+                if (playersDoneProgramming == 0 && selectionFinished.getClientID() != this.clientID){
+                    mainController.startTimer();
+                    startCardSelectionTimer();
+                }
+                playersDoneProgramming++;
                 break;
             case "Energy":
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
@@ -310,6 +326,7 @@ public class Client implements Runnable {
                         mainController.startProgrammingPhase();
                         break;
                     case 3:
+                        playersDoneProgramming = 0;
                         break;
                     default:
                 }

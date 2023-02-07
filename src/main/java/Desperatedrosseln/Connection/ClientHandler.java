@@ -2,6 +2,7 @@ package Desperatedrosseln.Connection;
 
 import Desperatedrosseln.Json.utils.JsonMapReader;
 import Desperatedrosseln.Json.utils.JsonSerializer;
+import Desperatedrosseln.Local.Client;
 import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Local.Protocols.Error;
 import Desperatedrosseln.Logic.Cards.Card;
@@ -324,6 +325,10 @@ public class ClientHandler implements Runnable {
                 } else {
                     broadcastMessage("CardSelected", cardSelectedJsonAdapter.toJson(new CardSelected(clientID, selectedCard.getRegister(), true)));
                     logger.trace(game.selectionFinished());
+                    if (player.getRegisterTrack() == 5){
+                        JsonAdapter<SelectionFinished> selectionFinishedJsonAdapter = moshi.adapter(SelectionFinished.class);
+                        broadcastMessage("SelectionFinished", selectionFinishedJsonAdapter.toJson(new SelectionFinished(clientID)));
+                    }
                     if (game.selectionFinished()) {
                         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
                         ActivePhase activePhase3 = new ActivePhase(3);
