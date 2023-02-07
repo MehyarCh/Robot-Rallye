@@ -14,7 +14,11 @@ public class ConnectionUpdate {
         return isConnected; //false
     }
 
-    public ConnectionUpdate(){
-        //do something (kick, reconnect, etc.)
+    public String action;
+
+    public ConnectionUpdate(int clientID, boolean isConnected, String action){
+        this.clientID = clientID;
+        this.isConnected = isConnected;
+        this.action = action;
     }
 }

@@ -1,7 +1,9 @@
 package Desperatedrosseln.Connection;
 
 import Desperatedrosseln.Local.Protocols.Alive;
+import Desperatedrosseln.Local.Protocols.ConnectionUpdate;
 import Desperatedrosseln.Local.Protocols.Message;
+import Desperatedrosseln.Local.Protocols.PlayerAdded;
 import Desperatedrosseln.Logic.Game;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
 public class Server {
     private ServerSocket serverSocket;
     private List<String> gameLog;
@@ -23,6 +26,9 @@ public class Server {
     private Game game;
 
     private static final Logger logger = LogManager.getLogger();
+
+    Moshi moshi = new Moshi.Builder().build();
+    JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
 
     public Server() throws IOException {
         serverSocket = new ServerSocket(port);
@@ -40,6 +46,16 @@ public class Server {
                 Thread thread = new Thread(clientHandler);
                 thread.start();
 
+                /*for (ClientHandler clientHandler1 : ClientHandler.clients) {
+                    if (clientHandler.getSocket().isClosed()) {
+                        //ClientHandler.clients.remove(clientHandler);
+                        //logger.info("[SERVER]: A client has disconnected");
+                        //JsonAdapter<ConnectionUpdate> connectionUpdateJsonAdapter = moshi.adapter(ConnectionUpdate.class);
+                        //broadcastMessage("ConnectionUpdate", connectionUpdateJsonAdapter.toJson(new ConnectionUpdate(clientHandler.getClientID(), false, "remove")));
+                        //logger.warn("ConnectionUpdate sent");
+                    }
+                }*/
+
             } catch (IOException e) {
                 closeServer();
             }
@@ -54,7 +70,12 @@ public class Server {
         }
     }
 
-
+    public void broadcastMessage(String type, String json) {
+        ArrayList<ClientHandler> clients = ClientHandler.getClients();
+        for (ClientHandler client : clients) {
+            client.sendMessage(type, json);
+        }
+    }
 
 
     public static void main(String[] args) throws IOException {

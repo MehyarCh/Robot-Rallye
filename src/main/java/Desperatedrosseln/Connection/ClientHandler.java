@@ -19,6 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +28,22 @@ import java.util.TimerTask;
 
 public class ClientHandler implements Runnable {
     private String protocol;
+
+    public Socket getSocket() {
+        return socket;
+    }
+
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
     private String clientName;
     private Player player;
     Timer timer = new Timer();
+
+    public static ArrayList<ClientHandler> getClients() {
+        return clients;
+    }
+
     public static ArrayList<ClientHandler> clients = new ArrayList<>();
     Moshi moshi = new Moshi.Builder().build();
     JsonAdapter<Message> messageJsonAdapter = moshi.adapter(Message.class);
@@ -340,6 +351,13 @@ public class ClientHandler implements Runnable {
                 }
 
                 break;
+
+            case "ConnectionUpdate":
+                JsonAdapter<ConnectionUpdate> connectionUpdateJsonAdapter = moshi.adapter(ConnectionUpdate.class);
+                ConnectionUpdate connectionUpdate = connectionUpdateJsonAdapter.fromJson(message.getMessageBody());
+
+                //ToDo: remove the robot of the disconnected client from the logic
+
             default:
                 broadcastMessage(" ", "SERVER BRO");
         }
@@ -365,11 +383,13 @@ public class ClientHandler implements Runnable {
 
 
     public void sendMessage(String type, String json) {
-        try {
-            out.writeUTF(messageJsonAdapter.toJson(new Message(type, json)));
-            out.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (!socket.isClosed()) {
+            try {
+                out.writeUTF(messageJsonAdapter.toJson(new Message(type, json)));
+                out.flush();
+            } catch (IOException e) {
+                logger.warn("message could not be sent");
+            }
         }
     }
 
@@ -416,12 +436,14 @@ public class ClientHandler implements Runnable {
             try {
                 message = in.readUTF();
                 checkCommands(message);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException | InterruptedException e) {
+                logger.info(clientID + " has disconnected");
+                JsonAdapter<ConnectionUpdate> connectionUpdateJsonAdapter = moshi.adapter(ConnectionUpdate.class);
+                broadcastMessage("ConnectionUpdate", connectionUpdateJsonAdapter.toJson(new ConnectionUpdate(clientID, false, "remove")));
+                closeAll(this.socket, this.in, this.out);
+                break;
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }
@@ -446,4 +468,5 @@ public class ClientHandler implements Runnable {
         maps.add("DeathTrap");
         maps.add("Twister");
     }
+
 }
