@@ -166,7 +166,7 @@ public class Client implements Runnable {
                     //disable all other robot choice buttons in the GUI if it is already taken
                     //check if the message is about another client and disable the specific robot-icon that he chose in this GUI
                     if (lobbyControllerInitialized && playerAdded.getClientID() != this.clientID) {
-                        lobbyController.disableRobotIcon(playerAdded.getFigure());
+                        lobbyController.disableRobotIcon(playerAdded.getFigure(), playerAdded.getName());
                     }
                 }
                 break;
@@ -441,7 +441,6 @@ public class Client implements Runnable {
                 }
 
             } else if (message.startsWith("/dc")) {
-                //disconnect the client from the server ->  closeAll in Clienthandler ToDo: fix this
                 this.logOut();
                 sendMessage("Logout", "");
             }

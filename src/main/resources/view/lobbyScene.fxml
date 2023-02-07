@@ -39,7 +39,8 @@
                                 id="player-icon--1"
                                 fx:id="playerIcon1"
                                 styleClass="player-icon, player-icon--lg, player-icon-1"/>
-                        <Label text="Brown"
+                        <Label fx:id = "playerIcon1Label"
+                                text="Brown"
                                styleClass="headline-4, color--light"/>
                     </VBox>
                     <VBox styleClass="player-wrapper">
@@ -47,7 +48,8 @@
                                 id="player-icon--2"
                                 fx:id="playerIcon2"
                                 styleClass="player-icon, player-icon--lg"/>
-                        <Label text="Yellow"
+                        <Label fx:id = "playerIcon2Label"
+                                text="Yellow"
                                styleClass="headline-4, color--light"/>
                     </VBox>
                     <VBox styleClass="player-wrapper">
@@ -55,7 +57,8 @@
                                 id="player-icon--3"
                                 fx:id="playerIcon3"
                                 styleClass="player-icon, player-icon--lg"/>
-                        <Label text="Blue"
+                        <Label fx:id = "playerIcon3Label"
+                                text="Blue"
                                styleClass="headline-4, color--light"/>
                     </VBox>
                     <VBox styleClass="player-wrapper">
@@ -63,7 +66,8 @@
                                 id="player-icon--4"
                                 fx:id="playerIcon4"
                                 styleClass="player-icon, player-icon--lg"/>
-                        <Label text="Green"
+                        <Label fx:id = "playerIcon4Label"
+                                text="Green"
                                styleClass="headline-4, color--light"/>
                     </VBox>
                     <VBox styleClass="player-wrapper">
@@ -71,7 +75,8 @@
                                 id="player-icon--5"
                                 fx:id="playerIcon5"
                                 styleClass="player-icon, player-icon--lg"/>
-                        <Label text="Orange"
+                        <Label fx:id = "playerIcon5Label"
+                                text="Orange"
                                styleClass="headline-4, color--light"/>
                     </VBox>
                     <VBox styleClass="player-wrapper">
@@ -79,7 +84,8 @@
                                 id="player-icon--6"
                                 fx:id="playerIcon6"
                                 styleClass="player-icon, player-icon--lg"/>
-                        <Label text="Red"
+                        <Label fx:id = "playerIcon6Label"
+                                text="Red"
                                styleClass="headline-4, color--light"/>
                     </VBox>
                 </HBox>

@@ -65,6 +65,19 @@ public class LobbyController {
     private Button playerIcon5;
     @FXML
     private Button playerIcon6;
+
+    @FXML
+    private Label playerIcon1Label;
+    @FXML
+    private Label playerIcon2Label;
+    @FXML
+    private Label playerIcon3Label;
+    @FXML
+    private Label playerIcon4Label;
+    @FXML
+    private Label playerIcon5Label;
+    @FXML
+    private Label playerIcon6Label;
     @FXML
     private ToggleButton readyButton;
     @FXML
@@ -270,25 +283,44 @@ public class LobbyController {
      * @param figure is the chosen robot whose icon-button should be disabled
      * this method is used from outside of this class to disable only one robot-icon
      */
-    public void disableRobotIcon(int figure){
+    @FXML
+    public void disableRobotIcon(int figure, String name){
         switch (figure){
             case 1:
                 playerIcon1.setDisable(true);
+                Platform.runLater(() -> {
+                    playerIcon1Label.setText(name);
+                });
                 break;
             case 2:
                 playerIcon2.setDisable(true);
+                Platform.runLater(() -> {
+                    playerIcon2Label.setText(name);
+                });
                 break;
             case 3:
                 playerIcon3.setDisable(true);
+                Platform.runLater(() -> {
+                    playerIcon3Label.setText(name);
+                });
                 break;
             case 4:
                 playerIcon4.setDisable(true);
+                Platform.runLater(() -> {
+                    playerIcon4Label.setText(name);
+                });
                 break;
             case 5:
                 playerIcon5.setDisable(true);
+                Platform.runLater(() -> {
+                    playerIcon5Label.setText(name);
+                });
                 break;
             case 6:
                 playerIcon6.setDisable(true);
+                Platform.runLater(() -> {
+                    playerIcon6Label.setText(name);
+                });
                 break;
         }
     }
