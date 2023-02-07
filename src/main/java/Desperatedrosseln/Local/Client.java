@@ -33,6 +33,8 @@ public class Client implements Runnable {
     ArrayList<Integer> robotIDs = new ArrayList<>();
     private String clientName;
 
+    private boolean myRobotSelected = false;
+
     public boolean isMainSceneStarted = false;
 
     private boolean isMyTurn = false;
@@ -43,6 +45,7 @@ public class Client implements Runnable {
     public int energyReserve;
     private int regIndex = -1;
     private int phase;
+
 
     public boolean isGotSentMaps() {
         return gotSentMaps;
@@ -158,6 +161,9 @@ public class Client implements Runnable {
                 PlayerAdded playerAdded = playerAddedJsonAdapter.fromJson(msg.getMessageBody());
 
                 localPlayerList.put(playerAdded.getName(), playerAdded.getClientID());
+                if (clientID == playerAdded.getClientID()){
+                    myRobotSelected = true;
+                }
                 if (!robotIDs.contains(playerAdded.getFigure())) {
                     //add robotID to the list of taken robots
                     robotIDs.add(playerAdded.getFigure());
@@ -313,7 +319,16 @@ public class Client implements Runnable {
                     mainController.addChatMessage("Error message from Server for ");
                 }
                 break;
+            case "ConnectionUpdate":
+                JsonAdapter<ConnectionUpdate> connectionUpdateJsonAdapter = moshi.adapter(ConnectionUpdate.class);
+                ConnectionUpdate connectionUpdate = connectionUpdateJsonAdapter.fromJson(msg.getMessageBody());
+                logger.info("received ConnectionUpdate on Client");
+                removeClient(connectionUpdate.getClientID());
         }
+    }
+
+    private void removeClient(int clientID) {
+        //ToDo: remove the Client
     }
 
 
@@ -408,12 +423,16 @@ public class Client implements Runnable {
     }
 
     public void sendChatMessage(String message, int to) {
+        if (!myRobotSelected){
+            lobbyController.addChatMessage("ERROR" + ":" + "Please select a robot to start chatting");
+            return;
+        }
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
+
         if (message.startsWith("/")) {
 
             String[] messageParts = message.split(" ", 3);
-
 
             if (message.startsWith("/dm")) {
                 if (messageParts.length < 3) {

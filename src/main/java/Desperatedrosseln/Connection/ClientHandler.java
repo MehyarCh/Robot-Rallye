@@ -98,6 +98,14 @@ public class ClientHandler implements Runnable {
         sendMessage("Error", errorJsonAdapter.toJson(new Error()));
     }
 
+    /**
+     * @param msg is the incoming message
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws InterruptedException
+     * this method checks the incoming message and differs between the different protocoll messages and their
+     * required consequences
+     */
     public void checkCommands(String msg) throws IOException, ClassNotFoundException, InterruptedException {
 
 
@@ -345,12 +353,6 @@ public class ClientHandler implements Runnable {
 
                 break;
 
-            case "ConnectionUpdate":
-                JsonAdapter<ConnectionUpdate> connectionUpdateJsonAdapter = moshi.adapter(ConnectionUpdate.class);
-                ConnectionUpdate connectionUpdate = connectionUpdateJsonAdapter.fromJson(message.getMessageBody());
-
-                //ToDo: remove the robot of the disconnected client from the logic
-
             default:
                 broadcastMessage(" ", "SERVER BRO");
         }
@@ -407,8 +409,6 @@ public class ClientHandler implements Runnable {
 
     public void removeClientHandler() {
         clients.remove(this);
-        //String logout = "User " + clientName + " has left the Chat";
-        //broadcastMessage(logout);
     }
 
     @Override
@@ -434,6 +434,7 @@ public class ClientHandler implements Runnable {
                 JsonAdapter<ConnectionUpdate> connectionUpdateJsonAdapter = moshi.adapter(ConnectionUpdate.class);
                 broadcastMessage("ConnectionUpdate", connectionUpdateJsonAdapter.toJson(new ConnectionUpdate(clientID, false, "remove")));
                 closeAll(this.socket, this.in, this.out);
+                game.removePlayer(clientID);
                 break;
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
