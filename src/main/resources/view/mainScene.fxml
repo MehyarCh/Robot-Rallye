@@ -92,7 +92,8 @@
                     <Label fx:id="playerName"
                             text="PlayerName"
                            styleClass="profile-name, color--light"/>
-                    <Label text="Energy: 50"
+                    <Label fx:id = "energyLabel"
+                            text="Energy: 5"
                            styleClass="profile-energy, color--primary"/>
                 </VBox>
             </HBox>

@@ -288,6 +288,7 @@ public class Client implements Runnable {
                 Energy energy = energyJsonAdapter.fromJson(msg.getMessageBody());
                 if(energy.getClientID() == clientID){
                     energyReserve = energy.getCount();
+                    mainController.updateEnergy(energyReserve);
                 }
                 break;
             case "ActivePhase":

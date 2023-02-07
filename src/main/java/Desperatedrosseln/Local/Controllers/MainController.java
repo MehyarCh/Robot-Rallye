@@ -150,6 +150,9 @@ public class MainController {
     @FXML
     private Label timeLabel;
 
+    @FXML
+    private Label energyLabel;
+
     private static final Logger logger = LogManager.getLogger(MainController.class);
 
 
@@ -662,6 +665,12 @@ public class MainController {
             default -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
         };
         return new ImageView(image);
+    }
+    @FXML
+    public void updateEnergy(int energyCount){
+        Platform.runLater(() -> {
+            energyLabel.setText("Energy: " + energyCount);
+        });
     }
 
     public List<String> getRegisterValues() {
