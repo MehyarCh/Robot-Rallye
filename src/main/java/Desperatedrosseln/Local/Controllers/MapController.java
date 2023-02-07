@@ -13,11 +13,15 @@ import com.squareup.moshi.Moshi;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -45,7 +49,6 @@ public class MapController {
 
     @FXML
     private GridPane mapGrid;
-    private final int maxMapHeight;
     private List<List<List<BoardElement>>> mapAsList;
     private int tileSize = 35;
 
@@ -94,12 +97,10 @@ public class MapController {
         }
     }
 
-    public MapController(GridPane mapGrid, int selectedRobot, int maxMapHeight) {
+    public MapController(GridPane mapGrid, int selectedRobot) {
         this.mapGrid = mapGrid;
         this.jsonMapReader = new JsonMapReader();
         this.selectedRobot = selectedRobot;
-        this.maxMapHeight = maxMapHeight;
-        this.tileSize = maxMapHeight / 10;
     }
 
     public Map getMap() {
@@ -118,7 +119,10 @@ public class MapController {
     public void showMap() {
         addLaserBeam(map.getMapFields());
         buildMapGrid(map.getMapFields());
+        glow();
     }
+
+
 
     private void addLaserBeam(List<List<MapField>> fieldList) {
 
@@ -256,7 +260,6 @@ public class MapController {
 
             if (addEmpty.contains(boardElement.getType())) {
                 ImageView empty = new ImageView(emptyImage);
-                tileSize = 50;
                 empty.setFitHeight(tileSize);
                 empty.setPreserveRatio(true);
                 cell.getChildren().add(empty);
@@ -295,6 +298,14 @@ public class MapController {
         }
         return cell;
     }
+
+    public void setTileSize(int computedTileSize) {
+        tileSize = computedTileSize;
+    }
+
+
+
+
     @FXML
     private ImageView buildCheckpoint(BoardElement boardElement) throws IOException {
 
@@ -959,8 +970,19 @@ public class MapController {
         this.mapAsList = mapAsList;
     }
 
+    @FXML
+    public void glow(){
+        addBgGlow();
+    }
 
-
-
-
+    @FXML
+    private void addBgGlow() {
+        DropShadow pinkGlow = new DropShadow();
+        pinkGlow.setOffsetY(0f);
+        pinkGlow.setOffsetX(0f);
+        pinkGlow.setColor(Color.rgb(246, 1, 157));
+        pinkGlow.setWidth(60);
+        pinkGlow.setHeight(60);
+        mapGrid.setEffect(pinkGlow);
+    }
 }

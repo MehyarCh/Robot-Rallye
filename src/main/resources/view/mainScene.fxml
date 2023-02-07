@@ -15,8 +15,16 @@
             xmlns:fx="http://javafx.com/fxml"
             styleClass="main-scene">
 
+
+
+
+
+
+
+
+
     <top>
-        <GridPane styleClass="navbar">
+        <GridPane styleClass="navbar" fx:id="navbar">
             <HBox id="logo-wrapper"
                   GridPane.columnIndex="0"
                   GridPane.rowIndex="0"
@@ -90,7 +98,7 @@
                        styleClass="player-icon"/>
                 <VBox styleClass="profile-status">
                     <Label fx:id="playerName"
-                            text="PlayerName"
+                           text="PlayerName"
                            styleClass="profile-name, color--light"/>
                     <Label fx:id = "energyLabel"
                             text="Energy: 5"
@@ -100,65 +108,6 @@
         </GridPane>
     </top>
 
-    <left>
-        <VBox
-            fx:id="upgradeBar"
-            styleClass="sidebar, upgradeBar">
-            <Label
-                    fx:id="upgradeLabel"
-                    text="Upgrade Shop"
-                    styleClass="color--light, headline-1"/>
-            <GridPane
-                fx:id="upgradeGrid"
-                styleClass="upgradeGrid">
-                <StackPane fx:id="upgradeCard1"
-                           styleClass="card-area--sm"
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="0"
-                           GridPane.halignment="CENTER">
-                </StackPane>
-                <StackPane fx:id="upgradeCard2"
-                           styleClass="card-area--sm"
-                           GridPane.rowIndex="0"
-                           GridPane.columnIndex="1"
-                           GridPane.halignment="CENTER">
-                </StackPane>
-
-                <StackPane fx:id="upgradeCard3"
-                           styleClass="card-area--sm"
-                           GridPane.rowIndex="1"
-                           GridPane.columnIndex="0"
-                           GridPane.halignment="CENTER">
-                </StackPane>
-                <StackPane fx:id="upgradeCard4"
-                           styleClass="card-area--sm"
-                           GridPane.rowIndex="1"
-                           GridPane.columnIndex="1"
-                           GridPane.hgrow="ALWAYS"
-                           GridPane.halignment="CENTER">
-                </StackPane>
-
-                <StackPane fx:id="upgradeCard5"
-                           styleClass="card-area--sm"
-                           GridPane.rowIndex="2"
-                           GridPane.columnIndex="0"
-                           GridPane.halignment="CENTER">
-                </StackPane>
-                <StackPane fx:id="upgradeCard6"
-                           styleClass="card-area--sm"
-                           GridPane.rowIndex="2"
-                           GridPane.columnIndex="1"
-                           GridPane.halignment="CENTER">
-                </StackPane>
-            </GridPane>
-            <Button
-                fx:id="upgradeButton"
-                onAction="#handleUpgradeButton"
-                styleClass="button, button--primary"
-                text="UPGRADE" />
-        </VBox>
-    </left>
-
     <center>
         <StackPane fx:id="centerStack" styleClass="main-overlay-container">
             <GridPane styleClass="center" fx:id="center">
@@ -166,138 +115,248 @@
                           styleClass="map"
                           GridPane.columnIndex="0"
                           GridPane.rowIndex="0"
-                          GridPane.hgrow="ALWAYS"
-                          GridPane.vgrow="ALWAYS">
+                          GridPane.vgrow="ALWAYS"
+                        GridPane.hgrow="ALWAYS">
                 </GridPane>
-                <GridPane styleClass="card-wrapper"
+                <GridPane styleClass="card-wrapper, transparent--black"
                           fx:id="cardWrapper"
                           GridPane.columnIndex="0"
-                          GridPane.rowIndex="1"
-                          GridPane.hgrow="ALWAYS">
-                    <GridPane styleClass="card-row, upper-card-row"
-                              GridPane.columnIndex="0"
-                              GridPane.rowIndex="0"
-                              GridPane.hgrow="ALWAYS"
-                              GridPane.vgrow="ALWAYS">
-                        <StackPane fx:id="registerCardOne"
-                                   id="card"
-                                   styleClass="card-area"
-                                   GridPane.rowIndex="0"
-                                   GridPane.columnIndex="0"
-                                   GridPane.vgrow="ALWAYS">
-                        </StackPane>
-                        <StackPane fx:id="registerCardTwo"
-                                   id="card"
-                                   styleClass="card-area"
-                                   GridPane.rowIndex="0"
-                                   GridPane.columnIndex="1"
-                                   GridPane.vgrow="ALWAYS">
-                        </StackPane>
-                        <StackPane fx:id="registerCardThree"
-                                   id="card"
-                                   styleClass="card-area"
-                                   GridPane.rowIndex="0"
-                                   GridPane.columnIndex="2"
-                                   GridPane.vgrow="ALWAYS">
-                        </StackPane>
-                        <StackPane fx:id="registerCardFour"
-                                   id="card"
-                                   styleClass="card-area"
-                                   GridPane.rowIndex="0"
-                                   GridPane.columnIndex="3"
-                                   GridPane.vgrow="ALWAYS">
-                        </StackPane>
-                        <StackPane fx:id="registerCardFive"
-                                   id="card"
-                                   styleClass="card-area"
-                                   GridPane.rowIndex="0"
-                                   GridPane.columnIndex="4"
-                                   GridPane.vgrow="ALWAYS">
-                        </StackPane>
-                        <Button fx:id="programdone"
-                                onAction="#onPlayCard"
-                                GridPane.columnIndex="8"
-                                styleClass="button, programdone-button, button--primary,"
-                                text="Play Card"/>
+                          GridPane.rowIndex="1">
+                    <HBox styleClass="card-row"
+                        GridPane.rowIndex="0">
+                        <GridPane styleClass="card-group"
+                                  GridPane.columnIndex="0">
+                            <StackPane fx:id="tempUpgradeCard1"
+                                       styleClass="card, card-area--temporary"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="0"
+                                       GridPane.halignment="CENTER">
+                            </StackPane>
+                            <StackPane fx:id="tempUpgradeCard2"
+                                       styleClass="card, card-area--temporary"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="1"
+                                       GridPane.halignment="CENTER">
+                            </StackPane>
+                            <StackPane fx:id="tempUpgradeCard3"
+                                       styleClass="card, card-area--temporary"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="2"
+                                       GridPane.halignment="CENTER">
+                            </StackPane>
+                        </GridPane>
+                        <GridPane styleClass="card-group"
+                                  GridPane.columnIndex="1"
+                                  GridPane.rowIndex="0">
+                            <StackPane fx:id="registerCardOne"
+                                       id="card"
+                                       styleClass="card-area--pink"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="0"
+                                       GridPane.vgrow="ALWAYS">
+                            </StackPane>
+                            <StackPane fx:id="registerCardTwo"
+                                       id="card"
+                                       styleClass="card-area--pink"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="1"
+                                       GridPane.vgrow="ALWAYS">
+                            </StackPane>
+                            <StackPane fx:id="registerCardThree"
+                                       id="card"
+                                       styleClass="card-area--pink"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="2"
+                                       GridPane.vgrow="ALWAYS">
+                            </StackPane>
+                            <StackPane fx:id="registerCardFour"
+                                       id="card"
+                                       styleClass="card-area--pink"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="3"
+                                       GridPane.vgrow="ALWAYS">
+                            </StackPane>
+                            <StackPane fx:id="registerCardFive"
+                                       id="card"
+                                       styleClass="card-area--pink"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="4"
+                                       GridPane.vgrow="ALWAYS">
+                            </StackPane>
+                        </GridPane>
+                        <GridPane styleClass="card-group"
+                                  GridPane.columnIndex="2"
+                                  GridPane.rowIndex="0">
+                            <StackPane fx:id="permUpgradeCard1"
+                                       styleClass="card, card-area--permanent"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="0"
+                                       GridPane.halignment="CENTER">
+                            </StackPane>
+                            <StackPane fx:id="permUpgradeCard2"
+                                       styleClass="card, card-area--permanent"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="1"
+                                       GridPane.halignment="CENTER">
+                            </StackPane>
+                            <StackPane fx:id="permUpgradeCard3"
+                                       styleClass="card, card-area--permanent"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="2"
+                                       GridPane.halignment="CENTER">
+                            </StackPane>
+                        </GridPane>
+                    </HBox>
+                    <HBox styleClass="card-row"
+                        GridPane.rowIndex="1">
+                        <GridPane styleClass="card-group"
+                                  GridPane.columnIndex="0"
+                                  GridPane.rowIndex="0"
+                                  GridPane.hgrow="ALWAYS"
+                                  GridPane.vgrow="ALWAYS">
+                            <StackPane fx:id="handCardOne"
+                                       id="card"
+                                       styleClass="card-area"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="0"
+                                       GridPane.vgrow="ALWAYS">
+                            </StackPane>
+                            <StackPane fx:id="handCardTwo"
+                                       id="card"
+                                       styleClass="card-area"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="1"
+                                       GridPane.vgrow="ALWAYS">
+                            </StackPane>
+                            <StackPane fx:id="handCardThree"
+                                       id="card"
+                                       styleClass="card-area"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="2"
+                                       GridPane.vgrow="ALWAYS">
+                            </StackPane>
+                            <StackPane fx:id="handCardFour"
+                                       id="card"
+                                       styleClass="card-area"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="3"
+                                       GridPane.vgrow="ALWAYS">
+                            </StackPane>
+                            <StackPane fx:id="handCardFive"
+                                       id="card"
+                                       styleClass="card-area"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="4"
+                                       GridPane.vgrow="ALWAYS">
+                            </StackPane>
+                            <StackPane fx:id="handCardSix"
+                                       id="card"
+                                       styleClass="card-area"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="5"
+                                       GridPane.vgrow="ALWAYS">
+                            </StackPane>
+                            <StackPane fx:id="handCardSeven"
+                                       id="card"
+                                       styleClass="card-area"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="6"
+                                       GridPane.vgrow="ALWAYS">
+                            </StackPane>
+                            <StackPane fx:id="handCardEight"
+                                       id="card"
+                                       styleClass="card-area"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="7"
+                                       GridPane.vgrow="ALWAYS">
+                            </StackPane>
+                            <StackPane fx:id="handCardNine"
+                                       id="card"
+                                       styleClass="card-area"
+                                       GridPane.rowIndex="0"
+                                       GridPane.columnIndex="8"
+                                       GridPane.vgrow="ALWAYS">
+                            </StackPane>
+                        </GridPane>
+                    </HBox>
 
-                    </GridPane>
-                    <GridPane styleClass="card-row, lower-card-row"
-                              GridPane.columnIndex="0"
-                              GridPane.rowIndex="1"
-                              GridPane.hgrow="ALWAYS"
-                              GridPane.vgrow="ALWAYS">
-                        <StackPane fx:id="handCardOne"
-                                   id="card"
-                                   styleClass="card-area"
-                                   GridPane.rowIndex="0"
-                                   GridPane.columnIndex="0"
-                                   GridPane.vgrow="ALWAYS">
-                        </StackPane>
-                        <StackPane fx:id="handCardTwo"
-                                   id="card"
-                                   styleClass="card-area"
-                                   GridPane.rowIndex="0"
-                                   GridPane.columnIndex="1"
-                                   GridPane.vgrow="ALWAYS">
-                        </StackPane>
-                        <StackPane fx:id="handCardThree"
-                                   id="card"
-                                   styleClass="card-area"
-                                   GridPane.rowIndex="0"
-                                   GridPane.columnIndex="2"
-                                   GridPane.vgrow="ALWAYS">
-                        </StackPane>
-                        <StackPane fx:id="handCardFour"
-                                   id="card"
-                                   styleClass="card-area"
-                                   GridPane.rowIndex="0"
-                                   GridPane.columnIndex="3"
-                                   GridPane.vgrow="ALWAYS">
-                        </StackPane>
-                        <StackPane fx:id="handCardFive"
-                                   id="card"
-                                   styleClass="card-area"
-                                   GridPane.rowIndex="0"
-                                   GridPane.columnIndex="4"
-                                   GridPane.vgrow="ALWAYS">
-                        </StackPane>
-                        <StackPane fx:id="handCardSix"
-                                   id="card"
-                                   styleClass="card-area"
-                                   GridPane.rowIndex="0"
-                                   GridPane.columnIndex="5"
-                                   GridPane.vgrow="ALWAYS">
-                        </StackPane>
-                        <StackPane fx:id="handCardSeven"
-                                   id="card"
-                                   styleClass="card-area"
-                                   GridPane.rowIndex="0"
-                                   GridPane.columnIndex="6"
-                                   GridPane.vgrow="ALWAYS">
-                        </StackPane>
-                        <StackPane fx:id="handCardEight"
-                                   id="card"
-                                   styleClass="card-area"
-                                   GridPane.rowIndex="0"
-                                   GridPane.columnIndex="7"
-                                   GridPane.vgrow="ALWAYS">
-                        </StackPane>
-                        <StackPane fx:id="handCardNine"
-                                   id="card"
-                                   styleClass="card-area"
-                                   GridPane.rowIndex="0"
-                                   GridPane.columnIndex="8"
-                                   GridPane.vgrow="ALWAYS">
-                        </StackPane>
 
-                    </GridPane>
+
+
+
                 </GridPane>
             </GridPane>
         </StackPane>
     </center>
 
+    <left>
+        <HBox fx:id="upgradeBar"
+              styleClass="sidebar, upgradeBar, border-effect--right, border-effect--primary">
+            <VBox styleClass="upgrade-shop-wrapper">
+                <Label
+                        fx:id="upgradeLabel"
+                        text="Upgrade Shop"
+                        styleClass="color--light, headline-1"/>
+                <GridPane
+                        fx:id="upgradeGrid"
+                        styleClass="upgradeGrid">
+                    <StackPane fx:id="upgradeCard1"
+                               styleClass="card, card-area--sm"
+                               GridPane.rowIndex="0"
+                               GridPane.columnIndex="0"
+                               GridPane.halignment="CENTER">
+                    </StackPane>
+                    <StackPane fx:id="upgradeCard2"
+                               styleClass="card, card-area--sm"
+                               GridPane.rowIndex="1"
+                               GridPane.columnIndex="0"
+                               GridPane.halignment="CENTER">
+                    </StackPane>
+
+                    <StackPane fx:id="upgradeCard3"
+                               styleClass="card, card-area--sm"
+                               GridPane.rowIndex="2"
+                               GridPane.columnIndex="0"
+                               GridPane.halignment="CENTER">
+                    </StackPane>
+                    <StackPane fx:id="upgradeCard4"
+                               styleClass="card, card-area--sm"
+                               GridPane.rowIndex="3"
+                               GridPane.columnIndex="0"
+                               GridPane.hgrow="ALWAYS"
+                               GridPane.halignment="CENTER">
+                    </StackPane>
+
+                    <StackPane fx:id="upgradeCard5"
+                               styleClass="card, card-area--sm"
+                               GridPane.rowIndex="4"
+                               GridPane.columnIndex="0"
+                               GridPane.halignment="CENTER">
+                    </StackPane>
+                    <StackPane fx:id="upgradeCard6"
+                               styleClass="card, card-area--sm"
+                               GridPane.rowIndex="5"
+                               GridPane.columnIndex="0"
+                               GridPane.halignment="CENTER">
+                    </StackPane>
+                </GridPane>
+                <Button
+                        fx:id="upgradeButton"
+                        onAction="#handleUpgradeButton"
+                        styleClass="button, button--sm, button--secondary"
+                        text="UPGRADE" />
+                <Button fx:id="programdone"
+                        onAction="#onPlayCard"
+                        GridPane.columnIndex="1"
+                        GridPane.rowIndex="1"
+                        styleClass="button, button--sm, button--secondary"
+                        text="PLAY CARD" />
+            </VBox>
+        </HBox>
+    </left>
     <right>
-        <GridPane styleClass="sidebar">
+        <GridPane styleClass="sidebar, border-effect--left, border-effect--primary"
+        fx:id="sidebar">
             <ScrollPane GridPane.columnIndex="0"
                         GridPane.rowIndex="0"
                         GridPane.hgrow="ALWAYS"
