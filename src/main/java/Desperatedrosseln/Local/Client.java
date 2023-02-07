@@ -153,6 +153,10 @@ public class Client implements Runnable {
                 PlayerAdded playerAdded = playerAddedJsonAdapter.fromJson(msg.getMessageBody());
                 //saves player when choosing his robot, chat messages in lobby show null-username before choosing
                 localPlayerList.put(playerAdded.getName(), playerAdded.getClientID());
+                //show the players who are online, needs this if so the AI gets shown as well
+                if (lobbyControllerInitialized) {
+                    lobbyController.setPlayersOnline(playerAdded.getName());
+                }
                 if (!robotIDs.contains(playerAdded.getFigure())) {
                     //add robotID to the list of taken robots
                     robotIDs.add(playerAdded.getFigure());

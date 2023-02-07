@@ -42,7 +42,7 @@ public class LobbyController {
     private Parent root;
 
     private String selectedMap;
-
+    List<String> playerNames = new ArrayList<>();
     private boolean hasSelectedMap = false;
 
     @FXML
@@ -77,7 +77,7 @@ public class LobbyController {
     @FXML
     private Button playerIconPink;
     @FXML
-    private Label playersOnline;
+    private Label playersOnline = new Label("Players currently online: ");
     private int selectedRobot;
 
     private static final Logger logger = LogManager.getLogger(LobbyController.class);
@@ -195,8 +195,22 @@ public class LobbyController {
                 }
             }
         }
+        //playersOnline.setText("Players currently online: " + client.getRobotIDs());
         client.sendPlayerValues(selectedRobot);
 
+    }
+    public void setPlayersOnline(String label) {
+        //if there are 2 players with the same name, it only shows one of them
+        for (int i = 0; i < playerNames.size(); i++) {
+            if(playerNames.get(i).equals(label)){
+                return;
+            }
+        }
+        //sets the playersOnline to the list of players
+        Platform.runLater(() -> {
+            playerNames.add(label);
+            playersOnline.setText("Players currently online: " + playerNames);
+        });
     }
 
     /**
