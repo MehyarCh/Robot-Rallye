@@ -260,7 +260,7 @@ public class MainController {
                 stage.setMaximized(true);
                 mapController.setTileSize(calcMaxMapHeight() / 12);
                 glow();
-                startTimer();
+                //startTimer();
             }
         });
 

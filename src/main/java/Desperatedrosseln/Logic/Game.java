@@ -1341,6 +1341,10 @@ public class Game {
             playing.getHand().add(playing.drawCardFromDeck());
         }
     }
+
+    public void removePlayer(int clientID) {
+        //ToDo: remove player from the game
+    }
 }
 
 

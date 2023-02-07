@@ -142,6 +142,7 @@ public class LobbyController {
     /**
      * starts the lobby scene
      * already disables all unavailable robot-choices
+     * @author Manu, Luca
      */
     public void startLobbyScene(Stage stage) {
         mainController = new MainController();
@@ -167,6 +168,7 @@ public class LobbyController {
 
     /**
      * initializes a list containing all robot-choice-buttons
+     * @author Luca
      */
     private void initRobotIconsList(){
         robotIcons.add(playerIcon1);
@@ -182,6 +184,7 @@ public class LobbyController {
      * sets the clients selectedrobot to the chosen one
      * disables all other robot choices for this player
      * sends PlayerValues protocoll message to the Server
+     * @author Luca, Manu
      */
     @FXML
     public void onButtonClicked(ActionEvent event) throws IOException {
@@ -236,6 +239,7 @@ public class LobbyController {
 
     /**
      * this method gets called when the user sends a text message with the ENTER key on the keyboard
+     * @author Manu, Mehyar
      */
     @FXML
     public void onMessageSend(KeyEvent event){
@@ -262,6 +266,7 @@ public class LobbyController {
     /**
      * @param robotIDs contains all the already taken robots
      * this method disables every robot icon in the GUI that has already been chosen by other players
+     * @author Luca
      */
     @FXML
     public void disableTakenRobots(ArrayList<Integer> robotIDs){
@@ -288,6 +293,7 @@ public class LobbyController {
     /**
      * @param figure is the chosen robot whose icon-button should be disabled
      * this method is used from outside of this class to disable only one robot-icon
+     * @author Luca
      */
     @FXML
     public void disableRobotIcon(int figure, String name){
@@ -336,6 +342,11 @@ public class LobbyController {
                 break;
         }
     }
+
+    /**
+     * @author Manu
+     * shows the given message in the chat window
+     */
     @FXML
     public void addChatMessage(String message) {
         Platform.runLater(new Runnable() {
@@ -399,6 +410,10 @@ public class LobbyController {
         }
     }
 
+    /**
+     * this method is used to create a new map option for the GUI map-decisions
+     * @author Manu
+     */
     private StackPane createMapOption(String mapName) {
         Label mapOptionTitle = new Label(mapName);
         mapOptionTitle.getStyleClass().add("map-option-title");

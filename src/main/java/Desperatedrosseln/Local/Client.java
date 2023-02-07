@@ -25,6 +25,10 @@ public class Client implements Runnable {
     private DataOutputStream out;
     private int clientID;
 
+
+
+    public int playersDoneProgramming = 0;
+
     private List<String> cardsInHand;
     private HashMap<Integer, Integer> playersWithRobots = new HashMap<>();
     private HashMap<String, Integer> localPlayerList = new HashMap<>();
@@ -32,6 +36,8 @@ public class Client implements Runnable {
     private String protocol = "Version 0.1";
     ArrayList<Integer> robotIDs = new ArrayList<>();
     private String clientName;
+
+    private boolean myRobotSelected = false;
 
     public boolean isMainSceneStarted = false;
 
@@ -43,6 +49,7 @@ public class Client implements Runnable {
     public int energyReserve;
     private int regIndex = -1;
     private int phase;
+
 
     public boolean isGotSentMaps() {
         return gotSentMaps;
@@ -63,6 +70,10 @@ public class Client implements Runnable {
 
     public void setLobbyControllerInitialized(boolean lobbyControllerInitialized) {
         this.lobbyControllerInitialized = lobbyControllerInitialized;
+    }
+
+    public void setPlayersDoneProgramming(int playersDoneProgramming) {
+        this.playersDoneProgramming = playersDoneProgramming;
     }
 
     public Client() {
@@ -158,6 +169,9 @@ public class Client implements Runnable {
                 PlayerAdded playerAdded = playerAddedJsonAdapter.fromJson(msg.getMessageBody());
 
                 localPlayerList.put(playerAdded.getName(), playerAdded.getClientID());
+                if (clientID == playerAdded.getClientID()){
+                    myRobotSelected = true;
+                }
                 if (!robotIDs.contains(playerAdded.getFigure())) {
                     //add robotID to the list of taken robots
                     robotIDs.add(playerAdded.getFigure());
@@ -219,7 +233,7 @@ public class Client implements Runnable {
                 mainController.updateCardImages();
                 mainController.initRegisterValues();
                 mainController.cardClick();
-                startCardSelectionTimer();
+                //startCardSelectionTimer();
                 break;
             case "CurrentPlayer":
                 JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
@@ -282,6 +296,14 @@ public class Client implements Runnable {
 
                 break;
             case "SelectionFinished":
+                JsonAdapter<SelectionFinished> selectionFinishedJsonAdapter = moshi.adapter(SelectionFinished.class);
+                SelectionFinished selectionFinished  = selectionFinishedJsonAdapter.fromJson(msg.getMessageBody());
+
+                if (playersDoneProgramming == 0 && selectionFinished.getClientID() != this.clientID){
+                    mainController.startTimer();
+                    startCardSelectionTimer();
+                }
+                playersDoneProgramming++;
                 break;
             case "Energy":
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
@@ -304,6 +326,7 @@ public class Client implements Runnable {
                         mainController.startProgrammingPhase();
                         break;
                     case 3:
+                        playersDoneProgramming = 0;
                         break;
                     default:
                 }
@@ -313,7 +336,16 @@ public class Client implements Runnable {
                     mainController.addChatMessage("Error message from Server for ");
                 }
                 break;
+            case "ConnectionUpdate":
+                JsonAdapter<ConnectionUpdate> connectionUpdateJsonAdapter = moshi.adapter(ConnectionUpdate.class);
+                ConnectionUpdate connectionUpdate = connectionUpdateJsonAdapter.fromJson(msg.getMessageBody());
+                logger.info("received ConnectionUpdate on Client");
+                removeClient(connectionUpdate.getClientID());
         }
+    }
+
+    private void removeClient(int clientID) {
+        //ToDo: remove the Client
     }
 
 
@@ -408,12 +440,16 @@ public class Client implements Runnable {
     }
 
     public void sendChatMessage(String message, int to) {
+        if (!myRobotSelected){
+            lobbyController.addChatMessage("ERROR" + ":" + "Please select a robot to start chatting");
+            return;
+        }
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<SendChat> sendChatJsonAdapter = moshi.adapter(SendChat.class);
+
         if (message.startsWith("/")) {
 
             String[] messageParts = message.split(" ", 3);
-
 
             if (message.startsWith("/dm")) {
                 if (messageParts.length < 3) {
