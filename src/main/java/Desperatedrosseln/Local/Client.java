@@ -25,7 +25,7 @@ public class Client implements Runnable {
     private DataOutputStream out;
     private int clientID;
 
-
+    private boolean timerRunning = false;
 
     public int playersDoneProgramming = 0;
 
@@ -302,6 +302,7 @@ public class Client implements Runnable {
                 if (playersDoneProgramming == 0 && selectionFinished.getClientID() != this.clientID){
                     mainController.startTimer();
                     startCardSelectionTimer();
+                    timerRunning = true;
                 }
                 playersDoneProgramming++;
                 break;
@@ -327,6 +328,10 @@ public class Client implements Runnable {
                         break;
                     case 3:
                         playersDoneProgramming = 0;
+                        if(timerRunning) {
+                        mainController.resetTimer();
+                        timerRunning = false;
+                    }
                         break;
                     default:
                 }

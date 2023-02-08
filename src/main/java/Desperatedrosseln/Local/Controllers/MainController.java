@@ -201,6 +201,10 @@ public class MainController {
 
     private static final Logger logger = LogManager.getLogger(MainController.class);
 
+    public Timer timer;
+
+    private int seconds = 30;
+
 
     public MainController() {
 
@@ -372,12 +376,9 @@ public class MainController {
 
 
     public void startTimer() {
-        Timer timer = new Timer();
+        timer = new Timer();
 
         timer.scheduleAtFixedRate(new TimerTask() {
-
-            private int seconds = 30;
-
             @Override
             public void run() {
                 Platform.runLater(() -> {
@@ -389,6 +390,12 @@ public class MainController {
                 );
             }
         }, 0, 1000);
+    }
+
+    public void resetTimer() {
+        timer.cancel();
+        seconds = 30;
+        timeLabel.setText(String.valueOf(seconds));
     }
 
     public void fillHand() {
