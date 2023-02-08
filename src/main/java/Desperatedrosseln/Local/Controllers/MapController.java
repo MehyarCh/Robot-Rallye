@@ -56,6 +56,10 @@ public class MapController {
 
     private static final Logger logger = LogManager.getLogger();
 
+    @FXML private Button upgradeButton;
+
+    @FXML private Button noUpgradeButton;
+
 
     public class Position {
         private int x;
@@ -101,6 +105,11 @@ public class MapController {
         this.mapGrid = mapGrid;
         this.jsonMapReader = new JsonMapReader();
         this.selectedRobot = selectedRobot;
+    }
+
+    public void setUpgradeButtons(Button upgradeButton, Button noUpgradeButton) {
+        this.upgradeButton = upgradeButton;
+        this.noUpgradeButton = noUpgradeButton;
     }
 
     public Map getMap() {
@@ -378,6 +387,8 @@ public class MapController {
             Moshi moshi = new Moshi.Builder().build();
             JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
             client.sendMessage("SetStartingPoint",setStartingPointJsonAdapter.toJson(new SetStartingPoint(x,y)));
+            upgradeButton.setDisable(false);
+            noUpgradeButton.setDisable(false);
         }
     }
     private void handleStartingPoint(ImageView stackElement, int x, int y, boolean[] isTaken) {

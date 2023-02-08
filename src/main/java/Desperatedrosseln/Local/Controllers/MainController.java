@@ -26,7 +26,6 @@ import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -53,7 +52,15 @@ public class MainController {
     private List<String> handValues = new ArrayList<>();
     private List<String> registerValues = new ArrayList<>();
 
-    private HashMap<Integer, String> upgradePositionToValue = new HashMap<>();
+    private List<String> upgradeValues = new ArrayList<>();
+    private List<String> tempUpgradeValues = new ArrayList<>(
+            Arrays.asList("null", "null", "null")
+    );
+    private List<String> permUpgradeValues = new ArrayList<>(
+            Arrays.asList("null", "null", "null")
+    );
+
+
 
     private String selectedUpgrade = "null";
 
@@ -104,7 +111,9 @@ public class MainController {
     private Button programdone;
 
     @FXML
-    private Button upgradeButton;
+    public Button upgradeButton;
+
+    @FXML private Button noUpgradeButton;
 
     @FXML
     private StackPane upgradeCard1;
@@ -124,9 +133,33 @@ public class MainController {
     @FXML
     private StackPane upgradeCard6;
 
+    @FXML private StackPane tempUpgradeCard1;
+    @FXML private StackPane tempUpgradeCard2;
+    @FXML private StackPane tempUpgradeCard3;
+    @FXML private StackPane permUpgradeCard1;
+    @FXML private StackPane permUpgradeCard2;
+    @FXML private StackPane permUpgradeCard3;
+
     private List<StackPane> registerCards;
     private List<StackPane> handCards;
     private List<StackPane> upgradeCards;
+    private List<StackPane> tempUpgradeCards;
+    private List<StackPane> permUpgradeCards;
+
+    private final List<String> permanentUpgradeTypes = new ArrayList<>(
+            Arrays.asList(
+                    "AdminPrivilege",
+                    "RearLaser"
+            )
+    );
+
+    private final List<String> temporaryUpgradeTypes = new ArrayList<>(
+            Arrays.asList(
+                    "MemorySwap",
+                    "SpamBlocker"
+            )
+    );
+
     private int selectedRobot = 0;
 
     private MoveOneLabel moveOneLabel;
@@ -229,6 +262,23 @@ public class MainController {
                             upgradeCard6
                     )
             );
+
+            tempUpgradeCards = new ArrayList<>(
+                    Arrays.asList(
+                        tempUpgradeCard1,
+                        tempUpgradeCard2,
+                        tempUpgradeCard3
+                    )
+            );
+
+            permUpgradeCards = new ArrayList<>(
+                    Arrays.asList(
+                        permUpgradeCard1,
+                        permUpgradeCard2,
+                        permUpgradeCard3
+                    )
+            );
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -260,6 +310,9 @@ public class MainController {
                 stage.setMaximized(true);
                 mapController.setTileSize(calcMaxMapHeight() / 12);
                 glow();
+                mapController.setUpgradeButtons(upgradeButton, noUpgradeButton);
+                upgradeButton.setDisable(true);
+                noUpgradeButton.setDisable(true);
                 //startTimer();
             }
         });
@@ -320,6 +373,7 @@ public class MainController {
 
     public void startTimer() {
         Timer timer = new Timer();
+
         timer.scheduleAtFixedRate(new TimerTask() {
 
             private int seconds = 30;
@@ -338,9 +392,7 @@ public class MainController {
     }
 
     public void fillHand() {
-        for (String text : client.getCardsInHand()) {
-            handValues.add(text);
-        }
+        handValues.addAll(client.getCardsInHand());
     }
 
     public void fillDummyHand() {
@@ -370,8 +422,9 @@ public class MainController {
                 int i = 0;
                 for (String cardValue : handValues) {
                     ImageView stackElement = new ImageView(showCardImage(cardValue));
+                    int parentWidth = (int) handCards.get(i).getWidth();
                     stackElement.setPreserveRatio(true);
-                    stackElement.setFitHeight(110);
+                    stackElement.setFitWidth(parentWidth);
                     handCards.get(i++).getChildren().add(stackElement);
                 }
             }
@@ -633,17 +686,74 @@ public class MainController {
 
     @FXML
     private void handleUpgradeButton() {
+        giveUpgradeToPlayer();
+
         JsonAdapter<BuyUpgrade> selectedCardJsonAdapter = moshi.adapter(BuyUpgrade.class);
         BuyUpgrade buyUpgrade = new BuyUpgrade(!Objects.equals(selectedUpgrade, "null"), selectedUpgrade);
         client.sendMessage("BuyUpgrade", selectedCardJsonAdapter.toJson(buyUpgrade));
+
+        clearUpgradeCards();
+        for (StackPane card :upgradeCards) {
+            card.setStyle("-fx-border-width: 0px");
+        }
+        selectedUpgrade = "null";
+        upgradeButton.setDisable(true);
+        noUpgradeButton.setDisable(true);
+    }
+
+    @FXML
+    private void handleNoUpgradeButton() {
+        JsonAdapter<BuyUpgrade> selectedCardJsonAdapter = moshi.adapter(BuyUpgrade.class);
+        BuyUpgrade buyUpgrade = new BuyUpgrade(false, "null");
+        client.sendMessage("BuyUpgrade", selectedCardJsonAdapter.toJson(buyUpgrade));
+
         clearUpgradeCards();
         upgradeButton.setDisable(true);
-        //ToDo: empty shop, check Energy Reserve before buying
+        noUpgradeButton.setDisable(true);
+    }
+
+    private void giveUpgradeToPlayer() {
+        if (!Objects.equals(selectedUpgrade, "null")) {
+            // Differentiate if selctedCard is temporary or permanent
+            if (permanentUpgradeTypes.contains(selectedUpgrade)) {
+                placePermanentUpgrade();
+            } else if (temporaryUpgradeTypes.contains(selectedUpgrade)) {
+                placeTemporaryUpgrade();
+            } else {
+                throw new RuntimeException("The cardName is neither a temporary nor permanent upgrade card. ~ What is it then? " + selectedUpgrade);
+            }
+        }
+    }
+
+    private void placePermanentUpgrade() {
+        if (!permUpgradeValues.contains("null")) {
+            // TODO display message that the permanent cards are full. Player might discharge one of the his cards.
+        } else {
+            int firstFreeIndex = permUpgradeValues.indexOf("null");
+            ImageView imageView = loadUpgradeCard(selectedUpgrade);
+            permUpgradeValues.set(firstFreeIndex, selectedUpgrade);
+            permUpgradeCards.get(firstFreeIndex).getChildren().add(imageView);
+        }
+    }
+
+    private void placeTemporaryUpgrade() {
+        if (!tempUpgradeValues.contains("null")) {
+            // TODO display message that the temporary cards are full. Player might discharge one of the his cards.
+        } else {
+            int firstFreeIndex = tempUpgradeValues.indexOf("null");
+            ImageView imageView = loadUpgradeCard(selectedUpgrade);
+            tempUpgradeValues.set(firstFreeIndex, selectedUpgrade);
+            tempUpgradeCards.get(firstFreeIndex).getChildren().add(imageView);
+
+            // Todo handle click event
+        }
     }
 
     @FXML
     private void clearUpgradeCards() {
-        upgradePositionToValue.clear();
+        logger.info(upgradeValues.size());
+        upgradeValues.clear();
+        logger.info(upgradeValues.size());
         for (StackPane card : upgradeCards) {
             card.getChildren().clear();
         }
@@ -651,36 +761,34 @@ public class MainController {
 
     @FXML
     private void handleUpgradeClick() {
-        for (StackPane card : upgradeCards) {
-            card.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-                for(StackPane upgradeCard : upgradeCards) {
-                    upgradeCard.setStyle("-fx-border-width: 0px");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                for (StackPane card : upgradeCards) {
+                    card.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+                        for(StackPane upgradeCard : upgradeCards) {
+                            upgradeCard.setStyle("-fx-border-width: 0px");
+                        }
+                        int index = upgradeCards.indexOf(card);
+                        selectedUpgrade = upgradeValues.get(index);
+                        card.setStyle("-fx-border-width: 2px");
+                        logger.debug("indexUpgradeValue " + upgradeValues.get(index));
+                        logger.debug("selectedUpgrade: " + selectedUpgrade);
+                    });
                 }
-
-                int index = upgradeCards.indexOf(card);
-                if (Objects.equals(selectedUpgrade, "null")) {
-                    selectedUpgrade = upgradePositionToValue.get(index);
-                    card.setStyle("-fx-border-width: 2px");
-                    logger.debug(upgradePositionToValue.get(index));
-                } else {
-                    upgradePositionToValue.put(index, "null");
-                    card.setStyle("-fx-border-width: 2px");
-                    logger.debug(upgradePositionToValue.get(index));
-                }
-                logger.debug(selectedUpgrade);
-            });
-        }
+            }
+        });
     }
 
     public void refillShop(List<String> refillCards) {
         for (String card : refillCards) {
-            upgradePositionToValue.put(getFirstFreeUpgradeSlot(), card);
+            upgradeValues.set(getFirstFreeUpgradeSlot(), card);
         }
     }
 
     private int getFirstFreeUpgradeSlot() {
-        for (int i = 0; i < upgradePositionToValue.size(); i++) {
-            String value = upgradePositionToValue.get(i);
+        for (int i = 0; i < upgradeValues.size(); i++) {
+            String value = upgradeValues.get(i);
             if (Objects.equals(value, "null")) {
                 return i;
             }
@@ -689,18 +797,24 @@ public class MainController {
     }
 
     public void exchangeShop(List<String> exchangeValues) {
+        logger.info("ExchangeSize " + exchangeValues);
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < exchangeValues.size(); i++) {
-                    String cardName = exchangeValues.get(i);
-                    ImageView imageView = loadUpgradeCard(cardName);
-                    imageView.setFitHeight(90);
-                    imageView.setPreserveRatio(true);
-                    imageView.setOpacity(0.8);
-                    upgradeCards.get(i).getChildren().add(imageView);
+                clearUpgradeCards();
+                for (int i = 0; i < 6; i++) {
 
-                    upgradePositionToValue.put(i, cardName);
+                    if (i < exchangeValues.size()) {
+                        String cardName = exchangeValues.get(i);
+                        upgradeValues.add(cardName);
+                        ImageView imageView = loadUpgradeCard(cardName);
+                        upgradeCards.get(i).getChildren().add(imageView);
+                        logger.info("this is size of map " + upgradeValues.size());
+                        logger.info("this is at i: " + upgradeValues.get(i));
+                    } else {
+                        upgradeValues.add("null");
+                    }
                 }
             }
         });
@@ -714,7 +828,10 @@ public class MainController {
             case "SpamBlocker" -> new Image(getClass().getResource("/images/card/spamBlocker.jpg").toString());
             default -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
         };
-        return new ImageView(image);
+        ImageView imageView = new ImageView(image);
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(100);
+        return imageView;
     }
     @FXML
     public void updateEnergy(int energyCount){
@@ -753,6 +870,7 @@ public class MainController {
             @Override
             public void run() {
                 upgradeButton.setDisable(false);
+                upgradeButton.setDisable(false);
             }
         });
     }
@@ -777,6 +895,7 @@ public class MainController {
         addGlow(send_button, 0.8);
         addGlow(chat_input, 0.6);
         addGlow(upgradeButton, 0.8);
+        addGlow(noUpgradeButton, 0.8);
         addGlow(programdone, 0.8);
     }
 

@@ -192,7 +192,7 @@ public class Client implements Runnable {
                 SelectMap selectMap = selectMapJsonAdapter.fromJson(msg.getMessageBody());
 
                 lobbyController.addMapsToChoice(selectMap.getMaps());
-                lobbyController.canChooseMap();
+
 
                 break;
             case "ReceivedChat":
@@ -280,7 +280,7 @@ public class Client implements Runnable {
                     log = log + "_" + c;
 
                 }
-                logger.debug(clientName + "refill shop: "+log);
+                logger.debug(clientName + " refill shop: " + log);
                 Collections.shuffle(refillShopCards);
                 JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter1 = moshi.adapter(BuyUpgrade.class);
                 //sendMessage("BuyUpgrade",buyUpgradeJsonAdapter1.toJson(new BuyUpgrade(true,refillShopCards.get(0))));

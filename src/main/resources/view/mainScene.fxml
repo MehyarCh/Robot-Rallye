@@ -120,8 +120,10 @@
                 </GridPane>
                 <GridPane styleClass="card-wrapper, transparent--black"
                           fx:id="cardWrapper"
+                          GridPane.hgrow="ALWAYS"
                           GridPane.columnIndex="0"
                           GridPane.rowIndex="1">
+
                     <HBox styleClass="card-row"
                         GridPane.rowIndex="0">
                         <GridPane styleClass="card-group"
@@ -207,10 +209,18 @@
                             </StackPane>
                         </GridPane>
                     </HBox>
-                    <HBox styleClass="card-row"
+
+                    <HBox styleClass="card-row, lower-card-row"
+                          GridPane.columnIndex="0"
                         GridPane.rowIndex="1">
+                        <Button fx:id="programdone"
+                                onAction="#onPlayCard"
+                                GridPane.columnIndex="0"
+                                GridPane.rowIndex="0"
+                                styleClass="button, button--sm, button--secondary"
+                                text="PLAY CARD" />
                         <GridPane styleClass="card-group"
-                                  GridPane.columnIndex="0"
+                                  GridPane.columnIndex="1"
                                   GridPane.rowIndex="0"
                                   GridPane.hgrow="ALWAYS"
                                   GridPane.vgrow="ALWAYS">
@@ -278,14 +288,13 @@
                                        GridPane.vgrow="ALWAYS">
                             </StackPane>
                         </GridPane>
-
+                        <Button opacity="0"
+                                GridPane.columnIndex="2"
+                                GridPane.rowIndex="0"
+                                styleClass="button, button--sm, button--secondary"
+                                text="PLAY CARD" />
                     </HBox>
-                    <Button fx:id="programdone"
-                            onAction="#onPlayCard"
-                            GridPane.columnIndex="1"
-                            GridPane.rowIndex="1"
-                            styleClass="button, button--sm, button--secondary"
-                            text="PLAY CARD" />
+
                 </GridPane>
             </GridPane>
         </StackPane>
@@ -345,9 +354,13 @@
                 <Button
                         fx:id="upgradeButton"
                         onAction="#handleUpgradeButton"
-                        styleClass="button, button--sm, button--secondary"
+                        styleClass="button, button--sm, button--apply"
                         text="UPGRADE" />
-
+                <Button
+                        fx:id="noUpgradeButton"
+                        onAction="#handleNoUpgradeButton"
+                        styleClass="button, button--sm, button--tertiary"
+                        text="NO UPGRADE" />
             </VBox>
         </HBox>
     </left>

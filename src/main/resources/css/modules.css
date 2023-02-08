@@ -273,7 +273,7 @@
 .player-bar {
     -fx-alignment: center;
     -fx-spacing: 32px;
-    -fx-padding: 0 130px 0 0;
+    -fx-padding: 0;
 }
 
 .player-bar--lobby {
@@ -320,13 +320,12 @@
     -fx-alignment: center;
     -fx-padding: 16px 0;
     -fx-vgap: 4px;
-    -fx-hgap: 8px;
 }
 
 .card-group {
     -fx-alignment: center;
     -fx-hgap: 16px;
-    -fx-padding: 8px;
+    -fx-padding: 0 8px;
 }
 
 .card-row {
@@ -337,8 +336,8 @@
 
 }
 
-.lower-card-row {
-
+.lower-card-row .card-group {
+    -fx-padding: 0 32px;
 }
 
 .card-area {

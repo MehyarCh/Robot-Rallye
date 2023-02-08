@@ -7,6 +7,7 @@ module desperatedrosseln {
     requires moshi;
     requires com.google.gson;
     requires org.apache.logging.log4j;
+    requires java.desktop;
 
     opens Desperatedrosseln to javafx.fxml;
     opens Desperatedrosseln.Local.Controllers to javafx.fxml;

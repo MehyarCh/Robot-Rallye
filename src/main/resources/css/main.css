@@ -250,9 +250,13 @@
 
 .button--sm {
     -fx-pref-height: 36px;
-    -fx-padding: 0 8px;
+    -fx-padding: 4px 8px;
     -fx-min-width: 100px;
     -fx-max-width: 150px;
+}
+
+.button--play-card {
+    -fx-spacing: 0 8px 0 0;
 }
 
 
@@ -263,6 +267,16 @@
 
 .button--secondary {
     -fx-border-color: #2de2e6;
+    -fx-text-fill: #fff;
+}
+
+.button--apply {
+    -fx-border-color: #37F87D;
+    -fx-text-fill: #fff;
+}
+
+.button--tertiary {
+    -fx-border-color: #F8375E;
     -fx-text-fill: #fff;
 }
 

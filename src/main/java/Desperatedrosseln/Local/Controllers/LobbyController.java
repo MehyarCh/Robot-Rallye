@@ -460,7 +460,7 @@ public class LobbyController {
 
             StackPane source = (StackPane) mouseEvent.getSource();
             source.setStyle("-fx-border-width: 2px");
-
+            if (validateMapChoice.isDisable()) validateMapChoice.setDisable(false);
         });
         return mapOption;
     }
