@@ -329,7 +329,7 @@ public class MainController {
             public void run() {
                 Platform.runLater(() -> {
                             timeLabel.setText(String.valueOf(seconds--));
-                            if (seconds < 0 || mapController.hasStartpoint) {
+                            if (seconds < 0) {
                                 timer.cancel();
                             }
                         }
@@ -382,6 +382,7 @@ public class MainController {
 
     public Image showCardImage(String cardValue) {
         return switch (cardValue) {
+            case "MoveBack" -> new Image(getClass().getResource("/images/card/moveback.jpg").toString());
             case "MoveOne" -> new Image(getClass().getResource("/images/card/move1.jpg").toString());
             case "MoveTwo" -> new Image(getClass().getResource("/images/card/move2.jpg").toString());
             case "TurnLeft" -> new Image(getClass().getResource("/images/card/leftTurn.jpg").toString());
@@ -390,7 +391,10 @@ public class MainController {
             case "UTurn" -> new Image(getClass().getResource("/images/card/u-turn.jpg").toString());
             case "Again" -> new Image(getClass().getResource("/images/card/again.jpg").toString());
             case "PowerUp" -> new Image(getClass().getResource("/images/card/powerup.jpg").toString());
-            case "MoveBack" -> new Image(getClass().getResource("/images/card/moveback.jpg").toString());
+            case "Spam" -> new Image(getClass().getResource("/images/card/no_such_card.png").toString()); //ToDo: change picture
+            case "Virus" -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
+            case "Trojan" -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
+            case "Worm" -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
             default -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
         };
     }

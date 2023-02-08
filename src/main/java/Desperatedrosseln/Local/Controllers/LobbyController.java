@@ -197,26 +197,38 @@ public class LobbyController {
             case "player-icon--1" -> {
                 logger.info(client.getName() + " chose BROWN");
                 selectedRobot = 1;
+                playerIcon1Label.setText(client.getName());
+                addGlow(playerIcon1Label, 0.8);
             }
             case "player-icon--2" -> {
                 logger.info(client.getName() + " chose YELLOW");
                 selectedRobot = 2;
+                playerIcon2Label.setText(client.getName());
+                addGlow(playerIcon2Label, 0.8);
             }
             case "player-icon--3" -> {
                 logger.info(client.getName() + " chose BLUE");
                 selectedRobot = 3;
+                playerIcon3Label.setText(client.getName());
+                addGlow(playerIcon3Label, 0.8);
             }
             case "player-icon--4" -> {
                 logger.info(client.getName() + " chose GREEN");
                 selectedRobot = 4;
+                playerIcon4Label.setText(client.getName());
+                addGlow(playerIcon4Label, 0.8);
             }
             case "player-icon--5" -> {
                 logger.info(client.getName() + " chose ORANGE");
                 selectedRobot = 5;
+                playerIcon5Label.setText(client.getName());
+                addGlow(playerIcon5Label, 0.8);
             }
             case "player-icon--6" -> {
                 logger.info(client.getName() + " chose RED");
                 selectedRobot = 6;
+                playerIcon6Label.setText(client.getName());
+                addGlow(playerIcon6Label, 0.8);
             }
         }
 

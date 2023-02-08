@@ -365,7 +365,6 @@
                         fitToHeight="true"
                         styleClass="scroll-board">
                 <VBox fx:id="messageBoard" styleClass="message-board">
-                    <Label text="RoboRally Chat" styleClass="chat-headline, headline-2, color--light" />
                 </VBox>
             </ScrollPane>
             <HBox GridPane.columnIndex="0"
