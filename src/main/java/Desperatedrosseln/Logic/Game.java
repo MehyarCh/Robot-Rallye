@@ -62,7 +62,7 @@ public class Game {
     private boolean isRunning = false;
     private boolean firstPlayerGotCards = false;
     private boolean isInitRounds = false;
-    private int energyBank=50;
+    private int energyBank = 50;
 
     public Game(int port, String protocol, ArrayList<ClientHandler> clients) {
         this.protocol = protocol;
@@ -111,12 +111,12 @@ public class Game {
                 break;
             case 3:
                 logger.info("Current phase: Activation phase");
-                if(current_register == 0){
+                if (current_register == 0) {
                     sortPlayersByDistance();
                     current_player_index = 0;
                     decideNextPlayer();
                     JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
-                    broadcastMessage("CurrentPlayer",currentPlayerJsonAdapter.toJson(new CurrentPlayer(playing.getID())));
+                    broadcastMessage("CurrentPlayer", currentPlayerJsonAdapter.toJson(new CurrentPlayer(playing.getID())));
                     sendActiveCards();
                 }
                 //runActivationPhase();
@@ -163,7 +163,7 @@ public class Game {
 
         for (int x = 0; x < gameMapList.size(); x++) {
             for (int y = 0; y < gameMapList.get(0).size(); y++) {
-                for(int z = 0; z < gameMapList.get(0).get(0).size(); z++){
+                for (int z = 0; z < gameMapList.get(0).get(0).size(); z++) {
                     gameMapList.get(x).get(y).get(z).setPosition(x, y);
                 }
             }
@@ -172,10 +172,10 @@ public class Game {
         phase = 1;
         isRunning = false;
         //setting up boardelements
-        for(int i=0; i<gameMap.getMapFields().size(); i++){
-            for(int j=0; j<gameMap.getMapFields().get(0).size(); j++){
-                for(BoardElement element : gameMap.getMapFields().get(i).get(j).getTypes()){
-                    element.setPosition(i,j);
+        for (int i = 0; i < gameMap.getMapFields().size(); i++) {
+            for (int j = 0; j < gameMap.getMapFields().get(0).size(); j++) {
+                for (BoardElement element : gameMap.getMapFields().get(i).get(j).getTypes()) {
+                    element.setPosition(i, j);
                     boardElements.add(element);
                 }
             }
@@ -400,40 +400,45 @@ public class Game {
             broadcastMessage("CurrentCards", currentCardsJsonAdapter.toJson(new CurrentCards(activeCardsArrayList)));
             activateElements();
         }
-        if(current_register >=5){
+        if (current_register >= 5) {
             updateRound();
         }
         isRunning = false;
     }
+
     public void walkActivationPhase(Player user, String cardString) throws ClassNotFoundException {
         phase = 3;
-        if(user != playing || rebooted_players.contains(user)){
+        if (user != playing) {
             //ToDo handle this
             return;
         }
+
         logger.debug("Register " + current_register + "For Player: " + user.getID());
 
         Card cardPlayed = user.getRegisterIndex(current_register);
-        if(cardPlayed.toString().equals(cardString)){
-            playCardByType(cardPlayed,user,current_register);
+        if (cardPlayed.toString().equals(cardString)) {
+            playCardByType(cardPlayed, user, current_register);
         }
 
-        if(players.get(players.size()-1) == playing){                   //ToDo: sort for init reg
-            current_register++;
-            //activateElements();
-            sortPlayersByDistance();
-        }
-        if(players.get(0) == playing && roundNumber != 1){
-            sendActiveCards();
-        }
-        current_player_index++;
-        decideNextPlayer();
+        do {
 
+            if (players.get(players.size() - 1) == playing) {
+                current_register++;
+                //activateElements();
+                sortPlayersByDistance();
+                rebooted_players = new ArrayList<>();
+            }
+            current_player_index++;
+            decideNextPlayer();
+        } while (rebooted_players.contains(playing));
 
-        if(current_register<5){
+        if (current_register < 5) {
+            if (players.get(0) == playing && roundNumber != 1) {
+                sendActiveCards();
+            }
             JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
-            broadcastMessage("CurrentPlayer",currentPlayerJsonAdapter.toJson(new CurrentPlayer(playing.getID())));
-        }else {
+            broadcastMessage("CurrentPlayer", currentPlayerJsonAdapter.toJson(new CurrentPlayer(playing.getID())));
+        } else {
             updateRound();
         }
 
@@ -442,14 +447,14 @@ public class Game {
 
     private void sendActiveCards() {
         ArrayList<CurrentCards.ActiveCards> activeCardsArrayList = new ArrayList<>();
-        for (Player player:
-             players) {
+        for (Player player :
+                players) {
             Card card = player.getRegisterIndex(current_register);
-            activeCardsArrayList.add(new CurrentCards.ActiveCards(player.getID(),card.toString()));
+            activeCardsArrayList.add(new CurrentCards.ActiveCards(player.getID(), card.toString()));
         }
         JsonAdapter<CurrentCards> currentCardsJsonAdapter = moshi.adapter(CurrentCards.class);
         String json = currentCardsJsonAdapter.toJson(new CurrentCards(activeCardsArrayList));
-        broadcastMessage("CurrentCards",json);
+        broadcastMessage("CurrentCards", json);
         logger.debug(json);
     }
 
@@ -466,7 +471,7 @@ public class Game {
             return;
         }
         JsonAdapter<CardPlayed> cardPlayedJsonAdapter = moshi.adapter(CardPlayed.class);
-        broadcastMessage("CardPlayed",cardPlayedJsonAdapter.toJson(new CardPlayed(curr.getID(),card.toString())));
+        broadcastMessage("CardPlayed", cardPlayedJsonAdapter.toJson(new CardPlayed(curr.getID(), card.toString())));
 
         switch (card.toString()) {
             case "AdminPrivilege":
@@ -553,26 +558,35 @@ public class Game {
         } else {
             String cardtype = curr.getRegisterIndex(register_number).toString();
             if (cardtype.equals("Again")) {
-                if(register_number > 0){
+                if (register_number > 0) {
                     curr.getRegisterIndex(register_number - 1).playCard(curr.getRobot());
+                    Position newPos = curr.getRobot().getPosition();
+                    if (newPos.getX() < 0 || newPos.getX() >= 13 || newPos.getY() < 0 || newPos.getY() >= 10) {
+                        rebootPlayer(curr);
+                    }
+
                     robotMovedProtokoll(curr.getRobot());
                 }
-            } else if(cardtype.equals("TurnLeft") || (cardtype.equals("TurnRight") || cardtype.equals("UTurn"))) {
+            } else if (cardtype.equals("TurnLeft") || (cardtype.equals("TurnRight") || cardtype.equals("UTurn"))) {
                 curr.getRegisterIndex(register_number).playCard(curr.getRobot());
-                if(cardtype.equals("TurnLeft")){
-                    robotTurnedProtokoll(curr.getRobot(),"counterclockwise");
-                }else if(cardtype.equals("TurnRight")){
-                    robotTurnedProtokoll(curr.getRobot(),"clockwise");
-                }else{
+                if (cardtype.equals("TurnLeft")) {
+                    robotTurnedProtokoll(curr.getRobot(), "counterclockwise");
+                } else if (cardtype.equals("TurnRight")) {
+                    robotTurnedProtokoll(curr.getRobot(), "clockwise");
+                } else {
                     robotTurnedProtokoll(curr.getRobot(), "clockwise");
                     robotTurnedProtokoll(curr.getRobot(), "clockwise");
                 }
-            } else if(cardtype.equals("PowerUp")){
+            } else if (cardtype.equals("PowerUp")) {
                 curr.addToEnergyReserve(1);
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
-                broadcastMessage("Energy",energyJsonAdapter.toJson(new Energy(curr.getID(),curr.getEnergyReserve(),"PowerUp")));
+                broadcastMessage("Energy", energyJsonAdapter.toJson(new Energy(curr.getID(), curr.getEnergyReserve(), "PowerUp")));
             } else {
                 curr.getRegisterIndex(register_number).playCard(curr.getRobot());
+                Position position = curr.getRobot().getPosition();
+                if (position.getX() < 0 || position.getX() >= 13 || position.getY() < 0 || position.getY() >= 10) {
+                    rebootPlayer(curr);
+                }
                 robotMovedProtokoll(curr.getRobot());
             }
         }
@@ -703,6 +717,23 @@ public class Game {
         for (Card card : curr.getRegister()) {
             curr.getDiscarded().add(card);
         }
+
+        List<BoardElement> rebootList = getListOf("RestartPoint");
+        if (rebootList.isEmpty()) {
+            //ToDO error
+            return;
+        }
+        RestartPoint nearestRestartPoint = (RestartPoint) rebootList.get(0);
+        int minDist = calculateDistance(curr.getRobot().getPosition(), nearestRestartPoint.getPosition());
+        for (BoardElement elem :
+                rebootList) {
+            int currDist = calculateDistance(curr.getRobot().getPosition(), elem.getPosition());
+            if (currDist < minDist) {
+                minDist = currDist;
+                nearestRestartPoint = (RestartPoint) elem;
+            }
+        }
+        curr.getRobot().setPosition(nearestRestartPoint.getPosition().getX(), nearestRestartPoint.getPosition().getY());
         //send reboot protocoll message to all clients
         JsonAdapter<Reboot> rebootJsonAdapter = moshi.adapter(Reboot.class);
         Reboot reboot = new Reboot(curr.getID());
@@ -718,6 +749,7 @@ public class Game {
         }
         playing = players.get(current_player_index);
     }
+
     private void sortPlayersByDistance() {
         List<BoardElement> antenna = getListOf("Antenna");
         for (BoardElement element : antenna) {
@@ -755,9 +787,9 @@ public class Game {
          */
         //iterate players
         List<BoardElement> lasers = getListOfLasers();
-        for(BoardElement laser : lasers){
-            for(Player player : players){
-                if(laser.getPosition().equals(player.getRobot().getPosition())){
+        for (BoardElement laser : lasers) {
+            for (Player player : players) {
+                if (laser.getPosition().equals(player.getRobot().getPosition())) {
                     drawSpamCard(player, 1);
                 }
             }
@@ -793,7 +825,7 @@ public class Game {
         switch (direction) {
             case TOP -> {
                 x = pos.getX();
-                y = pos.getY() -1;
+                y = pos.getY() - 1;
             }
             case BOTTOM -> {
                 x = pos.getX();
@@ -868,7 +900,7 @@ public class Game {
                 for (BoardElement element : elemetsOnPos) {
                     //robots on cell get damage, or laser stops
                     if (element instanceof Robot) {
-                        drawSpamCard(getPlayerByRobot((Robot) element),1);
+                        drawSpamCard(getPlayerByRobot((Robot) element), 1);
                         laserHit = true;
                         break;
                     } else if (element instanceof Wall) {
@@ -898,7 +930,7 @@ public class Game {
                 for (BoardElement element : elemetsOnPos) {
                     //robots on cell get damage, or laser stops
                     if (element instanceof Robot) {
-                        drawSpamCard(getPlayerByRobot((Robot) element),1);
+                        drawSpamCard(getPlayerByRobot((Robot) element), 1);
                         laserHit = true;
                     } else if (element instanceof Wall) {
                         DIRECTION dir = robot.getDirection();
@@ -924,14 +956,14 @@ public class Game {
          * energy bank
          */
         List<BoardElement> energyspaces = getListOf("EnergySpace");
-        for(BoardElement element : energyspaces) {
+        for (BoardElement element : energyspaces) {
             EnergySpace espace = (EnergySpace) element;
-            for(Robot robot : gameMap.getRobotsOnPos(espace.getPosition())){
-                if(espace.hasEnergySpace()){
-                    if(current_register == 5){
+            for (Robot robot : gameMap.getRobotsOnPos(espace.getPosition())) {
+                if (espace.hasEnergySpace()) {
+                    if (current_register == 5) {
                         getPlayerByRobot(robot).addToEnergyReserve(1);
                         energyBank--;
-                    }else{
+                    } else {
                         getPlayerByRobot(robot).addToEnergyReserve(1);
                         espace.takeCube();
                     }
@@ -1043,9 +1075,9 @@ public class Game {
             if (boardelement.toString().equals(type)) {
                 listofobj.add(boardelement);
             }
-            if(boardelement.toString().equals("Empty")){
+            if (boardelement.toString().equals("Empty")) {
                 //debug zweck
-              i++;
+                i++;
             }
         }
         return listofobj;
@@ -1062,17 +1094,18 @@ public class Game {
         for (BoardElement boardelement : boardElements) {
             if (boardelement.toString().equals("ConveyorBelt")) {
                 ConveyorBelt belt = (ConveyorBelt) boardelement;
-                if(belt.getSpeed() == speed ){
+                if (belt.getSpeed() == speed) {
                     listofobj.add(belt);
                 }
             }
         }
         return listofobj;
     }
-    private List<BoardElement> getListOfLasers(){
+
+    private List<BoardElement> getListOfLasers() {
         List<BoardElement> listofobj = new ArrayList<>();
         for (BoardElement boardelement : boardElements) {
-            if (boardelement.toString().equals("Laser") || boardelement.toString().equals("LaserBeam")){
+            if (boardelement.toString().equals("Laser") || boardelement.toString().equals("LaserBeam")) {
                 listofobj.add(boardelement);
             }
         }
@@ -1125,11 +1158,11 @@ public class Game {
         for (BoardElement pp : pushpanels) {
             //activate the PushPanels only in their assigned registers
             PushPanel p1 = (PushPanel) pp;
-            if (gameMap.getRobotsOnPos(p1.getPosition()).size()>0 && p1.getRegisters().contains(current_register)) {
+            if (gameMap.getRobotsOnPos(p1.getPosition()).size() > 0 && p1.getRegisters().contains(current_register)) {
                 //get a list of all robots targeted by this pushpanel
                 List<Robot> robotList = gameMap.getRobotsOnPos(p1.getPosition());
                 p1.execute(robotList);
-                for(Robot robot : robotList){
+                for (Robot robot : robotList) {
                     robotMovedProtokoll(robot);
                 }
             }
@@ -1256,8 +1289,8 @@ public class Game {
 
     public void updateRound() throws ClassNotFoundException {
 
-        for (Player player:
-             players) {
+        for (Player player :
+                players) {
             player.resetRound();
         }
 
@@ -1274,14 +1307,14 @@ public class Game {
             cardsInShop = new ArrayList<>();
             isShopUntouched = true;
 
-            broadcastMessage("ActivePhase",json);
+            broadcastMessage("ActivePhase", json);
             runShop();
             return;
         }
         while (cardsInShop.size() < players.size()) {
             cardsInShop.add(drawFromDeckOfUpgradeCards());
         }
-        broadcastMessage("ActivePhase",json);
+        broadcastMessage("ActivePhase", json);
         runShop();
     }
 
@@ -1290,15 +1323,15 @@ public class Game {
         if (upgradeCard.getCost() <= player.getEnergyReserve()) {
             if (player.getUpgrades().isEmpty()) {
                 player.addUpgrade(upgradeCard);
-                player.setEnergyReserve(player.getEnergyReserve()-upgradeCard.getCost());
+                player.setEnergyReserve(player.getEnergyReserve() - upgradeCard.getCost());
                 removeFromShop(card);
 
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
-                findClient(player.getID()).broadcastMessage("Energy",energyJsonAdapter.toJson(
-                        new Energy(player.getID(),player.getEnergyReserve(),"Shop")));
+                findClient(player.getID()).broadcastMessage("Energy", energyJsonAdapter.toJson(
+                        new Energy(player.getID(), player.getEnergyReserve(), "Shop")));
                 JsonAdapter<UpgradeBought> upgradeBoughtJsonAdapter = moshi.adapter(UpgradeBought.class);
                 findClient(player.getID()).broadcastMessage("UpgradeBought", upgradeBoughtJsonAdapter.toJson(
-                        new UpgradeBought(player.getID(),card.toString())));
+                        new UpgradeBought(player.getID(), card.toString())));
             } else {
                 int ctr = 0;
                 for (Card curr :
@@ -1312,15 +1345,15 @@ public class Game {
                 }
                 if (ctr < 2) {
                     player.addUpgrade(upgradeCard);
-                    player.setEnergyReserve(player.getEnergyReserve()-upgradeCard.getCost());
+                    player.setEnergyReserve(player.getEnergyReserve() - upgradeCard.getCost());
                     removeFromShop(card);
 
                     JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
-                    findClient(player.getID()).broadcastMessage("Energy",energyJsonAdapter.toJson(
-                            new Energy(player.getID(),player.getEnergyReserve(),"Shop")));
+                    findClient(player.getID()).broadcastMessage("Energy", energyJsonAdapter.toJson(
+                            new Energy(player.getID(), player.getEnergyReserve(), "Shop")));
                     JsonAdapter<UpgradeBought> upgradeBoughtJsonAdapter = moshi.adapter(UpgradeBought.class);
                     findClient(player.getID()).broadcastMessage("UpgradeBought", upgradeBoughtJsonAdapter.toJson(
-                            new UpgradeBought(player.getID(),card.toString())));
+                            new UpgradeBought(player.getID(), card.toString())));
                 } else {
                     //ToDo: give user the choice to discard one card
 
@@ -1335,7 +1368,6 @@ public class Game {
     }
 
 
-
     private void playMemorySwap() {
         for (int i = 0; i < 3; i++) {
             playing.getHand().add(playing.drawCardFromDeck());
@@ -1344,6 +1376,14 @@ public class Game {
 
     public void removePlayer(int clientID) {
         //ToDo: remove player from the game
+        for (Player curr :
+                players) {
+            if (clientID == curr.getID()) {
+                players.remove(curr);
+            }
+        }
+
+
     }
 }
 

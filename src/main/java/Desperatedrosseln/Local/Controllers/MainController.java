@@ -320,7 +320,6 @@ public class MainController {
 
     public void startTimer() {
         Timer timer = new Timer();
-
         timer.scheduleAtFixedRate(new TimerTask() {
 
             private int seconds = 30;
@@ -329,7 +328,7 @@ public class MainController {
             public void run() {
                 Platform.runLater(() -> {
                             timeLabel.setText(String.valueOf(seconds--));
-                            if (seconds < 0 || mapController.hasStartpoint) {
+                            if (seconds < 0) {
                                 timer.cancel();
                             }
                         }

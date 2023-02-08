@@ -345,7 +345,12 @@ public class Client implements Runnable {
     }
 
     private void removeClient(int clientID) {
-        //ToDo: remove the Client
+        //ToDo: remove the robot from gui
+        int robID = playersWithRobots.get(clientID);
+        robotIDs.remove((Object)robID);
+        localPlayerList.remove(getPlayerName(clientID));
+        playersWithRobots.remove(clientID);
+
     }
 
 
