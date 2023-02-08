@@ -439,7 +439,11 @@ public class ClientHandler implements Runnable {
                 JsonAdapter<ConnectionUpdate> connectionUpdateJsonAdapter = moshi.adapter(ConnectionUpdate.class);
                 broadcastMessage("ConnectionUpdate", connectionUpdateJsonAdapter.toJson(new ConnectionUpdate(clientID, false, "remove")));
                 closeAll(this.socket, this.in, this.out);
-                game.removePlayer(clientID);
+                try {
+                    game.removePlayer(clientID);
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
                 break;
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);

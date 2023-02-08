@@ -344,6 +344,9 @@ public class Client implements Runnable {
                 JsonAdapter<ConnectionUpdate> connectionUpdateJsonAdapter = moshi.adapter(ConnectionUpdate.class);
                 ConnectionUpdate connectionUpdate = connectionUpdateJsonAdapter.fromJson(msg.getMessageBody());
                 logger.info("received ConnectionUpdate on Client");
+
+                int removedRobotID = playersWithRobots.get(connectionUpdate.getClientID());
+                mainController.getMapController().removeRobotById(removedRobotID);
                 removeClient(connectionUpdate.getClientID());
         }
     }
@@ -354,7 +357,6 @@ public class Client implements Runnable {
         robotIDs.remove((Object)robID);
         localPlayerList.remove(getPlayerName(clientID));
         playersWithRobots.remove(clientID);
-
     }
 
 

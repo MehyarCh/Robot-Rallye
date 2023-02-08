@@ -397,9 +397,11 @@ public class MainController {
     }
 
     public void resetTimer() {
-        timer.cancel();
-        seconds = 30;
-        timeLabel.setText(String.valueOf(seconds));
+        Platform.runLater(()-> {
+            timer.cancel();
+            seconds = 30;
+            timeLabel.setText(String.valueOf(seconds));
+        });
     }
 
     public void fillHand() {

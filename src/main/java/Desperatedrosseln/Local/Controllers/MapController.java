@@ -52,6 +52,8 @@ public class MapController {
     private List<List<List<BoardElement>>> mapAsList;
     private int tileSize = 35;
 
+
+
     private HashMap<Integer, Position> idToPosition = new HashMap<>();
 
     private static final Logger logger = LogManager.getLogger();
@@ -99,6 +101,10 @@ public class MapController {
         public String toString() {
             return "("+x+","+y+")";
         }
+    }
+
+    public HashMap<Integer, Position> getIdToPosition() {
+        return idToPosition;
     }
 
     public MapController(GridPane mapGrid, int selectedRobot) {
@@ -495,6 +501,7 @@ public class MapController {
         int y = position.getY();
         return getRobotFromTile(x, y);
     }
+
 
     private ImageView getRobotFromTile(int x, int y) {
         int mapIndex = getMapIndex(x, y);
