@@ -301,7 +301,6 @@ public class Client implements Runnable {
 
                 if (playersDoneProgramming == 0 && selectionFinished.getClientID() != this.clientID){
                     mainController.startTimer();
-                    startCardSelectionTimer();
                     timerRunning = true;
                 }
                 playersDoneProgramming++;
@@ -367,21 +366,6 @@ public class Client implements Runnable {
                 if (!mainController.getMapController().hasStartpoint) {
                     mainController.getMapController().runAutoStartPointSelection();
                     sendChatMessage("start point selected", -1);
-                }
-            }
-        }, 30 * 1000);
-    }
-
-    private void startCardSelectionTimer() {
-        Timer timer = new Timer();
-        logger.info("Timer started for Card selection");
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (!mainController.isProgrammingDone) {
-                    mainController.sendRandomCards();
-                    sendChatMessage("got sent random cards", -1);
-                    timer.cancel();
                 }
             }
         }, 30 * 1000);

@@ -384,6 +384,10 @@ public class MainController {
                 Platform.runLater(() -> {
                             timeLabel.setText(String.valueOf(seconds--));
                             if (seconds < 0) {
+                                if (!isProgrammingDone) {
+                                    sendRandomCards();
+                                    client.sendChatMessage("got sent random cards", -1);
+                                }
                                 timer.cancel();
                             }
                         }
