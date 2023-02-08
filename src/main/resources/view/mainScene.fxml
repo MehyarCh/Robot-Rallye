@@ -278,12 +278,14 @@
                                        GridPane.vgrow="ALWAYS">
                             </StackPane>
                         </GridPane>
+
                     </HBox>
-
-
-
-
-
+                    <Button fx:id="programdone"
+                            onAction="#onPlayCard"
+                            GridPane.columnIndex="1"
+                            GridPane.rowIndex="1"
+                            styleClass="button, button--sm, button--secondary"
+                            text="PLAY CARD" />
                 </GridPane>
             </GridPane>
         </StackPane>
@@ -345,12 +347,7 @@
                         onAction="#handleUpgradeButton"
                         styleClass="button, button--sm, button--secondary"
                         text="UPGRADE" />
-                <Button fx:id="programdone"
-                        onAction="#onPlayCard"
-                        GridPane.columnIndex="1"
-                        GridPane.rowIndex="1"
-                        styleClass="button, button--sm, button--secondary"
-                        text="PLAY CARD" />
+
             </VBox>
         </HBox>
     </left>
