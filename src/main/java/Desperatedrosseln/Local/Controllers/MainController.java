@@ -320,7 +320,6 @@ public class MainController {
 
     public void startTimer() {
         Timer timer = new Timer();
-
         timer.scheduleAtFixedRate(new TimerTask() {
 
             private int seconds = 30;

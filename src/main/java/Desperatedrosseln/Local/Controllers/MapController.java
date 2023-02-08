@@ -845,7 +845,8 @@ public class MapController {
     }
 
     @FXML
-    private ImageView rotateElement(ImageView stackElement, List<String> orientations) {
+    private synchronized ImageView
+    rotateElement(ImageView stackElement, List<String> orientations) {
         if (Objects.equals(orientations.get(0), "right")) {
             stackElement.setStyle("-fx-rotate: 90");
         } else if (Objects.equals(orientations.get(0), "bottom")) {
