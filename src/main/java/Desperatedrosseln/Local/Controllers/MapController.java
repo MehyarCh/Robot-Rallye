@@ -436,7 +436,7 @@ public class MapController {
             ImageView robotImage = getRobotFromTile(oldX, oldY);
 
             // Removes the images from the old Tile and changes the robos position to the new one
-            removeRobot(oldX, oldY);
+            //removeRobot(oldX, oldY);
             idToPosition.get(robotId).setPosition(newX, newY);
 
             // adds the new Image to the new Tile
@@ -461,29 +461,30 @@ public class MapController {
     }
 
     public void removeRobot(int x, int y) {
-        Platform.runLater(() -> {
-            int mapIndex = getMapIndex(x, y);
-            StackPane cell = (StackPane) mapGrid.getChildren().get(mapIndex);
-            logger.info("cell size: " + cell.getChildren().size());
-            logger.info(robotImages);
-            for (Node node: cell.getChildren()){
-                ImageView imageView = (ImageView) node;
-                if (robotImages.contains(imageView)) {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    logger.info(idToPosition.keySet());
+                    int mapIndex = getMapIndex(x, y);
+                    StackPane cell = (StackPane) mapGrid.getChildren().get(mapIndex);
+                    ImageView imageView = getRobotFromTile(x, y);
+                    logger.info(imageView.getImage().getUrl());
+                    for (ImageView view : robotImages) logger.info("this are the urls of the children of this tile " + view.getImage().getUrl());
+                    logger.info(robotImages);
+                    robotImages.remove(imageView);
+
+                    logger.info(robotImages);
                     cell.getChildren().remove(imageView);
                 }
-            }
-        });
+            });
     }
 
     public void removeRobotById(int id) {
         int x = idToPosition.get(id).getX();
-        int y = idToPosition.get(id).getX();
-        removeRobot(x, y);
-    }
-
-    public void addRobot(int id) {
-        int x = idToPosition.get(id).getX();
-        int y = idToPosition.get(id).getX();
+        int y = idToPosition.get(id).getY();
+        logger.info(idToPosition);
+        //idToPosition.remove(id);
+        logger.info(idToPosition.size());
         removeRobot(x, y);
     }
 
@@ -516,16 +517,14 @@ public class MapController {
 
     private ImageView getRobotFromTile(int x, int y) {
         int mapIndex = getMapIndex(x, y);
-
+        ImageView robot = null;
         StackPane stackPane = (StackPane) mapGrid.getChildren().get(mapIndex);
 
         for (Node imageNode : stackPane.getChildren()) {
-            ImageView imageView = (ImageView) imageNode;
-            if (robotImages.contains(imageView)) {
-                return imageView;
-            }
+            robot = (ImageView) imageNode;
+            logger.info(robot.getImage().getUrl());
         }
-        return null;
+        return robot;
     }
 
 
