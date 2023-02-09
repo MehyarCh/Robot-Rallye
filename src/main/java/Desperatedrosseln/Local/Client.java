@@ -348,6 +348,20 @@ public class Client implements Runnable {
                 int removedRobotID = playersWithRobots.get(connectionUpdate.getClientID());
                 mainController.getMapController().removeRobotById(removedRobotID);
                 removeClient(connectionUpdate.getClientID());
+                break;
+            case "CurrentCards":
+                JsonAdapter<CurrentCards> currentCardsJsonAdapter = moshi.adapter(CurrentCards.class);
+                CurrentCards currentCards = currentCardsJsonAdapter.fromJson(msg.getMessageBody());
+
+                List<CurrentCards.ActiveCards> activeCardsList = currentCards.getActiveCards();
+
+                String currentCardMessage = "";
+                for (CurrentCards.ActiveCards activeCard:
+                     activeCardsList) {
+                    currentCardMessage+=activeCard.toString()+">";
+                }
+                mainController.addChatMessage("Info" + ":" +currentCardMessage);
+                break;
         }
     }
 
@@ -449,7 +463,7 @@ public class Client implements Runnable {
             if (message.startsWith("/dm")) {
                 if (messageParts.length < 3) {
                     //lobbyController.addChatMessage("Please complete the  command.");
-                    mainController.addChatMessage("Please complete the  command.");
+                    mainController.addChatMessage("Info" + ":" +"Please complete the  command.");
                     return;
                 }
                 if (messageParts[1].equals(this.clientName)) {
@@ -460,14 +474,14 @@ public class Client implements Runnable {
                         }
                     }
                     //lobbyController.addChatMessage("Please complete the  command.");
-                    mainController.addChatMessage("You cannot send yourself private Messages, it is weird. Just think and talk to yourself.");
+                    mainController.addChatMessage("Info" + ":" +"You cannot send yourself private Messages, it is weird. Just think and talk to yourself.");
                     return;
                 }
                 if (localPlayerList.containsKey(messageParts[1])) {
                     sendMessage("SendChat", sendChatJsonAdapter.toJson(new SendChat(messageParts[2], localPlayerList.get(messageParts[1]))));
                 } else {
                     //lobbyController.addChatMessage("Please complete the  command.");
-                    mainController.addChatMessage("/dm did not work. Reason: invalid player name.");
+                    mainController.addChatMessage("Info" + ":" +"/dm did not work. Reason: invalid player name.");
                 }
             } else if (message.startsWith("/addAI")) {
                 sendMessage("addAI", "");
