@@ -89,24 +89,98 @@ public class Map {
         }
         return false;
     }
-    public boolean nextPosHasBlockingWall(Position pos, DIRECTION dir){
-        List<BoardElement> elements = mapFields.get(pos.getX()).get(pos.getY()).getTypes();
+    public boolean nextPosHasBlockingWall(Position robotpos, Position newposition){
+        List<BoardElement> elements = mapFields.get(newposition.getX()).get(newposition.getY()).getTypes();
         for(BoardElement element : elements){
             if(element.toString().equals("Wall")){
                 Wall wall = (Wall) element;
-                if(wall.getOrientations().get(0).equals(DIRECTION.getOppositeOf(dir).toString())){
+                if( wallBlocksMovement(robotpos, wall)){
+                    return true;
+                }
+                //if the wall block the movement then return
+            }
+        }
+        return false;
+    }
+
+    private boolean wallBlocksMovement(Position robotpos, Wall wall){
+        //supposedly wall position
+        int newx = wall.getPosition().getX();
+        int newy = wall.getPosition().getY();
+        int i = robotpos.getX() - wall.getPosition().getX();
+        int j = robotpos.getY() - wall.getPosition().getY();
+
+        if(i == 0){
+            //same column
+            if(j>0){
+                //robot coming from bot
+                if(wall.getOrientations().get(0).equals(DIRECTION.BOTTOM.toString())){
+                    return true;
+                }
+            }else if(j<0){
+                //robot coming from top
+                if(wall.getOrientations().get(0).equals(DIRECTION.TOP.toString())){
+                    return true;
+                }
+            }
+        }else if (j == 0){
+            //same line
+            if(i>0){
+                //robot coming from right
+                if(wall.getOrientations().get(0).equals(DIRECTION.RIGHT.toString())){
+                    return true;
+                }
+            }else if(i<0){
+                //robot coming from left, push to right
+                if(wall.getOrientations().get(0).equals(DIRECTION.LEFT.toString())){
                     return true;
                 }
             }
         }
         return false;
     }
-    public boolean currPosHasBlockingWall(Position pos, DIRECTION dir){
+    public boolean currPosHasBlockingWall(Position pos, Position newposition){
         List<BoardElement> elements = mapFields.get(pos.getX()).get(pos.getY()).getTypes();
         for(BoardElement element : elements){
             if(element.toString().equals("Wall")){
                 Wall wall = (Wall) element;
-                if(wall.getOrientations().get(0).equals(dir.toString())){
+                if( wallOnPosBlocksMovement(wall, newposition)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean wallOnPosBlocksMovement(Wall wall, Position newposition ){
+        //supposedly wall position
+        int newx = wall.getPosition().getX();
+        int newy = wall.getPosition().getY();
+        int i = newposition.getX() - wall.getPosition().getX();
+        int j = newposition.getY() - wall.getPosition().getY();
+
+        if(i == 0){
+            //same column
+            if(j>0){
+                //robot going bot
+                if(wall.getOrientations().get(0).equals(DIRECTION.BOTTOM.toString())){
+                    return true;
+                }
+            }else if(j<0){
+                //robot going top
+                if(wall.getOrientations().get(0).equals(DIRECTION.TOP.toString())){
+                    return true;
+                }
+            }
+        }else if (j == 0){
+            //same line
+            if(i>0){
+                //robot going right
+                if(wall.getOrientations().get(0).equals(DIRECTION.RIGHT.toString())){
+                    return true;
+                }
+            }else if(i<0){
+                //robot going left
+                if(wall.getOrientations().get(0).equals(DIRECTION.LEFT.toString())){
                     return true;
                 }
             }
