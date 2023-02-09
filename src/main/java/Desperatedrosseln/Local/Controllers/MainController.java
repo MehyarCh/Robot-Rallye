@@ -883,7 +883,7 @@ public class MainController {
             @Override
             public void run() {
                 upgradeButton.setDisable(false);
-                upgradeButton.setDisable(false);
+                noUpgradeButton.setDisable(false);
             }
         });
     }

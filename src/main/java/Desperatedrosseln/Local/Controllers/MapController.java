@@ -234,7 +234,7 @@ public class MapController {
     }
 
     private void buildMapGrid(List<List<MapField>> fieldList){
-        CompletableFuture.runAsync(() -> {
+        //CompletableFuture.runAsync(() -> {
             Platform.runLater(() -> {
                 for (int i = 0; i < fieldList.size(); i++) {
                     for (int j = 0; j < fieldList.get(i).size(); j++) {
@@ -251,9 +251,9 @@ public class MapController {
                     }
                 }
             });
-        }).thenRun(() -> {
+        //}).thenRun(() -> {
 
-        });
+        //});
     }
 
     @FXML
@@ -441,6 +441,7 @@ public class MapController {
 
     public void rotateRobot(int id, String direction) {
         ImageView robotImage = getRobotById(id);
+        logger.info(robotImage + " " + id);
         List<String> orientations = new ArrayList<>();
 
         if (direction.equals("clockwise")) {
@@ -457,9 +458,13 @@ public class MapController {
         Platform.runLater(() -> {
             int mapIndex = getMapIndex(x, y);
             StackPane cell = (StackPane) mapGrid.getChildren().get(mapIndex);
-            ImageView imageView = (ImageView) cell.getChildren().get(cell.getChildren().size() - 1);
-            if (robotImages.contains(imageView)) {
-                cell.getChildren().remove(imageView);
+            logger.info("cell size: " + cell.getChildren().size());
+            logger.info(robotImages);
+            for (Node node: cell.getChildren()){
+                ImageView imageView = (ImageView) node;
+                if (robotImages.contains(imageView)) {
+                    cell.getChildren().remove(imageView);
+                }
             }
         });
     }
@@ -866,11 +871,11 @@ public class MapController {
     private synchronized ImageView
     rotateElement(ImageView stackElement, List<String> orientations) {
         if (Objects.equals(orientations.get(0), "right")) {
-            stackElement.setStyle("-fx-rotate: 90");
+            stackElement.setRotate(stackElement.getRotate() + 90);
         } else if (Objects.equals(orientations.get(0), "bottom")) {
-            stackElement.setStyle("-fx-rotate: 180");
+            stackElement.setRotate(stackElement.getRotate() + 180);
         } else if (Objects.equals(orientations.get(0), "left")) {
-            stackElement.setStyle("-fx-rotate: -90");
+            stackElement.setRotate(stackElement.getRotate() - 90);
         }
         return stackElement;
     }
