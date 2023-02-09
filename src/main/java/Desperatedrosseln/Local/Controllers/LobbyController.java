@@ -102,6 +102,7 @@ public class LobbyController {
 
             String stateCss = this.getClass().getResource("/css/state.css").toExternalForm();
             scene.getStylesheets().add(stateCss);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -207,9 +208,14 @@ public class LobbyController {
             }
         }
         //sets the playersOnline to the list of players
+
+
         Platform.runLater(() -> {
             playerNames.add(label);
-            playersOnline.setText("Players currently online: " + playerNames);
+            String bomba = playerNames.toString();
+            //removes the brackets from the list
+            bomba = bomba.substring(1, bomba.length() - 1);
+            playersOnline.setText("Players currently online: " + bomba);
         });
     }
 
