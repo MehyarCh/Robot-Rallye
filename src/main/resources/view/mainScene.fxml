@@ -40,44 +40,68 @@
                 <VBox styleClass="player-wrapper">
                     <Label text=""
                            id="player-icon--1"
-                           styleClass="player-icon"/>
+                           fx:id = "mainRobot1"
+                           styleClass="player-icon"
+                           opacity="0.1"/>
                     <Label text="Brown"
-                           styleClass="headline-4, color--light"/>
+                           styleClass="headline-4, color--light"
+                           fx:id = "textBrown"
+                           style="-fx-text-fill: rgba(255, 255, 255, 0.5);"/>
                 </VBox>
                 <VBox styleClass="player-wrapper">
                     <Label text=""
                            id="player-icon--2"
-                           styleClass="player-icon"/>
+                           fx:id = "mainRobot2"
+                           styleClass="player-icon"
+                           opacity="0.1"/>
                     <Label text="Yellow"
-                           styleClass="headline-4, color--light"/>
+                           styleClass="headline-4, color--light"
+                           fx:id = "textYellow"
+                           style="-fx-text-fill: rgba(255, 255, 255, 0.5);"/>
                 </VBox>
                 <VBox styleClass="player-wrapper">
                     <Label text=""
                            id="player-icon--3"
-                           styleClass="player-icon"/>
+                           fx:id = "mainRobot3"
+                           styleClass="player-icon"
+                           opacity="0.1"/>
                     <Label text="Blue"
-                           styleClass="headline-4, color--light"/>
+                           styleClass="headline-4, color--light"
+                           fx:id = "textBlue"
+                           style="-fx-text-fill: rgba(255, 255, 255, 0.5);"/>
                 </VBox>
                 <VBox styleClass="player-wrapper">
                     <Label text=""
                            id="player-icon--4"
-                           styleClass="player-icon"/>
+                           styleClass="player-icon"
+                           fx:id = "mainRobot4"
+                           opacity="0.1"/>
                     <Label text="Green"
-                           styleClass="headline-4, color--light"/>
+                           styleClass="headline-4, color--light"
+                           fx:id = "textGreen"
+                           style="-fx-text-fill: rgba(255, 255, 255, 0.5);"/>
                 </VBox>
                 <VBox styleClass="player-wrapper">
                     <Label text=""
                            id="player-icon--5"
-                           styleClass="player-icon"/>
+                           styleClass="player-icon"
+                           fx:id = "mainRobot5"
+                           opacity="0.1"/>
                     <Label text="Orange"
-                           styleClass="headline-4, color--light"/>
+                           styleClass="headline-4, color--light"
+                           fx:id = "textOrange"
+                           style="-fx-text-fill: rgba(255, 255, 255, 0.5);"/>
                 </VBox>
                 <VBox styleClass="player-wrapper">
                     <Label text=""
                            id="player-icon--6"
-                           styleClass="player-icon"/>
+                           styleClass="player-icon"
+                           fx:id = "mainRobot6"
+                           opacity="0.1"/>
                     <Label text="Red"
-                           styleClass="headline-4, color--light"/>
+                           styleClass="headline-4, color--light"
+                           fx:id = "textRed"
+                           style="-fx-text-fill: rgba(255, 255, 255, 0.5);"/>
                 </VBox>
             </HBox>
 
@@ -118,6 +142,7 @@
                           GridPane.vgrow="ALWAYS"
                         GridPane.hgrow="ALWAYS">
                 </GridPane>
+
                 <GridPane styleClass="card-wrapper, transparent--black"
                           fx:id="cardWrapper"
                           GridPane.hgrow="ALWAYS"

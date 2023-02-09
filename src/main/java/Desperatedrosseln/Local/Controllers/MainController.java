@@ -141,6 +141,13 @@ public class MainController {
     @FXML private StackPane permUpgradeCard2;
     @FXML private StackPane permUpgradeCard3;
 
+    @FXML private Label mainRobot1;
+    @FXML private Label mainRobot2;
+    @FXML private Label mainRobot3;
+    @FXML private Label mainRobot4;
+    @FXML private Label mainRobot5;
+    @FXML private Label mainRobot6;
+
     private List<StackPane> registerCards;
     private List<StackPane> handCards;
     private List<StackPane> upgradeCards;
@@ -188,9 +195,20 @@ public class MainController {
     private Label playerName;
     @FXML
     private Label timeLabel;
-
     @FXML
     private Label energyLabel;
+    @FXML
+    private Label textBrown;
+    @FXML
+    private Label textYellow;
+    @FXML
+    private Label textBlue;
+    @FXML
+    private Label textGreen;
+    @FXML
+    private Label textOrange;
+    @FXML
+    private Label textRed;
 
     @FXML
     private HBox upgradeBar;
@@ -318,8 +336,8 @@ public class MainController {
                 mapController.setUpgradeButtons(upgradeButton, noUpgradeButton);
                 upgradeButton.setDisable(true);
                 noUpgradeButton.setDisable(true);
-                //startTimer();
-            }
+                showPlayingRobotsLabels();
+                }
         });
 
         stage.setOnCloseRequest(event -> {
@@ -354,6 +372,34 @@ public class MainController {
             case 4 -> profileIcon.setId("player-icon--4");
             case 5 -> profileIcon.setId("player-icon--5");
             case 6 -> profileIcon.setId("player-icon--6");
+        }
+    }
+
+    @FXML
+    private void showPlayingRobotsLabels(){
+        if (client.getRobotIDs().contains(1)){
+            mainRobot1.setOpacity(1.0);
+            textBrown.setTextFill(Color.rgb(255, 255, 255, 1.0));
+        }
+        if (client.getRobotIDs().contains(2)){
+            mainRobot2.setOpacity(1.0);
+            textYellow.setTextFill(Color.rgb(255, 255, 255, 1.0));
+        }
+        if (client.getRobotIDs().contains(3)){
+            mainRobot3.setOpacity(1.0);
+            textBlue.setTextFill(Color.rgb(255, 255, 255, 1.0));
+        }
+        if (client.getRobotIDs().contains(4)){
+            mainRobot4.setOpacity(1.0);
+            textGreen.setTextFill(Color.rgb(255, 255, 255, 1.0));
+        }
+        if (client.getRobotIDs().contains(5)){
+            mainRobot5.setOpacity(1.0);
+            textOrange.setTextFill(Color.rgb(255, 255, 255, 1.0));
+        }
+        if (client.getRobotIDs().contains(6)){
+            mainRobot6.setOpacity(1.0);
+            textRed.setTextFill(Color.rgb(255, 255, 255, 1.0));
         }
     }
 
@@ -518,7 +564,7 @@ public class MainController {
             @Override
             public void run() {
 
-                logger.info("sssssssssssss" + message);
+                logger.info("Message: " + message);
 
                 String myName = client.getName();
                 logger.info(myName);
