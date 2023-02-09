@@ -50,7 +50,24 @@ public enum DIRECTION {
                 return"unknown Direction";
             }
         }
+    }
 
+    public static DIRECTION getOppositeOf(DIRECTION dir){
+        switch (dir) {
+            case LEFT -> {
+                return RIGHT;
+            }
+            case RIGHT -> {
+                return LEFT;
+            }
+            case BOTTOM -> {
+                return TOP;
+            }
+            case TOP -> {
+                return BOTTOM;
+            }
+        }
+        return null;
     }
 }
 
