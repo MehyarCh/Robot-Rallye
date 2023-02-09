@@ -7,6 +7,7 @@ import Desperatedrosseln.Logic.AI.AIClient;
 import Desperatedrosseln.Logic.Cards.Card;
 import Desperatedrosseln.Logic.Cards.Damage.Spam;
 import Desperatedrosseln.Logic.Cards.Damagecard;
+import Desperatedrosseln.Logic.Cards.Programmingcard;
 import Desperatedrosseln.Logic.Cards.Upgrade.*;
 import Desperatedrosseln.Logic.Cards.UpgradeCard;
 import Desperatedrosseln.Logic.Elements.Position;
@@ -87,6 +88,81 @@ public class Game {
     public void placeRobot(Player player, int x, int y) {
         gameMap.addElement(player.getRobot(), x, y);
         player.getRobot().setPosition(x, y);
+    }
+
+    /**
+     * checks if the movement is allowed, updates robot position if so
+     * @param robot the robot to be moved
+     * @param newpos the position the robot is trying to move towards
+     * @return true if robot can be moved, false otherwise -including falling off map and being blocked
+     */
+    public boolean checkMovement(Robot robot, Position newpos){
+        Position oldpos = robot.getPosition();
+        if(newpos.getX()< 0 || newpos.getY()< 0 || newpos.getY() >= gameMap.getLength() ||
+                newpos.getX() >= gameMap.getWidth()){
+            //fell off so remove and reboot
+            rebootPlayer(getPlayerByRobot(robot));
+            return (false && gameMap.getElementsOnPos(oldpos).remove(robot));
+        } else if (gameMap.currPosHasBlockingWall(robot.getPosition(), robot.getDirection())) {
+            //blocked
+            return false;
+        } else if (gameMap.nextPosHasBlockingWall(newpos, robot.getDirection())) {
+            //blocked
+            return false;
+        } else if (gameMap.hasPit(newpos)) {
+            //fell off so reboot and remove
+            rebootPlayer(getPlayerByRobot(robot));
+            return false && gameMap.getElementsOnPos(oldpos).remove(robot);
+        } else if (gameMap.hasAntenna(newpos)){
+            //blocked
+            return false;
+        } else if (gameMap.hasRobotOnPos(newpos)){
+            //push other robot
+            //remove other robot
+            Robot otherrobot = (Robot) gameMap.getElementsOnPos(newpos).remove(
+                    gameMap.getElementsOnPos(oldpos).size()-1);
+            Position pushedrobNewPos = pushRobot(robot, otherrobot);
+            return checkMovement(otherrobot, pushedrobNewPos);
+        }else{
+            //movement is allowed
+            //remove robot from old pos
+            gameMap.getElementsOnPos(newpos).add(robot);
+            robot.setPosition(newpos.getX(), newpos.getY());
+            robotMovedProtokoll(robot);
+            return true && gameMap.getElementsOnPos(oldpos).remove(robot);
+        }
+    }
+
+    public Position pushRobot(Robot pusher, Robot pushed){
+        int newx = pushed.getPosition().getX();
+        int newy = pushed.getPosition().getY();
+        int i = pusher.getPosition().getX() - pushed.getPosition().getX();
+        int j = pusher.getPosition().getY() - pushed.getPosition().getY();
+        if(i == 0){
+            //same column
+            if(j>0){
+                //pusher coming from bot, push to top
+                newy = newy - 1;
+            }else if(j<0){
+                //pusher coming from top, push to bot
+                newy = newy + 1;
+            }
+        }else if (j == 0){
+            //same line
+            if(i>0){
+                //pusher coming from right, push to left
+                newx = newx - 1;
+            }else if(i<0){
+                //pusher coming from left, push to right
+                newx = newx + 1;
+            }
+        }
+        return  new Position(newx, newy);
+    }
+
+    public boolean moveRobotOnBoard(Player player, Position oldpos, Position newpos){
+
+        return gameMap.moveRobot(player.getRobot(), oldpos, newpos);
     }
 
     public void runStep() throws ClassNotFoundException {
@@ -410,9 +486,9 @@ public class Game {
         phase = 3;
         if (user != playing) {
             //ToDo handle this
+            //TODO: why is the rebooted check removed?
             return;
         }
-
         logger.debug("Register " + current_register + "For Player: " + user.getID());
 
         Card cardPlayed = user.getRegisterIndex(current_register);
@@ -582,12 +658,18 @@ public class Game {
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
                 broadcastMessage("Energy", energyJsonAdapter.toJson(new Energy(curr.getID(), curr.getEnergyReserve(), "PowerUp")));
             } else {
-                curr.getRegisterIndex(register_number).playCard(curr.getRobot());
-                Position position = curr.getRobot().getPosition();
-                if (position.getX() < 0 || position.getX() >= 13 || position.getY() < 0 || position.getY() >= 10) {
-                    rebootPlayer(curr);
+                /**curr.getRegisterIndex(register_number).playCard(curr.getRobot());
+                robotMovedProtokoll(curr.getRobot());*/
+
+                //new implementation of movement
+                Programmingcard prcard = (Programmingcard) curr.getRegisterIndex(register_number);
+                //TODO: handle moveback
+                for( int i =0; i< prcard.getMoves(); i++){
+                    Position newpos = prcard.calculateNewPosition(curr.getRobot());
+                    if(checkMovement(curr.getRobot(), newpos)){
+                        logger.debug("movement allowed");
+                    }
                 }
-                robotMovedProtokoll(curr.getRobot());
             }
         }
     }
@@ -715,6 +797,7 @@ public class Game {
         rebooted_players.add(curr);
         //put all cards that are left in the register of mentioned player onto his discardpile without activating them
         for (Card card : curr.getRegister()) {
+            //TODO: discard current register cards
             curr.getDiscarded().add(card);
         }
 
@@ -738,6 +821,7 @@ public class Game {
         JsonAdapter<Reboot> rebootJsonAdapter = moshi.adapter(Reboot.class);
         Reboot reboot = new Reboot(curr.getID());
         broadcastMessage("Reboot", rebootJsonAdapter.toJson(reboot));
+        //TODO: delete robot image from UI map
         //ToDo: get rebootfield coordinates and send Movement protocoll
     }
 
@@ -893,6 +977,7 @@ public class Game {
         pos = getNextPos(pos, robot.getDirection());
         while (pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
                 && !laserHit && pos.getX() >= 0 && pos.getY() >= 0) {
+            //TODO: wall which side
             //as long as within the board, and laser still didnt hit any element
             if (hasLaserBlock(pos)) {
                 //if cell has a robot or an antenna on it
@@ -1027,10 +1112,15 @@ public class Game {
         List<ConveyorBelt> conveyorbelts = getListOfBelts(2);
         for (ConveyorBelt belt : conveyorbelts) {
             if (robotOnElement(belt)) {
-                //Assert that belt.getSpeed()== 2
+                assert belt.getSpeed() == 2;
                 //get robots on belts position (usually just one robot)
                 List<Robot> robotList = gameMap.getRobotsOnPos(belt.getPosition());
-                belt.execute(robotList);
+                if(robotList.size()>0){
+                    belt.execute(robotList);
+                    for(Robot robot :robotList){
+                        robotMovedProtokoll(robot);
+                    }
+                }
             }
         }
         //activate green conveyor belts
@@ -1040,7 +1130,12 @@ public class Game {
                 assert belt.getSpeed() == 1;
                 //get robots on belts position (usually just one robot)
                 List<Robot> robotList = gameMap.getRobotsOnPos(belt.getPosition());
-                belt.execute(robotList);
+                if(robotList.size()>0){
+                    belt.execute(robotList);
+                    for(Robot robot :robotList){
+                        robotMovedProtokoll(robot);
+                    }
+                }
             }
         }
     }

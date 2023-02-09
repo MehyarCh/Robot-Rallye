@@ -1,5 +1,6 @@
 package Desperatedrosseln.Logic.Cards;
 
+import Desperatedrosseln.Logic.Elements.Position;
 import Desperatedrosseln.Logic.Elements.Robot;
 
 public class Card {
@@ -12,6 +13,7 @@ public class Card {
 
     public void playCard(Robot robot){
     }
+
     @Override
     public String toString(){
         return "Card";
