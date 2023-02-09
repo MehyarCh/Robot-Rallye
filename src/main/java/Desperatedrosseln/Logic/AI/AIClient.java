@@ -294,12 +294,10 @@ public class AIClient extends Thread {
                         hasStartPoint = true;
                         sendMessage("SetStartingPoint", setStartingPointJsonAdapter.toJson(new SetStartingPoint(startPos.getX(), startPos.getY())));
                         ai.robot = players.get(AI_ID);
-                        ai.placeRobot(startPos, ai.robot);
+
                     }
-                    ai.placeRobot(new Position(startingPointTaken.getX(), startingPointTaken.getY()), players.get(startingPointTaken.getClientID()));
-
                 }
-
+                ai.placeRobot(new Position(startingPointTaken.getX(), startingPointTaken.getY()), players.get(startingPointTaken.getClientID()));
                 break;
 
             case "YourCards":
