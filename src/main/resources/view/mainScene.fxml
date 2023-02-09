@@ -15,14 +15,6 @@
             xmlns:fx="http://javafx.com/fxml"
             styleClass="main-scene">
 
-
-
-
-
-
-
-
-
     <top>
         <GridPane styleClass="navbar" fx:id="navbar">
             <HBox id="logo-wrapper"
@@ -80,17 +72,19 @@
                            styleClass="headline-4, color--light"/>
                 </VBox>
             </HBox>
-
             <HBox id="profile-wrapper" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="profile-wrapper">
                 <VBox styleClass="timer-box">
                     <Label text="TIMER" styleClass="timer-label, color--light"/>
                     <Label fx:id="timeLabel" text="0" styleClass="profile-name, color--light"/>
                 </VBox>
             </HBox>
+            <HBox GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="player-bar">
+                <Label fx:id="phaseLabel"  styleClass="headline-5, color--light"/>
+            </HBox>
 
 
             <HBox id="profile-wrapper"
-                  GridPane.columnIndex="2"
+                  GridPane.columnIndex="3"
                   GridPane.rowIndex="0"
                   styleClass="profile-wrapper">
                 <Label text="."
@@ -100,8 +94,7 @@
                     <Label fx:id="playerName"
                            text="PlayerName"
                            styleClass="profile-name, color--light"/>
-                    <Label fx:id = "energyLabel"
-                            text="Energy: 5"
+                    <Label fx:id="energyLabel" text="Energy: 5"
                            styleClass="profile-energy, color--primary"/>
                 </VBox>
             </HBox>
@@ -111,18 +104,24 @@
     <center>
         <StackPane fx:id="centerStack" styleClass="main-overlay-container">
             <GridPane styleClass="center" fx:id="center">
+                <GridPane styleClass="map"
+                          GridPane.columnIndex="0"
+                          GridPane.rowIndex="0"
+                          >
+                    <Label fx:id="instructionLabel" styleClass="text-instruction"></Label>
+                </GridPane>
                 <GridPane fx:id="mapGrid"
                           styleClass="map"
                           GridPane.columnIndex="0"
-                          GridPane.rowIndex="0"
-                          GridPane.vgrow="ALWAYS"
-                        GridPane.hgrow="ALWAYS">
+                          GridPane.rowIndex="1"
+                          GridPane.hgrow="ALWAYS"
+                          GridPane.vgrow="ALWAYS">
                 </GridPane>
                 <GridPane styleClass="card-wrapper, transparent--black"
                           fx:id="cardWrapper"
                           GridPane.hgrow="ALWAYS"
                           GridPane.columnIndex="0"
-                          GridPane.rowIndex="1">
+                          GridPane.rowIndex="2">
 
                     <HBox styleClass="card-row"
                         GridPane.rowIndex="0">

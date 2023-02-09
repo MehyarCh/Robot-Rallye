@@ -167,8 +167,12 @@ public class Client implements Runnable {
             case "PlayerAdded":
                 JsonAdapter<PlayerAdded> playerAddedJsonAdapter = moshi.adapter(PlayerAdded.class);
                 PlayerAdded playerAdded = playerAddedJsonAdapter.fromJson(msg.getMessageBody());
-
+                //saves player when choosing his robot, chat messages in lobby show null-username before choosing
                 localPlayerList.put(playerAdded.getName(), playerAdded.getClientID());
+                //show the players who are online, needs this if so the AI gets shown as well
+                if (lobbyControllerInitialized) {
+                    lobbyController.setPlayersOnline(playerAdded.getName());
+                }
                 if (clientID == playerAdded.getClientID()){
                     myRobotSelected = true;
                 }
@@ -234,6 +238,9 @@ public class Client implements Runnable {
                 mainController.initRegisterValues();
                 mainController.cardClick();
                 //startCardSelectionTimer();
+                mainController.setPhaseLabel("Programming Phase");
+                mainController.setInstructionLabel("Place your Cards!");
+                //startCardSelectionTimer();
                 break;
             case "CurrentPlayer":
                 JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
@@ -254,11 +261,15 @@ public class Client implements Runnable {
                 Movement movement = movementJsonAdapter.fromJson(msg.getMessageBody());
                 mainController.getMapController().move(playersWithRobots.get(movement.getClientID()),
                         movement.getX(), movement.getY());
+                mainController.setPhaseLabel("Activation Phase");
+                mainController.setInstructionLabel("");
                 break;
             case "PlayerTurning":
                 JsonAdapter<PlayerTurning> playerTurningJsonAdapter = moshi.adapter(PlayerTurning.class);
                 PlayerTurning playerTurning = playerTurningJsonAdapter.fromJson(msg.getMessageBody());
                 mainController.getMapController().rotateRobot(playerTurning.getClientID(), playerTurning.getRotation());
+                mainController.setPhaseLabel("Activation Phase");
+                mainController.setInstructionLabel("");
                 break;
             case "ExchangeShop":
                 JsonAdapter<ExchangeShop> exchangeShopJsonAdapter = moshi.adapter(ExchangeShop.class);
@@ -267,6 +278,7 @@ public class Client implements Runnable {
                 mainController.exchangeShop(shopCards);
                 Collections.shuffle(shopCards);
                 JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter = moshi.adapter(BuyUpgrade.class);
+                mainController.setInstructionLabel("Buy a Card!");
                 //sendMessage("BuyUpgrade",buyUpgradeJsonAdapter.toJson(new BuyUpgrade(true,shopCards.get(0))));
                 break;
             case "RefillShop":
@@ -274,11 +286,11 @@ public class Client implements Runnable {
                 RefillShop refillShop = refillShopJsonAdapter.fromJson(msg.getMessageBody());
                 List<String> refillShopCards = refillShop.getCards();
                 mainController.exchangeShop(refillShopCards);
-                String log = "";
-                for (String c :
-                        refillShopCards) {
-                    log = log + "_" + c;
-
+                mainController.setPhaseLabel("Upgrade Phase");
+                mainController.setInstructionLabel("Buy a Card!");
+                for (String c:
+                     refillShopCards) {
+                    System.out.print("_"+c);
                 }
                 logger.debug(clientName + " refill shop: " + log);
                 Collections.shuffle(refillShopCards);

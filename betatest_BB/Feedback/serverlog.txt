@@ -1,0 +1,190 @@
+Feb 03, 2023 12:56:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server exportLog
+INFO: Log will be exported as: serverlog.txt
+Feb 03, 2023 12:57:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server startServerThread
+INFO: I did serverSoccet.accept
+Feb 03, 2023 12:57:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server generateId
+SEVERE: generateIDcalled
+Feb 03, 2023 12:57:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server generateId
+INFO: ---false
+Feb 03, 2023 12:57:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addClient
+INFO: I accepted a new player and gave him the PlayerID: 1
+Feb 03, 2023 12:57:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addClient
+INFO: Before Welcome: false for id: 1
+Feb 03, 2023 12:57:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addPlayerToGame
+INFO: current playerlist: [1]
+Feb 03, 2023 12:57:20 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:57:25 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:57:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 1 :{"messageType":"PlayerValues","messageBody":{"figure":0,"name":"AA"}}
+Feb 03, 2023 12:57:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFO: processPlayerValues called
+Feb 03, 2023 12:57:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFO: playerProfileList: 
+Feb 03, 2023 12:57:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFO: 1
+Feb 03, 2023 12:57:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFO: 10000
+Feb 03, 2023 12:57:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFO: Player is AI: false
+Feb 03, 2023 12:57:27 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFO: Sending to all clients: {"messageType":"PlayerAdded","messageBody":{"figure":0,"clientID":1,"name":"AA"}}
+Feb 03, 2023 12:57:30 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:57:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server startServerThread
+INFO: I did serverSoccet.accept
+Feb 03, 2023 12:57:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server generateId
+SEVERE: generateIDcalled
+Feb 03, 2023 12:57:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server generateId
+INFO: ---false
+Feb 03, 2023 12:57:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addClient
+INFO: I accepted a new player and gave him the PlayerID: 2
+Feb 03, 2023 12:57:31 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addClient
+INFO: Before Welcome: false for id: 2
+Feb 03, 2023 12:57:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addPlayerToGame
+INFO: current playerlist: [AA, 2]
+Feb 03, 2023 12:57:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToSingleClient
+INFO: Sending to 2 {"messageType":"PlayerAdded","messageBody":{"figure":0,"clientID":1,"name":"AA"}}
+Feb 03, 2023 12:57:32 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:57:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 2 :{"messageType":"PlayerValues","messageBody":{"figure":1,"name":"B"}}
+Feb 03, 2023 12:57:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFO: processPlayerValues called
+Feb 03, 2023 12:57:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFO: playerProfileList: 
+Feb 03, 2023 12:57:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFO: 1
+Feb 03, 2023 12:57:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFO: 0
+Feb 03, 2023 12:57:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFO: 2
+Feb 03, 2023 12:57:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFO: 10000
+Feb 03, 2023 12:57:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processPlayerValues
+INFO: Player is AI: false
+Feb 03, 2023 12:57:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFO: Sending to all clients: {"messageType":"PlayerAdded","messageBody":{"figure":1,"clientID":2,"name":"B"}}
+Feb 03, 2023 12:57:34 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToSingleClient
+INFO: Sending to B {"messageType":"PlayerAdded","messageBody":{"figure":0,"clientID":1,"name":"AA"}}
+Feb 03, 2023 12:57:35 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:57:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 2 :{"messageType":"SetStatus","messageBody":{"ready":true}}
+Feb 03, 2023 12:57:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processSetStatus
+INFO: processSetStatus called
+Feb 03, 2023 12:57:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFO: Sending to all clients: {"messageType":"PlayerStatus","messageBody":{"clientID":2,"ready":true}}
+Feb 03, 2023 12:57:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFO: called addMapSelectionQueue
+Feb 03, 2023 12:57:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFO: Client is AI false
+Feb 03, 2023 12:57:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFO: Added a non-AI Client
+Feb 03, 2023 12:57:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFO: map selection queue size: 1
+Feb 03, 2023 12:57:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFO: minPlayers: 2
+Feb 03, 2023 12:57:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server makePlayerSelectMap
+INFO: called makePlayerSelectMap
+Feb 03, 2023 12:57:36 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToSingleClient
+INFO: Sending to B {"messageType":"SelectMap","messageBody":{"availableMaps":["DizzyHighway","LostBearings","DeathTrap","ExtraCrispy"]}}
+Feb 03, 2023 12:57:37 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:57:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 2 :{"messageType":"MapSelected","messageBody":{"map":"DizzyHighway"}}
+Feb 03, 2023 12:57:38 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFO: Sending to all clients: {"messageType":"MapSelected","messageBody":{"map":"DizzyHighway"}}
+Feb 03, 2023 12:57:40 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:57:42 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 1 :{"messageType":"SetStatus","messageBody":{"ready":true}}
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processSetStatus
+INFO: processSetStatus called
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFO: Sending to all clients: {"messageType":"PlayerStatus","messageBody":{"clientID":1,"ready":true}}
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFO: called addMapSelectionQueue
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFO: Client is AI false
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFO: Added a non-AI Client
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFO: map selection queue size: 2
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server addToMapSelectionQueue
+INFO: minPlayers: 2
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server startGame
+INFO: game started
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFO: DizzyHighway
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFO: Sending to all clients: {"messageType":"GameStarted","messageBody":{"gameMap":[[[{"type":"Empty","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"StartPoint","isOnBoard":"A"}],[{"orientations":["top"],"type":"Antenna","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"StartPoint","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}]],[[{"type":"Empty","isOnBoard":"A"}],[{"type":"StartPoint","isOnBoard":"A"}],[{"orientations":["top"],"type":"Wall","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"StartPoint","isOnBoard":"A"}],[{"type":"StartPoint","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"orientations":["bottom"],"type":"Wall","isOnBoard":"A"}],[{"type":"StartPoint","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}]],[[{"orientations":["right","left"],"type":"ConveyorBelt","isOnBoard":"A","speed":1}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"}],[{"orientations":["right"],"type":"Wall","isOnBoard":"A"}],[{"orientations":["right"],"type":"Wall","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"A"},{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"A"},{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"A"}],[{"orientations":["right","left"],"type":"ConveyorBelt","isOnBoard":"A","speed":1}]],[[{"type":"Empty","isOnBoard":"A"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["right","left"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["right","left"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"count":2,"type":"EnergySpace","isOnBoard":"5B"},{"type":"Empty","isOnBoard":"5B"}]],[[{"orientations":["bottom","top"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["bottom","top","right"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["bottom","top"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["bottom","top"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["bottom","top"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["bottom","top"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["bottom","top"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["bottom","top","left"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["right","top","left"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"type":"Empty","isOnBoard":"5B"}]],[[{"orientations":["bottom","top"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["left","top","right"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"count":2,"type":"EnergySpace","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["right","left"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"type":"Empty","isOnBoard":"5B"}]],[[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["left","right"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[],[{"orientations":["top"],"type":"Wall","isOnBoard":"5B"},{"orientations":["top"],"count":1,"type":"Laser","isOnBoard":"5B"}],[{"orientations":["bottom"],"type":"Wall","isOnBoard":"5B"},{"orientations":["top"],"count":1,"type":"Laser","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["left"],"type":"Wall","isOnBoard":"5B"},{"orientations":["left"],"count":1,"type":"Laser","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["right","left"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"type":"Empty","isOnBoard":"5B"}]],[[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["left","right"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[],[{"type":"RestartPoint","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"count":2,"type":"EnergySpace","isOnBoard":"5B"}],[{"orientations":["right"],"type":"Wall","isOnBoard":"5B"},{"orientations":["left"],"count":1,"type":"Laser","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["right","left"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"type":"Empty","isOnBoard":"5B"}]],[[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["left","right"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["left"],"type":"Wall","isOnBoard":"5B"},{"orientations":["right"],"count":1,"type":"Laser","isOnBoard":"5B"}],[{"count":2,"type":"EnergySpace","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["right","left"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"type":"Empty","isOnBoard":"5B"}]],[[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["left","right"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["right"],"type":"Wall","isOnBoard":"5B"},{"orientations":["right"],"count":1,"type":"Laser","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["top"],"type":"Wall","isOnBoard":"5B"},{"orientations":["bottom"],"count":1,"type":"Laser","isOnBoard":"5B"}],[{"orientations":["bottom"],"type":"Wall","isOnBoard":"5B"},{"orientations":["bottom"],"count":1,"type":"Laser","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["right","left"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"type":"Empty","isOnBoard":"5B"}]],[[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["left","right"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"count":2,"type":"EnergySpace","isOnBoard":"5B"}],[{"orientations":["right","left","bottom"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["top","bottom"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}]],[[{"type":"Empty","isOnBoard":"5B"}],[{"orientations":["left","bottom","right"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["top","bottom","right"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["top","bottom"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["top","bottom"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["top","bottom"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["top","bottom"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["top","bottom"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["top","bottom","left"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["top","bottom"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}]],[[{"count":2,"type":"EnergySpace","isOnBoard":"5B"}],[{"orientations":["left","right"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"orientations":["left","right"],"type":"ConveyorBelt","isOnBoard":"5B","speed":2}],[{"count":1,"type":"CheckPoint","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}],[{"type":"Empty","isOnBoard":"5B"}]]]}}
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFO: Active phase set to Aufbauphase.
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFO: Sending to all clients: {"messageType":"RefillShop","messageBody":{"cards":["AdminPrivilege","SpamBlocker"]}}
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendRefillShop
+INFO: (Re)filled the shop with: [AdminPrivilege, SpamBlocker]
+Feb 03, 2023 12:57:43 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFO: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":0}}
+Feb 03, 2023 12:57:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 1 :{"messageType":"SetStartingPoint","messageBody":{"x":0,"y":3}}
+Feb 03, 2023 12:57:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: case set starting point in Server called from sender: 1
+Feb 03, 2023 12:57:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFO: Sending to all clients: {"messageType":"StartingPointTaken","messageBody":{"clientID":1,"x":0,"y":3}}
+Feb 03, 2023 12:57:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendStartingPointTaken
+INFO: AA set the starting position x: 0y: 3
+Feb 03, 2023 12:57:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: AA tried to choose the starting position x: 0, y: 3
+Feb 03, 2023 12:57:45 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:57:47 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:57:50 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:57:52 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:57:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 2 :{"messageType":"SetStartingPoint","messageBody":{"x":0,"y":6}}
+Feb 03, 2023 12:57:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: case set starting point in Server called from sender: 2
+Feb 03, 2023 12:57:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFO: Sending to all clients: {"messageType":"StartingPointTaken","messageBody":{"clientID":2,"x":0,"y":6}}
+Feb 03, 2023 12:57:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendStartingPointTaken
+INFO: B set the starting position x: 0y: 6
+Feb 03, 2023 12:57:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFO: All players have set their starting positions.
+Feb 03, 2023 12:57:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server log
+INFO: Active phase set to Upgradephase.
+Feb 03, 2023 12:57:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFO: Sending to all clients: {"messageType":"ActivePhase","messageBody":{"phase":1}}
+Feb 03, 2023 12:57:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFO: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":1}}
+Feb 03, 2023 12:57:54 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: B tried to choose the starting position x: 0, y: 6
+Feb 03, 2023 12:57:55 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:57:57 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:57:57 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 2 :{"messageType":"BuyUpgrade","messageBody":{"isBuying":false}}
+Feb 03, 2023 12:57:57 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: B bought no card this round.
+Feb 03, 2023 12:57:57 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server sendToAll
+INFO: Sending to all clients: {"messageType":"CurrentPlayer","messageBody":{"clientID":2}}
+Feb 03, 2023 12:58:00 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:58:02 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:58:05 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:58:07 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 2 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:58:10 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 1 :{"messageType":"Alive","messageBody":{}}
+Feb 03, 2023 12:58:12 AM lmu.ifi.dbs_sep.cc_hp_1.server.Server processMessage
+INFO: Client: 2 :{"messageType":"Alive","messageBody":{}}
