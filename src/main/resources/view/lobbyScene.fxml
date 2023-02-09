@@ -100,7 +100,7 @@
                     text="ADD AI"
             styleClass="button, login-button, button--secondary, alignment--center"/>
             <Label text="Players currently in lobby: "
-                   fx:id="playersonline"
+                   fx:id="playersOnline"
                    styleClass="headline-3, color--light"/>
         </VBox>
         <HBox fx:id="mapSelection"

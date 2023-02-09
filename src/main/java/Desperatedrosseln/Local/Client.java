@@ -288,6 +288,7 @@ public class Client implements Runnable {
                 mainController.exchangeShop(refillShopCards);
                 mainController.setPhaseLabel("Upgrade Phase");
                 mainController.setInstructionLabel("Buy a Card!");
+                String log = "";
                 for (String c:
                      refillShopCards) {
                     System.out.print("_"+c);
