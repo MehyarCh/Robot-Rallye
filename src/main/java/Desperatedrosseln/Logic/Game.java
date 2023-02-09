@@ -747,7 +747,7 @@ public class Game {
         //TODO: count distance to antenna
         //if the current player is the last player, start from the beginning
         if (current_player_index >= players.size()) {
-            current_player_index = 0;
+            current_player_index -= players.size();
         }
         playing = players.get(current_player_index);
     }
@@ -1383,7 +1383,6 @@ public class Game {
             Player player = iterator.next();
             if(clientID == player.getID()) {
                 iterator.remove();
-
                 if(player.getID() == playing.getID() && phase == 3){
                     walkActivationPhase(player, "");
                 }

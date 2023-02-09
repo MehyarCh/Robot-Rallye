@@ -393,8 +393,8 @@ public class MapController {
             Moshi moshi = new Moshi.Builder().build();
             JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
             client.sendMessage("SetStartingPoint",setStartingPointJsonAdapter.toJson(new SetStartingPoint(x,y)));
-            upgradeButton.setDisable(false);
-            noUpgradeButton.setDisable(false);
+            //upgradeButton.setDisable(true);
+            //noUpgradeButton.setDisable(true);
         }
     }
     private void handleStartingPoint(ImageView stackElement, int x, int y, boolean[] isTaken) {

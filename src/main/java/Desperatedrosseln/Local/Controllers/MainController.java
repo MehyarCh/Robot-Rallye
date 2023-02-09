@@ -863,6 +863,7 @@ public class MainController {
             @Override
             public void run() {
                 clearUpgradeCards();
+
                 for (int i = 0; i < 6; i++) {
 
                     if (i < exchangeValues.size()) {
@@ -876,6 +877,8 @@ public class MainController {
                         upgradeValues.add("null");
                     }
                 }
+                upgradeButton.setDisable(false);
+                noUpgradeButton.setDisable(false);
             }
         });
     }
@@ -929,8 +932,8 @@ public class MainController {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                upgradeButton.setDisable(false);
-                noUpgradeButton.setDisable(false);
+                upgradeButton.setDisable(true);
+                noUpgradeButton.setDisable(true);
             }
         });
     }
