@@ -113,7 +113,8 @@ public class MainController {
     @FXML
     public Button upgradeButton;
 
-    @FXML private Button noUpgradeButton;
+    @FXML
+    public Button noUpgradeButton;
 
     @FXML
     private StackPane upgradeCard1;

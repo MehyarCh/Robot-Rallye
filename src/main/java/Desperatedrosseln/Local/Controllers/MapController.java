@@ -412,6 +412,12 @@ public class MapController {
         cell.getChildren().add(robot);
         robotImages.add(robot);
         idToPosition.put(robotId, new Position(x, y));
+
+        if(x > 4){
+            rotateRobot(robotId, "clockwise");
+            rotateRobot(robotId, "clockwise");
+        }
+
         logger.debug(idToPosition.get(robotId).toString());
         return robot;
     }

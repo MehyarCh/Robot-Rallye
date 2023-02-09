@@ -298,6 +298,9 @@ public class ClientHandler implements Runnable {
                 JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
                 SetStartingPoint setStartingPoint = setStartingPointJsonAdapter.fromJson(message.getMessageBody());
                 game.placeRobot(player, setStartingPoint.getX(), setStartingPoint.getY());
+                if (game.getCurrentMap().equals("DeathTrap")){
+                    player.getRobot().changeDirection(180);
+                }
 
 
                 if (++game.startingPositionsChosen == clients.size()) {
