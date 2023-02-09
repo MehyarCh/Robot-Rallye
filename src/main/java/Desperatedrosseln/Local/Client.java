@@ -352,9 +352,8 @@ public class Client implements Runnable {
     }
 
     private void removeClient(int clientID) {
-        //ToDo: remove the robot from gui
         int robID = playersWithRobots.get(clientID);
-        robotIDs.remove((Object)robID);
+        robotIDs.remove((Integer)robID);
         localPlayerList.remove(getPlayerName(clientID));
         playersWithRobots.remove(clientID);
     }
@@ -454,6 +453,12 @@ public class Client implements Runnable {
                     return;
                 }
                 if (messageParts[1].equals(this.clientName)) {
+                    for (String name: localPlayerList.keySet()){
+                        if (localPlayerList.get(name) != clientID && name.equals(this.clientName)){
+                            sendMessage("SendChat", sendChatJsonAdapter.toJson(new SendChat(messageParts[2], localPlayerList.get(name))));
+                            return;
+                        }
+                    }
                     //lobbyController.addChatMessage("Please complete the  command.");
                     mainController.addChatMessage("You cannot send yourself private Messages, it is weird. Just think and talk to yourself.");
                     return;
