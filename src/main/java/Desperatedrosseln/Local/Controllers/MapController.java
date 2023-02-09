@@ -101,6 +101,10 @@ public class MapController {
         }
     }
 
+    public HashMap<Integer, Position> getIdToPosition() {
+        return idToPosition;
+    }
+
     public MapController(GridPane mapGrid, int selectedRobot) {
         this.mapGrid = mapGrid;
         this.jsonMapReader = new JsonMapReader();
@@ -228,7 +232,7 @@ public class MapController {
     }
 
     private void buildMapGrid(List<List<MapField>> fieldList){
-        CompletableFuture.runAsync(() -> {
+        //CompletableFuture.runAsync(() -> {
             Platform.runLater(() -> {
                 for (int i = 0; i < fieldList.size(); i++) {
                     for (int j = 0; j < fieldList.get(i).size(); j++) {
@@ -245,9 +249,9 @@ public class MapController {
                     }
                 }
             });
-        }).thenRun(() -> {
+        //}).thenRun(() -> {
 
-        });
+        //});
     }
 
     @FXML
@@ -387,8 +391,7 @@ public class MapController {
             Moshi moshi = new Moshi.Builder().build();
             JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
             client.sendMessage("SetStartingPoint",setStartingPointJsonAdapter.toJson(new SetStartingPoint(x,y)));
-            upgradeButton.setDisable(false);
-            noUpgradeButton.setDisable(false);
+
         }
     }
     private void handleStartingPoint(ImageView stackElement, int x, int y, boolean[] isTaken) {
@@ -406,11 +409,12 @@ public class MapController {
         cell.getChildren().add(robot);
         robotImages.add(robot);
         idToPosition.put(robotId, new Position(x, y));
-        if(x>6){
-            List<String> orientations = new ArrayList<>();
-            orientations.add("bottom");
-            rotateElement(robot, orientations);
+
+        if(x > 4){
+            rotateRobot(robotId, "clockwise");
+            rotateRobot(robotId, "clockwise");
         }
+
         logger.debug(idToPosition.get(robotId).toString());
         return robot;
     }
@@ -429,7 +433,7 @@ public class MapController {
             ImageView robotImage = getRobotFromTile(oldX, oldY);
 
             // Removes the images from the old Tile and changes the robos position to the new one
-            removeRobot(oldX, oldY);
+            //removeRobot(oldX, oldY);
             idToPosition.get(robotId).setPosition(newX, newY);
 
             // adds the new Image to the new Tile
@@ -440,6 +444,7 @@ public class MapController {
 
     public void rotateRobot(int id, String direction) {
         ImageView robotImage = getRobotById(id);
+        logger.info(robotImage + " " + id);
         List<String> orientations = new ArrayList<>();
 
         if (direction.equals("clockwise")) {
@@ -453,25 +458,30 @@ public class MapController {
     }
 
     public void removeRobot(int x, int y) {
-        Platform.runLater(() -> {
-            int mapIndex = getMapIndex(x, y);
-            StackPane cell = (StackPane) mapGrid.getChildren().get(mapIndex);
-            ImageView imageView = (ImageView) cell.getChildren().get(cell.getChildren().size() - 1);
-            if (robotImages.contains(imageView)) {
-                cell.getChildren().remove(imageView);
-            }
-        });
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    logger.info(idToPosition.keySet());
+                    int mapIndex = getMapIndex(x, y);
+                    StackPane cell = (StackPane) mapGrid.getChildren().get(mapIndex);
+                    ImageView imageView = getRobotFromTile(x, y);
+                    logger.info(imageView.getImage().getUrl());
+                    for (ImageView view : robotImages) logger.info("this are the urls of the children of this tile " + view.getImage().getUrl());
+                    logger.info(robotImages);
+                    robotImages.remove(imageView);
+
+                    logger.info(robotImages);
+                    cell.getChildren().remove(imageView);
+                }
+            });
     }
 
     public void removeRobotById(int id) {
         int x = idToPosition.get(id).getX();
-        int y = idToPosition.get(id).getX();
-        removeRobot(x, y);
-    }
-
-    public void addRobot(int id) {
-        int x = idToPosition.get(id).getX();
-        int y = idToPosition.get(id).getX();
+        int y = idToPosition.get(id).getY();
+        logger.info(idToPosition);
+        //idToPosition.remove(id);
+        logger.info(idToPosition.size());
         removeRobot(x, y);
     }
 
@@ -503,16 +513,14 @@ public class MapController {
 
     private ImageView getRobotFromTile(int x, int y) {
         int mapIndex = getMapIndex(x, y);
-
+        ImageView robot = null;
         StackPane stackPane = (StackPane) mapGrid.getChildren().get(mapIndex);
 
         for (Node imageNode : stackPane.getChildren()) {
-            ImageView imageView = (ImageView) imageNode;
-            if (robotImages.contains(imageView)) {
-                return imageView;
-            }
+            robot = (ImageView) imageNode;
+            logger.info(robot.getImage().getUrl());
         }
-        return null;
+        return robot;
     }
 
 
@@ -864,11 +872,11 @@ public class MapController {
     private synchronized ImageView
     rotateElement(ImageView stackElement, List<String> orientations) {
         if (Objects.equals(orientations.get(0), "right")) {
-            stackElement.setStyle("-fx-rotate: 90");
+            stackElement.setRotate(stackElement.getRotate() + 90);
         } else if (Objects.equals(orientations.get(0), "bottom")) {
-            stackElement.setStyle("-fx-rotate: 180");
+            stackElement.setRotate(stackElement.getRotate() + 180);
         } else if (Objects.equals(orientations.get(0), "left")) {
-            stackElement.setStyle("-fx-rotate: -90");
+            stackElement.setRotate(stackElement.getRotate() - 90);
         }
         return stackElement;
     }

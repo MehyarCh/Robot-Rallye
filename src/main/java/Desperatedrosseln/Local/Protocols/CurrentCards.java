@@ -27,8 +27,9 @@ public class CurrentCards {
         this.activeCards = activeCards;
     }
 
-
-
+    public List<ActiveCards> getActiveCards() {
+        return activeCards;
+    }
 
     public static class ActiveCards {
         private int clientID;
@@ -45,6 +46,11 @@ public class CurrentCards {
         public ActiveCards (int clientID, String card){
             this.clientID = clientID;
             this.card = card;
+        }
+
+        @Override
+        public String toString() {
+            return "("+clientID+","+card+")";
         }
     }
 }

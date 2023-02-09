@@ -503,6 +503,7 @@ public class AI {
         } else {
             rob.setDirection(DIRECTION.RIGHT);
         }
+
         robotList.add(rob);
         gameMap.get(startPos.x).get(startPos.y).add(rob);
     }

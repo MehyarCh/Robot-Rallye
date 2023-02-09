@@ -21,6 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static Desperatedrosseln.Logic.DIRECTION.LEFT;
@@ -517,6 +518,7 @@ public class Game {
                 sortPlayersByDistance();
                 rebooted_players = new ArrayList<>();
             }
+
             current_player_index++;
             decideNextPlayer();
         } while (rebooted_players.contains(playing));
@@ -870,7 +872,7 @@ public class Game {
         //TODO: count distance to antenna
         //if the current player is the last player, start from the beginning
         if (current_player_index >= players.size()) {
-            current_player_index = 0;
+            current_player_index -= players.size();
         }
         playing = players.get(current_player_index);
     }
@@ -1510,16 +1512,18 @@ public class Game {
         }
     }
 
-    public void removePlayer(int clientID) {
+    public void removePlayer(int clientID) throws ClassNotFoundException {
         //ToDo: remove player from the game
-        for (Player curr :
-                players) {
-            if (clientID == curr.getID()) {
-                players.remove(curr);
+
+        for (Iterator<Player> iterator = players.iterator(); iterator.hasNext();) {
+            Player player = iterator.next();
+            if(clientID == player.getID()) {
+                iterator.remove();
+                if(player.getID() == playing.getID() && phase == 3){
+                    walkActivationPhase(player, "");
+                }
             }
         }
-
-
     }
 }
 

@@ -298,6 +298,9 @@ public class ClientHandler implements Runnable {
                 JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
                 SetStartingPoint setStartingPoint = setStartingPointJsonAdapter.fromJson(message.getMessageBody());
                 game.placeRobot(player, setStartingPoint.getX(), setStartingPoint.getY());
+                if (game.getCurrentMap().equals("DeathTrap")){
+                    player.getRobot().changeDirection(180);
+                }
 
 
                 if (++game.startingPositionsChosen == clients.size()) {
@@ -439,7 +442,11 @@ public class ClientHandler implements Runnable {
                 JsonAdapter<ConnectionUpdate> connectionUpdateJsonAdapter = moshi.adapter(ConnectionUpdate.class);
                 broadcastMessage("ConnectionUpdate", connectionUpdateJsonAdapter.toJson(new ConnectionUpdate(clientID, false, "remove")));
                 closeAll(this.socket, this.in, this.out);
-                game.removePlayer(clientID);
+                try {
+                    game.removePlayer(clientID);
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
                 break;
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);

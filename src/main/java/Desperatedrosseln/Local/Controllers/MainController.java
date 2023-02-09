@@ -114,7 +114,8 @@ public class MainController {
     @FXML
     public Button upgradeButton;
 
-    @FXML private Button noUpgradeButton;
+    @FXML
+    public Button noUpgradeButton;
 
     @FXML
     private StackPane upgradeCard1;
@@ -140,6 +141,13 @@ public class MainController {
     @FXML private StackPane permUpgradeCard1;
     @FXML private StackPane permUpgradeCard2;
     @FXML private StackPane permUpgradeCard3;
+
+    @FXML private Label mainRobot1;
+    @FXML private Label mainRobot2;
+    @FXML private Label mainRobot3;
+    @FXML private Label mainRobot4;
+    @FXML private Label mainRobot5;
+    @FXML private Label mainRobot6;
 
     private List<StackPane> registerCards;
     private List<StackPane> handCards;
@@ -190,6 +198,18 @@ public class MainController {
     private Label timeLabel;
     @FXML
     private Label energyLabel;
+    @FXML
+    private Label textBrown;
+    @FXML
+    private Label textYellow;
+    @FXML
+    private Label textBlue;
+    @FXML
+    private Label textGreen;
+    @FXML
+    private Label textOrange;
+    @FXML
+    private Label textRed;
 
     @FXML
     private HBox upgradeBar;
@@ -326,8 +346,8 @@ public class MainController {
                 mapController.setUpgradeButtons(upgradeButton, noUpgradeButton);
                 upgradeButton.setDisable(true);
                 noUpgradeButton.setDisable(true);
-                //startTimer();
-            }
+                showPlayingRobotsLabels();
+                }
         });
 
         stage.setOnCloseRequest(event -> {
@@ -376,6 +396,34 @@ public class MainController {
     }
 
     @FXML
+    private void showPlayingRobotsLabels(){
+        if (client.getRobotIDs().contains(1)){
+            mainRobot1.setOpacity(1.0);
+            textBrown.setTextFill(Color.rgb(255, 255, 255, 1.0));
+        }
+        if (client.getRobotIDs().contains(2)){
+            mainRobot2.setOpacity(1.0);
+            textYellow.setTextFill(Color.rgb(255, 255, 255, 1.0));
+        }
+        if (client.getRobotIDs().contains(3)){
+            mainRobot3.setOpacity(1.0);
+            textBlue.setTextFill(Color.rgb(255, 255, 255, 1.0));
+        }
+        if (client.getRobotIDs().contains(4)){
+            mainRobot4.setOpacity(1.0);
+            textGreen.setTextFill(Color.rgb(255, 255, 255, 1.0));
+        }
+        if (client.getRobotIDs().contains(5)){
+            mainRobot5.setOpacity(1.0);
+            textOrange.setTextFill(Color.rgb(255, 255, 255, 1.0));
+        }
+        if (client.getRobotIDs().contains(6)){
+            mainRobot6.setOpacity(1.0);
+            textRed.setTextFill(Color.rgb(255, 255, 255, 1.0));
+        }
+    }
+
+    @FXML
     void showOverlay(String content) {
         HBox overlay = new HBox();
         Label label = new Label(content);
@@ -416,9 +464,11 @@ public class MainController {
     }
 
     public void resetTimer() {
-        timer.cancel();
-        seconds = 30;
-        timeLabel.setText(String.valueOf(seconds));
+        Platform.runLater(()-> {
+            timer.cancel();
+            seconds = 30;
+            timeLabel.setText(String.valueOf(seconds));
+        });
     }
 
     public void fillHand() {
@@ -534,7 +584,7 @@ public class MainController {
             @Override
             public void run() {
 
-                logger.info("sssssssssssss" + message);
+                logger.info("Message: " + message);
 
                 String myName = client.getName();
                 logger.info(myName);
@@ -833,6 +883,7 @@ public class MainController {
             @Override
             public void run() {
                 clearUpgradeCards();
+
                 for (int i = 0; i < 6; i++) {
 
                     if (i < exchangeValues.size()) {
@@ -846,6 +897,8 @@ public class MainController {
                         upgradeValues.add("null");
                     }
                 }
+                upgradeButton.setDisable(false);
+                noUpgradeButton.setDisable(false);
             }
         });
     }
@@ -899,8 +952,8 @@ public class MainController {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                upgradeButton.setDisable(false);
-                upgradeButton.setDisable(false);
+                upgradeButton.setDisable(true);
+                noUpgradeButton.setDisable(true);
             }
         });
     }
