@@ -23,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static Desperatedrosseln.Logic.DIRECTION.LEFT;
 import static Desperatedrosseln.Logic.DIRECTION.TOP;
 
 /**
@@ -88,6 +89,9 @@ public class Game {
     public void placeRobot(Player player, int x, int y) {
         gameMap.addElement(player.getRobot(), x, y);
         player.getRobot().setPosition(x, y);
+        if(x>6){
+            player.getRobot().setDirection(LEFT);
+        }
     }
 
     /**
@@ -97,16 +101,17 @@ public class Game {
      * @return true if robot can be moved, false otherwise -including falling off map and being blocked
      */
     public boolean checkMovement(Robot robot, Position newpos){
-        Position oldpos = robot.getPosition();
+        Position oldpos = new Position(0, 0);
+        oldpos.copy(robot.getPosition());
         if(newpos.getX()< 0 || newpos.getY()< 0 || newpos.getY() >= gameMap.getLength() ||
                 newpos.getX() >= gameMap.getWidth()){
             //fell off so remove and reboot
             rebootPlayer(getPlayerByRobot(robot));
             return (false && gameMap.getElementsOnPos(oldpos).remove(robot));
-        } else if (gameMap.currPosHasBlockingWall(robot.getPosition(), robot.getDirection())) {
+        } else if (gameMap.currPosHasBlockingWall(robot.getPosition(), newpos)) {
             //blocked
             return false;
-        } else if (gameMap.nextPosHasBlockingWall(newpos, robot.getDirection())) {
+        } else if (gameMap.nextPosHasBlockingWall(robot.getPosition(), newpos)) {
             //blocked
             return false;
         } else if (gameMap.hasPit(newpos)) {
@@ -116,20 +121,28 @@ public class Game {
         } else if (gameMap.hasAntenna(newpos)){
             //blocked
             return false;
-        } else if (gameMap.hasRobotOnPos(newpos)){
+        } else if (gameMap.hasRobotOnPos(newpos)) {
             //push other robot
             //remove other robot
-            Robot otherrobot = (Robot) gameMap.getElementsOnPos(newpos).remove(
+            Robot otherrobot = (Robot) gameMap.getElementsOnPos(newpos).get(
                     gameMap.getElementsOnPos(oldpos).size()-1);
             Position pushedrobNewPos = pushRobot(robot, otherrobot);
-            return checkMovement(otherrobot, pushedrobNewPos);
-        }else{
+            if (checkMovement(otherrobot, pushedrobNewPos)) {
+                robot.setPosition(newpos.getX(), newpos.getY());
+                gameMap.getElementsOnPos(oldpos).remove(robot);
+                robotMovedProtokoll(robot);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
             //movement is allowed
             //remove robot from old pos
             gameMap.getElementsOnPos(newpos).add(robot);
             robot.setPosition(newpos.getX(), newpos.getY());
             robotMovedProtokoll(robot);
-            return true && gameMap.getElementsOnPos(oldpos).remove(robot);
+            boolean removed = gameMap.getElementsOnPos(oldpos).remove(robot);
+            return true && removed;
         }
     }
 
@@ -635,13 +648,36 @@ public class Game {
             String cardtype = curr.getRegisterIndex(register_number).toString();
             if (cardtype.equals("Again")) {
                 if (register_number > 0) {
-                    curr.getRegisterIndex(register_number - 1).playCard(curr.getRobot());
-                    Position newPos = curr.getRobot().getPosition();
-                    if (newPos.getX() < 0 || newPos.getX() >= 13 || newPos.getY() < 0 || newPos.getY() >= 10) {
-                        rebootPlayer(curr);
+                    Programmingcard prcard = (Programmingcard) curr.getRegisterIndex(register_number-1);
+                    if(prcard.getMoves() == 0 ){
+                        curr.getRegisterIndex(register_number).playCard(curr.getRobot());
+                        if (cardtype.equals("TurnLeft")) {
+                            robotTurnedProtokoll(curr.getRobot(), "counterclockwise");
+                        } else if (cardtype.equals("TurnRight")) {
+                            robotTurnedProtokoll(curr.getRobot(), "clockwise");
+                        } else if (cardtype.equals("PowerUp")) {
+                            curr.addToEnergyReserve(1);
+                            JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
+                            broadcastMessage("Energy", energyJsonAdapter.toJson(new Energy(curr.getID(),
+                                    curr.getEnergyReserve(), "PowerUp")));
+                        } else {
+                            //UTurn
+                            robotTurnedProtokoll(curr.getRobot(), "clockwise");
+                            robotTurnedProtokoll(curr.getRobot(), "clockwise");
+                        }
+                    }else {
+                        for( int i =0; i< prcard.getMoves(); i++){
+                            Position newpos;
+                            if(prcard.toString().equals("MoveBack")){
+                                newpos = prcard.calculateNewPosition(curr.getRobot(), true);
+                            }else{
+                                newpos = prcard.calculateNewPosition(curr.getRobot(), false);
+                            }
+                            if(checkMovement(curr.getRobot(), newpos)){
+                                logger.debug("movement allowed");
+                            }
+                        }
                     }
-
-                    robotMovedProtokoll(curr.getRobot());
                 }
             } else if (cardtype.equals("TurnLeft") || (cardtype.equals("TurnRight") || cardtype.equals("UTurn"))) {
                 curr.getRegisterIndex(register_number).playCard(curr.getRobot());
@@ -656,16 +692,21 @@ public class Game {
             } else if (cardtype.equals("PowerUp")) {
                 curr.addToEnergyReserve(1);
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
-                broadcastMessage("Energy", energyJsonAdapter.toJson(new Energy(curr.getID(), curr.getEnergyReserve(), "PowerUp")));
+                broadcastMessage("Energy", energyJsonAdapter.toJson(new Energy(curr.getID(),
+                        curr.getEnergyReserve(), "PowerUp")));
             } else {
                 /**curr.getRegisterIndex(register_number).playCard(curr.getRobot());
                 robotMovedProtokoll(curr.getRobot());*/
 
                 //new implementation of movement
                 Programmingcard prcard = (Programmingcard) curr.getRegisterIndex(register_number);
-                //TODO: handle moveback
                 for( int i =0; i< prcard.getMoves(); i++){
-                    Position newpos = prcard.calculateNewPosition(curr.getRobot());
+                    Position newpos;
+                    if(prcard.toString().equals("MoveBack")){
+                        newpos = prcard.calculateNewPosition(curr.getRobot(), true);
+                    }else{
+                        newpos = prcard.calculateNewPosition(curr.getRobot(), false);
+                    }
                     if(checkMovement(curr.getRobot(), newpos)){
                         logger.debug("movement allowed");
                     }

@@ -406,6 +406,11 @@ public class MapController {
         cell.getChildren().add(robot);
         robotImages.add(robot);
         idToPosition.put(robotId, new Position(x, y));
+        if(x>6){
+            List<String> orientations = new ArrayList<>();
+            orientations.add("bottom");
+            rotateElement(robot, orientations);
+        }
         logger.debug(idToPosition.get(robotId).toString());
         return robot;
     }
