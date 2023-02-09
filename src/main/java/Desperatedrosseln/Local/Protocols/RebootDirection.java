@@ -5,13 +5,13 @@ import Desperatedrosseln.Logic.DIRECTION;
 public class RebootDirection {
 
     //Body: "direction": "right"
-    private DIRECTION direction;
+    private String direction;
 
-    public DIRECTION getDirection() {
+    public String getDirection() {
         return direction;
     }
 
-    public RebootDirection(DIRECTION direction) {
+    public RebootDirection(String direction) {
         this.direction = direction;
     }
 }

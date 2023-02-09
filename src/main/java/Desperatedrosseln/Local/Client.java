@@ -58,6 +58,7 @@ public class Client implements Runnable {
     public void setGotSentMaps(boolean gotSentMaps) {
         this.gotSentMaps = gotSentMaps;
     }
+
     public boolean AIchoice = false;
     private boolean gotSentMaps = false;
 
@@ -158,7 +159,7 @@ public class Client implements Runnable {
             case "Welcome":
                 JsonAdapter<Welcome> welcomeJsonAdapter = moshi.adapter(Welcome.class);
                 this.clientID = welcomeJsonAdapter.fromJson(msg.getMessageBody()).getClientID();
-                if(clientID == 1){
+                if (clientID == 1) {
                     AIchoice = true;
                 }
                 //sendPlayerValues(clientID);
@@ -173,7 +174,7 @@ public class Client implements Runnable {
                 if (lobbyControllerInitialized) {
                     lobbyController.setPlayersOnline(playerAdded.getName());
                 }
-                if (clientID == playerAdded.getClientID()){
+                if (clientID == playerAdded.getClientID()) {
                     myRobotSelected = true;
                 }
                 if (!robotIDs.contains(playerAdded.getFigure())) {
@@ -248,9 +249,9 @@ public class Client implements Runnable {
 
                 isMyTurn = currentPlayer.getClientID() == this.clientID;
 
-                if(isMyTurn && phase == 3){
+                if (isMyTurn && phase == 3) {
                     mainController.setProgramDone(true);
-                }else{
+                } else {
                     mainController.setProgramDone(false);
                 }
 
@@ -289,9 +290,9 @@ public class Client implements Runnable {
                 mainController.setPhaseLabel("Upgrade Phase");
                 mainController.setInstructionLabel("Buy a Card!");
                 String log = "";
-                for (String c:
-                     refillShopCards) {
-                    System.out.print("_"+c);
+                for (String c :
+                        refillShopCards) {
+                    System.out.print("_" + c);
                 }
                 logger.debug(clientName + " refill shop: " + log);
                 Collections.shuffle(refillShopCards);
@@ -310,9 +311,9 @@ public class Client implements Runnable {
                 break;
             case "SelectionFinished":
                 JsonAdapter<SelectionFinished> selectionFinishedJsonAdapter = moshi.adapter(SelectionFinished.class);
-                SelectionFinished selectionFinished  = selectionFinishedJsonAdapter.fromJson(msg.getMessageBody());
+                SelectionFinished selectionFinished = selectionFinishedJsonAdapter.fromJson(msg.getMessageBody());
 
-                if (playersDoneProgramming == 0 && selectionFinished.getClientID() != this.clientID){
+                if (playersDoneProgramming == 0 && selectionFinished.getClientID() != this.clientID) {
                     mainController.startTimer();
                     timerRunning = true;
                 }
@@ -321,7 +322,7 @@ public class Client implements Runnable {
             case "Energy":
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
                 Energy energy = energyJsonAdapter.fromJson(msg.getMessageBody());
-                if(energy.getClientID() == clientID){
+                if (energy.getClientID() == clientID) {
                     energyReserve = energy.getCount();
                     mainController.updateEnergy(energyReserve);
                 }
@@ -330,7 +331,7 @@ public class Client implements Runnable {
                 JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
                 ActivePhase activePhase = activePhaseJsonAdapter.fromJson(msg.getMessageBody());
                 phase = activePhase.getPhase();
-                switch (phase){
+                switch (phase) {
                     case 1:
                         regIndex = -1;
                         mainController.startUpgradePhase();
@@ -340,10 +341,10 @@ public class Client implements Runnable {
                         break;
                     case 3:
                         playersDoneProgramming = 0;
-                        if(timerRunning) {
-                        mainController.resetTimer();
-                        timerRunning = false;
-                    }
+                        if (timerRunning) {
+                            mainController.resetTimer();
+                            timerRunning = false;
+                        }
                         break;
                     default:
                 }
@@ -352,6 +353,11 @@ public class Client implements Runnable {
                 if (mainController != null) {
                     mainController.addChatMessage("Error message from Server for ");
                 }
+                break;
+            case "Reboot":
+                JsonAdapter<Reboot> rebootJsonAdapter = moshi.adapter(Reboot.class);
+                Reboot reboot = rebootJsonAdapter.fromJson(msg.getMessageBody());
+                mainController.getMapController().removeRobotById(playersWithRobots.get(reboot.getClientID()));
                 break;
             case "ConnectionUpdate":
                 JsonAdapter<ConnectionUpdate> connectionUpdateJsonAdapter = moshi.adapter(ConnectionUpdate.class);
@@ -369,18 +375,18 @@ public class Client implements Runnable {
                 List<CurrentCards.ActiveCards> activeCardsList = currentCards.getActiveCards();
 
                 String currentCardMessage = "";
-                for (CurrentCards.ActiveCards activeCard:
-                     activeCardsList) {
-                    currentCardMessage+=activeCard.toString()+">";
+                for (CurrentCards.ActiveCards activeCard :
+                        activeCardsList) {
+                    currentCardMessage += activeCard.toString() + ">";
                 }
-                mainController.addChatMessage("Info" + ":" +currentCardMessage);
+                mainController.addChatMessage("Info" + ":" + currentCardMessage);
                 break;
         }
     }
 
     private void removeClient(int clientID) {
         int robID = playersWithRobots.get(clientID);
-        robotIDs.remove((Integer)robID);
+        robotIDs.remove((Integer) robID);
         localPlayerList.remove(getPlayerName(clientID));
         playersWithRobots.remove(clientID);
     }
@@ -462,7 +468,7 @@ public class Client implements Runnable {
     }
 
     public void sendChatMessage(String message, int to) {
-        if (!myRobotSelected){
+        if (!myRobotSelected) {
             lobbyController.addChatMessage("ERROR" + ":" + "Please select a robot to start chatting");
             return;
         }
@@ -476,25 +482,25 @@ public class Client implements Runnable {
             if (message.startsWith("/dm")) {
                 if (messageParts.length < 3) {
                     //lobbyController.addChatMessage("Please complete the  command.");
-                    mainController.addChatMessage("Info" + ":" +"Please complete the  command.");
+                    mainController.addChatMessage("Info" + ":" + "Please complete the  command.");
                     return;
                 }
                 if (messageParts[1].equals(this.clientName)) {
-                    for (String name: localPlayerList.keySet()){
-                        if (localPlayerList.get(name) != clientID && name.equals(this.clientName)){
+                    for (String name : localPlayerList.keySet()) {
+                        if (localPlayerList.get(name) != clientID && name.equals(this.clientName)) {
                             sendMessage("SendChat", sendChatJsonAdapter.toJson(new SendChat(messageParts[2], localPlayerList.get(name))));
                             return;
                         }
                     }
                     //lobbyController.addChatMessage("Please complete the  command.");
-                    mainController.addChatMessage("Info" + ":" +"You cannot send yourself private Messages, it is weird. Just think and talk to yourself.");
+                    mainController.addChatMessage("Info" + ":" + "You cannot send yourself private Messages, it is weird. Just think and talk to yourself.");
                     return;
                 }
                 if (localPlayerList.containsKey(messageParts[1])) {
                     sendMessage("SendChat", sendChatJsonAdapter.toJson(new SendChat(messageParts[2], localPlayerList.get(messageParts[1]))));
                 } else {
                     //lobbyController.addChatMessage("Please complete the  command.");
-                    mainController.addChatMessage("Info" + ":" +"/dm did not work. Reason: invalid player name.");
+                    mainController.addChatMessage("Info" + ":" + "/dm did not work. Reason: invalid player name.");
                 }
             } else if (message.startsWith("/addAI")) {
                 sendMessage("addAI", "");
@@ -514,11 +520,11 @@ public class Client implements Runnable {
     public void playCard() {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<PlayCard> playCardJsonAdapter = moshi.adapter(PlayCard.class);
-        if(phase == 3){
+        if (phase == 3) {
             PlayCard playCard = new PlayCard(mainController.getRegisterValues().get(++regIndex));
             sendMessage("PlayCard", playCardJsonAdapter.toJson(playCard));
             mainController.addChatMessage("Info" + ":" + playCard.getCard() + " played.");
-        }else{
+        } else {
             mainController.addChatMessage("ERROR" + ":" + "Cards can only be played in activation phase.");
         }
 
@@ -539,5 +545,11 @@ public class Client implements Runnable {
     public void mapRobotToClient(int clientID, int robotID) {
         playersWithRobots.put(clientID, robotID);
     }
+    public void senRebootDirection(String direction){
+        Moshi moshi = new Moshi.Builder().build();
+        JsonAdapter<RebootDirection> rebootDirectionJsonAdapter = moshi.adapter(RebootDirection.class);
+        String rebootDirection = rebootDirectionJsonAdapter.toJson(new RebootDirection(direction));
+    }
+
 }
 
