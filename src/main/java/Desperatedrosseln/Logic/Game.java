@@ -108,6 +108,7 @@ public class Game {
                 newpos.getX() >= gameMap.getWidth()){
             //fell off so remove and reboot
             rebootPlayer(getPlayerByRobot(robot));
+            //TODO: must return true and remove robot, resets its position
             return (false && gameMap.getElementsOnPos(oldpos).remove(robot));
         } else if (gameMap.currPosHasBlockingWall(robot.getPosition(), newpos)) {
             //blocked
@@ -118,6 +119,7 @@ public class Game {
         } else if (gameMap.hasPit(newpos)) {
             //fell off so reboot and remove
             rebootPlayer(getPlayerByRobot(robot));
+            //TODO: must return true and remove robot, reset its position
             return false && gameMap.getElementsOnPos(oldpos).remove(robot);
         } else if (gameMap.hasAntenna(newpos)){
             //blocked
@@ -651,8 +653,9 @@ public class Game {
             if (cardtype.equals("Again")) {
                 if (register_number > 0) {
                     Programmingcard prcard = (Programmingcard) curr.getRegisterIndex(register_number-1);
-                    if(prcard.getMoves() == 0 ){
-                        curr.getRegisterIndex(register_number).playCard(curr.getRobot());
+                    if(prcard.getMoves() == 0 ) {
+                        cardtype = prcard.toString();
+                        prcard.playCard(curr.getRobot());
                         if (cardtype.equals("TurnLeft")) {
                             robotTurnedProtokoll(curr.getRobot(), "counterclockwise");
                         } else if (cardtype.equals("TurnRight")) {
