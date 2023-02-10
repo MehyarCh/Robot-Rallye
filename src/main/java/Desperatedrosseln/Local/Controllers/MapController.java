@@ -4,6 +4,7 @@ import Desperatedrosseln.Json.utils.JsonMapReader;
 import Desperatedrosseln.Local.Client;
 import Desperatedrosseln.Local.Protocols.SetStartingPoint;
 import Desperatedrosseln.Logic.Elements.BoardElement;
+import Desperatedrosseln.Logic.Elements.Robot;
 import Desperatedrosseln.Logic.Elements.Tiles.*;
 import Desperatedrosseln.Logic.Elements.Map;
 import Desperatedrosseln.Logic.Elements.MapField;
@@ -417,7 +418,9 @@ public class MapController {
         idToPosition.put(robotId, new Position(x, y));
 
         if (x > 4) {
-            rotateRobot(robotId, "clockwise");
+            rotateRobot(robotId, "counterclockwise");;
+        }
+        else {
             rotateRobot(robotId, "clockwise");
         }
 
@@ -544,6 +547,17 @@ public class MapController {
         return stackPaneList;
     }
 
+        public void hideMyRobot(int robotID){
+            Platform.runLater(() -> {
+                getRobotById(robotID).setOpacity(0);
+            });
+        }
+
+        public void showMyRobot(int robotID){
+            Platform.runLater(() -> {
+                getRobotById(robotID).setOpacity(1);
+            });
+        }
 
     @FXML
     private ImageView buildAntenna(BoardElement boardElement) {
@@ -883,7 +897,6 @@ public class MapController {
     }
 
     private ImageView setElementDirection(ImageView stackElement, String orientation) {
-
 
         if (Objects.equals(orientation, "right")) {
             stackElement.setRotate(90);

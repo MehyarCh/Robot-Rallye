@@ -139,7 +139,6 @@ public class AIClient extends Thread {
         if (msg.getMessageType().equals("Alive")) {
             return;
         }
-        System.out.println(AIName + "(AI)" + msg.getMessageType() + ": " + msg.getMessageBody());
         switch (msg.getMessageType()) {
             case "HelloClient":
                 //TODO: disconnect if protocol isnt the same as client.
@@ -211,7 +210,6 @@ public class AIClient extends Thread {
             case "CurrentPlayer":
                 JsonAdapter<CurrentPlayer> currentPlayerJsonAdapter = moshi.adapter(CurrentPlayer.class);
                 CurrentPlayer currentPlayer = currentPlayerJsonAdapter.fromJson(msg.getMessageBody());
-                System.out.println("Current player's ID: " + currentPlayer.getClientID());
 
                 ai.setCurrentPlayer(currentPlayer.getClientID());
 
@@ -339,7 +337,6 @@ public class AIClient extends Thread {
                 JsonAdapter<Movement> movementJsonAdapter = moshi.adapter(Movement.class);
                 Movement movement = movementJsonAdapter.fromJson(msg.getMessageBody());
                 ai.updateRobotPosition(players.get(movement.getClientID()), movement.getX(), movement.getY());
-                System.out.println(AIName + "----" + ai.getTinyPath());
                 break;
             case "CheckPointReached":
                 JsonAdapter<CheckPointReached> checkPointReachedJsonAdapter = moshi.adapter(CheckPointReached.class);

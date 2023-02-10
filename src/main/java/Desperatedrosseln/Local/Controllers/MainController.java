@@ -466,32 +466,34 @@ public class MainController {
 
     @FXML
     public void showOverlay(String content) {
-        VBox overlay = new VBox();
-        Label label = new Label(content);
-        Button button = new Button("RETURN TO LOBBY");
-        button.getStyleClass().addAll(
-                Arrays.asList(
-                        "button",
-                        "button--sm",
-                        "button--secondary"
-                )
-        );
-        overlay.setSpacing(16);
-        button.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            try {
-                LobbyController lobbyController = new LobbyController();
-                lobbyController.startLobbyScene(stage);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        Platform.runLater(() -> {
+            VBox overlay = new VBox();
+            Label label = new Label(content);
+            Button button = new Button("RETURN TO LOBBY");
+            button.getStyleClass().addAll(
+                    Arrays.asList(
+                            "button",
+                            "button--sm",
+                            "button--secondary"
+                    )
+            );
+            overlay.setSpacing(16);
+            button.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+                try {
+                    LobbyController lobbyController = new LobbyController();
+                    lobbyController.startLobbyScene(stage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            label.getStyleClass().add("main-overlay-label");
+            overlay.getStyleClass().add("main-overlay");
+            overlay.setFillWidth(true);
+            overlay.getChildren().add(label);
+            addGlow(label, 0.9);
+            overlay.getChildren().add(button);
+            centerStack.getChildren().add(overlay);
         });
-        label.getStyleClass().add("main-overlay-label");
-        overlay.getStyleClass().add("main-overlay");
-        overlay.setFillWidth(true);
-        overlay.getChildren().add(label);
-        addGlow(label, 0.9);
-        overlay.getChildren().add(button);
-        centerStack.getChildren().add(overlay);
     }
 
     @FXML public void showRestartOverlay() {

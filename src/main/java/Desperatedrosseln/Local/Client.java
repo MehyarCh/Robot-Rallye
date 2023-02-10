@@ -185,7 +185,6 @@ public class Client implements Runnable {
             return;
         }
         logger.trace(msg.getMessageType() + ": " + msg.getMessageBody());
-        System.out.println(msg.getMessageType() + ": " + msg.getMessageBody());
         switch (msg.getMessageType()) {
             case "HelloClient":
                 //TODO: disconnect if protocol isnt the same as client.
@@ -297,14 +296,12 @@ public class Client implements Runnable {
                 CurrentPlayer currentPlayer = currentPlayerJsonAdapter.fromJson(msg.getMessageBody());
 
                 isMyTurn = currentPlayer.getClientID() == this.clientID;
-
                 if (isMyTurn && phase == 3) {
                     mainController.setProgramDone(true);
                 } else {
                     mainController.setProgramDone(false);
                 }
 
-                System.out.println("Current player's ID: " + currentPlayer.getClientID());
                 break;
             case "Movement":
                 JsonAdapter<Movement> movementJsonAdapter = moshi.adapter(Movement.class);
@@ -381,7 +378,6 @@ public class Client implements Runnable {
                 }
                 break;
             case "Reboot":
-                //TODO: handle robot reboot
 
                 JsonAdapter<Reboot> rebootJsonAdapter = moshi.adapter(Reboot.class);
                 Reboot reboot = rebootJsonAdapter.fromJson(msg.getMessageBody());
@@ -391,12 +387,7 @@ public class Client implements Runnable {
                 if (reboot.getClientID() == clientID) {
                     mainController.showRestartOverlay();
                 }
-                //String orientation = ;
-
-                //mainController.getMapController().respawnRobot(robotId, orientation);
-
-
-                //mainController.getMapController().removeRobotById(playersWithRobots.get(reboot.getClientID()));
+                mainController.getMapController().hideMyRobot(robotId);
                 break;
             case "ActivePhase":
                 JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
@@ -406,6 +397,9 @@ public class Client implements Runnable {
                     case 1:
                         regIndex = -1;
                         mainController.startUpgradePhase();
+                        for(int roboid: robotIDs){
+                            mainController.getMapController().showMyRobot(roboid);
+                        }
                         break;
                     case 2:
                         mainController.startProgrammingPhase();

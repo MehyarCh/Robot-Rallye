@@ -17,6 +17,7 @@ import Desperatedrosseln.Logic.Elements.BoardElement;
 import Desperatedrosseln.Logic.Elements.Tiles.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import javafx.scene.control.skin.TextInputControlSkin;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -1278,7 +1279,7 @@ public class Game {
                     logger.info("Player " + player.getID() + "-" + player.getName() + " has won.");
                     //if it was the last checkpoint, the player has won the game and the protocoll message gets sent
                     JsonAdapter<GameFinished> gameFinishedJsonAdapter = moshi.adapter(GameFinished.class);
-                    GameFinished gameFinished = new GameFinished(robot.getID());
+                    GameFinished gameFinished = new GameFinished(player.getID());
                     broadcastMessage("GameFinished", gameFinishedJsonAdapter.toJson(gameFinished));
                     return;
                 }
@@ -1377,7 +1378,7 @@ public class Game {
             gameMap.getElementsOnPos(pos).add(robot);
             if (belt.isCurved()) {
                 //rotate robot
-                checkRotationByBelt(belt, robot);
+                //checkRotationByBelt(belt, robot);
             }
             robot.setPosition(pos.getX(), pos.getY());
             robotMovedProtokoll(robot);
@@ -1443,10 +1444,11 @@ public class Game {
                     turningvalue = turningvalue + 360;
                 }
                 assert turningvalue == 90 || turningvalue == -90;
-                robot.changeDirection(turningvalue);
-                if (turningvalue == 90) {
+                //robot.changeDirection(turningvalue);
+                robot.setDirection(DIRECTION.valueOfDirection(valueofout));
+                if (valueofout - robot.getDirection().getAngle() == 90) {
                     robotTurnedProtokoll(robot, "counterclockwise");
-                } else if (turningvalue == -90) {
+                } else if (valueofout - robot.getDirection().getAngle() == -90) {
                     robotTurnedProtokoll(robot, "clockwise");
                 }
             }
@@ -1465,15 +1467,15 @@ public class Game {
                     turningvalue = turningvalue + 360;
                 }
                 assert turningvalue == 90 || turningvalue == -90;
-                robot.changeDirection(turningvalue);
-                if (turningvalue == 90) {
+                //robot.changeDirection(turningvalue - 180);
+                robot.setDirection(DIRECTION.valueOfDirection(valueofout));
+                if (valueofout - robot.getDirection().getAngle() == 90) {
                     robotTurnedProtokoll(robot, "counterclockwise");
-                } else if (turningvalue == -90) {
+                } else if (valueofout - robot.getDirection().getAngle() == -90) {
                     robotTurnedProtokoll(robot, "clockwise");
                 }
             }
         }
-
     }
 
     private void activateBluebelts() {

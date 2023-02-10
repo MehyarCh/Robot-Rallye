@@ -330,8 +330,6 @@ public class Player {
                 return;
             }
         }
-
-        System.out.println("cannot remove upgrade card");
     }
 
     public int getEnergyReserve() {

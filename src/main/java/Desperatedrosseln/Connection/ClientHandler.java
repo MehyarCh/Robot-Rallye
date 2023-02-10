@@ -124,7 +124,6 @@ public class ClientHandler implements Runnable {
         }
 
         logger.trace(message.getMessageType() + ": " + message.getMessageBody());
-        System.out.println(clientName + ": " + message.getMessageType() + " --- " + message.getMessageBody());
 
         switch (message.getMessageType()) {
 
