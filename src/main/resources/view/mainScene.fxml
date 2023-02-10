@@ -132,7 +132,7 @@
                           GridPane.columnIndex="0"
                           GridPane.rowIndex="0"
                           >
-                    <Label fx:id="instructionLabel" styleClass="text-instruction"></Label>
+                    <Label fx:id="instructionLabel" styleClass="text-instruction" style="-fx-padding: 40 10 10 10;"></Label>
                 </GridPane>
                 <GridPane fx:id="mapGrid"
                           styleClass="map"

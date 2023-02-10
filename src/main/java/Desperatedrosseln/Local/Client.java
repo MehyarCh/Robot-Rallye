@@ -313,7 +313,6 @@ public class Client implements Runnable {
                     String upgrade = upgradeBought.getCard();
                     upgrades.add(upgrade);
                 }
-
                 break;
             case "SelectionFinished":
                 JsonAdapter<SelectionFinished> selectionFinishedJsonAdapter = moshi.adapter(SelectionFinished.class);
@@ -324,6 +323,9 @@ public class Client implements Runnable {
                     timerRunning = true;
                 }
                 playersDoneProgramming++;
+                break;
+            case "TimerStarted":
+                logger.info("Timer started");
                 break;
             case "Energy":
                 JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);

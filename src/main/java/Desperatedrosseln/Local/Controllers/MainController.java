@@ -511,6 +511,7 @@ public class MainController {
                             timeLabel.setText(String.valueOf(seconds--));
                             if (seconds < 0) {
                                 if (!isProgrammingDone) {
+                                    addChatMessage("Info" + ":" + "Timer ended!");
                                     sendRandomCards();
                                     client.sendChatMessage("got sent random cards", -1);
                                 }

@@ -41,6 +41,8 @@ public class ClientHandler implements Runnable {
     private Player player;
     Timer timer = new Timer();
 
+    public int playersDoneProgramming = 0;
+
     public static ArrayList<ClientHandler> getClients() {
         return clients;
     }
@@ -331,12 +333,18 @@ public class ClientHandler implements Runnable {
                     if (player.getRegisterTrack() == 5){
                         JsonAdapter<SelectionFinished> selectionFinishedJsonAdapter = moshi.adapter(SelectionFinished.class);
                         broadcastMessage("SelectionFinished", selectionFinishedJsonAdapter.toJson(new SelectionFinished(clientID)));
+                        if(playersDoneProgramming == 0){
+                            JsonAdapter<TimerStarted> timerStartedJsonAdapter = moshi.adapter(TimerStarted.class);
+                            broadcastMessage("TimerStarted", timerStartedJsonAdapter.toJson(new TimerStarted()));
+                        }
+                        playersDoneProgramming++;
                     }
                     if (game.selectionFinished()) {
                         JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
                         ActivePhase activePhase3 = new ActivePhase(3);
                         broadcastMessage("ActivePhase", activePhaseJsonAdapter.toJson(activePhase3));
                         game.runStep();
+                        playersDoneProgramming = 0;
                         String hand = "{";
                         for (ClientHandler client : clients) {
                             hand += client.getClientID();

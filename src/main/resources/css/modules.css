@@ -43,7 +43,7 @@
 }
 
 .login-form-label {
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
     -fx-font-weight: 700;
     -fx-text-fill: #cccccc;
 }
@@ -154,7 +154,7 @@
 
 .login-warning {
     -fx-text-fill: #FD1D53;
-    -fx-font-size: 10;
+    -fx-font-size: 11;
     -fx-font-weight: 300;
     -fx-alignment: center-left;
 }
@@ -235,7 +235,7 @@
 }
 
 .map-option-title {
-    -fx-font-size: 11px;
+    -fx-font-size: 12px;
 }
 
 .lobby-sidebar {
@@ -256,7 +256,7 @@
 
 .main-overlay-label{
     -fx-text-fill: #2DE2CE;
-    -fx-font-size: 64px;
+    -fx-font-size: 65px;
 }
 
 .main-overlay{
@@ -304,13 +304,13 @@
 }
 
 .profile-name {
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
     -fx-font-weight: 300;
     -fx-alignment: center-right;
 }
 
 .profile-energy {
-    -fx-font-size: 10px;
+    -fx-font-size: 12px;
     -fx-font-weight: 700;
 }
 
@@ -405,7 +405,7 @@
 }
 
 .upgrade-card-label {
-    -fx-font-size: 8px;
+    -fx-font-size: 9px;
     -fx-wrap-text: true;
     -fx-text-fill: #fff;
 }
@@ -473,7 +473,7 @@
 .message {
     -fx-min-height: 40px;
     -fx-padding: 8px;
-    -fx-font-size: 12;
+    -fx-font-size: 13;
     -fx-font-weight: 500;
     -fx-border-style: solid;
     -fx-border-width: 2px;
