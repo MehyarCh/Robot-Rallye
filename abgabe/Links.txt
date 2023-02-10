@@ -1,2 +1,8 @@
+WIKI:
 https://gitlab2.cip.ifi.lmu.de/dbs_sep/dbs_sep2022-23/desperate-drosseln-hp/-/wikis/home
+
+REPO:
+https://gitlab2.cip.ifi.lmu.de/dbs_sep/dbs_sep2022-23/desperate-drosseln-hp/-/tree/abgabe
+
+UML:
 https://miro.com/app/board/uXjVPBg2rKs=/#
