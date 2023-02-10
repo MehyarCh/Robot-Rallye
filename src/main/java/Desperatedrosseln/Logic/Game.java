@@ -1099,14 +1099,13 @@ public class Game {
                         getPlayerByRobot(robot).addToEnergyReserve(1);
                         espace.takeCube();
                     }
+                    JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
+                    broadcastMessage("Energy", energyJsonAdapter.toJson(new Energy(getPlayerByRobot(robot).getID(),
+                            getPlayerByRobot(robot).getEnergyReserve(), "EnergySpace")));
+                    logger.info("Energy updated");
                 }
             }
         }
-        /*
-        JsonAdapter<Energy> energyJsonAdapter = moshi.adapter(Energy.class);
-        Energy energy = new Energy(robot.getID(), count, source);
-        broadcastMessage("Energy", energyJsonAdapter.toJson(energy));
-        */
     }
 
     private void activateCheckpoints() {

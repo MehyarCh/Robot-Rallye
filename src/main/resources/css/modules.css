@@ -254,7 +254,17 @@
     -fx-max-height: 100%;
 }
 
+.main-overlay-label{
+    -fx-text-fill: #2DE2CE;
+    -fx-font-size: 64px;
+}
 
+.main-overlay{
+    -fx-background-color: rgba(0, 0, 0, 0.85);
+    -fx-alignment: center;
+    -fx-pref-height: 100%;
+    -fx-pref-width: 100%;
+}
 
 .navbar {
     -fx-background-color: #000512;
