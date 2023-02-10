@@ -260,4 +260,65 @@ public class Map {
         }
         return null;
     }
+
+    public boolean hasWall(Position position){
+        List<BoardElement> elementsOnPos = getElementsOnPos(position);
+        for(BoardElement element : elementsOnPos){
+            if(element.toString().equals("Wall")){
+                return true;
+            }
+        }
+        return false;
+    }
+    public Wall getWallOnPos(Position position){
+
+        List<BoardElement> elementsOnPos = getElementsOnPos(position);
+        for(BoardElement element : elementsOnPos){
+            if(element.toString().equals("Wall")){
+                Wall wall = (Wall) element;
+                return wall;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * if the the wall on the current position blocks the laser from going further
+     * @param position
+     * @param direction
+     * @return
+     */
+    public boolean currPosBlocksLaser(Position position, DIRECTION direction){
+        List<BoardElement> elementsOnPos = getElementsOnPos(position);
+        for(BoardElement element : elementsOnPos){
+            if(element.toString().equals("Wall")){
+                Wall wall = (Wall) element;
+                DIRECTION walldir = DIRECTION.stringToDirection(wall.getOrientations().get(0));
+                if(direction.equals(walldir)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * if the next position has a wall closer to the laser's path
+     * @param position
+     * @param direction
+     * @return
+     */
+    public boolean nextPosBlocksLaser(Position position, DIRECTION direction){
+        List<BoardElement> elementsOnPos = getElementsOnPos(position);
+        for(BoardElement element : elementsOnPos){
+            if(element.toString().equals("Wall")){
+                Wall wall = (Wall) element;
+                DIRECTION walldir = DIRECTION.stringToDirection(wall.getOrientations().get(0));
+                if(DIRECTION.getOppositeOf(direction).equals(walldir)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

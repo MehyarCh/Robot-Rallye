@@ -918,21 +918,39 @@ public class Game {
         activateCheckpoints();
     }
 
+    /**
+     * walks from the starting of the laser until it hits and obstacle or a wall,
+     * robots hit by lasers draw damage cards
+     */
     private void activateBoardLasers() {
-        /**
-         * Board lasers
-         * cannot fire through walls, the priority
-         * antenna, or hit more than one robot,
-         * and they shoot from the red and white
-         * pointer. (Take a SPAM damage card for
-         * each laser that hits you
-         */
         //iterate players
         List<BoardElement> lasers = getListOfLasers();
         for (BoardElement laser : lasers) {
-            for (Player player : players) {
-                if (laser.getPosition().equals(player.getRobot().getPosition())) {
-                    drawSpamCard(player, 1);
+            Position pos = laser.getPosition();
+            boolean laserHit = false;
+            List<BoardElement> elemetsOnPos;
+            Laser laser1 = (Laser) laser;
+            pos = getNextPos(pos, laser1.getDirection());
+            while (pos.getX() < gameMap.getWidth() && pos.getY() < gameMap.getLength()
+                    && !laserHit && pos.getX() >= 0 && pos.getY() >= 0) {
+                //as long as within the board, and laser still didnt hit any element
+                if(gameMap.hasAntenna(pos)){
+                    laserHit = true;
+                }else if(gameMap.nextPosBlocksLaser(getNextPos(pos, laser1.getDirection()), laser1.getDirection())){
+                    laserHit = true;
+                }
+                else if(gameMap.hasRobotOnPos(pos)) {
+                    laserHit = true;
+                    List<BoardElement> elementsOnPos = gameMap.getElementsOnPos(pos);
+                    for (BoardElement element : elementsOnPos) {
+                        //robots on cell get damage, or laser stops
+                        if (element instanceof Robot) {
+                            drawSpamCard(getPlayerByRobot((Robot) element), 1);
+                            break;
+                        }
+                    }
+                } else {
+                    pos = getNextPos(pos, laser1.getDirection());
                 }
             }
         }
