@@ -398,6 +398,12 @@ public class ClientHandler implements Runnable {
     }
 
 
+    /**
+     The method sends a message to the client, given the message type and the message content in JSON format.
+     @author Manuel
+     @param type the type of message being sent
+     @param json the message content in JSON format
+     */
     public void sendMessage(String type, String json) {
         if (!socket.isClosed()) {
             try {
@@ -416,7 +422,6 @@ public class ClientHandler implements Runnable {
         }
     }
 
-
     public void closeAll(Socket socket, DataInputStream in, DataOutputStream out) {
         removeClientHandler();
         try {
@@ -432,6 +437,16 @@ public class ClientHandler implements Runnable {
         clients.remove(this);
     }
 
+
+    /**
+
+     The run method of the ClientHandler class is responsible for handling the client connections to the server.
+     It uses a timer to periodically send "Alive" messages to the client to check if the connection is still active.
+     If the client's socket is closed or if an IOException or InterruptedException is thrown, the run method will handle it by
+     logging that the client has disconnected, broadcasting a "ConnectionUpdate" message to all other clients,
+     removing the player from the game, and closing all resources.
+     @author Manuel, Mehyar
+     */
     @Override
     public void run() {
 

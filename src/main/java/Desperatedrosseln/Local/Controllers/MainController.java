@@ -398,6 +398,10 @@ public class MainController {
         });
     }
 
+    /**
+     * Changes the size of the tiles in the game map.
+     * The new size is calculated based on the maximum height of the game map.
+     */
     private void changeTileSize() {
         int maxSize = calcMaxMapHeight();
         int tileSize = maxSize / 15;
@@ -410,10 +414,6 @@ public class MainController {
             }
         }
     }
-
-
-
-
 
     public void setPhaseLabel(String label){
         Platform.runLater(() -> {
@@ -626,8 +626,9 @@ public class MainController {
         }
     }
 
-    public void updateCardImages() {
 
+
+    public void updateCardImages() {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -825,6 +826,12 @@ public class MainController {
         }
     }
 
+
+    /**
+     Calculates the maximum height of the map.
+     @return The maximum height of the map as an integer value.
+     The method calculates the maximum height of the map by subtracting the height of the card wrapper from the height of the center stack. The result is then cast to an integer value and returned as the maximum height of the map.
+     */
     @FXML
     public int calcMaxMapHeight() {
         double centerHeight = centerStack.getHeight();
@@ -929,7 +936,7 @@ public class MainController {
 
     private void giveUpgradeToPlayer() {
         if (!Objects.equals(selectedUpgrade, "null")) {
-            // Differentiate if selctedCard is temporary or permanent
+
             if (permanentUpgradeTypes.contains(selectedUpgrade)) {
                 placePermanentUpgrade();
             } else if (temporaryUpgradeTypes.contains(selectedUpgrade)) {
@@ -948,9 +955,16 @@ public class MainController {
         placeUpgrade(tempUpgradeValues, tempUpgradeCards);
     }
 
+
+
     private void placeUpgrade(List<String> values, List<StackPane> cards) {
         if (!values.contains("null")) {
             // TODO display message that the cards are full. Player might discharge one of the his cards.
+            if (values == tempUpgradeValues) {
+                instructionLabel.setText("Your temporary upgrade cards are already full!");
+            } else {
+                instructionLabel.setText("Your permanent upgrade cards are already full!");
+            }
         } else {
             int firstFreeIndex = values.indexOf("null");
 
@@ -991,13 +1005,8 @@ public class MainController {
                     }
                 });
             }
-
-
-
             values.set(firstFreeIndex, selectedUpgrade);
             cards.get(firstFreeIndex).getChildren().add(cardWrapper);
-
-            // Todo handle click event
         }
     }
 
@@ -1122,10 +1131,6 @@ public class MainController {
 
         return imageView;
     }
-
-
-
-
 
     @FXML
     public void updateEnergy(int energyCount){

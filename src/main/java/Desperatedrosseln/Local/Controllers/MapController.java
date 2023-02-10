@@ -63,6 +63,11 @@ public class MapController {
     @FXML private Button noUpgradeButton;
 
 
+    /**
+     * This class implements the easy handling of x y coordinates in the mapController
+
+     @author Rishabh
+     **/
     public class Position {
         private int x;
         private int y;
@@ -137,7 +142,14 @@ public class MapController {
         glow();
     }
 
-
+    /**
+     * Adds laser beams to the map by looping through each field in the `fieldList` and checking if it contains
+     * a Laser object. If it does, the method retrieves the orientation of the laser and adds a laser beam in the
+     * appropriate direction.
+     *
+     * @author Manuel
+     * @param fieldList The list of fields in the map.
+     * */
 
     private void addLaserBeam(List<List<MapField>> fieldList) {
 
@@ -218,6 +230,14 @@ public class MapController {
         }
     }
 
+    /**
+     * Converts a game map represented as a list of rows of lists of {@link BoardElement} objects
+     * into a map represented as a list of columns of {@link MapField} objects.
+     *
+     * @author Manuel
+     * @param gameMapList a list of rows of lists of {@link BoardElement} objects
+     * @return a list of columns of {@link MapField} objects
+     */
     public List<List<MapField>> convertMap(List<List<List<BoardElement>>> gameMapList) {
         List<List<MapField>> mapFields = new ArrayList<>();
 
@@ -233,6 +253,12 @@ public class MapController {
         return mapFields;
     }
 
+    /** This method is used to build the graphical representation of the map grid.
+     * It creates a {@link StackPane} for each cell in the map grid, and sets the necessary attributes based on the corresponding {@link MapField} object.
+     * If the {@link MapField} object represents a starting point, the StackPane is added to the startingPoints map along with its position.
+     @author Manuel
+     @param fieldList the list of lists of {@link MapField} objects representing the map grid
+     */
     private void buildMapGrid(List<List<MapField>> fieldList){
         //CompletableFuture.runAsync(() -> {
             Platform.runLater(() -> {
@@ -256,6 +282,16 @@ public class MapController {
         //});
     }
 
+    /**
+     * Creates a StackPane representing a single cell in the map grid.
+     *
+     * @author Manuel
+     * @param x the x-coordinate of the cell in the map grid
+     * @param y the y-coordinate of the cell in the map grid
+     * @param mapField the MapField object representing the cell's properties and content
+     * @return the StackPane representing the cell in the map grid
+     * @throws IOException if an error occurs while reading the image resources
+     */
     @FXML
     private StackPane createGridCell(int x, int y, MapField mapField) throws IOException {
         List<String> addEmpty = Arrays.asList("Antenna", "CheckPoint", "ConveyorBelt", "RestartPoint", "StartPoint", "Energy-Space", "Wall", "Empty","Gear");
@@ -321,9 +357,6 @@ public class MapController {
         tileSize = computedTileSize;
     }
 
-
-
-
     @FXML
     private ImageView buildCheckpoint(BoardElement boardElement) throws IOException {
 
@@ -376,6 +409,14 @@ public class MapController {
     }
 
 
+
+    /**
+     Method for handling the starting point and sending a request to set the starting point on the server.
+     @param x the x coordinate of the starting point on the board
+     @param y the y coordinate of the starting point on the board
+     @param isTaken an array with a single boolean value indicating whether the starting point is taken
+     @author Manuel
+     */
     private void requestStartingPoint(int x, int y, boolean[] isTaken) {
         Position position = new Position(x,y);
 
@@ -387,7 +428,6 @@ public class MapController {
                 break;
             }
         }
-        //if(!isStartingPointTaken){}
 
         isTaken[0] = true;
 
@@ -399,12 +439,21 @@ public class MapController {
 
         }
     }
+
     private void handleStartingPoint(ImageView stackElement, int x, int y, boolean[] isTaken) {
         stackElement.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             requestStartingPoint(x,y,isTaken);
         });
     }
 
+    /**
+     Initializes a robot and adds it to the map grid.
+     @param robotId The ID of the robot to be initialized
+     @param x The x-coordinate of the robot's position on the map
+     @param y The y-coordinate of the robot's position on the map
+     @throws IOException If the image for the robot cannot be loaded
+     @author Manuel
+     */
     public ImageView initRobot(int robotId, int x, int y) throws IOException {
         ImageView robot = diffRobotImage(robotId);
         robot.setPreserveRatio(true);
@@ -424,7 +473,6 @@ public class MapController {
         return robot;
     }
 
-    //private void moveRobot(robotId)
 
     public void move(int robotId, int newX, int newY) {
         Platform.runLater(() -> {
@@ -486,6 +534,16 @@ public class MapController {
         removeRobot(x, y);
     }
 
+
+    /**
+     * Gets the index of a cell in the game map, given its (x, y) coordinates.
+     *
+     * @author Manuel
+     * @param x the x-coordinate of the cell
+     * @param y the y-coordinate of the cell
+     * @return the index of the cell in the game map
+     *
+     */
     private int getMapIndex(int x, int y) {
         List<List<StackPane>> mapGridList = makeGridPane2d(mapGrid);
 
@@ -525,7 +583,13 @@ public class MapController {
     }
 
 
-
+    /**
+     * Converts a 2D {@link GridPane} into a list of lists of {@link StackPane} objects.
+     *
+     * @author Manuel
+     * @param mapGrid the 2D {@link GridPane} to be converted
+     * @return a list of lists of {@link StackPane} objects
+     */
     private List<List<StackPane>> makeGridPane2d(GridPane mapGrid) {
         List<List<StackPane>> stackPaneList = new ArrayList<>();
 
@@ -542,8 +606,6 @@ public class MapController {
         }
         return stackPaneList;
     }
-
-
 
     @FXML
     private ImageView buildAntenna(BoardElement boardElement) {

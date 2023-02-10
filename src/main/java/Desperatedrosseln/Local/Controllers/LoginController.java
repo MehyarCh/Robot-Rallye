@@ -152,6 +152,11 @@ public class LoginController {
             logger.info(loginTextField.getText() + " joined the Lobby");
         }
     }
+
+    /**
+     * This method switches to the lobbyScene
+     * @author Manuel
+     */
     public void switchToLobbyScene() throws IOException {
         lobbyController = new LobbyController();
         lobbyController.startLobbyScene(stage);

@@ -449,10 +449,20 @@ public class Client implements Runnable {
         }
     }
 
+
+    /**
+     * Runs the listener, which listens for incoming messages from the server.
+     * If a message is received, it is checked against the communication protocol.
+     */
     @Override
     public void run() {
         listener();
     }
+
+    /**
+     * Listens for incoming messages from the server.
+     * If a message is received, it is checked against the communication protocol.
+     */
 
     private void listener() {
         String message;
@@ -490,7 +500,17 @@ public class Client implements Runnable {
         logger.info("Setting local client name to " + clientName);
         this.clientName = clientName;
     }
+    /**
+     Sends a chat message to the specified recipient. If the message starts with "/", it is interpreted as a command.
+     Available commands:
+     "/dm [playerName] [message]": Sends a direct message to the player with the given name.
+     "/addAI": Requests the addition of an AI player to the game.
+     "/playCard": Plays the current card in the game. Can only be used if it is the player's turn.
 
+     @author Manuel, Mehyar
+     @param message The message to be sent.
+     @param to The ID of the recipient, or -1 for a public message.
+     */
     public void sendChatMessage(String message, int to) {
         if (!myRobotSelected){
             lobbyController.addChatMessage("ERROR" + ":" + "Please select a robot to start chatting");

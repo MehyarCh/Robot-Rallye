@@ -18,6 +18,13 @@ import java.util.List;
 import java.util.Objects;
 
 
+/**
+
+ @author Manuel
+ The class Server is responsible for setting up a server socket on a specified port and listening for incoming client connections.
+ Each time a new client connects, a new instance of the ClientHandler class is created and started in a new thread.
+ The Server class also implements a broadcastMessage method that can be used to send messages to all connected clients.
+ */
 public class Server {
     private ServerSocket serverSocket;
     private List<String> gameLog;
@@ -67,13 +74,6 @@ public class Server {
             if (serverSocket != null) serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void broadcastMessage(String type, String json) {
-        ArrayList<ClientHandler> clients = ClientHandler.getClients();
-        for (ClientHandler client : clients) {
-            client.sendMessage(type, json);
         }
     }
 
