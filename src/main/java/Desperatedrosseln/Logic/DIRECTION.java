@@ -69,5 +69,22 @@ public enum DIRECTION {
         }
         return null;
     }
+    public static DIRECTION stringToDirection(String dir){
+        switch (dir) {
+            case "right"-> {
+                return RIGHT;
+            }
+            case "left" -> {
+                return LEFT;
+            }
+            case "btop" -> {
+                return TOP;
+            }
+            case "bottom" -> {
+                return BOTTOM;
+            }
+        }
+        return null;
+    }
 }
 

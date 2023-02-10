@@ -1,6 +1,7 @@
 package Desperatedrosseln.Logic.Elements;
 
 import Desperatedrosseln.Logic.DIRECTION;
+import Desperatedrosseln.Logic.Elements.Tiles.ConveyorBelt;
 import Desperatedrosseln.Logic.Elements.Tiles.Wall;
 
 import java.util.ArrayList;
@@ -196,5 +197,41 @@ public class Map {
             }
         }
         return false;
+    }
+    public boolean hasBlueConveyorBelt(Position pos) {
+        List<BoardElement> elements = mapFields.get(pos.getX()).get(pos.getY()).getTypes();
+        for(BoardElement element : elements){
+            if(element.toString().equals("ConveyorBelt")){
+                ConveyorBelt belt = (ConveyorBelt) element;
+                if(belt.getSpeed() == 2 ){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean hasGreenConveyorBelt(Position pos) {
+        List<BoardElement> elements = mapFields.get(pos.getX()).get(pos.getY()).getTypes();
+        for(BoardElement element : elements){
+            if(element.toString().equals("ConveyorBelt")){
+                ConveyorBelt belt = (ConveyorBelt) element;
+                if( belt.getSpeed() == 1){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public ConveyorBelt getConveyorBeltOnPos(Position pos){
+        List<BoardElement> elements = mapFields.get(pos.getX()).get(pos.getY()).getTypes();
+        for(BoardElement element : elements){
+            if(element.toString().equals("ConveyorBelt")){
+                ConveyorBelt belt = (ConveyorBelt) element;
+                return belt;
+            }
+        }
+        return null;
     }
 }

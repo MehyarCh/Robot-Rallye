@@ -4,6 +4,7 @@ import Desperatedrosseln.Logic.DIRECTION;
 import Desperatedrosseln.Logic.Elements.BoardElement;
 import Desperatedrosseln.Logic.Elements.Position;
 import Desperatedrosseln.Logic.Elements.Robot;
+import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,9 @@ import java.util.List;
 public class ConveyorBelt extends BoardElement {
     private int speed;
     private ArrayList<String> orientations;
+    //out then in(s)
     private Position position;
+    private boolean isCurved;
 
 
 
@@ -20,6 +23,7 @@ public class ConveyorBelt extends BoardElement {
         super(type, isOnBoard);
         this.speed = speed;
         this.orientations = orientations;
+        isCurved = isCurved();
     }
 
     public void execute(List<Desperatedrosseln.Logic.Elements.Robot> active_robots) {
@@ -64,6 +68,58 @@ public class ConveyorBelt extends BoardElement {
             }
 
         }
+    }
+
+    public boolean isCurved(){
+        if( speed == 2 && orientations.size()>2){
+            return true;
+        }else if (speed == 1 ){
+            DIRECTION in = DIRECTION.stringToDirection(orientations.get(0));
+            DIRECTION out = DIRECTION.stringToDirection(orientations.get(1));
+            if(!DIRECTION.getOppositeOf(in).equals(out)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public Position calculateNextPos(Robot robot){
+        int x = robot.getPosition().getX();
+        int y = robot.getPosition().getY();
+        if( speed == 1 ){
+            if(!isCurved) {
+                DIRECTION dir = DIRECTION.stringToDirection(orientations.get(0));
+                switch (dir) {
+                    case TOP -> {
+                        y = y - 1;
+                    }
+                    case BOTTOM -> {
+                        y = y + 1;
+                    }
+                    case LEFT -> {
+                        x = x - 1;
+                    }
+                    case RIGHT -> {
+                        x = x + 1;
+                    }
+                    default -> {
+
+                    }
+                }
+                //returns new position
+            } else {
+                //return same position
+                //green belt is curved
+                //if the direction the robot is coming from is "in" (zufluss)
+                //rotate robot in (in - out) if 90 counterclockwise, if -90 clockwise
+            }
+        } else {
+            //speed 2
+            if (!isCurved ){
+                //move 1
+                //check new position
+            }
+        }
+        return new Position(x,y);
     }
 
     public int getSpeed() {

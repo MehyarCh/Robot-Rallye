@@ -515,7 +515,7 @@ public class Game {
 
             if (players.get(players.size() - 1) == playing) {
                 current_register++;
-                //activateElements();
+                activateElements();
                 sortPlayersByDistance();
                 rebooted_players = new ArrayList<>();
             }
@@ -897,7 +897,7 @@ public class Game {
     }
 
     private void activateElements() throws ClassNotFoundException {
-        activatePits();
+        //activatePits();
         activateConveyorBelts();
         activatePushPanels();
         activateGears();
@@ -1183,6 +1183,27 @@ public class Game {
                         robotMovedProtokoll(robot);
                     }
                 }
+            }
+        }
+        List<Integer> moved;
+        activateBluebelts();
+        activateGreenbelts();
+    }
+    private void activateGreenbelts(){
+        List<Integer> moved = new ArrayList<>();
+        for(Player curr : players){
+            if(!moved.contains(curr.getID()) && gameMap.hasGreenConveyorBelt(curr.getRobot().getPosition())){
+                ConveyorBelt belt = gameMap.getConveyorBeltOnPos(curr.getRobot().getPosition());
+                //if robot has been moved added to moved list
+            }
+        }
+    }
+    private void activateBluebelts(){
+        List<Integer> moved = new ArrayList<>();
+        for(Player curr : players){
+            if(!moved.contains(curr.getID()) && gameMap.hasGreenConveyorBelt(curr.getRobot().getPosition())){
+                ConveyorBelt belt = gameMap.getConveyorBeltOnPos(curr.getRobot().getPosition());
+                //if robot has been moved added to moved list
             }
         }
     }
