@@ -19,7 +19,10 @@ import org.apache.logging.log4j.Level;
 import java.io.*;
 import java.net.Socket;
 import java.util.*;
-
+/**
+ * @author Manu, Rishabh, Luca
+ *
+ */
 public class Client implements Runnable {
     private Socket clientSocket;
     private DataInputStream in;
@@ -34,7 +37,7 @@ public class Client implements Runnable {
     private HashMap<Integer, Integer> playersWithRobots = new HashMap<>();
     private HashMap<String, Integer> localPlayerList = new HashMap<>();
     private MainController mainController;
-    private String protocol = "Version 0.1";
+    private String protocol = "Version 2.0";
     ArrayList<Integer> robotIDs = new ArrayList<>();
     private String clientName;
     private List<Player> playerList = new ArrayList<>();
@@ -139,14 +142,18 @@ public class Client implements Runnable {
         }
     }
 
-
+    /**
+     * @author Rishabh
+     */
     public void sendHelloServer() {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<HelloServer> helloServerJsonAdapter = moshi.adapter(HelloServer.class);
         String helloServer = helloServerJsonAdapter.toJson(new HelloServer("DesperateDrosseln", false, protocol));
         sendMessage("HelloServer", helloServer);
     }
-
+    /**
+     * @author Rishabh
+     */
     public void sendPlayerValues(int robotID) {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<PlayerValues> playerValuesJsonAdapter = moshi.adapter(PlayerValues.class);
@@ -585,7 +592,9 @@ public class Client implements Runnable {
             sendMessage("SendChat", sendChatJsonAdapter.toJson(new SendChat(message, -1)));
         }
     }
-
+    /**
+     * @author Rishabh
+     */
     private int getPlayerByName(String messagePart) {
         for (Player player:
                 playerList) {
@@ -595,7 +604,9 @@ public class Client implements Runnable {
         }
         return -1;
     }
-
+    /**
+     * @author Rishabh
+     */
     private boolean playerListHasName(String messagePart) {
         for (Player player:
              playerList) {
@@ -605,7 +616,12 @@ public class Client implements Runnable {
         }
         return false;
     }
-
+    /**
+     * @author Rishabh
+     *
+     * sends PlayCard protocol
+     *
+     */
     public void playCard() {
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<PlayCard> playCardJsonAdapter = moshi.adapter(PlayCard.class);

@@ -1,7 +1,12 @@
 package Desperatedrosseln.Logic.AI;
 
 import Desperatedrosseln.Logic.Elements.Position;
-
+/**
+ * @author Rishabh
+ *
+ * nodes for path finding algorithm
+ *
+ */
 public class Node {
     Node prev;
     int g;

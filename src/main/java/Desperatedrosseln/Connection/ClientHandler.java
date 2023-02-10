@@ -27,7 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
+/**
+ * @author Manu, Rishabh, Luca
+ *
+ */
 public class ClientHandler implements Runnable {
     private String protocol;
 
@@ -96,7 +99,9 @@ public class ClientHandler implements Runnable {
         }
     }
 
-
+    /**
+     * @author Rishabh
+     */
     public void sendErrorMessage() {
         JsonAdapter<Desperatedrosseln.Local.Protocols.Error> errorJsonAdapter = moshi.adapter(Desperatedrosseln.Local.Protocols.Error.class);
         sendMessage("Error", errorJsonAdapter.toJson(new Error()));
