@@ -551,25 +551,31 @@ public class MainController {
 
         up.setOnMouseClicked(t -> {
             client.sendMessage("RebootDirection", rebootDirectionJsonAdapter.toJson(new RebootDirection("top")));
+            mapController.setMyRobotDirection("top");
             hideOverlay();
         });
         right.setOnMouseClicked(t -> {
             client.sendMessage("RebootDirection", rebootDirectionJsonAdapter.toJson(new RebootDirection("right")));
+            mapController.setMyRobotDirection("right");
             hideOverlay();
         });
         down.setOnMouseClicked(t -> {
             client.sendMessage("RebootDirection", rebootDirectionJsonAdapter.toJson(new RebootDirection("bottom")));
+            mapController.setMyRobotDirection("bottom");
             hideOverlay();
         });
         left.setOnMouseClicked(t -> {
             client.sendMessage("RebootDirection", rebootDirectionJsonAdapter.toJson(new RebootDirection("left")));
+            mapController.setMyRobotDirection("left");
             hideOverlay();
         });
     }
 
     @FXML
     private void hideOverlay() {
-        centerStack.getChildren().remove(centerStack.getChildren().size() - 1);
+        if(centerStack.getChildren().size()>1){
+            centerStack.getChildren().remove(centerStack.getChildren().size() - 1);
+        }
     }
 
 
@@ -604,6 +610,7 @@ public class MainController {
     }
 
     public void fillHand() {
+        handValues.clear();
         handValues.addAll(client.getCardsInHand());
     }
 
@@ -976,7 +983,7 @@ public class MainController {
 
                     for (StackPane stackPane : tempUpgradeCards) {
                         if (stackPane.getChildren().contains(cardWrapper)) {
-                            index = tempUpgradeCards.indexOf(cardWrapper);
+                            index = tempUpgradeCards.indexOf(stackPane);
                             logger.info(tempUpgradeValues.get(index));
                             cardName = tempUpgradeValues.get(index);
 
@@ -1171,6 +1178,7 @@ public class MainController {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                hideOverlay();
                 upgradeButton.setDisable(true);
                 noUpgradeButton.setDisable(true);
             }
