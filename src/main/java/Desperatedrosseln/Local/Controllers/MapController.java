@@ -19,8 +19,7 @@ import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -256,7 +255,7 @@ public class MapController {
 
     @FXML
     private StackPane createGridCell(int x, int y, MapField mapField) throws IOException {
-        List<String> addEmpty = Arrays.asList("Antenna", "CheckPoint", "ConveyorBelt", "RestartPoint", "StartPoint", "Energy-Space", "Wall", "Empty","Gear");
+        List<String> addEmpty = Arrays.asList("Antenna", "CheckPoint", "ConveyorBelt", "RestartPoint", "StartPoint", "Wall", "Empty","Gear");
         List<BoardElement> typeList = mapField.getTypes();
 
         StackPane cell = new StackPane();
@@ -295,7 +294,7 @@ public class MapController {
                 case "CheckPoint" ->stackElement = buildCheckpoint(boardElement);
                 case "Antenna" -> stackElement = buildAntenna(boardElement);
                 case "ConveyorBelt" -> stackElement = buildConveyorBelt(boardElement);
-                case "Energy-Space" -> stackElement = buildEnergySpace(boardElement);
+                //case "Energy-Space" -> stackElement = buildEnergySpace(boardElement);
                 case "Laser" -> stackElement = buildLaser(boardElement);
                 case "LaserBeam" -> stackElement = buildLaserBeam(boardElement);
                 case "PushPanel" -> stackElement = buildPushPanel(boardElement);

@@ -235,16 +235,16 @@
         ],
         [
           {
-            "type": "Energy-Space",
-            "isOnBoard": "4A",
-            "count": 1
-          },
-          {
             "type": "Wall",
             "isOnBoard": "4A",
             "orientations": [
               "top"
             ]
+          },
+          {
+            "type": "Energy-Space",
+            "isOnBoard": "4A",
+            "count": 1
           }
         ],
         [
@@ -275,6 +275,10 @@
           }
         ],
         [
+          {
+            "type": "Empty",
+            "isOnBoard": "4A"
+          },
           {
             "type": "Energy-Space",
             "isOnBoard": "4A",
@@ -603,6 +607,10 @@
         ],
         [
           {
+            "type": "Empty",
+            "isOnBoard": "4A"
+          },
+          {
             "type": "Energy-Space",
             "isOnBoard": "4A",
             "count": 1
@@ -642,6 +650,10 @@
       ],
       [
         [
+          {
+            "type": "Empty",
+            "isOnBoard": "4A"
+          },
           {
             "type": "Energy-Space",
             "isOnBoard": "4A",
@@ -942,6 +954,10 @@
           }
         ],
         [
+          {
+            "type": "Empty",
+            "isOnBoard": "4A"
+          },
           {
             "type": "Energy-Space",
             "isOnBoard": "4A",

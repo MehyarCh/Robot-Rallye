@@ -10,7 +10,7 @@ import Desperatedrosseln.Logic.Cards.Programming.*;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
+import javafx.beans.value.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -376,7 +376,15 @@ public class MainController {
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
             changeTileSize();
         };
-        stage.heightProperty().addListener(stageSizeListener);
+
+        //stage.heightProperty().addListener(stageSizeListener);
+        stage.maximizedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean t1) {
+                //changeTileSize();
+                System.out.println("----------------------");
+            }
+        });
 
         Platform.runLater(new Runnable() {
             @Override

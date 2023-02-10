@@ -378,6 +378,10 @@
         ],
         [
           {
+            "type": "Empty",
+            "isOnBoard": "1A"
+          },
+          {
             "type": "Energy-Space",
             "isOnBoard": "1A",
             "count": 1
@@ -420,6 +424,10 @@
           }
         ],
         [
+          {
+            "type": "Empty",
+            "isOnBoard": "1A"
+          },
           {
             "type": "Energy-Space",
             "isOnBoard": "1A",
@@ -550,6 +558,10 @@
         ],
         [
           {
+            "type": "Empty",
+            "isOnBoard": "1A"
+          },
+          {
             "type": "Energy-Space",
             "isOnBoard": "1A",
             "count": 1
@@ -630,6 +642,10 @@
           }
         ],
         [
+          {
+            "type": "Empty",
+            "isOnBoard": "1A"
+          },
           {
             "type": "Energy-Space",
             "isOnBoard": "1A",
@@ -757,6 +773,10 @@
         ],
         [
           {
+            "type": "Empty",
+            "isOnBoard": "1A"
+          },
+          {
             "type": "Energy-Space",
             "isOnBoard": "1A",
             "count": 1
@@ -799,6 +819,10 @@
           }
         ],
         [
+          {
+            "type": "Empty",
+            "isOnBoard": "1A"
+          },
           {
             "type": "Energy-Space",
             "isOnBoard": "1A",
