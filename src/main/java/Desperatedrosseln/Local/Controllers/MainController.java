@@ -581,10 +581,10 @@ public class MainController {
             case "UTurn" -> new Image(getClass().getResource("/images/card/u-turn.jpg").toString());
             case "Again" -> new Image(getClass().getResource("/images/card/again.jpg").toString());
             case "PowerUp" -> new Image(getClass().getResource("/images/card/powerup.jpg").toString());
-            case "Spam" -> new Image(getClass().getResource("/images/card/no_such_card.png").toString()); //ToDo: change picture
-            case "Virus" -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
-            case "Trojan" -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
-            case "Worm" -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
+            case "Spam" -> new Image(getClass().getResource("/images/card/spam.jpg").toString()); //ToDo: change picture
+            case "Virus" -> new Image(getClass().getResource("/images/card/virus.jpg").toString());
+            case "Trojan" -> new Image(getClass().getResource("/images/card/trojan.jpg").toString());
+            case "Worm" -> new Image(getClass().getResource("/images/card/worm.jpg").toString());
             default -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
         };
     }
