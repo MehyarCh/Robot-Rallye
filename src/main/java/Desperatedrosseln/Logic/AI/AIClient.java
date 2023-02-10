@@ -20,6 +20,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.jar.Attributes;
 
+
+/**
+ * @author Rishabh
+ *
+ * psuedo clients
+ *
+ */
+
 public class AIClient extends Thread {
 
     private final DataInputStream in;
@@ -43,7 +51,10 @@ public class AIClient extends Thread {
     private static final Logger logger = LogManager.getLogger();
     private int energyReserve = 5;
     private ArrayList<String> regCards;
-
+    /**
+     * @author Rishabh
+     *
+     */
     public class Position {
         int x;
         int y;

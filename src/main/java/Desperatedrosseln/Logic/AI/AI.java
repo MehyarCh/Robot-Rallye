@@ -9,7 +9,12 @@ import Desperatedrosseln.Logic.Elements.Tiles.CheckPoint;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+/**
+ * @author Rishabh
+ *
+ * AI Logik
+ *
+ */
 public class AI {
     int activePhase;
     int currentPlayer;
@@ -62,7 +67,12 @@ public class AI {
     public void setGameMap(List<List<List<BoardElement>>> gameMap) {
         this.gameMap = gameMap;
     }
-
+    /**
+     * @author Rishabh
+     *
+     * uses A* algorithm for path finding
+     *
+     */
     public ArrayList<String> selectRegisterCards() {
         //ToDo: increase current Goal by creating a checkpoint arraylist
 
@@ -255,7 +265,12 @@ public class AI {
         }
         return finalReg;
     }
-
+    /**
+     * @author Rishabh
+     *
+     * recursive function to select cards for the register
+     *
+     */
     private void createReg(ArrayList<String> reg, ArrayList<DIRECTION> path, DIRECTION curr) {
         if (reg.size() == 5) {
             return;
