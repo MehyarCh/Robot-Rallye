@@ -43,6 +43,8 @@ public class MapController {
 
     private HashMap<StackPane, Position> startingPoints = new HashMap<>();
 
+    private Position restartPosition;
+
     private Client client;
 
     private static List<ImageView> robotImages = new ArrayList<>();
@@ -284,7 +286,10 @@ public class MapController {
                             new Image(getClass().getResource("/images/elements/pit/pit.png").toString());
                     stackElement = new ImageView(pitImage);
                 }
-                case "RestartPoint" -> { stackElement = buildRestartPoint(boardElement);}
+                case "RestartPoint" -> {
+                    stackElement = buildRestartPoint(boardElement);
+                    restartPosition = new Position(x, y);
+                }
                 case "StartPoint" -> {
                     Image startpointImage =
                             new Image(getClass().getResource("/images/elements/startpoint/startpoint.png").toString());
@@ -1006,4 +1011,30 @@ public class MapController {
         pinkGlow.setHeight(60);
         mapGrid.setEffect(pinkGlow);
     }
+
+
+    public void respawnRobot(int robotId, String orientation) {
+        int x = restartPosition.getX();
+        int y = restartPosition.getY();
+
+        ImageView robot = getRobotById(robotId);
+        robot.setRotate(0);
+
+        switch(orientation) {
+            case "top":
+                break;
+            case "right":
+                robot.setRotate(90);
+                break;
+            case "bottom":
+                robot.setRotate(180);
+                break;
+            case "left":
+                robot.setRotate(-90);
+                break;
+        }
+        move(robotId, x, y);
+        robot.setRotate(0);
+    }
+
 }

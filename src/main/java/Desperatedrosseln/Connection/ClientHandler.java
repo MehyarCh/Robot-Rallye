@@ -10,6 +10,7 @@ import Desperatedrosseln.Logic.Cards.Upgrade.AdminPrivilege;
 import Desperatedrosseln.Logic.Cards.Upgrade.MemorySwap;
 import Desperatedrosseln.Logic.Cards.Upgrade.RearLaser;
 import Desperatedrosseln.Logic.Cards.Upgrade.SpamBlocker;
+import Desperatedrosseln.Logic.DIRECTION;
 import Desperatedrosseln.Logic.Elements.BoardElement;
 import Desperatedrosseln.Logic.Elements.Robot;
 import Desperatedrosseln.Logic.Game;
@@ -251,7 +252,6 @@ public class ClientHandler implements Runnable {
                     //ToDO
                     sendErrorMessage();
                 }
-
                 break;
             case "addAI":
                 game.addAI();
@@ -260,9 +260,6 @@ public class ClientHandler implements Runnable {
                 JsonAdapter<BuyUpgrade> buyUpgradeJsonAdapter = moshi.adapter(BuyUpgrade.class);
                 String cardString = buyUpgradeJsonAdapter.fromJson(message.getMessageBody()).getCard();
                 boolean isBuying = buyUpgradeJsonAdapter.fromJson(message.getMessageBody()).isBuying();
-
-
-
 
                 if (isBuying) {                                     //ToDo
                     Card card = null;
@@ -367,7 +364,16 @@ public class ClientHandler implements Runnable {
                 }
 
                 break;
+            case "RebootDirection":
+                JsonAdapter<RebootDirection> rebootDirectionJsonAdapter = moshi.adapter(RebootDirection.class);
+                RebootDirection rebootDirection = rebootDirectionJsonAdapter.fromJson(message.getMessageBody());
 
+                String orientation = rebootDirection.getDirection();
+                //getPlayer().getRobot().setDirection(DIRECTION.stringToDirection(orientation));
+
+                // TODO check with backend
+
+                break;
             default:
                 broadcastMessage(" ", "SERVER BRO");
         }

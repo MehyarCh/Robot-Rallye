@@ -256,7 +256,8 @@
 
 .main-overlay-label{
     -fx-text-fill: #2DE2CE;
-    -fx-font-size: 65px;
+    -fx-font-size: 64px;
+    -fx-wrap-text: true;
 }
 
 .main-overlay{
@@ -264,6 +265,7 @@
     -fx-alignment: center;
     -fx-pref-height: 100%;
     -fx-pref-width: 100%;
+    -fx-spacing: 16px;
 }
 
 .navbar {
@@ -304,7 +306,7 @@
 }
 
 .profile-name {
-    -fx-font-size: 13px;
+    -fx-font-size: 12px;
     -fx-font-weight: 300;
     -fx-alignment: center-right;
 }
@@ -405,7 +407,7 @@
 }
 
 .upgrade-card-label {
-    -fx-font-size: 9px;
+    -fx-font-size: 10px;
     -fx-wrap-text: true;
     -fx-text-fill: #fff;
 }

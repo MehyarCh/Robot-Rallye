@@ -2,19 +2,16 @@ package Desperatedrosseln.Local.Controllers;
 
 //import Desperatedrosseln.Local.Client;
 
-import Desperatedrosseln.Local.*;
-import Desperatedrosseln.Local.Protocols.BuyUpgrade;
-import Desperatedrosseln.Local.Protocols.SelectedCard;
+import Desperatedrosseln.Local.Protocols.*;
 import Desperatedrosseln.Local.CardLabels.*;
 import Desperatedrosseln.Logic.Cards.Programming.*;
+import Desperatedrosseln.Logic.Cards.Upgrade.SpamBlocker;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -39,6 +36,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.net.URI;
 import java.awt.Desktop;
 
@@ -497,6 +495,79 @@ public class MainController {
         centerStack.getChildren().add(overlay);
     }
 
+    @FXML public void showRestartOverlay() {
+
+        VBox overlay = new VBox();
+        overlay.getStyleClass().add("main-overlay");
+        Label label = new Label("Choose the direction your robot should look at after the restart");
+        label.getStyleClass().add("main-overlay-label");
+        label.setStyle("-fx-font-size: 24px");
+        overlay.getChildren().add(label);
+
+        Button up = new Button("RETURN TO LOBBY");
+        up.getStyleClass().add("button");
+        up.getStyleClass().add("send-button");
+        up.setRotate(-90);
+        GridPane.setColumnIndex(up, 1);
+        GridPane.setRowIndex(up, 0);
+
+        Button right = new Button("RETURN TO LOBBY");
+        right.getStyleClass().add("button");
+        right.getStyleClass().add("send-button");
+        right.setRotate(0);
+        GridPane.setColumnIndex(right, 2);
+        GridPane.setRowIndex(right, 1);
+
+        Button down = new Button("RETURN TO LOBBY");
+        down.getStyleClass().add("button");
+        down.getStyleClass().add("send-button");
+        down.setRotate(90);
+        GridPane.setColumnIndex(down, 1);
+        GridPane.setRowIndex(down, 2);
+
+        Button left = new Button("RETURN TO LOBBY");
+        left.getStyleClass().add("button");
+        left.getStyleClass().add("send-button");
+        left.setRotate(180);
+        GridPane.setColumnIndex(left, 0);
+        GridPane.setRowIndex(left, 1);
+
+        GridPane grid = new GridPane();
+        grid.getChildren().addAll(
+                Arrays.asList(
+                        up,
+                        left,
+                        down,
+                        right
+                )
+        );
+        grid.setStyle("-fx-alignment: center");
+
+        overlay.getChildren().add(grid);
+
+        Platform.runLater(() -> centerStack.getChildren().add(overlay));
+
+
+        JsonAdapter<RebootDirection> rebootDirectionJsonAdapter = moshi.adapter(RebootDirection.class);
+
+        up.setOnMouseClicked(t -> {
+            client.sendMessage("RebootDirection", rebootDirectionJsonAdapter.toJson(new RebootDirection("top")));
+            hideOverlay();
+        });
+        right.setOnMouseClicked(t -> {
+            client.sendMessage("RebootDirection", rebootDirectionJsonAdapter.toJson(new RebootDirection("right")));
+            hideOverlay();
+        });
+        down.setOnMouseClicked(t -> {
+            client.sendMessage("RebootDirection", rebootDirectionJsonAdapter.toJson(new RebootDirection("bottom")));
+            hideOverlay();
+        });
+        left.setOnMouseClicked(t -> {
+            client.sendMessage("RebootDirection", rebootDirectionJsonAdapter.toJson(new RebootDirection("left")));
+            hideOverlay();
+        });
+    }
+
     @FXML
     private void hideOverlay() {
         centerStack.getChildren().remove(centerStack.getChildren().size() - 1);
@@ -898,6 +969,31 @@ public class MainController {
                 imageView.setOpacity(1);
             });
 
+            if (values == tempUpgradeValues) {
+                cardWrapper.setOnMouseClicked(t -> {
+
+                    int index;
+                    String cardName;
+
+                    for (StackPane stackPane : tempUpgradeCards) {
+                        if (stackPane.getChildren().contains(cardWrapper)) {
+                            index = tempUpgradeCards.indexOf(cardWrapper);
+                            logger.info(tempUpgradeValues.get(index));
+                            cardName = tempUpgradeValues.get(index);
+
+                            JsonAdapter<PlayCard> playCardJsonAdapter = moshi.adapter(PlayCard.class);
+                            PlayCard playCard = new PlayCard(cardName);
+
+                            String json = playCardJsonAdapter.toJson(playCard);
+
+                            client.sendMessage("PlayCard", json);
+                        }
+                    }
+                });
+            }
+
+
+
             values.set(firstFreeIndex, selectedUpgrade);
             cards.get(firstFreeIndex).getChildren().add(cardWrapper);
 
@@ -979,7 +1075,6 @@ public class MainController {
 
                     if (i < exchangeValues.size()) {
                         String cardName = exchangeValues.get(i);
-
                         Label cardDescription = new Label(upgradeToDescription.get(cardName));
 
                         cardDescription.getStyleClass().add("upgrade-card-label");

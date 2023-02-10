@@ -242,6 +242,9 @@ public class Client implements Runnable {
                 cardsInHand = yourCards.getCardsInHand();
                 mainController.fillHand();
                 mainController.updateCardImages();
+
+                if (mainController.getRegisterValues().size() != 0) mainController.getRegisterValues().clear();
+
                 mainController.initRegisterValues();
                 mainController.cardClick();
                 //startCardSelectionTimer();
@@ -337,9 +340,21 @@ public class Client implements Runnable {
                 break;
             case "Reboot":
                 //TODO: handle robot reboot
+
                 JsonAdapter<Reboot> rebootJsonAdapter = moshi.adapter(Reboot.class);
                 Reboot reboot = rebootJsonAdapter.fromJson(msg.getMessageBody());
-                mainController.getMapController().removeRobotById(playersWithRobots.get(reboot.getClientID()));
+
+                int robotId = playersWithRobots.get(reboot.getClientID());
+
+                if (reboot.getClientID() == clientID) {
+                    mainController.showRestartOverlay();
+                }
+                //String orientation = ;
+
+                //mainController.getMapController().respawnRobot(robotId, orientation);
+
+
+                //mainController.getMapController().removeRobotById(playersWithRobots.get(reboot.getClientID()));
                 break;
             case "ActivePhase":
                 JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
