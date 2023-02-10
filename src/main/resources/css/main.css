@@ -148,6 +148,10 @@
     -fx-font-size: 24px;
 }
 
+.headline-6 {
+    -fx-font-size: 19px;
+}
+
 .text-input-wrapper {
 
 }

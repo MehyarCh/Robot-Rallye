@@ -103,7 +103,7 @@
                 </VBox>
             </HBox>
             <HBox GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="player-bar">
-                <Label fx:id="phaseLabel"  styleClass="headline-5, color--light"/>
+                <Label fx:id="phaseLabel"  styleClass="headline-6, color--light" style="-fx-padding: 10 10 10 10;"/>
             </HBox>
 
 
