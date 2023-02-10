@@ -605,6 +605,7 @@ public class MainController {
     }
 
     public void fillHand() {
+        handValues.clear();
         handValues.addAll(client.getCardsInHand());
     }
 
@@ -977,7 +978,7 @@ public class MainController {
 
                     for (StackPane stackPane : tempUpgradeCards) {
                         if (stackPane.getChildren().contains(cardWrapper)) {
-                            index = tempUpgradeCards.indexOf(cardWrapper);
+                            index = tempUpgradeCards.indexOf(stackPane);
                             logger.info(tempUpgradeValues.get(index));
                             cardName = tempUpgradeValues.get(index);
 
