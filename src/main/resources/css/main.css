@@ -250,6 +250,10 @@
     -fx-pref-width: 32px;
 }
 
+.send-button--left {
+    -fx-rotate: 180;
+}
+
 .programdone-button {
     -fx-text: "Play";
     -fx-text-color: white;

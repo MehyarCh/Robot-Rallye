@@ -187,7 +187,10 @@
     -fx-spacing: 16px !important;
 }
 
-
+.ai-button-container {
+    -fx-alignment: center;
+    -fx-spacing: 8px;
+}
 
 .map-picker {
     -fx-fill-width: true;

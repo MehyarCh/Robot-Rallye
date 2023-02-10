@@ -82,6 +82,8 @@ public class LobbyController {
     private ToggleButton readyButton;
 
     @FXML private Button addAIButton;
+
+    @FXML Button removeAiButton;
     @FXML
     private TextField chat_input_lobby;
 
@@ -104,6 +106,11 @@ public class LobbyController {
     private boolean ready = false;
     @FXML
     private Button playerIconPink;
+
+    @FXML Label aiCountLabel;
+
+
+
     @FXML
     private Label playersOnline = new Label("Players currently online: ");
     private int selectedRobot;
@@ -113,6 +120,8 @@ public class LobbyController {
     private List<Button> robotIcons = new ArrayList<>();
 
     private List<Button> selectedIcons = new ArrayList<>();
+
+    private int numberOfAis = 0;
 
     public LobbyController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/lobbyScene.fxml"));
@@ -159,6 +168,7 @@ public class LobbyController {
         glow();
         overlay.requestFocus();
         //playersonline.setText("Players currently in lobby: " );
+        aiCountLabel.setText(Integer.toString(numberOfAis));
         initRobotIconsList();
         disableTakenRobots(client.getRobotIDs());
         stage.setOnCloseRequest(event -> {
@@ -543,7 +553,21 @@ public class LobbyController {
 
     @FXML
     private void handleAddAI() {
-        client.sendMessage("addAI", "");
+        if (numberOfAis < 6) {
+            numberOfAis++;
+            aiCountLabel.setText(Integer.toString(numberOfAis));
+            client.sendMessage("addAI", "");
+        }
+        if (numberOfAis == 5) {
+            addAIButton.setDisable(true);
+        }
     }
+
+
+    @FXML
+    private void handleRemoveAI() {
+        // TODO removeAI
+    }
+
 }
 
