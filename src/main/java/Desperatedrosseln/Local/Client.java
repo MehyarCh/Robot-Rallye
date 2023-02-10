@@ -37,7 +37,7 @@ public class Client implements Runnable {
     private HashMap<Integer, Integer> playersWithRobots = new HashMap<>();
     private HashMap<String, Integer> localPlayerList = new HashMap<>();
     private MainController mainController;
-    private String protocol = "Version 0.1";
+    private String protocol = "Version 2.0";
     ArrayList<Integer> robotIDs = new ArrayList<>();
     private String clientName;
     private List<Player> playerList = new ArrayList<>();

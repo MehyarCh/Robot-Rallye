@@ -22,7 +22,7 @@ public class Server {
     private ServerSocket serverSocket;
     private List<String> gameLog;
     private int port = 3000;
-    private String protocol = "Version 0.1";
+    private String protocol = "Version 2.0";
     private Game game;
 
     private static final Logger logger = LogManager.getLogger();
