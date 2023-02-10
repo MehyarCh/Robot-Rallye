@@ -77,7 +77,7 @@ public enum DIRECTION {
             case "left" -> {
                 return LEFT;
             }
-            case "btop" -> {
+            case "top" -> {
                 return TOP;
             }
             case "bottom" -> {

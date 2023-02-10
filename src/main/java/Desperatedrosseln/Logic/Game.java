@@ -75,7 +75,7 @@ public class Game {
     }
 
 
-    public static void readyPlayer(ClientHandler client) {             //TODO: case player disconnects
+    public static void readyPlayer(ClientHandler client) {
         if (!client.isAI && mapSelectionPlayer == -1) {
             mapSelectionPlayer = client.getPlayer().getID();
             Moshi moshi = new Moshi.Builder().build();
@@ -101,13 +101,14 @@ public class Game {
      * @param newpos the position the robot is trying to move towards
      * @return true if robot can be moved, false otherwise -including falling off map and being blocked
      */
-    public boolean checkMovement(Robot robot, Position newpos){
+    public boolean checkMovement(Robot robot, Position newpos) throws InterruptedException {
         Position oldpos = new Position(0, 0);
         oldpos.copy(robot.getPosition());
         if(newpos.getX()< 0 || newpos.getY()< 0 || newpos.getY() >= gameMap.getLength() ||
                 newpos.getX() >= gameMap.getWidth()){
             //fell off so remove and reboot
             rebootPlayer(getPlayerByRobot(robot));
+            Thread.sleep(1000);
             return gameMap.getElementsOnPos(oldpos).remove(robot);
         } else if (gameMap.currPosHasBlockingWall(robot.getPosition(), newpos)) {
             //blocked
@@ -120,6 +121,7 @@ public class Game {
             robot.setPosition(newpos.getX(), newpos.getY());
             robotMovedProtokoll(robot);
             rebootPlayer(getPlayerByRobot(robot));
+            Thread.sleep(1000);
             return gameMap.getElementsOnPos(oldpos).remove(robot);
         } else if (gameMap.hasAntenna(newpos)){
             //blocked
@@ -134,6 +136,7 @@ public class Game {
                 robot.setPosition(newpos.getX(), newpos.getY());
                 gameMap.getElementsOnPos(oldpos).remove(robot);
                 robotMovedProtokoll(robot);
+                Thread.sleep(1000);
                 return true;
             } else {
                 return false;
@@ -144,6 +147,7 @@ public class Game {
             gameMap.getElementsOnPos(newpos).add(robot);
             robot.setPosition(newpos.getX(), newpos.getY());
             robotMovedProtokoll(robot);
+            Thread.sleep(1000);
             return gameMap.getElementsOnPos(oldpos).remove(robot);
         }
     }
@@ -223,7 +227,7 @@ public class Game {
      */
     public void initialize() {
         for (Player player : players) {
-            //TODO: set number of checkpoints dynamically from the gamemap info
+
         }
     }
 
@@ -501,7 +505,6 @@ public class Game {
         phase = 3;
         if (user != playing) {
             //ToDo handle this
-            //TODO: why is the rebooted check removed?
             return;
         }
         logger.debug("Register " + current_register + "For Player: " + user.getID());
@@ -677,8 +680,12 @@ public class Game {
                             }else{
                                 newpos = prcard.calculateNewPosition(curr.getRobot(), false);
                             }
-                            if(checkMovement(curr.getRobot(), newpos)){
-                                logger.debug("movement allowed");
+                            try {
+                                if(checkMovement(curr.getRobot(), newpos)){
+                                    logger.debug("movement allowed");
+                                }
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
                             }
                         }
                     }
@@ -711,8 +718,12 @@ public class Game {
                     }else{
                         newpos = prcard.calculateNewPosition(curr.getRobot(), false);
                     }
-                    if(checkMovement(curr.getRobot(), newpos)){
-                        logger.debug("movement allowed");
+                    try {
+                        if(checkMovement(curr.getRobot(), newpos)){
+                            logger.debug("movement allowed");
+                        }
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }
@@ -1153,57 +1164,182 @@ public class Game {
      *
      * @throws ClassNotFoundException
      */
-    private void activateConveyorBelts() throws ClassNotFoundException {
-        //TODO: curved belts not taken into consideration
-        //activate blue conveyor belts
-        List<ConveyorBelt> conveyorbelts = getListOfBelts(2);
-        for (ConveyorBelt belt : conveyorbelts) {
-            if (robotOnElement(belt)) {
-                assert belt.getSpeed() == 2;
-                //get robots on belts position (usually just one robot)
-                List<Robot> robotList = gameMap.getRobotsOnPos(belt.getPosition());
-                if(robotList.size()>0){
-                    belt.execute(robotList);
-                    for(Robot robot :robotList){
-                        robotMovedProtokoll(robot);
-                    }
-                }
-            }
-        }
-        //activate green conveyor belts
-        conveyorbelts = getListOfBelts(1);
-        for (ConveyorBelt belt : conveyorbelts) {
-            if (robotOnElement(belt)) {
-                assert belt.getSpeed() == 1;
-                //get robots on belts position (usually just one robot)
-                List<Robot> robotList = gameMap.getRobotsOnPos(belt.getPosition());
-                if(robotList.size()>0){
-                    belt.execute(robotList);
-                    for(Robot robot :robotList){
-                        robotMovedProtokoll(robot);
-                    }
-                }
-            }
-        }
+    private void activateConveyorBelts() {
         List<Integer> moved;
         activateBluebelts();
         activateGreenbelts();
     }
-    private void activateGreenbelts(){
+    private List<Integer> activateGreenbelts(){
         List<Integer> moved = new ArrayList<>();
         for(Player curr : players){
             if(!moved.contains(curr.getID()) && gameMap.hasGreenConveyorBelt(curr.getRobot().getPosition())){
                 ConveyorBelt belt = gameMap.getConveyorBeltOnPos(curr.getRobot().getPosition());
-                //if robot has been moved added to moved list
+                try {
+                    if (checkConveyorMovement(belt, curr.getRobot())){
+                        moved.add(curr.getID());
+                    }
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                ;
             }
         }
+        return moved;
+    }
+
+    private boolean checkConveyorMovement(ConveyorBelt belt, Robot robot) throws InterruptedException {
+        //assume speed == 1 for now
+        Position oldpos = new Position(0,0);
+        oldpos.copy(robot.getPosition());
+        //DIRECTION comingfrom = gameMap.robotIsComingFrom(oldpos, belt.getPosition());
+        Position newpos = belt.calculateNextPos(robot);
+        if( !newpos.equals(robot.getPosition())) {
+            return checkNextPosition(newpos, robot);
+        }
+        return false;
+    }
+
+    private boolean checkNextPosition( Position pos, Robot robot) throws InterruptedException {
+
+        Position oldpos = new Position(0,0);
+        oldpos.copy(robot.getPosition());
+
+        if(pos.getX()< 0 || pos.getY()< 0 || pos.getY() >= gameMap.getLength() ||
+                pos.getX() >= gameMap.getWidth()){
+            //fell off so remove and reboot
+            rebootPlayer(getPlayerByRobot(robot));
+            return gameMap.getElementsOnPos(robot.getPosition()).remove(robot);
+
+        } else if(gameMap.hasPit(pos)){
+            //moved into a pit
+            robot.setPosition(pos.getX(), pos.getY());
+            robotMovedProtokoll(robot);
+            Thread.sleep(1000);
+            rebootPlayer(getPlayerByRobot(robot));
+            return gameMap.getElementsOnPos(oldpos).remove(robot);
+
+        } else if (gameMap.currPosHasBlockingWall(robot.getPosition(), pos)) {
+            //blocked
+            return false;
+        } else if (gameMap.nextPosHasBlockingWall(robot.getPosition(), pos)) {
+            //blocked
+            return false;
+        } else if (gameMap.hasAntenna(pos)){
+            //blocked
+            return false;
+            //TODO order of cases
+        } else if (gameMap.hasBlueConveyorBelt(pos) || gameMap.hasGreenConveyorBelt(pos)) {
+            ConveyorBelt belt = gameMap.getConveyorBeltOnPos(pos);
+            gameMap.getElementsOnPos(robot.getPosition()).remove(robot);
+            gameMap.getElementsOnPos(pos).add(robot);
+            if (belt.isCurved()) {
+                //rotate robot
+                checkRotationByBelt(belt, robot);
+            }
+            robot.setPosition(pos.getX(), pos.getY());
+            robotMovedProtokoll(robot);
+            Thread.sleep(1000);
+            return true;
+        } else if (!gameMap.hasGreenConveyorBelt(pos) && !gameMap.hasBlueConveyorBelt(pos) &&
+            gameMap.hasRobotOnPos(pos)) {
+            //other robot on non conveyor belt => blocked
+            return false;
+        } else if (gameMap.hasRobotOnPos(pos) && gameMap.hasGreenConveyorBelt(pos) &&
+                gameMap.hasBlueConveyorBelt(pos)) {
+            //robots can be placed on the same position (belt)
+            gameMap.getElementsOnPos(robot.getPosition()).remove(robot);
+            gameMap.getElementsOnPos(pos).add(robot);
+            robot.setPosition(pos.getX(), pos.getY());
+            robotMovedProtokoll(robot);
+            Thread.sleep(1000);
+            return true;
+        } else {
+            //movement is allowed
+            //remove robot from old pos
+            gameMap.getElementsOnPos(pos).add(robot);
+            robot.setPosition(pos.getX(), pos.getY());
+            robotMovedProtokoll(robot);
+            Thread.sleep(1000);
+            return gameMap.getElementsOnPos(oldpos).remove(robot);
+        }
+    }
+
+    private void checkRotationByBelt(ConveyorBelt belt, Robot robot) {
+        DIRECTION dir = gameMap.robotIsComingFrom(belt.getPosition(), robot.getPosition());
+        //case 3 orientations, check if dir is opposite of out, then don't rotate
+        if( belt.getOrientations().size() > 2 ){
+            if ( DIRECTION.getOppositeOf(dir).toString().equals(belt.getOrientations().get(0)) ){
+                //if the robot is coming from the opposite direction of out, don't turn it
+                return;
+            } else {
+                //robot coming from the side
+                //look for index of its entry point in orientations
+                int k = -1;
+                for(int h=1; h< belt.getOrientations().size(); h++){
+                    if(!belt.getOrientations().get(h).equals(DIRECTION.getOppositeOf(dir).toString())){
+                        k = h;
+                    }
+                }
+                assert k!=-1;
+                //angle of out direction of belt
+                int valueofout = DIRECTION.stringToDirection(belt.getOrientations().get(0)).getAngle();
+                //angle of in direction of belt
+                int valueofin = DIRECTION.stringToDirection(belt.getOrientations().get(k)).getAngle();
+                //turning angle (might be greater or smaller than 90/-90)
+                int turningvalue = valueofin - valueofout;
+
+                if(turningvalue > 90 ){
+                    turningvalue = turningvalue - 360;
+                } else if( turningvalue < -90 ){
+                    turningvalue = turningvalue + 360;
+                }
+                assert turningvalue == 90 || turningvalue == -90;
+                robot.changeDirection(turningvalue);
+                if(turningvalue == 90 ){
+                    robotTurnedProtokoll(robot, "counterclockwise");
+                } else if (turningvalue == -90) {
+                    robotTurnedProtokoll(robot, "clockwise");
+                }
+            }
+        } else {
+            if( dir.toString().equals(belt.getOrientations().get(1))){
+                //angle of out direction of belt
+                int valueofout = DIRECTION.stringToDirection(belt.getOrientations().get(0)).getAngle();
+                //angle of in direction of belt
+                int valueofin = DIRECTION.stringToDirection(belt.getOrientations().get(1)).getAngle();
+                //turning angle (might be greater or smaller than 90/-90)
+                int turningvalue = valueofin - valueofout;
+
+                if(turningvalue > 90 ){
+                    turningvalue = turningvalue - 360;
+                } else if( turningvalue < -90 ){
+                    turningvalue = turningvalue + 360;
+                }
+                assert turningvalue == 90 || turningvalue == -90;
+                robot.changeDirection(turningvalue);
+                if(turningvalue == 90 ){
+                    robotTurnedProtokoll(robot, "counterclockwise");
+                } else if (turningvalue == -90) {
+                    robotTurnedProtokoll(robot, "clockwise");
+                }
+            }
+        }
+
     }
     private void activateBluebelts(){
         List<Integer> moved = new ArrayList<>();
         for(Player curr : players){
-            if(!moved.contains(curr.getID()) && gameMap.hasGreenConveyorBelt(curr.getRobot().getPosition())){
+            if(!moved.contains(curr.getID()) && gameMap.hasBlueConveyorBelt(curr.getRobot().getPosition())){
                 ConveyorBelt belt = gameMap.getConveyorBeltOnPos(curr.getRobot().getPosition());
-                //if robot has been moved added to moved list
+                for(int i=0; i < belt.getSpeed(); i++){
+                    try {
+                        if (checkConveyorMovement(belt, curr.getRobot())){
+                            moved.add(curr.getID());
+                        }
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
     }
@@ -1281,7 +1417,6 @@ public class Game {
     private List<Robot> getActiveRobots() {
         ArrayList<Robot> active_robots = new ArrayList<>();
         for (Player player : players) {
-            //TODO: add Player comparison based on ids
             if (rebooted_players.indexOf(player) != -1) {
                 active_robots.add(player.getRobot());
             }
@@ -1359,7 +1494,7 @@ public class Game {
     }
 
     public Player getNextPlayer() {
-        return playing; //ToDo: change to next player
+        return playing;
     }
 
     /**

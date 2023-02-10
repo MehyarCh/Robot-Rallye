@@ -32,7 +32,6 @@ public class Robot extends BoardElement {
      * @param steps the number of steps to move the robot
      */
     public void move(int steps){
-        //TODO: check position is not out of board
         if (steps > 3 || steps < 1){
             return;
         }
@@ -145,9 +144,7 @@ public class Robot extends BoardElement {
     }
 
     public void reboot(DIRECTION direction, Position newPos){
-        //TODO: reboot robot
         setDirection(direction);
-        //TODO: take robot actually out of the map
         position.copy(newPos);
 
     }

@@ -44,30 +44,7 @@ public class ConveyorBelt extends BoardElement {
                     break;
             }
         }
-        if (speed == 1) {
-            for (Desperatedrosseln.Logic.Elements.Robot curr : active_robots) {
-                if (curr.getPosition().getX() == super.getPosition().getX() &&curr.getPosition().getY() == super.getPosition().getY()) {
-                    //checks if robot is on this conveyor
-                    for (DIRECTION direction : directions) {
-                        // directions.size()> 1 then rotate
-                        curr.moveByConveyor(1, direction);
-                        //TODO: check if conveyor is curved + rules of being moved from conveyor or from different field
-                        //IDEE: directions should tell if feld is curved or not
-                    }
-                }
-            }
-        } else if (speed == 2) {
-            for (Robot curr : active_robots) {
-                if (curr.getPosition().getX() == super.getPosition().getX() && curr.getPosition().getY() == super.getPosition().getY()) {
-                    for (DIRECTION direction : directions) {
-                        // directions.size()> 1 then rotate
-                        curr.moveByConveyor(1, direction);
-                        //TODO: check if conveyor is curved + rules of being moved from conveyor or from different field
-                    }
-                }
-            }
 
-        }
     }
 
     public boolean isCurved(){
@@ -83,40 +60,27 @@ public class ConveyorBelt extends BoardElement {
         return false;
     }
     public Position calculateNextPos(Robot robot){
+
         int x = robot.getPosition().getX();
         int y = robot.getPosition().getY();
-        if( speed == 1 ){
-            if(!isCurved) {
-                DIRECTION dir = DIRECTION.stringToDirection(orientations.get(0));
-                switch (dir) {
-                    case TOP -> {
-                        y = y - 1;
-                    }
-                    case BOTTOM -> {
-                        y = y + 1;
-                    }
-                    case LEFT -> {
-                        x = x - 1;
-                    }
-                    case RIGHT -> {
-                        x = x + 1;
-                    }
-                    default -> {
 
-                    }
-                }
-                //returns new position
-            } else {
-                //return same position
-                //green belt is curved
-                //if the direction the robot is coming from is "in" (zufluss)
-                //rotate robot in (in - out) if 90 counterclockwise, if -90 clockwise
+
+        DIRECTION dir = DIRECTION.stringToDirection(orientations.get(0));
+        switch (dir) {
+            case TOP -> {
+                y = y - 1;
             }
-        } else {
-            //speed 2
-            if (!isCurved ){
-                //move 1
-                //check new position
+            case BOTTOM -> {
+                y = y + 1;
+            }
+            case LEFT -> {
+                x = x - 1;
+            }
+            case RIGHT -> {
+                x = x + 1;
+            }
+            default -> {
+
             }
         }
         return new Position(x,y);

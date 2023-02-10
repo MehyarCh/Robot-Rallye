@@ -234,4 +234,30 @@ public class Map {
         }
         return null;
     }
+
+    public DIRECTION robotIsComingFrom(Position elementpos, Position robotpos){
+        int i = robotpos.getX() - elementpos.getX();
+        int j = robotpos.getY() - elementpos.getY();
+
+        if(i == 0){
+            //same column
+            if(j>0){
+                //robot going bot
+                return DIRECTION.BOTTOM;
+            }else if(j<0){
+                //robot going top
+                return DIRECTION.TOP;
+            }
+        }else if (j == 0){
+            //same line
+            if(i>0){
+                //robot going right
+                return DIRECTION.RIGHT;
+            }else if(i<0){
+                //robot going left
+                return DIRECTION.LEFT;
+            }
+        }
+        return null;
+    }
 }
