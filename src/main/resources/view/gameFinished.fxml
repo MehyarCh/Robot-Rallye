@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.image.Image?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           styleClass="overlay-root">
+<VBox styleClass="login-scene">
+    <VBox fx:id="overlay"
+          VBox.vgrow="ALWAYS"
+          styleClass="overlay, login-overlay, border-effect, border-effect--primary, alignment--bottom-left">
+    </VBox>
+    <StackPane styleClass="center-text" opacity="0.5">
+        <Label text="Text to display in the center" />
+    </StackPane>
+</VBox>
+</StackPane>

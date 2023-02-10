@@ -461,16 +461,12 @@ public class MapController {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    logger.info(idToPosition.keySet());
+                    //logger.info(idToPosition.keySet());
                     int mapIndex = getMapIndex(x, y);
                     StackPane cell = (StackPane) mapGrid.getChildren().get(mapIndex);
                     ImageView imageView = getRobotFromTile(x, y);
-                    logger.info(imageView.getImage().getUrl());
                     for (ImageView view : robotImages) logger.info("this are the urls of the children of this tile " + view.getImage().getUrl());
-                    logger.info(robotImages);
                     robotImages.remove(imageView);
-
-                    logger.info(robotImages);
                     cell.getChildren().remove(imageView);
                 }
             });

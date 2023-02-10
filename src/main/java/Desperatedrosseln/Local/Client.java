@@ -216,10 +216,17 @@ public class Client implements Runnable {
                     }
                 }
                 break;
-            case "GameStarted":
-                //see above
-                break;
+            case "GameFinished":
+                JsonAdapter<GameFinished> gameFinishedJsonAdapter = moshi.adapter(GameFinished.class);
+                GameFinished gameFinished = gameFinishedJsonAdapter.fromJson(msg.getMessageBody());
 
+                if(gameFinished.getClientID() == clientID){
+                    mainController.showOverlay("YOU WON!");
+                }
+                else {
+                    mainController.showOverlay(getPlayerName(gameFinished.getClientID()) + " WON THE GAME!");
+                }
+                break;
             case "CardPlayed":
                 break;
             case "StartingPointTaken":

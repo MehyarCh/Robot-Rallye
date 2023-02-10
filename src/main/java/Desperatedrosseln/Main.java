@@ -1,10 +1,7 @@
 package Desperatedrosseln;
 
-import Desperatedrosseln.Local.Controllers.LoginController;
-import Desperatedrosseln.Local.Controllers.MainController;
-import Desperatedrosseln.Local.Controllers.LobbyController;
+import Desperatedrosseln.Local.Controllers.*;
 
-import Desperatedrosseln.Local.Controllers.ScreenSizeErrorController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -46,6 +43,8 @@ public class Main extends Application implements Runnable {
         } else if (sceneNumber == 1) {
             LoginController loginController = new LoginController();
             loginController.startLoginScene(stage);
+            //GameFinishedController gameFinishedController = new GameFinishedController();
+            //gameFinishedController.startGameFinishedScene(stage);
         } else if (sceneNumber == 2) {
             LobbyController lobbyController = new LobbyController();
             lobbyController.startLobbyScene(stage);
