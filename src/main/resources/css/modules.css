@@ -359,7 +359,7 @@
 
 .card-area--sm {
     -fx-background-image: url("../images/card-blue.png");
-    -fx-border-color: #2de2e6;
+    -fx-border-color: #ffffff;
     -fx-border-width: 0px;
     -fx-border-style: solid;
     -fx-border-insets: -2px;
@@ -386,6 +386,18 @@
     -fx-background-size: contain;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
+}
+
+.upgrade-card {
+    -fx-background-color: rgba(0,0,0,1);
+    -fx-alignment: center;
+    -fx-padding: 4px;
+}
+
+.upgrade-card-label {
+    -fx-font-size: 8px;
+    -fx-wrap-text: true;
+    -fx-text-fill: #fff;
 }
 
 .sidebar {
