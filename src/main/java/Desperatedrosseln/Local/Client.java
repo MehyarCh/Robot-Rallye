@@ -274,6 +274,8 @@ public class Client implements Runnable {
                 mainController.setPhaseLabel("Activation Phase");
                 mainController.setInstructionLabel("");
                 break;
+            case "CheckpointMoved":
+                //ToDo: add GUI update here
             case "PlayerTurning":
                 JsonAdapter<PlayerTurning> playerTurningJsonAdapter = moshi.adapter(PlayerTurning.class);
                 PlayerTurning playerTurning = playerTurningJsonAdapter.fromJson(msg.getMessageBody());
