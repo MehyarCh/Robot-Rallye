@@ -516,12 +516,14 @@ public class Game {
         }
 
         do {
+            if(rebooted_players.size() >= players.size() && current_register>=5){
+                break;
+            }
 
             if (players.get(players.size() - 1) == playing) {
                 current_register++;
                 activateElements();
                 sortPlayersByDistance();
-                rebooted_players = new ArrayList<>();
             }
 
             current_player_index++;
@@ -878,6 +880,7 @@ public class Game {
         // DONT FORGET TO ADD TO GAMEMAP after setting robot new position
         curr.getRobot().setPosition(nearestRestartPoint.getPosition().getX(), nearestRestartPoint.getPosition().getY());
         gameMap.getElementsOnPos(curr.getRobot().getPosition()).add(curr.getRobot());
+        curr.getRobot().setDirection(TOP);
         //send reboot protocoll message to all clients
         JsonAdapter<Reboot> rebootJsonAdapter = moshi.adapter(Reboot.class);
         Reboot reboot = new Reboot(curr.getID());
@@ -1637,6 +1640,7 @@ public class Game {
                 players) {
             player.resetRound();
         }
+        rebooted_players = new ArrayList<>();
 
         roundNumber++;
         current_register = 0;
@@ -1730,6 +1734,10 @@ public class Game {
                 }
             }
         }
+    }
+
+    public List<Player> getRebooted_players() {
+        return rebooted_players;
     }
 }
 

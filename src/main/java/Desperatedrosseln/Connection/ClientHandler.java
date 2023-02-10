@@ -371,7 +371,24 @@ public class ClientHandler implements Runnable {
                 String orientation = rebootDirection.getDirection();
                 //getPlayer().getRobot().setDirection(DIRECTION.stringToDirection(orientation));
 
-                // TODO check with backend
+                if(game.getPhase() == 3 && game.getRebooted_players().contains(player)){
+                    DIRECTION dir = null;
+                    switch (orientation){
+                        case "top":
+                            dir = DIRECTION.TOP;
+                            break;
+                        case "bottom":
+                            dir = DIRECTION.BOTTOM;
+                            break;
+                        case "right":
+                            dir = DIRECTION.RIGHT;
+                            break;
+                        case "left":
+                            dir = DIRECTION.LEFT;
+                            break;
+                    }
+                    player.getRobot().setDirection(dir);
+                }
 
                 break;
             default:

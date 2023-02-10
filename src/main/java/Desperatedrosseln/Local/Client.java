@@ -634,6 +634,9 @@ public class Client implements Runnable {
     public void setLobbyController(LobbyController lobbyController) {
         this.lobbyController = lobbyController;
     }
+    public int getMyRobotID(){
+        return playersWithRobots.get(clientID);
+    }
 
     public void mapRobotToClient(int clientID, int robotID) {
         playersWithRobots.put(clientID, robotID);

@@ -58,9 +58,11 @@ public class MapController {
 
     private static final Logger logger = LogManager.getLogger();
 
-    @FXML private Button upgradeButton;
+    @FXML
+    private Button upgradeButton;
 
-    @FXML private Button noUpgradeButton;
+    @FXML
+    private Button noUpgradeButton;
 
 
     public class Position {
@@ -88,7 +90,7 @@ public class MapController {
             this.y = y;
         }
 
-        public boolean isEqual(Position position){
+        public boolean isEqual(Position position) {
             return x == position.getX() && y == position.getY();
         }
 
@@ -99,7 +101,7 @@ public class MapController {
 
         @Override
         public String toString() {
-            return "("+x+","+y+")";
+            return "(" + x + "," + y + ")";
         }
     }
 
@@ -138,7 +140,6 @@ public class MapController {
     }
 
 
-
     private void addLaserBeam(List<List<MapField>> fieldList) {
 
         String laserOrientation;
@@ -158,7 +159,7 @@ public class MapController {
                         if (Objects.equals(laserOrientation, "top") && j < fieldList.get(i).size() - 1) {
 
                             for (int l = j; l < fieldList.get(i).size() - 1; l++) {
-                                adjacentField = map.getMapFields().get(i).get(l+1);
+                                adjacentField = map.getMapFields().get(i).get(l + 1);
                                 for (int m = 0; m < adjacentField.getTypes().size(); m++) {
                                     fieldTypes.add(adjacentField.getTypes().get(m).getType());
                                 }
@@ -169,7 +170,7 @@ public class MapController {
                             }
                         } else if (Objects.equals(laserOrientation, "right") && i > 0) {
                             for (int l = i; l > 0; l--) {
-                                adjacentField = map.getMapFields().get(l-1).get(j);
+                                adjacentField = map.getMapFields().get(l - 1).get(j);
 
                                 for (int m = 0; m < adjacentField.getTypes().size(); m++) {
                                     fieldTypes.add(adjacentField.getTypes().get(m).getType());
@@ -180,7 +181,7 @@ public class MapController {
 
                         } else if (Objects.equals(laserOrientation, "bottom") && j > 0) {
                             for (int l = j; l > 0; l--) {
-                                adjacentField = map.getMapFields().get(i).get(l-1);
+                                adjacentField = map.getMapFields().get(i).get(l - 1);
 
                                 for (int m = 0; m < adjacentField.getTypes().size(); m++) {
                                     fieldTypes.add(adjacentField.getTypes().get(m).getType());
@@ -191,7 +192,7 @@ public class MapController {
 
                         } else if (Objects.equals(laserOrientation, "left") && i < fieldList.size() - 1) {
                             for (int l = i; l < map.getMapFields().size() - 1; l++) {
-                                adjacentField = map.getMapFields().get(l+1).get(j);
+                                adjacentField = map.getMapFields().get(l + 1).get(j);
 
                                 for (int m = 0; m < adjacentField.getTypes().size(); m++) {
                                     fieldTypes.add(adjacentField.getTypes().get(m).getType());
@@ -233,24 +234,24 @@ public class MapController {
         return mapFields;
     }
 
-    private void buildMapGrid(List<List<MapField>> fieldList){
+    private void buildMapGrid(List<List<MapField>> fieldList) {
         //CompletableFuture.runAsync(() -> {
-            Platform.runLater(() -> {
-                for (int i = 0; i < fieldList.size(); i++) {
-                    for (int j = 0; j < fieldList.get(i).size(); j++) {
-                        try {
-                            StackPane stackPane = createGridCell(i, j, fieldList.get(i).get(j));
-                            mapGrid.getChildren().add(stackPane);
-                            if(fieldList.get(i).get(j).getTypes().get(0).getType().equals("StartingPoint")){
-                                //ToDo
-                                startingPoints.put(stackPane,new Position(i,j));
-                            }
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+        Platform.runLater(() -> {
+            for (int i = 0; i < fieldList.size(); i++) {
+                for (int j = 0; j < fieldList.get(i).size(); j++) {
+                    try {
+                        StackPane stackPane = createGridCell(i, j, fieldList.get(i).get(j));
+                        mapGrid.getChildren().add(stackPane);
+                        if (fieldList.get(i).get(j).getTypes().get(0).getType().equals("StartingPoint")) {
+                            //ToDo
+                            startingPoints.put(stackPane, new Position(i, j));
                         }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
                 }
-            });
+            }
+        });
         //}).thenRun(() -> {
 
         //});
@@ -258,7 +259,7 @@ public class MapController {
 
     @FXML
     private StackPane createGridCell(int x, int y, MapField mapField) throws IOException {
-        List<String> addEmpty = Arrays.asList("Antenna", "CheckPoint", "ConveyorBelt", "RestartPoint", "StartPoint", "Energy-Space", "Wall", "Empty","Gear");
+        List<String> addEmpty = Arrays.asList("Antenna", "CheckPoint", "ConveyorBelt", "RestartPoint", "StartPoint", "Energy-Space", "Wall", "Empty", "Gear");
         List<BoardElement> typeList = mapField.getTypes();
 
         StackPane cell = new StackPane();
@@ -293,11 +294,11 @@ public class MapController {
                 case "StartPoint" -> {
                     Image startpointImage =
                             new Image(getClass().getResource("/images/elements/startpoint/startpoint.png").toString());
-                    final boolean[] isTaken={false};
+                    final boolean[] isTaken = {false};
                     stackElement = new ImageView(startpointImage);
                     handleStartingPoint(stackElement, x, y, isTaken);
                 }
-                case "CheckPoint" ->stackElement = buildCheckpoint(boardElement);
+                case "CheckPoint" -> stackElement = buildCheckpoint(boardElement);
                 case "Antenna" -> stackElement = buildAntenna(boardElement);
                 case "ConveyorBelt" -> stackElement = buildConveyorBelt(boardElement);
                 case "Energy-Space" -> stackElement = buildEnergySpace(boardElement);
@@ -320,8 +321,6 @@ public class MapController {
     public void setTileSize(int computedTileSize) {
         tileSize = computedTileSize;
     }
-
-
 
 
     @FXML
@@ -349,20 +348,21 @@ public class MapController {
                     new Image(getClass().getResource("/images/elements/checkpoint/checkpoint3.png").toString());
             element = new ImageView(checkPoint3);
 
-        }else if (checkPoint.getCount() == 4) {
+        } else if (checkPoint.getCount() == 4) {
             Image checkPoint4 =
                     new Image(getClass().getResource("/images/elements/checkpoint/checkpoint4.png").toString());
             element = new ImageView(checkPoint4);
 
-        }else if (checkPoint.getCount() == 5) {
+        } else if (checkPoint.getCount() == 5) {
             Image checkPoint5 =
                     new Image(getClass().getResource("/images/elements/checkpoint/checkpoint5.png").toString());
             element = new ImageView(checkPoint5);
-        }else{
+        } else {
             throw new IOException("Unknown");
         }
         return element;
     }
+
     @FXML
     private ImageView buildRestartPoint(BoardElement boardElement) {
         Image restartPointImage =
@@ -377,12 +377,12 @@ public class MapController {
 
 
     private void requestStartingPoint(int x, int y, boolean[] isTaken) {
-        Position position = new Position(x,y);
+        Position position = new Position(x, y);
 
         boolean isStartingPointTaken = false;
 
-        for(Position pos: unavailableStartingPoints){
-            if(pos.isEqual(position)){
+        for (Position pos : unavailableStartingPoints) {
+            if (pos.isEqual(position)) {
                 isStartingPointTaken = true;
                 break;
             }
@@ -395,13 +395,14 @@ public class MapController {
             hasStartpoint = true;
             Moshi moshi = new Moshi.Builder().build();
             JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
-            client.sendMessage("SetStartingPoint",setStartingPointJsonAdapter.toJson(new SetStartingPoint(x,y)));
+            client.sendMessage("SetStartingPoint", setStartingPointJsonAdapter.toJson(new SetStartingPoint(x, y)));
 
         }
     }
+
     private void handleStartingPoint(ImageView stackElement, int x, int y, boolean[] isTaken) {
         stackElement.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            requestStartingPoint(x,y,isTaken);
+            requestStartingPoint(x, y, isTaken);
         });
     }
 
@@ -415,7 +416,7 @@ public class MapController {
         robotImages.add(robot);
         idToPosition.put(robotId, new Position(x, y));
 
-        if(x > 4){
+        if (x > 4) {
             rotateRobot(robotId, "clockwise");
             rotateRobot(robotId, "clockwise");
         }
@@ -463,18 +464,19 @@ public class MapController {
     }
 
     public void removeRobot(int x, int y) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    //logger.info(idToPosition.keySet());
-                    int mapIndex = getMapIndex(x, y);
-                    StackPane cell = (StackPane) mapGrid.getChildren().get(mapIndex);
-                    ImageView imageView = getRobotFromTile(x, y);
-                    for (ImageView view : robotImages) logger.info("this are the urls of the children of this tile " + view.getImage().getUrl());
-                    robotImages.remove(imageView);
-                    cell.getChildren().remove(imageView);
-                }
-            });
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                //logger.info(idToPosition.keySet());
+                int mapIndex = getMapIndex(x, y);
+                StackPane cell = (StackPane) mapGrid.getChildren().get(mapIndex);
+                ImageView imageView = getRobotFromTile(x, y);
+                for (ImageView view : robotImages)
+                    logger.info("this are the urls of the children of this tile " + view.getImage().getUrl());
+                robotImages.remove(imageView);
+                cell.getChildren().remove(imageView);
+            }
+        });
     }
 
     public void removeRobotById(int id) {
@@ -525,7 +527,6 @@ public class MapController {
     }
 
 
-
     private List<List<StackPane>> makeGridPane2d(GridPane mapGrid) {
         List<List<StackPane>> stackPaneList = new ArrayList<>();
 
@@ -542,7 +543,6 @@ public class MapController {
         }
         return stackPaneList;
     }
-
 
 
     @FXML
@@ -882,14 +882,38 @@ public class MapController {
         return stackElement;
     }
 
+    private ImageView setElementDirection(ImageView stackElement, String orientation) {
+
+
+        if (Objects.equals(orientation, "right")) {
+            stackElement.setRotate(90);
+        } else if (Objects.equals(orientation, "bottom")) {
+            stackElement.setRotate(180);
+        } else if (Objects.equals(orientation, "left")) {
+            stackElement.setRotate(-90);
+        } else if (Objects.equals(orientation, "top")) {
+            stackElement.setRotate(0);
+        }
+        return stackElement;
+    }
+
+    public void setMyRobotDirection(String direction){
+        Platform.runLater(() -> {
+            ImageView myRob = getRobotById(client.getMyRobotID());
+            setElementDirection(myRob,direction);
+        });
+    }
+
+
     public void setMap(List<List<List<BoardElement>>> gameMap) {
         map.setMapFields(convertMap(gameMap));
     }
 
-    public void addUnavailablePosition(int x, int y ){
-        unavailableStartingPoints.add(new Position(x,y));
+    public void addUnavailablePosition(int x, int y) {
+        unavailableStartingPoints.add(new Position(x, y));
     }
-    public void addRobotToUI(int robotId, int x, int y){
+
+    public void addRobotToUI(int robotId, int x, int y) {
         CompletableFuture.runAsync(() -> {
             Platform.runLater(() -> {
                 try {
@@ -944,7 +968,7 @@ public class MapController {
     }
 
     public void setClient(Client client) {
-        this.client =client;
+        this.client = client;
     }
 
     public void autoSelectStartPoint() {
@@ -978,13 +1002,13 @@ public class MapController {
         }
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<SetStartingPoint> setStartingPointJsonAdapter = moshi.adapter(SetStartingPoint.class);
-        client.sendMessage("SetStartingPoint",setStartingPointJsonAdapter.toJson(new SetStartingPoint(finalPos.x, finalPos.y)));
+        client.sendMessage("SetStartingPoint", setStartingPointJsonAdapter.toJson(new SetStartingPoint(finalPos.x, finalPos.y)));
         int mapIndex = getMapIndex(finalPos.x, finalPos.y);
         boolean[] isTaken = {false};
-        requestStartingPoint(finalPos.x, finalPos.y,isTaken);
+        requestStartingPoint(finalPos.x, finalPos.y, isTaken);
     }
 
-    public void runAutoStartPointSelection(){
+    public void runAutoStartPointSelection() {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -992,12 +1016,13 @@ public class MapController {
             }
         });
     }
+
     public void setMapAsList(List<List<List<BoardElement>>> mapAsList) {
         this.mapAsList = mapAsList;
     }
 
     @FXML
-    public void glow(){
+    public void glow() {
         addBgGlow();
     }
 
@@ -1020,7 +1045,7 @@ public class MapController {
         ImageView robot = getRobotById(robotId);
         robot.setRotate(0);
 
-        switch(orientation) {
+        switch (orientation) {
             case "top":
                 break;
             case "right":
