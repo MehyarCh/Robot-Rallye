@@ -39,6 +39,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.*;
+import java.net.URI;
+import java.awt.Desktop;
 
 import static Desperatedrosseln.Local.Controllers.LoginController.client;
 
@@ -1060,6 +1062,15 @@ public class MainController {
             }
         });
 
+    }
+
+    @FXML
+    public void onRules (){
+        try {
+            Desktop.getDesktop().browse(new URI("https://www.ultraboardgames.com/robo-rally/game-rules.php"));
+        } catch (Exception e) {
+            logger.info("Could not find the requested Website");
+        }
     }
 
     public void startUpgradePhase(){

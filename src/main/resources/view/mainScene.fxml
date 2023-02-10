@@ -312,11 +312,11 @@
                                        GridPane.vgrow="ALWAYS">
                             </StackPane>
                         </GridPane>
-                        <Button opacity="0"
+                        <Button onAction="#onRules"
                                 GridPane.columnIndex="2"
                                 GridPane.rowIndex="0"
                                 styleClass="button, button--sm, button--secondary"
-                                text="PLAY CARD" />
+                                text="RULES" />
                     </HBox>
 
                 </GridPane>
