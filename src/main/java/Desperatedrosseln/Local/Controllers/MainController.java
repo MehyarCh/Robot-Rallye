@@ -10,8 +10,10 @@ import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -168,6 +170,44 @@ public class MainController {
             )
     );
 
+    private final Map<String, String> upgradeToDescription = Map.ofEntries(
+            new AbstractMap.SimpleEntry<String, String>(
+                    "AdminPrivilege",
+                    "Once per round, you may give your robot priority for one register."
+            ),
+            new AbstractMap.SimpleEntry<String, String>(
+                    "RearLaser",
+                    "Your robot may shoot backward as well as forward."
+            ),
+            new AbstractMap.SimpleEntry<String, String>(
+                    "MemorySwap",
+                    "Draw three cards. Then choose three from your hand to put on top of your deck."
+            ),
+            new AbstractMap.SimpleEntry<String, String>(
+                    "SpamBlocker",
+                    "Replace each SPAM damage card in your hand with a card from the top of your deck."
+            )
+    );
+
+    private final Map<String, Integer> upgradeToEnergy = Map.ofEntries(
+            new AbstractMap.SimpleEntry<String, Integer>(
+                    "AdminPrivilege",
+                    3
+            ),
+            new AbstractMap.SimpleEntry<String, Integer>(
+                    "RearLaser",
+                    2
+            ),
+            new AbstractMap.SimpleEntry<String, Integer>(
+                    "MemorySwap",
+                    1
+            ),
+            new AbstractMap.SimpleEntry<String, Integer>(
+                    "SpamBlocker",
+                    3
+            )
+    );
+
     private int selectedRobot = 0;
 
     private MoveOneLabel moveOneLabel;
@@ -318,6 +358,7 @@ public class MainController {
         mapController.setClient(client);
         setProfileIcon();
         handleUpgradeClick();
+        handleUpgradeHover();
         programdone.setDisable(true);
 
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
@@ -337,6 +378,7 @@ public class MainController {
                 upgradeButton.setDisable(true);
                 noUpgradeButton.setDisable(true);
                 showPlayingRobotsLabels();
+
                 }
         });
 
@@ -470,7 +512,6 @@ public class MainController {
     public void initRegisterValues() {
         for (int i = 0; i < 5; i++) {
             registerValues.add(null);
-            registerValues.size();
         }
     }
 
@@ -766,8 +807,11 @@ public class MainController {
         JsonAdapter<BuyUpgrade> selectedCardJsonAdapter = moshi.adapter(BuyUpgrade.class);
         BuyUpgrade buyUpgrade = new BuyUpgrade(false, "null");
         client.sendMessage("BuyUpgrade", selectedCardJsonAdapter.toJson(buyUpgrade));
-
         clearUpgradeCards();
+        for (StackPane card :upgradeCards) {
+            card.setStyle("-fx-border-width: 0px");
+        }
+        selectedUpgrade = "null";
         upgradeButton.setDisable(true);
         noUpgradeButton.setDisable(true);
     }
@@ -786,24 +830,36 @@ public class MainController {
     }
 
     private void placePermanentUpgrade() {
-        if (!permUpgradeValues.contains("null")) {
-            // TODO display message that the permanent cards are full. Player might discharge one of the his cards.
-        } else {
-            int firstFreeIndex = permUpgradeValues.indexOf("null");
-            ImageView imageView = loadUpgradeCard(selectedUpgrade);
-            permUpgradeValues.set(firstFreeIndex, selectedUpgrade);
-            permUpgradeCards.get(firstFreeIndex).getChildren().add(imageView);
-        }
+        placeUpgrade(permUpgradeValues, permUpgradeCards);
     }
 
     private void placeTemporaryUpgrade() {
-        if (!tempUpgradeValues.contains("null")) {
-            // TODO display message that the temporary cards are full. Player might discharge one of the his cards.
+        placeUpgrade(tempUpgradeValues, tempUpgradeCards);
+    }
+
+    private void placeUpgrade(List<String> values, List<StackPane> cards) {
+        if (!values.contains("null")) {
+            // TODO display message that the cards are full. Player might discharge one of the his cards.
         } else {
-            int firstFreeIndex = tempUpgradeValues.indexOf("null");
+            int firstFreeIndex = values.indexOf("null");
+
+            Label cardDescription = new Label(upgradeToDescription.get(selectedUpgrade));
             ImageView imageView = loadUpgradeCard(selectedUpgrade);
-            tempUpgradeValues.set(firstFreeIndex, selectedUpgrade);
-            tempUpgradeCards.get(firstFreeIndex).getChildren().add(imageView);
+            StackPane cardWrapper = new StackPane(cardDescription, imageView);
+
+            cardDescription.getStyleClass().add("upgrade-card-label");
+            cardDescription.getStyleClass().add("color-light");
+            cardWrapper.getStyleClass().add("upgrade-card");
+
+            cardWrapper.setOnMouseEntered(t -> {
+                imageView.setOpacity(0);
+            });
+            cardWrapper.setOnMouseExited(t -> {
+                imageView.setOpacity(1);
+            });
+
+            values.set(firstFreeIndex, selectedUpgrade);
+            cards.get(firstFreeIndex).getChildren().add(cardWrapper);
 
             // Todo handle click event
         }
@@ -826,15 +882,30 @@ public class MainController {
             public void run() {
                 for (StackPane card : upgradeCards) {
                     card.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-                        for(StackPane upgradeCard : upgradeCards) {
-                            upgradeCard.setStyle("-fx-border-width: 0px");
+                        if (upgradeValues.size() != 0) {
+                            for(StackPane upgradeCard : upgradeCards) {
+                                upgradeCard.setStyle("-fx-border-width: 0px");
+                            }
+                            int index = upgradeCards.indexOf(card);
+                            selectedUpgrade = upgradeValues.get(index);
+                            card.setStyle("-fx-border-width: 2px");
                         }
-                        int index = upgradeCards.indexOf(card);
-                        selectedUpgrade = upgradeValues.get(index);
-                        card.setStyle("-fx-border-width: 2px");
-                        logger.debug("indexUpgradeValue " + upgradeValues.get(index));
-                        logger.debug("selectedUpgrade: " + selectedUpgrade);
                     });
+                }
+            }
+        });
+    }
+
+    @FXML private void handleUpgradeHover() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                for (StackPane card : upgradeCards) {
+                    if (card.getChildren().size() > 0) {
+                        StackPane cardWrapper = (StackPane) card.getChildren().get(0);
+                        ImageView imageView = (ImageView) cardWrapper.getChildren().get(1);
+
+                    }
                 }
             }
         });
@@ -868,9 +939,27 @@ public class MainController {
 
                     if (i < exchangeValues.size()) {
                         String cardName = exchangeValues.get(i);
-                        upgradeValues.add(cardName);
+
+                        Label cardDescription = new Label(upgradeToDescription.get(cardName));
+
+                        cardDescription.getStyleClass().add("upgrade-card-label");
+                        cardDescription.getStyleClass().add("color-light");
+
                         ImageView imageView = loadUpgradeCard(cardName);
-                        upgradeCards.get(i).getChildren().add(imageView);
+
+                        StackPane cardWrapper = new StackPane(cardDescription, imageView);
+
+                        cardWrapper.getStyleClass().add("upgrade-card");
+
+                        cardWrapper.setOnMouseEntered(t -> {
+                            imageView.setOpacity(0);
+                        });
+                        cardWrapper.setOnMouseExited(t -> {
+                            imageView.setOpacity(1);
+                        });
+
+                        upgradeValues.add(cardName);
+                        upgradeCards.get(i).getChildren().add(cardWrapper);
                         logger.info("this is size of map " + upgradeValues.size());
                         logger.info("this is at i: " + upgradeValues.get(i));
                     } else {
@@ -892,10 +981,17 @@ public class MainController {
             default -> new Image(getClass().getResource("/images/card/no_such_card.png").toString());
         };
         ImageView imageView = new ImageView(image);
+        imageView.getStyleClass().add("upgrade-card");
         imageView.setPreserveRatio(true);
-        imageView.setFitHeight(100);
+        imageView.setFitHeight(112);
+
         return imageView;
     }
+
+
+
+
+
     @FXML
     public void updateEnergy(int energyCount){
         Platform.runLater(() -> {
