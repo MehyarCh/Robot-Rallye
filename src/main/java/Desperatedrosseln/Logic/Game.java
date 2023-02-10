@@ -31,6 +31,8 @@ import static Desperatedrosseln.Logic.DIRECTION.TOP;
  * @author Mehyar, Luca
  */
 public class Game {
+
+    private int checkpointsmoved = 0;
     private Map gameMap = null;
     private static String currentMap;
     private static ArrayList<Player> players = new ArrayList<>();
@@ -520,6 +522,9 @@ public class Game {
             if (players.get(players.size() - 1) == playing) {
                 current_register++;
                 activateElements();
+                if(currentMap == "Twister"){
+                    moveCheckpoints();
+                }
                 sortPlayersByDistance();
                 rebooted_players = new ArrayList<>();
             }
@@ -539,6 +544,102 @@ public class Game {
         }
 
 
+    }
+
+    private void moveCheckpoints() {
+        JsonAdapter<CheckpointMoved> checkpointMovedJsonAdapter = moshi.adapter(CheckpointMoved.class);
+        List<BoardElement> checkpointlist = getListOf("Checkpoint");
+        for (BoardElement checkPoint: checkpointlist) {
+            CheckPoint cp = (CheckPoint) checkPoint;
+            if (checkpointsmoved == 0) {
+                if(cp.getCount() == 1){
+                    repositionCheckpoint(cp ,11, 2);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(1, 11, 2)));
+                }
+                if(cp.getCount() == 2){
+                    repositionCheckpoint(cp,5, 8);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(2, 5, 8)));
+                }
+                if(cp.getCount() == 3){
+                    repositionCheckpoint(cp,4, 2);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(3, 4, 2)));
+                }
+               if (cp.getCount() == 4) {
+                   repositionCheckpoint(cp,9, 7);
+                   broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(4, 9, 7)));
+               }
+            }
+            if (checkpointsmoved == 1) {
+                if(cp.getCount() == 1){
+                    repositionCheckpoint(cp,10, 3);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(1, 10, 3)));
+                }
+                if(cp.getCount() == 2){
+                    repositionCheckpoint(cp,4, 7);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(2, 4, 7)));
+
+                }
+                if(cp.getCount() == 3){
+                    repositionCheckpoint(cp,5, 1);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(3, 5, 1)));
+
+                }
+                if (cp.getCount() == 4) {
+                    repositionCheckpoint(cp,11, 7);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(4, 11, 7)));
+                }
+            }
+            if (checkpointsmoved == 2) {
+                if(cp.getCount() == 1){
+                    repositionCheckpoint(cp,9, 2);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(1, 9, 2)));
+                }
+                if(cp.getCount() == 2){
+                    repositionCheckpoint(cp,5, 6);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(2, 5, 6)));
+                }
+                if(cp.getCount() == 3){
+                    repositionCheckpoint(cp,6, 2);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(3, 6, 2)));
+                }
+                if (cp.getCount() == 4) {
+                    repositionCheckpoint(cp,10, 8);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(4, 10, 8)));
+                }
+            }
+            if (checkpointsmoved == 3) {
+                if(cp.getCount() == 1){
+                    repositionCheckpoint(cp,10, 1);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(1, 10, 1)));
+                }
+                if(cp.getCount() == 2){
+                    repositionCheckpoint(cp,6, 7);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(2, 6, 7)));
+                }
+                if(cp.getCount() == 3){
+                    repositionCheckpoint(cp,5, 3);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(3, 5, 3)));
+                }
+                if (cp.getCount() == 4) {
+                    repositionCheckpoint(cp,9, 7);
+                    broadcastMessage("CheckpointMoved", checkpointMovedJsonAdapter.toJson(new CheckpointMoved(4, 9, 7)));
+                }
+                checkpointsmoved = 0;
+            }
+        }
+        checkpointsmoved++;
+    }
+
+    private void repositionCheckpoint(CheckPoint checkpoint, int x, int y) {
+        List<BoardElement> elementList = gameMap.getElementsOnPos(checkpoint.getPosition());
+        for (BoardElement e: elementList){
+            CheckPoint current = (CheckPoint) e;
+            if(current == checkpoint){
+                elementList.remove(e);
+            }
+        }
+        gameMap.addElement(checkpoint, x, y);
+        checkpoint.setPosition(x, y);
     }
 
     private void sendActiveCards() {
@@ -1719,7 +1820,6 @@ public class Game {
     }
 
     public void removePlayer(int clientID) throws ClassNotFoundException {
-        //ToDo: remove player from the game
 
         for (Iterator<Player> iterator = players.iterator(); iterator.hasNext(); ) {
             Player player = iterator.next();

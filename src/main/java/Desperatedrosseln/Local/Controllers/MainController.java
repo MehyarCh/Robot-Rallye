@@ -388,7 +388,6 @@ public class MainController {
                 upgradeButton.setDisable(true);
                 noUpgradeButton.setDisable(true);
                 showPlayingRobotsLabels();
-
                 }
         });
 
