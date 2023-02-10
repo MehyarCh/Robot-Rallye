@@ -44,7 +44,6 @@ public class ConveyorBelt extends BoardElement {
                     break;
             }
         }
-
     }
 
     public boolean isCurved(){
@@ -59,6 +58,12 @@ public class ConveyorBelt extends BoardElement {
         }
         return false;
     }
+
+    /**
+     * calculates the next position the conveyorbelt will move the robot to one step at a time
+     * @param robot moving robot
+     * @return the position the robot is moving towards
+     */
     public Position calculateNextPos(Robot robot){
 
         int x = robot.getPosition().getX();

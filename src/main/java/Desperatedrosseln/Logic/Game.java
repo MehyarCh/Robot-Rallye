@@ -1165,7 +1165,6 @@ public class Game {
      * @throws ClassNotFoundException
      */
     private void activateConveyorBelts() {
-        List<Integer> moved;
         activateBluebelts();
         activateGreenbelts();
     }
@@ -1187,11 +1186,18 @@ public class Game {
         return moved;
     }
 
+    /**
+     * calculates the next position the robot is moving towards assuming it's on a conveyorbelt
+     * @param belt the conveyorbelt the robot is currently on
+     * @param robot moving robot
+     * @return
+     * @throws InterruptedException
+     */
     private boolean checkConveyorMovement(ConveyorBelt belt, Robot robot) throws InterruptedException {
         //assume speed == 1 for now
         Position oldpos = new Position(0,0);
         oldpos.copy(robot.getPosition());
-        //DIRECTION comingfrom = gameMap.robotIsComingFrom(oldpos, belt.getPosition());
+
         Position newpos = belt.calculateNextPos(robot);
         if( !newpos.equals(robot.getPosition())) {
             return checkNextPosition(newpos, robot);
@@ -1199,6 +1205,13 @@ public class Game {
         return false;
     }
 
+    /**
+     * checks if the robot can move to the next position through a conveyorbelt
+     * @param pos new position the robot is moving towards
+     * @param robot moving robot
+     * @return true is movement is allowed and executes it
+     * @throws InterruptedException
+     */
     private boolean checkNextPosition( Position pos, Robot robot) throws InterruptedException {
 
         Position oldpos = new Position(0,0);
@@ -1264,6 +1277,11 @@ public class Game {
         }
     }
 
+    /**
+     * checks if the robot is to be rotated on the conveyor belt
+     * @param belt
+     * @param robot
+     */
     private void checkRotationByBelt(ConveyorBelt belt, Robot robot) {
         DIRECTION dir = gameMap.robotIsComingFrom(belt.getPosition(), robot.getPosition());
         //case 3 orientations, check if dir is opposite of out, then don't rotate
