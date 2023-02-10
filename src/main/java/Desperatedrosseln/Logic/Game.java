@@ -108,8 +108,7 @@ public class Game {
                 newpos.getX() >= gameMap.getWidth()){
             //fell off so remove and reboot
             rebootPlayer(getPlayerByRobot(robot));
-            //TODO: must return true and remove robot, resets its position
-            return (false && gameMap.getElementsOnPos(oldpos).remove(robot));
+            return gameMap.getElementsOnPos(oldpos).remove(robot);
         } else if (gameMap.currPosHasBlockingWall(robot.getPosition(), newpos)) {
             //blocked
             return false;
@@ -118,9 +117,10 @@ public class Game {
             return false;
         } else if (gameMap.hasPit(newpos)) {
             //fell off so reboot and remove
+            robot.setPosition(newpos.getX(), newpos.getY());
+            robotMovedProtokoll(robot);
             rebootPlayer(getPlayerByRobot(robot));
-            //TODO: must return true and remove robot, reset its position
-            return false && gameMap.getElementsOnPos(oldpos).remove(robot);
+            return gameMap.getElementsOnPos(oldpos).remove(robot);
         } else if (gameMap.hasAntenna(newpos)){
             //blocked
             return false;
@@ -144,8 +144,7 @@ public class Game {
             gameMap.getElementsOnPos(newpos).add(robot);
             robot.setPosition(newpos.getX(), newpos.getY());
             robotMovedProtokoll(robot);
-            boolean removed = gameMap.getElementsOnPos(oldpos).remove(robot);
-            return true && removed;
+            return gameMap.getElementsOnPos(oldpos).remove(robot);
         }
     }
 
@@ -844,6 +843,7 @@ public class Game {
         //put all cards that are left in the register of mentioned player onto his discardpile without activating them
         for (Card card : curr.getRegister()) {
             //TODO: discard current register cards
+            //TODO: reset registers to null
             curr.getDiscarded().add(card);
         }
 
@@ -862,17 +862,18 @@ public class Game {
                 nearestRestartPoint = (RestartPoint) elem;
             }
         }
+        //TODO: position shouldn't be set here but on the begin of the next programming phase.
+        // DONT FORGET TO ADD TO GAMEMAP after setting robot new position
         curr.getRobot().setPosition(nearestRestartPoint.getPosition().getX(), nearestRestartPoint.getPosition().getY());
+        gameMap.getElementsOnPos(curr.getRobot().getPosition()).add(curr.getRobot());
         //send reboot protocoll message to all clients
         JsonAdapter<Reboot> rebootJsonAdapter = moshi.adapter(Reboot.class);
         Reboot reboot = new Reboot(curr.getID());
         broadcastMessage("Reboot", rebootJsonAdapter.toJson(reboot));
-        //TODO: delete robot image from UI map
         //ToDo: get rebootfield coordinates and send Movement protocoll
     }
 
     private void decideNextPlayer() {
-        //TODO: count distance to antenna
         //if the current player is the last player, start from the beginning
         if (current_player_index >= players.size()) {
             current_player_index -= players.size();

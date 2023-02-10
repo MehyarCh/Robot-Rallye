@@ -326,6 +326,12 @@ public class Client implements Runnable {
                     mainController.updateEnergy(energyReserve);
                 }
                 break;
+            case "Reboot":
+                //TODO: handle robot reboot
+                JsonAdapter<Reboot> rebootJsonAdapter = moshi.adapter(Reboot.class);
+                Reboot reboot = rebootJsonAdapter.fromJson(msg.getMessageBody());
+                mainController.getMapController().removeRobotById(playersWithRobots.get(reboot.getClientID()));
+                break;
             case "ActivePhase":
                 JsonAdapter<ActivePhase> activePhaseJsonAdapter = moshi.adapter(ActivePhase.class);
                 ActivePhase activePhase = activePhaseJsonAdapter.fromJson(msg.getMessageBody());
